@@ -1,13 +1,27 @@
 <template>
   <div>
+    <app-header></app-header>
     <nuxt/>
+    <notification-modal></notification-modal>
+    <app-footer></app-footer>
   </div>
 </template>
-
+<script>
+import appHeader from "@/layouts/AppHeader";
+import appFooter from "@/layouts/AppFooter";
+import notifications from "@/layouts/custom/Notifications";
+export default {
+  components: {
+    "app-header": appHeader,
+    "app-footer": appFooter,
+    "notification-modal": notifications
+  }
+};
+</script>
 <style>
 html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
