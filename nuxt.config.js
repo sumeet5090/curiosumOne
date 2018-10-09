@@ -20,7 +20,8 @@ module.exports = {
         hid: 'description',
         name: 'description',
         content: pkg.description
-      }
+      },
+      // TODO: My dev meta
     ],
     link: [{
       rel: 'icon',
@@ -58,6 +59,7 @@ module.exports = {
    */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
+    baseURL: 'http://localhost:3000/api'
   },
 
   /*

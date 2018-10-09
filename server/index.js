@@ -2,10 +2,13 @@
 const express = require('express')
 const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
+const passportInitialize = require('./auth/passport')
+const indexRouter = require('./routes')
+const database = require('./database')
+const session = require('./session')
 const app = express()
-const host = process.env.HOST || '127.0.0.1'
+const host = process.env.HOST || 'localhost'
 const port = process.env.PORT || 3000
-
 app.set('port', port)
 
 // Import and Set Nuxt.js options
@@ -21,10 +24,16 @@ async function start() {
     const builder = new Builder(nuxt)
     await builder.build()
   }
-
+  // Database
+  database()
+  // Session
+  session(app)
+  // Passport
+  passportInitialize(app)
+  // Auth middlewares
+  app.use('/', indexRouter)
   // Give nuxt middleware to express
   app.use(nuxt.render)
-
   // Listen the server
   app.listen(port, host)
   consola.ready({
