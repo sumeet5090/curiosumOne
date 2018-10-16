@@ -1,8 +1,8 @@
 <template>
   <div>
     <app-header></app-header>
-    <nuxt/>
     <notification-modal></notification-modal>
+    <nuxt/>
     <app-footer></app-footer>
   </div>
 </template>

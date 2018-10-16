@@ -33,7 +33,7 @@
 import axios from "axios";
 import { mapGetters, mapActions, mapState, mapMutations } from "vuex";
 import Modal from "@/components/Modal";
-import notifService from "@/middleware/Notification.service";
+import notifService from "@/services/Notification.service";
 export default {
   name: "notifications",
   data() {

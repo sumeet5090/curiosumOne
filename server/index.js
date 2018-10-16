@@ -4,6 +4,7 @@ const consola = require('consola')
 const { Nuxt, Builder } = require('nuxt')
 const passportInitialize = require('./auth/passport')
 const indexRouter = require('./routes')
+const teamRouter = require('./routes/api/team')
 const database = require('./database')
 const session = require('./session')
 const app = express()
@@ -24,14 +25,18 @@ async function start() {
     const builder = new Builder(nuxt)
     await builder.build()
   }
+  // Body parser
+  app.use(express.urlencoded({ extended: true }))
+  app.use(express.json())
   // Database
   database()
   // Session
-  session(app)
+  await session(app)
   // Passport
   passportInitialize(app)
   // Auth middlewares
   app.use('/', indexRouter)
+  app.use('/team', teamRouter)
   // Give nuxt middleware to express
   app.use(nuxt.render)
   // Listen the server

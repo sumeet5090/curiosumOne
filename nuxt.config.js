@@ -46,7 +46,9 @@ module.exports = {
    ** Plugins to load before mounting the App
    */
   plugins: ['@/plugins/register-components.js', '@/plugins/argon-design.js'],
-
+  router: {
+    middleware: ['ssr-cookie']
+  },
   /*
    ** Nuxt.js modules
    */
@@ -59,7 +61,7 @@ module.exports = {
    */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    baseURL: 'http://localhost:3000/api'
+    baseURL: 'http://localhost:3000/'
   },
 
   /*
@@ -71,7 +73,6 @@ module.exports = {
      */
     extend(config, ctx) {
       // TODO: Add webpack rules for ttf otf svg scss file parsing
-
     }
   }
 }

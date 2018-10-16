@@ -12,10 +12,6 @@ let UserSchema = Schema({
   username: {
     type: String,
   },
-  confirmed: {
-    type: Boolean,
-    default: false
-  },
   phone_number: {
     type: String,
     lowercase: true,
@@ -44,8 +40,8 @@ let UserSchema = Schema({
   google_id: String,
   profile: {
     picture: String,
-    lcoation: String,
-    displayName: String,
+    location: String,
+    display_name: String,
     gender: String
   },
   provider: String,
@@ -53,9 +49,9 @@ let UserSchema = Schema({
   verified: Boolean,
   display_name: {
     type: String,
-    default: function () {
+    default: function() {
       return this.first_name + ' ' + this.last_name
-    }
+    } 
   },
   email: {
     type: String,
@@ -89,25 +85,28 @@ let UserSchema = Schema({
   }
   // TODO: Social Media links
 }, {
-  timestamps: true
-})
+    timestamps: true
+  })
 UserSchema.pre('save', function (next) {
   var user = this;
-  if (!user.isModified('password')) {
-    return next()
-  }
-  bcrypt.genSalt(CONFIG.bcrypt.salt, function (err, salt) {
-    if (err) {
-      return next(err)
-    }
-    bcrypt.hash(user.password, salt, function (err, hash) {
+  if (user.isModified('password')) {
+    bcrypt.genSalt(CONFIG.bcrypt.salt, function (err, salt) {
       if (err) {
         return next(err)
       }
-      user.password = hash
-      next()
+      bcrypt.hash(user.password, salt, function (err, hash) {
+        if (err) {
+          return next(err)
+        }
+        user.password = hash
+        return next()
+      })
     })
-  })
+  }
+  if (user.isModified('first_name') || user.isModified('last_name')) {
+    user.display_name = this.first_name + ' ' + this.last_name
+  }
+  return next()
 })
 UserSchema.methods.comparePassword = function (password) {
   let user = this
@@ -121,8 +120,8 @@ UserSchema.methods.getJWT = function () {
   return "Bearer " + jwt.sign({
     user_id: this._id,
   }, CONFIG.jwt.secret, {
-    expiresIn: CONFIG.jwt.expiration
-  })
+      expiresIn: CONFIG.jwt.expiration
+    })
 }
 UserSchema.methods.toWeb = function () {
   let json = this.toJSON()

@@ -5,7 +5,6 @@ const state = {
     imgProfile: require("@/assets/images/theme/profile.jpg")
   },
   fields: {},
-  currentUser: null,
   modals: {
     notifications: false,
     messages: false,
@@ -30,20 +29,49 @@ const mutations = {
   loadMoreAnnouncements(state, ancmt, count) {
     // TODO: add LoadMore button in notifications.
   },
+  SET_USER: function (state, user) {
+    if (user === {}) {
+      state.user = null
+      state.isAuthenticated = false
+    } else {
+      state.user = user
+      state.isAuthenticated = true
+    }
+  },
+  auth: function (state, auth) {
+    state.isAuthenticated = auth
+  }
 }
 const actions = {
-  setUser(context, user) {
-    context.commit('userStatus', user)
+  nuxtServerInit({ commit }, { req }) {
+    if (req.user && req.session) {
+      commit('SET_USER', JSON.parse(JSON.stringify(req.user)))
+      commit('auth', req.isAuthenticated())
+    } else {
+      commit('SET_USER', null)
+      commit('auth', false)
+    }
   },
-  modalShowNotification(context) {
-    context.commit('modalShowNotification')
+  modalShowNotification({ commit }) {
+    commit('modalShowNotification')
+  },
+  async logout({ commit }) {
+    await this.$axios.post('/api/logout')
+    commit('SET_USER', null)
+    commit('auth', false)
   }
 }
 const getters = {
-  currentUser: state => state.currentUser,
+  currentUser: function (state) {
+    if(state.isAuthenticated){
+      return state.user
+    }
+    return null
+  },
   getModalStates: state => state.modals,
   getImages: state => state.images,
-  getAnnouncements: state => state.announcements
+  getAnnouncements: state => state.announcements,
+  isAuthenticated: state => state.isAuthenticated,
 }
 
 const createStore = () => {
