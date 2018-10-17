@@ -44,7 +44,7 @@ const mutations = {
 }
 const actions = {
   nuxtServerInit({ commit }, { req }) {
-    if (req.user && req.session) {
+    if (req.isAuthenticated()) {
       commit('SET_USER', JSON.parse(JSON.stringify(req.user)))
       commit('auth', req.isAuthenticated())
     } else {

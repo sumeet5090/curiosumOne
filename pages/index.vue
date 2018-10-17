@@ -1,27 +1,12 @@
 <template>
-  <div class="position-relative">
-    <section class="section custom-gradient">
-      <div class="container my-1">
-        <div class="row justify-content-center">
-          <div class="col-lg-6 col-md-10 my-3">
-            <card type="" shadow header-classes="bg-white pb-1 mt-2" body-classes="p-lg-4 mb-2" class="border-0 py-3">
-              <template slot="header">
-                <h5 class="text-center text-warning text-uppercase"><strong>Login</strong></h5>
-              </template>
-              <template>
-                <div class="text-center">
-                  <base-button class="text-center" type="warning" outline tag="a" href="/auth/google">
-                    <!-- <i class="fa fa-google mr-1" slot="icon"></i> -->
-                    <span slot="icon"><img src="@/assets/images/icons/common/google.svg" alt=""></span>
-                    <span class="" slot>Google</span>
-                  </base-button>
-                </div>
-              </template>
-            </card>
-          </div>
-          Hello, {{currentUser}}
-        </div>
-      </div>
+  <div class="position-relative custom-gradient">
+    <section class="section ">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
     </section>
     <section class="section has-cards">
       <div class="container my-2">
@@ -197,7 +182,9 @@ export default {
   },
   beforeMount() {},
   mounted() {
-    this.fetchEvents();
+    this.$nextTick(function(){
+      this.fetchEvents();
+    })
   }
 };
 </script>

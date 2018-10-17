@@ -22,16 +22,16 @@ async function start() {
 
   // Build only in dev mode
   if (config.dev) {
-    const builder = new Builder(nuxt)
+    const builder = await new Builder(nuxt)
     await builder.build()
   }
   // Body parser
   app.use(express.urlencoded({ extended: true }))
   app.use(express.json())
   // Database
-  database()
+  let dbConn = database()
   // Session
-  await session(app)
+  session(app, dbConn)
   // Passport
   passportInitialize(app)
   // Auth middlewares

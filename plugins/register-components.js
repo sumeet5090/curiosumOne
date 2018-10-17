@@ -3,6 +3,7 @@ import Badge from "@/components/Badge";
 import BaseAlert from "@/components/BaseAlert";
 import BaseButton from "@/components/BaseButton";
 import BaseCheckbox from "@/components/BaseCheckbox";
+import BaseDropdown from "@/components/BaseDropdown";
 import BaseInput from "@/components/BaseInput";
 import BasePagination from "@/components/BasePagination";
 import BaseProgress from "@/components/BaseProgress";
@@ -15,7 +16,7 @@ import Modal from "@/components/Modal";
 import Icon from "@/components/Icon";
 let components = [
   Badge, BaseAlert, BaseButton, BaseCheckbox, BaseInput, BasePagination,
-  BaseProgress, BaseRadio, BaseSlider, BaseSwitch, Card, CloseButton, Icon, Modal
+  BaseProgress, BaseRadio, BaseSlider, BaseSwitch, Card, CloseButton, Icon, Modal, BaseDropdown
 ]
 
 components.forEach(comp => {

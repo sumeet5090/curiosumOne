@@ -102,7 +102,9 @@ export default {
     }
   },
   mounted() {
-    this.getNotifications();
+    this.$nextTick(function(){
+      // this.getNotifications(); 
+    })
   }
 };
 </script>

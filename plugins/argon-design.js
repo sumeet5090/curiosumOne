@@ -11,3 +11,4 @@ import '@/assets/scss/main.scss';
 Vue.directive("click-outside", clickOutside)
 Vue.use(VueLazyload)
 Vue.use(BootstrapVue)
+  

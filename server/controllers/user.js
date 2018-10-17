@@ -1,19 +1,17 @@
-const Announcement = require('./../models/announcement.model')
+const User = require('./../models/user.model')
 
 const Response = require('./../services/response')
 
 const getAll = async function (req, res) {
   try {
-    let announcements = await Announcement.find(), correctedAnnouncements;
-    if (!(announcements.length > 0)) {
-      announcements.forEach(announcement => {
-        correctedAnnouncements.push(announcement
-          // .toWeb()
-        )
+    let user = await Announcement.find(), correcteduser;
+    if (!(user.length > 0)) {
+      user.forEach(announcement => {
+        correcteduser.push(announcement.toWeb())
       });
-      return Response.success(res, { announcements: correctedAnnouncements }, 302)
+      return Response.success(res, { user: correcteduser }, 302)
     }
-    return Response.success(res, { message: "No announcements found." }, 204)
+    return Response.success(res, { message: "No user found." }, 204)
   } catch (error) {
     return Response.failed(res, { message: "Internal Server Error" }, 500)
   }
@@ -36,13 +34,13 @@ const create = async function (req, res) {
   let body = req.body
   try {
     let announcement = await new Announcement({
-      dateTime: body.date_time,
-      author: body.author,
-      title: body.title,
-      body: body.description,
-      tags: body.tags
+        dateTime: '',
+        author: '',
+        title: '',
+        body: '',
+        tags: ''
     }).save()
-    if (!announcement) {
+    if(!announcement){
       return Response.success(res, { message: "Couldn't create announcement" }, 204)
     }
     return Response.success(res, { message: "Created new announcement" }, 203)

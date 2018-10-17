@@ -45,8 +45,15 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/register-components.js', '@/plugins/argon-design.js'],
+  plugins: ['@/plugins/register-components', '@/plugins/argon-design'],
   router: {
+    extendRoutes(routes, resolve){
+      // routes.push({
+      //   name: 'profile',
+      //   path: '/profile',
+      //   component: resolve(__dirname, 'pages/profile')
+      // })
+    },
     middleware: ['ssr-cookie']
   },
   /*
@@ -71,6 +78,7 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
+    vendor: ['bootstrap-vue', 'vue-flatpickr-component', 'vue2-transition', 'vue-lazyload',],
     extend(config, ctx) {
       // TODO: Add webpack rules for ttf otf svg scss file parsing
     }

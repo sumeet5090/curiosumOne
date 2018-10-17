@@ -12,3 +12,4 @@ export default {
     Vue.use(VueLazyload);
   }
 };
+  
