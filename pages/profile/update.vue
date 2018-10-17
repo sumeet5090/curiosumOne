@@ -14,7 +14,7 @@
                             </b-form-input>
                         </b-form-group>
                         <b-form-group id="form-bio" label="Bio:" label-for="form-bio--input" description="Talk about yourself.">
-                            <b-form-textarea id="form-bio--input" type="text" v-model="form.bio" required placeholder="Bio">
+                            <b-form-textarea id="form-bio--input" type="text" v-model="form.bio" required placeholder="Bio" :rows="4" :max-rows="6">
                             </b-form-textarea>
                         </b-form-group>
                         <b-button type="submit" variant="primary">Update</b-button>
@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      alert(JSON.stringify(this.form));
+      
     },
     onReset() {
         this.loadFormData()

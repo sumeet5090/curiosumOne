@@ -2,6 +2,7 @@ const { Router } = require('express')
 const passport = require('passport')
 const router = Router()
 const teamRoute = require('./api/team')
+const userRoute = require('./api/user')
 
 router.get('/auth/google', passport.authenticate('google'))
 

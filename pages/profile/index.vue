@@ -26,14 +26,14 @@
                         <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
                             <div class="card-profile-actions py-4 mt-lg-0">
                                 <base-button type="info" size="sm" class="mr-4">Connect</base-button>
-                                <base-button type="default" size="sm" class="float-right">Message</base-button>
+                                <router-link tag="a" type="default" class="btn btn-default btn-sm float-right" to="/profile/update">Update</router-link>
                             </div>
                         </div>
                         <div class="col-lg-4 order-lg-1">
                             <div class="card-profile-stats d-flex justify-content-center">
                                 <div>
-                                    <span class="heading">22</span>
-                                    <span class="description">Friends</span>
+                                    <span class="heading" v-if="!!getTeam">{{getTeam}}</span>
+                                    <span class="description" v-if="!!getTeam">Team</span>
                                 </div>
                                 <div>
                                     <span class="heading">10</span>
@@ -77,7 +77,10 @@ export default {
     },
     methods: {},
     computed: {
-        ...mapGetters(["currentUser", "isAuthenticated"])
+        ...mapGetters(["currentUser", "isAuthenticated"]),
+        getTeam(){
+            
+        }
     }
 };
 </script>

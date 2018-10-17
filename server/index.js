@@ -5,6 +5,10 @@ const { Nuxt, Builder } = require('nuxt')
 const passportInitialize = require('./auth/passport')
 const indexRouter = require('./routes')
 const teamRouter = require('./routes/api/team')
+const apiRouter = require('./routes/api')
+// const apiRouter = require('./routes/api')
+// const apiRouter = require('./routes/api')
+// const apiRouter = require('./routes/api')
 const database = require('./database')
 const session = require('./session')
 const app = express()
@@ -36,6 +40,7 @@ async function start() {
   passportInitialize(app)
   // Auth middlewares
   app.use('/', indexRouter)
+  app.use('/api', apiRouter)
   app.use('/team', teamRouter)
   // Give nuxt middleware to express
   app.use(nuxt.render)

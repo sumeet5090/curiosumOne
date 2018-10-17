@@ -11,6 +11,7 @@ const state = {
     login: false,
     register: false
   },
+  team: null,
   announcements: [],
   isAuthenticated: false,
   user: {}
@@ -40,6 +41,9 @@ const mutations = {
   },
   auth: function (state, auth) {
     state.isAuthenticated = auth
+  },
+  SET_TEAM: function(state, team){
+    state.team = team
   }
 }
 const actions = {
@@ -59,6 +63,10 @@ const actions = {
     await this.$axios.post('/api/logout')
     commit('SET_USER', null)
     commit('auth', false)
+  },
+  async getTeam({commit}, id){
+    let response = await this.$axios.get('/api/profile/'+id+'/team')
+    console.log(response.data)
   }
 }
 const getters = {
