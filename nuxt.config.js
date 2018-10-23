@@ -1,6 +1,6 @@
 require('dotenv').config()
 const pkg = require('./package')
-
+const path = require('path')
 module.exports = {
   mode: 'universal',
 
@@ -68,7 +68,8 @@ module.exports = {
    */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    baseURL: 'http://localhost:3000/'
+    baseURL: 'http://localhost:3000',
+    browserBaseURL: '/'
   },
 
   /*
@@ -80,6 +81,8 @@ module.exports = {
      */
     vendor: ['bootstrap-vue', 'vue-flatpickr-component', 'vue2-transition', 'vue-lazyload',],
     extend(config, ctx) {
+      config.resolve.alias['vue'] = path.resolve(__dirname, './node_modules/vue/dist/vue.js')
+      config.module.noParse = [/vue\.js/]
       // TODO: Add webpack rules for ttf otf svg scss file parsing
     }
   }

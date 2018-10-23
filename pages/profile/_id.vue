@@ -1,5 +1,5 @@
 <template>
-<div class="profile-page" v-if="!!isAuthenticated">
+<div class="profile-page" v-show="isLoaded">
     <section class="section-profile-cover section-shaped my-0">
         <div class="shape shape-style-1 shape-primary shape-skew alpha-4">
             <span></span>
@@ -32,8 +32,8 @@
                         <div class="col-lg-4 order-lg-1">
                             <div class="card-profile-stats d-flex justify-content-center">
                                 <div>
-                                    <span class="heading" v-if="!!getTeam">{{getTeam}}</span>
-                                    <span class="description" v-if="!!getTeam">Team</span>
+                                    <!-- <span class="heading" v-if="!!getTeam">{{getTeam}}</span>
+                                    <span class="description" v-if="!!getTeam">Team</span> -->
                                 </div>
                                 <div>
                                     <span class="heading">10</span>
@@ -67,21 +67,33 @@
 </template>
 
 <script>
-import {
-    mapActions,
-    mapGetters
-} from "vuex";
+import { mapActions, mapGetters } from "vuex";
+// let api = require("@/middleware/Api");
 export default {
-    data() {
-        return {};
-    },
-    methods: {},
-    computed: {
-        ...mapGetters(["currentUser", "isAuthenticated"]),
-        getTeam() {
-
+  computed: {
+    ...mapGetters([
+      // "currentUser",
+      "isAuthenticated"
+    ])
+  },
+  async asyncData({ $axios, params, error }) {
+    try {
+      const { data } = await $axios.get(`/api/user/profile/${params.id}`, {
+        validateStatus: status => {
+          return status < 400;
         }
+      });
+      return {
+        isLoaded: data.success,
+        currentUser: data.user
+      };
+    } catch (err) {
+      error({
+        message: "User not found",
+        statusCode: 404
+      });
     }
+  }
 };
 </script>
 

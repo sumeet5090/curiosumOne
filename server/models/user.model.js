@@ -11,18 +11,23 @@ let UserSchema = Schema({
   }],
   username: {
     type: String,
+    unique: true,
+    index: true,
+    sparse: true,
+    lowercase: true
   },
   phone_number: {
     type: String,
     lowercase: true,
     trim: true,
-    index: true
   },
   first_name: {
     type: String,
+    trim: true
   },
   last_name: {
     type: String,
+    trim: true
   },
   role: {
     type: String,
@@ -49,9 +54,6 @@ let UserSchema = Schema({
   verified: Boolean,
   display_name: {
     type: String,
-    default: function() {
-      return this.first_name + ' ' + this.last_name
-    } 
   },
   email: {
     type: String,
@@ -71,9 +73,6 @@ let UserSchema = Schema({
     type: Schema.Types.ObjectId,
     ref: 'Team'
   },
-  password: {
-    type: String
-  },
   socialLinks: {
     google: String,
     facebook: String
@@ -87,24 +86,48 @@ let UserSchema = Schema({
 }, {
     timestamps: true
   })
+
+function strip(str) {
+  return str.replace(/^\s+|\s+$/g, '');
+}
+async function isUnique(username){ 
+  try {
+    let notUnique = await mongoose.models['User'].findOne({username: username})
+    if(notUnique){
+      return false
+    } else {
+      return true
+    }
+  } catch(error){
+    console.log(error)
+    setTimeout(isUnique(username), 500)
+  }
+}
+function generateRandomUsername(firstname, lastname){
+  return firstname + '-' + lastname + '-' + (Math.round(Math.random() * 9999)).toString()
+}
 UserSchema.pre('save', function (next) {
   var user = this;
-  if (user.isModified('password')) {
-    bcrypt.genSalt(CONFIG.bcrypt.salt, function (err, salt) {
-      if (err) {
-        return next(err)
-      }
-      bcrypt.hash(user.password, salt, function (err, hash) {
-        if (err) {
-          return next(err)
-        }
-        user.password = hash
-        return next()
-      })
-    })
-  }
   if (user.isModified('first_name') || user.isModified('last_name')) {
-    user.display_name = this.first_name + ' ' + this.last_name
+    user.first_name = strip(user.first_name)
+    user.last_name = strip(user.last_name)
+    if (!user.last_name){
+      user.display_name = user.first_name
+    } else {
+      user.display_name = user.first_name + ' ' + user.last_name
+    }
+    try {
+      let username
+      while (true) {
+        username = generateRandomUsername(user.first_name, user.last_name)
+        if(isUnique(username)){
+          user.username = username
+          break
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
   return next()
 })

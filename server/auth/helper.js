@@ -99,7 +99,6 @@ module.exports.linkSocialToAccount = async function linkSocialToAccount(opts) {
           first_name: userData.first_name,
           last_name: userData.last_name,
           email: email,
-          username: email,
           verified: true,
           passwordLess: true,
           socialLinks: {

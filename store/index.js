@@ -68,6 +68,7 @@ const actions = {
     let response = await this.$axios.get('/api/profile/'+id+'/team')
     console.log(response.data)
   }
+  
 }
 const getters = {
   currentUser: function (state) {

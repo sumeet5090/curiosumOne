@@ -4,88 +4,118 @@ const Response = require('./../services/response')
 
 const getAll = async function (req, res) {
   try {
-    let user = await Announcement.find(), correcteduser;
-    if (!(user.length > 0)) {
-      user.forEach(announcement => {
-        correcteduser.push(announcement.toWeb())
+    let users = await User.find(), correctedUsers = [];
+    if ((users.length > 0)) {
+      users.forEach(user => {
+        correctedUsers.push(user.toWeb())
       });
-      return Response.success(res, { user: correcteduser }, 302)
+      return Response.success(res, { users: correctedUsers })
     }
-    return Response.success(res, { message: "No user found." }, 204)
+    return Response.success(res, { message: "No users found." })
   } catch (error) {
-    return Response.failed(res, { message: "Internal Server Error" }, 500)
+    console.log(error)
+    return Response.failed(res, { message: "Internal Server Error" })
   }
 }
 
 const getOne = async function (req, res) {
   try {
     let id = req.params.id
-    let announcement = await Announcement.findOne({ _id: id })
-    if (!announcement) {
-      return Response.success(res, { message: "No such announcement found." }, 204)
+    let user = await User.findOne({ _id: id })
+    if (!user) {
+      return Response.success(res, { message: "No such user found." })
     }
-    return Response.success(res, { announcement }, 302)
+    return Response.success(res, { user: user.toWeb() })
   } catch (error) {
-    return Response.failed(res, { message: "Internal Server Error" }, 500)
+    return Response.failed(res, { message: "Internal Server Error" })
   }
 }
 
-const create = async function (req, res) {
-  let body = req.body
+const getByUsername = async function (req, res) {
   try {
-    let announcement = await new Announcement({
-        dateTime: '',
-        author: '',
-        title: '',
-        body: '',
-        tags: ''
-    }).save()
-    if(!announcement){
-      return Response.success(res, { message: "Couldn't create announcement" }, 204)
+    let username = req.params.username
+    let user = await User.findOne({ username: username })
+    if (!user) {
+      return Response.success(res, { message: "No such user found." })
     }
-    return Response.success(res, { message: "Created new announcement" }, 203)
+    return Response.success(res, { user: user.toWeb() })
   } catch (error) {
-    console.log(error)
-    return Response.failed(res, { message: "Internal Server Error" }, 500)
+    return Response.failed(res, { message: "Internal Server Error" })
   }
 }
 
-const updateAnnouncement = async function (req, res) {
+const getTeam = async function (req, res) {
+  try {
+    let id = req.params.id
+    let user = await User.findOne({ _id: id })
+    if (!user) {
+      return Response.failed(res, { message: "No such user found." })
+    }
+    if(!user.team){
+      return Response.failed(res, { message: "User has no team." });
+    }
+    return Response.success(res, { team: user.team })
+  } catch (error) {
+    return Response.failed(res, { message: "Internal Server Error" })
+  }
+}
+
+const getTeamByUsername = async function (req, res) {
+  try {
+    let username = req.params.username
+    let user = await User.findOne({ username: username })
+    if (!user) {
+      return Response.failed(res, { message: "No such user found." })
+    }
+    if (!user.team) {
+      return Response.failed(res, { message: "User has no team." })
+    }
+    return Response.success(res, { team: user.team })
+  } catch (error) {
+    return Response.failed(res, { message: "Internal Server Error" })
+  }
+}
+
+
+const update = async function (req, res) {
   // Put request
-  let id = req.params.id
+  let id = req.user._id
   try {
-    let announcement = await Announcement.findOneAndUpdate({ _id: id }, req.body, { new: true })
-    if (!announcement) {
-      return Response.success(res, { message: "Couldn't update announcement." }, 204)
+    let user = await User.findOneAndUpdate({ _id: id }, req.body, { new: true })
+    if (!user) {
+      return Response.failed(res, { message: "Couldn't update user." })
     }
-    return Response.success(res, { message: "Updated announcement.", announcement }, 204)
+    return Response.success(res, { message: "Updated profile.", user })
   } catch (error) {
-    return Response.failed(res, { message: "Internal Server Error" }, 204)
+    return Response.failed(res, { message: "Internal Server Error" })
   }
 }
 
-const deleteAnnouncement = async function (req, res) {
-  let id = req.params.id
+const remove = async function (req, res) {
+  let id = req.user._id
   try {
-    let deletedAnnouncement = await Announcement.findOneAndRemove({ _id: id })
-    if (!deletedAnnouncement) {
+    let deletedUser = await User.findOneAndRemove({ _id: id })
+    if (!deletedUser) {
       return res.send({
-        message: "Couldn't Delete Announcement."
+        message: "Couldn't Delete User."
       })
     }
     return res.send({
-      message: "Deleted Announcement",
-      deletedAnnouncement
+      message: "Deleted User",
+      deletedUser
     })
   } catch (error) {
-    return Response.failed(res, { message: "Internal Server Error" }, 204)
+    return Response.failed(res, { message: "Internal Server Error" })
   }
 }
 
 module.exports = {
   getAll,
   getOne,
+  getByUsername,
   create,
-  updateAnnouncement,
-  deleteAnnouncement
+  update,
+  remove,
+  getTeam,
+  getTeamByUsername
 }

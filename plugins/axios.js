@@ -1,4 +1,4 @@
-import axios from 'axios'
+// import * as axios from 'axios'
 
 // // let options = {}
 // // // The server-side needs a full url to works
@@ -6,4 +6,4 @@ import axios from 'axios'
 // //   options.baseURL = `http://${process.env.HOST || 'localhost'}:${process.env.PORT || 3000}`
 // // }
 
-export default axios
+// export default axios
