@@ -29,11 +29,10 @@ let UserSchema = Schema({
     type: String,
     trim: true
   },
-  role: {
+  role: [{
     type: String,
     enum: ['admin', 'staff', 'volunteer', 'participant', 'alumni'],
-    default: 'participant'
-  },
+  }],
   // title: {
   //   default: function () {
   //     if (role == 'volunteer') {

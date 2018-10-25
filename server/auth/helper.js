@@ -1,4 +1,9 @@
 const User = require('./../models/user.model')
+
+Array.prototype.contains = function(element){
+  return this.indexOf(element) > -1;
+}
+
 module.exports.isAuthenticated = function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next()
@@ -12,16 +17,22 @@ module.exports.hasRole = function hasRole(role) {
     throw new Error("Required role needs to be set")
   return function (req, res, next) {
     return module.exports.isAuthenticated(req, res, () => {
-      if (req.user && req.user.role && req.user.role == role)
-        next()
-      else
-        res.sendStatus(403)
+      if (req.user && req.user.role){
+        if(req.user.role.contains(role)){
+          return next()
+        }
+      }
+      return res.sendStatus(403)
     })
   }
 }
 
 module.exports.hasAdminRole = function hasAdminRole() {
   return module.exports.hasRole("admin")
+}
+
+module.exports.isParticipant = function isParticipant() {
+  return module.exports.hasRole("participant")
 }
 
 module.exports.isVolunteer = function isVolunteer() {
@@ -105,8 +116,8 @@ module.exports.linkSocialToAccount = async function linkSocialToAccount(opts) {
             google: profile.id
           },
           profile: userData,
+          role: ["participant"]
         });
-
         let saved = await user.save()
         return done(null, user)
       } catch (in_error) {

@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const router = Router()
 const userRouter = require('./user')
+const eventRouter = require('./event')
 
 router.get('/', (req, res) => {
     return res.send({
@@ -10,5 +11,5 @@ router.get('/', (req, res) => {
 })
 
 router.use('/user', userRouter);
-
+router.use('/event', eventRouter);
 module.exports = router;

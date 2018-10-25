@@ -1,5 +1,5 @@
 const User = require('./../models/user.model')
-
+const helper = require('./../auth/helper')
 const Response = require('./../services/response')
 
 const getAll = async function (req, res) {
@@ -51,7 +51,7 @@ const getTeam = async function (req, res) {
     if (!user) {
       return Response.failed(res, { message: "No such user found." })
     }
-    if(!user.team){
+    if (!user.team) {
       return Response.failed(res, { message: "User has no team." });
     }
     return Response.success(res, { team: user.team })
@@ -76,9 +76,16 @@ const getTeamByUsername = async function (req, res) {
   }
 }
 
+const isParticipant = async function (req, res) {
+  try {
+    console.log("jeff")
+  } catch (error) {
+    console.log("error " + error)
+  }
+}
 
 const update = async function (req, res) {
-  // Put request
+  //  Put request
   let id = req.user._id
   try {
     let user = await User.findOneAndUpdate({ _id: id }, req.body, { new: true })
@@ -113,9 +120,9 @@ module.exports = {
   getAll,
   getOne,
   getByUsername,
-  create,
   update,
   remove,
   getTeam,
-  getTeamByUsername
+  getTeamByUsername,
+  isParticipant
 }
