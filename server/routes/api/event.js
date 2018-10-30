@@ -33,7 +33,7 @@ router.get('/:id', async (req, res) => {
         })
     } catch (error) {
         console.log(error)
-        return res.sendStatus(404)
+        return res.sendStatus(500)
     }
 })
 
@@ -57,6 +57,40 @@ router.post('/create', async (req, res) => {
             })
         }
         return res.send({message: "failed to create an event"})
+    } catch (error) {
+        console.log(error)
+        return res.sendStatus(500)
+    }
+})
+
+router.put('/:id', async (req, res) => {
+    try {
+        let id = req.params.id,
+        event = await Event.findOneAndUpdate({_id: id}, {new: true})
+        if (!event){
+            return res.send({message: "No event found."})
+        }
+        return res.send({
+            event: event
+        })
+    } catch (error) {
+        console.log(error)
+        return res.sendStatus(500)
+    }
+})
+
+router.delete('/:id', async (req, res) => {
+    try {
+        let id = req.params.id,
+        event = await Event.findOneAndDelete({_id: id})
+        if (!event){
+            return res.send({
+                message: "Couldn't delete event."
+            })
+        }
+        return res.send({
+            deleted_event: event
+        })
     } catch (error) {
         console.log(error)
         return res.sendStatus(500)

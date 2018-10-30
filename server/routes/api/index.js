@@ -2,6 +2,7 @@ const { Router } = require('express')
 const router = Router()
 const userRouter = require('./user')
 const eventRouter = require('./event')
+const teamRouter = require('./team')
 
 router.get('/', (req, res) => {
     return res.send({
@@ -12,4 +13,5 @@ router.get('/', (req, res) => {
 
 router.use('/user', userRouter);
 router.use('/event', eventRouter);
+router.use('/team', teamRouter)
 module.exports = router;

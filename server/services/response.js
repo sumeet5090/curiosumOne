@@ -3,8 +3,6 @@ module.exports = {
         let send_data = {
             success: true
         }
-        // if(typeof code != 'undefined')
-        //     res.statusCode = code;
         if(typeof data == 'object')
             send_data = Object.assign(send_data, data) // Merge objects
         return res.send(send_data)

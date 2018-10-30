@@ -67,17 +67,20 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex';
+import {
+    mapGetters,
+    mapActions
+} from 'vuex';
 export default {
     data() {
-      return {
-        team: {
+        return {
+            team: {
 
+            }
         }
-      }
     },
     computed: {
-      ...mapGetters["currentUser"]
+        ...mapGetters["currentUser"]
     }
 };
 </script>
