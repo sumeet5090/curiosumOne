@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const router = Router();
 const Event = require('./../../models/event.model')
+const Team = require('./../../models/team.model')
 const EventController = require('./../../controllers/event')
 const mongoose = require('mongoose')
 router.get('/', async (req, res) => {
@@ -17,6 +18,27 @@ router.get('/', async (req, res) => {
     } catch (error) {
         console.log(error)
         return res.sendStatus(404)
+    }
+})
+router.get('/:id/teams', async (req, res) => {
+    try {
+        let event = await Event.findOne({ _id: req.params.id }).populate('teams').populate('teams.users').exec()
+        if (event) {
+            if(event.teams.length > 0){
+                return res.send({
+                    teams: event.teams
+                })
+            }
+            return res.send({
+              message: "Event has no teams."  
+            })
+        }
+        return res.send({
+            message: "No event found."
+        })
+    } catch (error) {
+        console.log(error)
+        return res.sendStatus(500)
     }
 })
 
@@ -37,13 +59,48 @@ router.get('/:id', async (req, res) => {
     }
 })
 
+router.post('/:id/add_team', async(req, res) => {
+    let event_id = req.params.id
+    try{
+        let team_id = req.body.team_id
+        let team = await Team.findOne({_id: team_id})
+        if(team){
+            let event = await Event.findOne({_id: event_id})
+            if (event){
+                if(event.teams.indexOf(team_id) > -1){
+                    return res.send({
+                        message: "Team already registered for event."
+                    })
+                } else {
+                    let output = await event.updateOne({$push: {teams: team_id}}, {new: true}).exec()
+                    console.log(output)
+                    if(output.nModified >= 1 && output.ok == 1){
+                        return res.send({
+                            message: "Team registered."
+                        })
+                    }
+                }
+            }
+            return res.send({message: "Couldn't update event."})
+        }
+        return res.send({
+            message: "No such team in records."
+        })
+     } catch (err) {
+        console.log(err)
+        return res.sendStatus(500)
+    }
+})
+
 router.post('/create', async (req, res) => {
     try {
         let body = req.body, newEvent, organizers, edited = []
-        organizers = body.event_organizer.split(",")
-        organizers.forEach(organizer => {
-            edited.push(mongoose.Types.ObjectId(organizer))
-        })
+        if(body.event_organizers){
+            organizers = body.event_organizers.split(",")
+            organizers.forEach(organizer => {
+                edited.push(mongoose.Types.ObjectId(organizer))
+            })
+        }
         newEvent = new Event({
             name: body.event_name,
             venue: body.event_venue,

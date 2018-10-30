@@ -60,7 +60,11 @@ let TeamSchema = Schema(
     captain: {
       type: Schema.Types.ObjectId,
       ref: 'User'
-    }
+    },
+    events: [{
+      type: Number,
+      ref: 'Event'
+    }]
   },
   {
     timestamps: true

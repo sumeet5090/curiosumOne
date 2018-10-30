@@ -50,7 +50,11 @@ const EventSchema = Schema({
     }],
     link: {
         type: String
-    }
+    },
+    teams: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Team'
+    }]
 }, { timestamps: true })
 
 EventSchema.pre('save', async function (next) {

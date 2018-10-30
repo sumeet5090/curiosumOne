@@ -131,6 +131,10 @@
   }
 }
 
+.cursor-pointer:hover {
+  cursor: pointer;
+}
+
 @media (min-width: 992px){
   .navbar {
     .dropdown {
