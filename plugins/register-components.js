@@ -16,7 +16,8 @@ import Modal from "@/components/Modal";
 import Icon from "@/components/Icon";
 let components = [
   Badge, BaseAlert, BaseButton, BaseCheckbox, BaseInput, BasePagination,
-  BaseProgress, BaseRadio, BaseSlider, BaseSwitch, Card, CloseButton, Icon, Modal, BaseDropdown
+  BaseProgress, BaseRadio, BaseSlider, BaseSwitch, Card, CloseButton, Icon, 
+  Modal, BaseDropdown
 ]
 
 components.forEach(comp => {
