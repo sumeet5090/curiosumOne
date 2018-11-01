@@ -1,13 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-
-const CounterSchema = Schema({
-    _id: { type: String, required: true },
-    seq: { type: Number, default: 0 }
-})
-
-let counter = mongoose.model("Counter", CounterSchema)
-
+const counter = require('./counter.model')
 async function createCounter() {
     try {
         let existingCounter = await counter.findOne({ _id: "entityId" })
@@ -60,7 +53,7 @@ const EventSchema = Schema({
 EventSchema.pre('save', async function (next) {
     let doc = this;
     try {
-        let incCounter = await counter.findOneAndUpdate({ _id: 'entityId' }, { $inc: { seq: 1 } }, { new: true });
+        let incCounter = await counter.findOneAndUpdate({ _id: 'event_Counter' }, { $inc: { seq: 1 } }, { new: true });
         if (incCounter) {
             doc._id = incCounter.seq
             return next()

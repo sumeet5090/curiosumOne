@@ -2,6 +2,10 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const AncmtSchema = Schema({
+    event: {
+        type: Number,
+        ref: 'Event'
+    },
     dateTime: {
         type: Date,
     },
@@ -12,8 +16,8 @@ const AncmtSchema = Schema({
     title: {
         type: String
     },
-    body: {
-
+    description: {
+        type: String
     },
     tags: [{
         type: String

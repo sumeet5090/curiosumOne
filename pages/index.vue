@@ -46,9 +46,9 @@
                                     <badge type="warning" rounded>system</badge>
                                     <badge type="warning" rounded>creative</badge>
                                 </div>
-                                <base-button tag="a" href="" type="warning" class="mt-4">
-                                    Click Here
-                                </base-button>
+                                <router-link tag="a" class="btn btn-warning mt-4" :to="{name: 'event-id-announcements', params: {id: event._id}}">
+                                  Click Here
+                                </router-link>
                             </card>
                         </div>
                         <div class="col-lg-4 mt-1">

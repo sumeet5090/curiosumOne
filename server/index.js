@@ -41,7 +41,6 @@ async function start() {
   // Auth middlewares
   app.use('/', indexRouter)
   app.use('/api', apiRouter)
-  app.use('/team', teamRouter)
   // Give nuxt middleware to express
   app.use(nuxt.render)
   // Listen the server

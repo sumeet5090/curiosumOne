@@ -10,12 +10,15 @@
             <base-pagination :page-count="pageCount" v-model="table.currentPage"></base-pagination>
         </b-row>
         <b-row>
-            <b-table stacked="sm" outlined responsive bordered hover :items="teams" :fields="fields" :per-page="table.perPage" :current-page="table.currentPage">
+            <b-table outlined responsive bordered hover :items="teams" :fields="fields" :per-page="table.perPage" :current-page="table.currentPage">
                 <template slot="category" slot-scope="data">
                     <div class>
                         <img v-lazy="combustion_icon" alt="Combustion" class="img-thumbnail icon-category" v-show="data.item.category == 'combustion'"/>
                         <img v-lazy="electric_icon" alt="Electric" class="img-thumbnail icon-category" v-show="data.item.category == 'electric'"/>
                 </div>
+                </template>
+                <template slot="team_name" slot-scope="data">
+                    <router-link :to="{name: 'team-id', params: {id: data.item._id}}" tag="a" class="text-primary">{{data.item.team_name}}</router-link>
                 </template>
                 <template slot="institution" slot-scope="data">
                     <truncate action-class="truncated-less-sign" clamp=" ... " :length="54" less="[hide]" :text="(data.item.institution.name || '').toString()"></truncate>
@@ -60,7 +63,7 @@ export default {
             combustion_icon: require("@/assets/images/icons/category/combustion.svg"),
             electric_icon: require("@/assets/images/icons/category/electric.svg"),
             fields: [{
-                    label: " ",
+                    label: "",
                     key: "category",
                     sortable: true
                 },
@@ -91,7 +94,7 @@ export default {
                 },
                 {
                     // sortable: true,
-                    label: " ",
+                    label: " ",
                     key: "social"
                 },
                 {}
