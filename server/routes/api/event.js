@@ -128,7 +128,7 @@ router.post('/:id/add/team', async (req, res) => {
                         message: "Team already registered for event."
                     })
                 } else {
-                    let output = await event.updateOne({ $push: { teams: team_id } }, { new: true }).exec()
+                    let output = await event.updateOne({ $push: { teams: team_id } }, { new: true }).exec() 
                     console.log(output)
                     if (output.nModified >= 1 && output.ok == 1) {
                         return res.send({

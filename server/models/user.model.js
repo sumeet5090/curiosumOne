@@ -5,10 +5,6 @@ const validate = require('mongoose-validator')
 const CONFIG = require('./../../config/keys')
 let Schema = mongoose.Schema;
 let UserSchema = Schema({
-  events: [{
-    type: Number,
-    ref: 'Event'
-  }],
   username: {
     type: String,
     unique: true,
@@ -68,7 +64,7 @@ let UserSchema = Schema({
   },
   google_plus_url: String,
   bio: String,
-  team_id: {
+  team: {
     type: Schema.Types.ObjectId,
     ref: 'Team'
   },

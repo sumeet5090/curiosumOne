@@ -20,7 +20,7 @@ const getAll = async function (req, res) {
 const getOne = async function (req, res) {
   try {
     let id = req.params.id
-    let team = await Team.findOne({ _id: id })
+    let team = await Team.findOne({ _id: id }).populate('users').populate('events').exec()
     if (!team) {
       return Response.success(res, { message: "No such team found." }, 204)
     }

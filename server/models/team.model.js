@@ -64,7 +64,7 @@ let TeamSchema = Schema(
     events: [{
       type: Number,
       ref: 'Event'
-    }]
+    }],
   },
   {
     timestamps: true

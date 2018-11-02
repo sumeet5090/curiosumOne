@@ -6,6 +6,29 @@
   // background: #eea849;
   background: linear-gradient(100deg, #f46b45 -1%, #eea849 175%);
 }
+.section-profile-cover {
+  height: 440px !important;
+}
+
+.team-captain {
+  border-image: $black;
+}
+
+.team-user-profiles {
+  img {
+    height: 4rem;
+    width: auto;
+  }
+  div {
+    a {
+      font-size: 1rem;
+    }
+    small {
+      font-size: 0.7rem;
+    }
+  }
+  border: none;
+}
 
 .list-group-item {
 

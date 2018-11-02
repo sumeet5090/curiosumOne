@@ -1,63 +1,91 @@
 <template>
-<div class="profile-page">
-    <section class="section-profile-cover section-shaped my-0">
-        <div class="shape shape-style-1 shape-primary shape-skew alpha-4">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+<div class="profile-page custom-gradient">
+    <section class="section-profile-cover">
+        
     </section>
-    <section class="section section-skew">
+    <section class="section my-0">
         <div class="container">
             <card shadow class="card-profile mt--300" no-body>
-                <div class="px-4">
+                <div class="px-4 text-dark">
                     <div class="row justify-content-center">
                         <div class="col-lg-3 order-lg-2">
                             <div class="card-profile-image">
                                 <a href="">
-                                    <img v-lazy="currentUser.profile.picture" class="rounded-circle">
+                                    <img v-lazy="team.logo || 'http://via.placeholder.com/400x400'" class="rounded-circle">
                                 </a>
                             </div>
                         </div>
-                        <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
-                            <div class="card-profile-actions py-4 mt-lg-0">
-                                <base-button type="info" size="sm" class="mr-4">Connect</base-button>
-                                <router-link tag="a" type="default" class="btn btn-default btn-sm float-right" to="/profile/update">Update</router-link>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 order-lg-1">
+                        <div class="col-lg-4 order-3 order-lg-1">
                             <div class="card-profile-stats d-flex justify-content-center">
                                 <div>
-                                    <span class="heading" v-if="!!getTeam">{{getTeam}}</span>
-                                    <span class="description" v-if="!!getTeam">Team</span>
+                                    <span class="heading" v-if="!!team.events">{{team.events.length}}</span>
+                                    <span class="description" v-if="!!team.events">Event{{team.events.length == 1? '' : 's'}}</span>
                                 </div>
                                 <div>
-                                    <span class="heading">10</span>
-                                    <span class="description">Photos</span>
-                                </div>
-                                <div>
-                                    <span class="heading">89</span>
-                                    <span class="description">Comments</span>
+                                    <span class="heading" v-if="!!team.users">{{team.users.length}}</span>
+                                    <span class="description">Members</span>
                                 </div>
                             </div>
                         </div>
+                        <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
+                            <div class="card-profile-actions py-2 mt-lg-1">
+                                <span class="mr-4 text-center">
+                                    <a :href="team.website_url" target="_blank"><icon name="fa fa-link" color="dark" size="md"></icon></a>
+                                    <a :href="team.social.facebook" target="_blank"><icon name="fa fa-facebook-official" style="color: #3B5999"  size="md"></icon></a>
+                                </span>
+                                <span class="float-right text-center">
+                                    <a :href="team.social.twitter" target="_blank"><icon name="fa fa-twitter" style="color: #1DA1F2"  size="md"></icon></a>
+                                    <a :href="team.social.instagram" target="_blank"><icon name="fa fa-instagram" color="danger" size="md"></icon></a>
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="text-center mt-0 mt-md-5 pt-lg-5">
-                        <h3 class="pt-0 pt-sm--100 pt-md-4 pt-lg-4">{{currentUser.display_name}}</h3>
-                        <div class="h6 font-weight-300">{{currentUser.profile.location}}</div>
-                        <div class="h6 mt-4"><i class="mr-2"></i></div>
-                        <div>University of Computer Science</div>
+                    <div class="text-center mt-0 mt-md-5 pt-lg-2">
+                        <h3 class="pt-0 pt-sm--100 pt-md-2 pt-lg-1 display-3">{{team.team_name}}</h3>
+                        <div class="h6 font-weight-300 text-muted">{{team.location}}{{team.country && team.location ? ", ": ""}}{{team.country}}</div>
+                        <div class="h6 mt-2"><i class="mr-2 fa fa-university"></i></div>
+                        <div>
+                            <div class="display-4">{{team.institution.name}}</div>
+                            <small class="text-muted">{{team.institution.address}}</small>
+                        </div>
                     </div>
-                    <div class="mt-5 py-5 border-top text-center">
+                    <div class="mt-2 py-2 border-top text-center">
                         <div class="row justify-content-center">
                             <div class="col-lg-9">
-                                <p>{{currentUser.bio}}</p>
+                                <p>{{team.bio}}</p>
                             </div>
                         </div>
+                    </div>
+                    <div class="my-1 py-2 border-top" v-show="!!(team.users.length > 0)">
+                        <b-row class="justify-content-center">
+                            <h4 class="font-weight-bold text-dark">Team Members</h4>
+                        </b-row>
+                        <b-row class="justify-content-center">
+                            <b-col sm="4" md="3" lg="2" v-for="user in team.users" :key="user.id" v-bind:class="{'team-captain order-1': !!isCaptain(team.captain, user._id), 'order-2': !isCaptain(team.captain, user._id)}">
+                                <card no-body tag="article"  class="team-user-profiles my-1">
+                                    <div class="text-center">
+                                        <img class="rounded-circle" v-lazy="user.profile.picture">
+                                        <div class="my-2">
+                                            <router-link :to="'/profile/'+user.username" class="text-primary font-weight-300">{{user.display_name}}</router-link>
+                                            <div v-if="isCaptain(team.captain, user._id)"><small class="text-muted">(captain)</small></div>
+                                        </div>
+
+                                    </div>
+                                </card>
+                            </b-col>
+                        </b-row>
+                    </div>
+                    <div class="my-1 py-2 border-top" v-show="!!(team.events.length>0)">
+                        <b-row class="justify-content-center">
+                            <h4 class="font-weight-bold text-dark">Events</h4>
+                        </b-row>
+                        <b-row  class="justify-content-center">
+                            <b-col sm="6" v-for="event in team.events" :key="event._id">
+                                <div class="text-center text-primary">
+                                    <router-link :to="'/event/'+event._id"> {{event.name}}</router-link>
+                                </div>
+                            </b-col>
+                        </b-row>
                     </div>
                 </div>
             </card>
@@ -67,35 +95,38 @@
 </template>
 
 <script>
-import {
-    mapGetters,
-    mapActions
-} from 'vuex';
+import { mapGetters, mapActions } from "vuex";
 export default {
-    async asyncData({$axios, params, error}) {
-        try {
-            const {data} = await $axios.get(`/api/team/${params.id}`, {validateStatus: status => {
-                return status < 400
-            }})
-            return {
-                team: data.team
-            }
-        } catch (error) {
-            return error({
-                message: "Couldn't get team."
-            })
+  async asyncData({ $axios, params, error }) {
+    try {
+      const { data } = await $axios.get(`/api/team/${params.id}`, {
+        validateStatus: status => {
+          return status < 400;
         }
-    },
-    data() {
-        return {
-            
-        }
-    },
-    computed: {
-        ...mapGetters["currentUser"]
+      });
+      return {
+        team: data.team
+      };
+    } catch (error) {
+      return error({
+        message: "Couldn't get team."
+      });
     }
+  },
+  data() {
+    return {};
+  },
+  computed: {
+    ...mapGetters["currentUser"]
+  },
+  methods: {
+      isCaptain: (cap, user) => cap == user ? true : false
+  }
 };
 </script>
 
 <style lang="scss">
+.team-captain {
+
+}
 </style>

@@ -25,8 +25,8 @@
                 </template>
                 <template slot="social" slot-scope="data">
                     <a :href="data.item.website_url" target="_blank"><icon name="fa fa-link" color="dark" size="sm"></icon></a>
-                    <a :href="data.item.social.facebook" target="_blank"><icon name="fa fa-facebook-official" color="primary" size="sm"></icon></a>
-                    <a :href="data.item.social.twitter" target="_blank"><icon name="fa fa-twitter" color="info" size="sm"></icon></a>
+                    <a :href="data.item.social.facebook" target="_blank"><icon name="fa fa-facebook-official" style="color: #3B5999"  size="sm"></icon></a>
+                    <a :href="data.item.social.twitter" target="_blank"><icon name="fa fa-twitter" style="color: #1DA1F2"  size="sm"></icon></a>
                     <a :href="data.item.social.instagram" target="_blank"><icon name="fa fa-instagram" color="danger" size="sm"></icon></a>
                 </template>
             </b-table>
