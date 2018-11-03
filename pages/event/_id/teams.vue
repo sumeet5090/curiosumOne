@@ -24,10 +24,10 @@
                     <truncate action-class="truncated-less-sign" clamp=" ... " :length="54" less="[hide]" :text="(data.item.institution.name || '').toString()"></truncate>
                 </template>
                 <template slot="social" slot-scope="data">
-                    <a :href="data.item.website_url" target="_blank"><icon name="fa fa-link" color="dark" size="sm"></icon></a>
-                    <a :href="data.item.social.facebook" target="_blank"><icon name="fa fa-facebook-official" style="color: #3B5999"  size="sm"></icon></a>
-                    <a :href="data.item.social.twitter" target="_blank"><icon name="fa fa-twitter" style="color: #1DA1F2"  size="sm"></icon></a>
-                    <a :href="data.item.social.instagram" target="_blank"><icon name="fa fa-instagram" color="danger" size="sm"></icon></a>
+                    <a v-if="data.item.website_url" :href="data.item.website_url" target="_blank"><icon name="fa fa-link" color="dark" size="sm"></icon></a>
+                    <a v-if="data.item.social.facebook" :href="data.item.social.facebook" target="_blank"><icon name="fa fa-facebook-official" style="color: #3B5999"  size="sm"></icon></a>
+                    <a v-if="data.item.social.twitter" :href="data.item.social.twitter" target="_blank"><icon name="fa fa-twitter" style="color: #1DA1F2"  size="sm"></icon></a>
+                    <a v-if="data.item.social.instagram" :href="data.item.social.instagram" target="_blank"><icon name="fa fa-instagram" color="danger" size="sm"></icon></a>
                 </template>
             </b-table>
         </b-row>

@@ -56,6 +56,19 @@
                             </div>
                         </div>
                     </div>
+                    <div class="my-1 py-2 border-top" v-show="!!(team.events.length>0)">
+                        <b-row class="justify-content-center">
+                            <h4 class="font-weight-bold text-dark">Events</h4>
+                        </b-row>
+                        <b-row  class="justify-content-center">
+                            <b-col sm="6" v-for="event in team.events" :key="event._id">
+                                <div class="text-center text-primary">
+                                    <router-link :to="'/event/'+event._id"> {{event.name}}</router-link>
+                                </div>
+                            </b-col>
+                        </b-row>
+                    </div>
+                </div>
                     <div class="my-1 py-2 border-top" v-show="!!(team.users.length > 0)">
                         <b-row class="justify-content-center">
                             <h4 class="font-weight-bold text-dark">Team Members</h4>
@@ -75,19 +88,7 @@
                             </b-col>
                         </b-row>
                     </div>
-                    <div class="my-1 py-2 border-top" v-show="!!(team.events.length>0)">
-                        <b-row class="justify-content-center">
-                            <h4 class="font-weight-bold text-dark">Events</h4>
-                        </b-row>
-                        <b-row  class="justify-content-center">
-                            <b-col sm="6" v-for="event in team.events" :key="event._id">
-                                <div class="text-center text-primary">
-                                    <router-link :to="'/event/'+event._id"> {{event.name}}</router-link>
-                                </div>
-                            </b-col>
-                        </b-row>
-                    </div>
-                </div>
+                    
             </card>
         </div>
     </section>

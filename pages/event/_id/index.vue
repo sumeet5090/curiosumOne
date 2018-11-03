@@ -1,10 +1,7 @@
 <template>
-<section class="section">
-    <div class="container">
-        <card no-body style="border: none;">
-            <b-row class="justify-content-center">
-                <div class="display-3 text-default">{{event.name}}</div>
-            </b-row>
+<section class="section custom-gradient">
+    <div class="container mt-5">
+        <card no-body class="p-2 px-3" >
             <b-row class="justify-content-center">
               <b-table class="m-2" bordered stacked responsive :items="[event]" :fields="fields">
                 <template slot="date" slot-scope="data">{{formatDate(data.item.date)}}</template>
