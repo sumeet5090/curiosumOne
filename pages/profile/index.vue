@@ -1,17 +1,8 @@
 <template>
 <div class="profile-page" v-if="!!isAuthenticated">
-    <section class="section-profile-cover section-shaped my-0">
-        <div class="shape shape-style-1 shape-primary shape-skew alpha-4">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+    <section class="section-profile-cover custom-gradient"> <!-- TODO: Add Gradient -->
     </section>
-    <section class="section section-skew" v-if="!!currentUser">
+    <section class="section custom-gradient" v-if="!!currentUser">
         <div class="container">
             <card shadow class="card-profile mt--300" no-body>
                 <div class="px-4">
@@ -25,19 +16,15 @@
                         </div>
                         <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
                             <div class="card-profile-actions py-4 mt-lg-0">
-                                <base-button type="info" size="sm" class="mr-4">Connect</base-button>
-                                <router-link tag="a" type="default" class="btn btn-default btn-sm float-right" to="/profile/update">Update</router-link>
+                                <span class="mr-auto"><base-button type="primary" size="sm">Btn 1</base-button></span>
+                                <span class="ml-2 float-right"><base-button type="primary" size="sm">Btn 2</base-button></span>
                             </div>
                         </div>
                         <div class="col-lg-4 order-lg-1">
                             <div class="card-profile-stats d-flex justify-content-center">
                                 <div>
-                                    <span class="heading" v-if="!!getTeam">{{getTeam}}</span>
-                                    <span class="description" v-if="!!getTeam">Team</span>
-                                </div>
-                                <div>
-                                    <span class="heading">10</span>
-                                    <span class="description">Photos</span>
+                                    <span class="heading">{{getTeam}}</span>
+                                    <span class="description">Team</span>
                                 </div>
                                 <div>
                                     <span class="heading">89</span>
@@ -46,7 +33,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="text-center mt-0 mt-md-5 pt-lg-5">
+                    <div class="text-center mt-0 mt-md-3 pt-lg-3">
                         <h3 class="pt-0 pt-sm--100 pt-md-4 pt-lg-4">{{currentUser.display_name}}</h3>
                         <div class="h6 font-weight-300">{{currentUser.profile.location}}</div>
                         <div class="h6 mt-4"><i class="mr-2"></i></div>
@@ -75,12 +62,24 @@ export default {
     data() {
         return {};
     },
+    async asyncData({$axios, error}){
+        
+    },
     methods: {},
     computed: {
         ...mapGetters(["currentUser", "isAuthenticated"]),
-        getTeam() {
-
+        async getTeam({$axios}) {
+            try {
+            let {data} = await $axios.get(`/api/profile/${this.currentUser.username}/team`)
+            if(team){
+                return data.team
+            }
+            return {};
+        } catch (err) {
+            console.log(err)
+            return {}
         }
+        }    
     }
 };
 </script>

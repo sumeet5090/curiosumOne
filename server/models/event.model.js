@@ -1,28 +1,28 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const counter = require('./counter.model')
-async function createCounter() {
-    try {
-        let existingCounter = await counter.findOne({ _id: "entityId" })
-        if (!existingCounter) {
-            let counterDoc = new counter({
-                _id: "entityId",
-                seq: 0
-            })
-            let saved = await counterDoc.save()
-            if (saved) {
-                return console.log("Created counter")
-            }
-            return console.log("Failed to create a counter.")
-        } else {
-            return;
-        }
-    } catch (error) {
-        console.log(error)
-        return;
-    }
-}
-createCounter()
+// async function createCounter() {
+//     try {
+//         let existingCounter = await counter.findOne({ _id: "event_Counter" })
+//         if (!existingCounter) {
+//             let counterDoc = new counter({
+//                 _id: "event_Counter",
+//                 seq: 0
+//             })
+//             let saved = await counterDoc.save()
+//             if (saved) {
+//                 return console.log("Created counter")
+//             }
+//             return console.log("Failed to create a counter.")
+//         } else {
+//             return;
+//         }
+//     } catch (error) {
+//         console.log(error)
+//         return;
+//     }
+// }
+// createCounter()
 
 const EventSchema = Schema({
     _id: Number,
@@ -37,7 +37,7 @@ const EventSchema = Schema({
     venue: {
         type: String
     },
-    organizer: [{
+    organizers: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
     }],
@@ -47,6 +47,18 @@ const EventSchema = Schema({
     teams: [{
         type: Schema.Types.ObjectId,
         ref: 'Team'
+    }],
+    schedules: [{
+        type: Number,
+        ref: 'Schedule'
+    }],
+    live_timings: [{
+        type: Number,
+        ref: 'LiveTiming'
+    }],
+    tech_updates: [{
+        type: Number,
+        ref: 'TechUpdate'
     }]
 }, { timestamps: true })
 

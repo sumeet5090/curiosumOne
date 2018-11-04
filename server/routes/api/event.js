@@ -2,6 +2,9 @@ const { Router } = require('express')
 const router = Router();
 const Event = require('./../../models/event.model')
 const Announcement = require('./../../models/announcement.model')
+const Schedule = require('./../../models/schedule.model')
+const LiveTiming = require('./../../models/livetiming.model')
+const TechUpdate = require('./../../models/techUpdates.model')
 const Team = require('./../../models/team.model')
 const EventController = require('./../../controllers/event')
 const mongoose = require('mongoose')
@@ -46,7 +49,7 @@ router.get('/:id/announcements', async (req, res) => {
     try {
         let event = await Event.findOne({ _id: req.params.id })
         if (event) {
-            let announcements = await Announcement.find({event: event._id}, null, { sort: { dateTime: 'desc' } }).populate('author').exec()
+            let announcements = await Announcement.find({ event: event._id }, null, { sort: { dateTime: 'desc' } }).populate('author').exec()
             if (announcements.length > 0) {
                 return res.send({
                     announcements: announcements
@@ -98,6 +101,120 @@ router.post('/:id/create/announcement', async (req, res) => {
     }
 })
 
+router.post('/:id/create/:team_id/livetiming', async (req, res) => {
+    try {
+        let event = await Event.findOne({ _id: req.params.id })
+        if (event) {
+            let team = await Team.findOne({_id: req.params.team_id})
+            let liveTiming = await new LiveTiming({
+                
+            }).save()
+            if (liveTiming) {
+                let out = await event.updateOne({ $push: { live_timings: liveTiming.id } }).exec()
+                if (out.isModified >= 1 && out.ok == 1) {
+                    return res.send({
+                        message: "Created live timing & linked to event."
+                    })
+                }
+                return res.send({
+                    message: "Created live timing, but couldn't link it to event."
+                })
+            }
+            return res.send({
+                message: "Couldn't create live timing."
+            })
+        }
+        return res.send({
+            message: "Event not found."
+        })
+    } catch (error) {
+        console.log(error)
+        res.sendStatus(500)
+    }
+})
+
+router.post('/:id/create/techupdates', async (req, res) => {
+    try {
+        let event = await Event.findOne({ _id: req.params.id })
+        if (event) {
+            let techUpdate = await new TechUpdate({
+                day_number: req.body.day_number,
+                day: req.body.day,
+                date: req.body.date,
+                activity: req.body.activity,
+                start_time: req.body.start_time,
+                end_time: req.body.end_time,
+                location: req.body.location,
+                comments: req.body.comments,
+                volunteer_view: Boolean(req.body.volunteer_view),
+                participant_view: Boolean(req.body.participant_view),
+                visitor_view: Boolean(req.body.visitor_view || true),
+            }).save()
+            if (techUpdate) {
+                let out = await event.updateOne({ $push: { tech_updates: techUpdate } }).exec()
+                if (out.isModified >= 1 && out.ok == 1) {
+                    return res.send({
+                        message: "Created live timing & linked to event."
+                    })
+                }
+                return res.send({
+                    message: "Created live timing, but couldn't link it to event."
+                })
+            }
+            return res.send({
+                message: "Couldn't create live timing."
+            })
+        }
+        return res.send({
+            message: "Event not found."
+        })
+    } catch (error) {
+        console.log(error)
+        res.sendStatus(500)
+    }
+})
+
+router.post('/:id/create/schedule', async (req, res) => {
+    try {
+        let event = await Event.findOne({ _id: req.params.id })
+        if (event) {
+            let schedule = await new Schedule({
+                day_number: req.body.day_number,
+                day: req.body.day,
+                date: req.body.date,
+                activity: req.body.activity,
+                start_time: req.body.start_time,
+                end_time: req.body.end_time,
+                location: req.body.location,
+                comments: req.body.comments,
+                volunteer_view: Boolean(req.body.volunteer_view),
+                participant_view: Boolean(req.body.participant_view),
+                visitor_view: Boolean(req.body.visitor_view || true),
+            }).save()
+            if (schedule) {
+                let out = await event.updateOne({ $push: { schedules: schedule } }).exec()
+                if (out.isModified >= 1 && out.ok == 1) {
+                    return res.send({
+                        message: "Created schedule & linked to event."
+                    })
+                }
+                return res.send({
+                    message: "Created schedule, but couldn't link it to event."
+                })
+            }
+            return res.send({
+                message: "Couldn't create schedule"
+            })
+        }
+        return res.send({
+            message: "Event not found."
+        })
+    } catch (error) {
+        console.log(error)
+        res.sendStatus(500)
+    }
+})
+
 router.get('/:id', async (req, res) => {
     try {
         let event = await Event.findOne({ _id: req.params.id })
@@ -128,7 +245,7 @@ router.post('/:id/add/team', async (req, res) => {
                         message: "Team already registered for event."
                     })
                 } else {
-                    let output = await event.updateOne({ $push: { teams: team_id } }, { new: true }).exec() 
+                    let output = await event.updateOne({ $push: { teams: team_id } }, { new: true }).exec()
                     console.log(output)
                     if (output.nModified >= 1 && output.ok == 1) {
                         return res.send({
