@@ -31,28 +31,28 @@ const techSchema = Schema({
         ref: 'Team'
     },
     accumulator: {
-        type: String
+        type: Boolean
     },
     scrutineering_elec: {
-        type: String
+        type: Boolean
     },
     scrutineering_mech: {
-        type: String
+        type: Boolean
     },
     driver_egress: {
-        type: String
+        type: Boolean
     },
     tilt: {
-        type: String
+        type: Boolean
     },
     noise_ready_to_drive_sound: {
-        type: String
+        type: Boolean
     },
     brakes: {
-        type: String
+        type: Boolean
     },
     rain: {
-        type: String
+        type: Boolean
     },
     event: {
         type: Number,

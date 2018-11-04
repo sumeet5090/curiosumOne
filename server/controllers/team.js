@@ -34,11 +34,11 @@ const create = async function (req, res) {
   let body = req.body
   try {
     let users = []
-    (req.body.users_list.split(',')).forEach(user => {
-      users.push(user)
-    })
-    let getUser = await User.findOne({_id: req.user})
-    if(getUser.team){
+      (req.body.users_list.split(',')).forEach(user => {
+        users.push(user)
+      })
+    let getUser = await User.findOne({ _id: req.user })
+    if (getUser.team) {
       return res.sendStatus(405)
     }
     let team = await new Team({
@@ -65,7 +65,7 @@ const create = async function (req, res) {
     if (!team) {
       return res.sendStatus(304)
     }
-    let output = await getUser.updateOne({team: team._id}).exec()
+    let output = await getUser.updateOne({ team: team._id }).exec()
     if (output.nModified >= 1 && output.ok == 1) {
       return res.send({ message: "Created new team" })
     }
@@ -192,12 +192,54 @@ const linkTeamAndEvent = async (req, res) => {
   }
 }
 
+const linkTeamAndCar = async (req, res) => {
+  try {
+    let car2team = false, team2car = false
+    let team = await Team.findOne({ _id: req.params.id })
+    if (team) {
+      let car = await Car.findOne({ _id: req.params.car_id })
+      if (car) {
+        if (car.team_id == team._id) {
+          car2team = true
+        } else {
+          let output = await car.updateOne({ team: team._id }).exec()
+          if (output.nModified >= 1 && output.ok == 1) {
+            car2team = true
+          }
+        }
+        if (team.car_id == car._id) {
+          team2car = true
+        }
+        else {
+          let output = await team.updateOne({ car_id: car._id }).exec()
+          if (output.nModified >= 1 && output.ok == 1) {
+            team2car = true
+          }
+        }
+        if (team2car && car2team) {
+          return res.send({
+            message: "Successfully linked team and car."
+          })
+        }
+        return res.send({
+          message: "Couldn't link team and car."
+        })
+      }
+      return res.sendStatus(404)
+    }
+    return res.sendStatus(404)
+  } catch (err) {
+    return res.sendStatus(500)
+  }
+}
+
 module.exports = {
   getAll,
   getOne,
   create,
   linkTeamAndUser,
   linkTeamAndEvent,
+  linkTeamAndCar,
   updateTeam,
   deleteTeam
 }

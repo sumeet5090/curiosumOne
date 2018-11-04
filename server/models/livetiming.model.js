@@ -29,7 +29,7 @@ const liveTimingSchema = Schema({
     team_id: {
         type: Schema.Types.ObjectId,
         ref: 'Team'
-    }, 
+    },
     event_name: {
         type: String
     },

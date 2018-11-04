@@ -8,9 +8,9 @@ let TeamSchema = Schema({
     enum: ['combustion', 'electric'],
     required: true,
   },
-  car_number: {
-    type: String,
-
+  car_id: {
+    type: Number,
+    ref: 'Car'
   },
   team_name: {
     type: String,
