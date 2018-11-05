@@ -10,7 +10,7 @@ function connect() {
             if (err) {
                 console.error(err)
             }
-            mongoose.set("debug", keys.isDev())
+            mongoose.set("debug", false)
         })
         mongoose.connection.on('error', function (err) {
             if (err.message.code === "ETIMEDOUT") {

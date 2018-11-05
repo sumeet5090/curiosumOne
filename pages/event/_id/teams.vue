@@ -59,7 +59,6 @@ export default {
                 currentPage: 1,
                 perPage: 10
             },
-            // items: require('@/data/exampleteams'),
             combustion_icon: require("@/assets/images/icons/category/combustion.svg"),
             electric_icon: require("@/assets/images/icons/category/electric.svg"),
             fields: [{

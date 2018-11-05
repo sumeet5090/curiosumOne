@@ -1,4 +1,5 @@
 import Vuex from 'vuex';
+import axios from 'axios';
 const state = {
   images: {
     imgLanding: require('@/assets/images/theme/landing.jpg'),
@@ -14,7 +15,9 @@ const state = {
   team: null,
   announcements: [],
   isAuthenticated: false,
-  user: {}
+  user: {},
+  events: [],
+  teams: []
 }
 const mutations = {
   // userStatus(state, user) {   if (user) {     state.currentUser = user   } else
@@ -42,8 +45,14 @@ const mutations = {
   auth: function (state, auth) {
     state.isAuthenticated = auth
   },
-  SET_TEAM: function(state, team){
-    state.team = team
+  SET_TEAMS: function (state, teams) {
+    state.teams = teams
+  },
+  SET_EVENTS: function (state, events) {
+    state.events = events
+  },
+  EMPTY: function (state, val){
+    state.team = val
   }
 }
 const actions = {
@@ -64,15 +73,39 @@ const actions = {
     commit('SET_USER', null)
     commit('auth', false)
   },
-  async getTeam({commit}, id){
-    let response = await this.$axios.get('/api/profile/'+id+'/team')
+  async getTeam({ commit }, id) {
+    let response = await this.$axios.get('/api/profile/' + id + '/team')
     console.log(response.data)
+  },
+  async getEvents({ commit }) {
+    try {
+      let { data } = await this.$axios.get('/api/event')
+      commit('SET_EVENTS', data.events)
+    } catch (error) {
+      console.log(error)
+      commit('SET_EVENTS', [])
+    }
+  },
+  async getTeamsForEvent({ commit }, id) {
+    try {
+      let { data } = await this.$axios.get(`/api/event/${id}/teams`)
+      if (data.teams.length > 0) {
+        return commit('SET_TEAMS', data.teams)
+      }
+      return commit('SET_TEAMS', [])
+    } catch (err) {
+      console.log(err)
+      commit('SET_TEAMS', [])
+    }
+  },
+  async createCar({ }, params) {
+    await this.$axios.post(`/api/event/${params.event_id}/create/${String(params.team_id)}/car`, {car_number: params.car_number})
   }
-  
+
 }
 const getters = {
   currentUser: function (state) {
-    if(state.isAuthenticated){
+    if (state.isAuthenticated) {
       return state.user
     }
     return null
@@ -81,6 +114,8 @@ const getters = {
   getImages: state => state.images,
   getAnnouncements: state => state.announcements,
   isAuthenticated: state => state.isAuthenticated,
+  events: state => state.events,
+  teams: state => state.teams
 }
 
 const createStore = () => {

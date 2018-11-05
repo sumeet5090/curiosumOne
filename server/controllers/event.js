@@ -287,11 +287,16 @@ const createCar = async (req, res) => {
                     console.log(out)
                     if (out.nModified >= 1 && out.ok == 1) {
                         return res.send({
+                            success: true,
                             message: "Created car and linked to team."
+                        })
+                    } else {
+                        return res.send({
+                            success: false,
+                            message: "Couldn't create car."
                         })
                     }
                 }
-
             }
         }
         return res.sendStatus(404)
