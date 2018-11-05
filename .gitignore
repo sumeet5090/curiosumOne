@@ -9,6 +9,7 @@ yarn-error.log*
 
 # Temp pages
 f_pages/
+data/
 
 # Runtime data
 pids

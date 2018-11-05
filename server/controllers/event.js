@@ -189,10 +189,23 @@ const getAllLivetimings = async (req, res) => {
 }
 
 const getAllCars = async (req, res) => {
+    let cars, event_id = req.params.id
     try {
-        
+        cars = await Car.find({ event_id: event_id }).populate('team_id').exec()
+        if (cars) {
+            if (cars.length > 0) {
+                return res.send({
+                    cars: cars
+                })
+            }
+            return res.send({
+                cars: []
+            })
+        }
+        return res.sendStatus(404)
     } catch (error) {
-        
+        console.log(error)
+        return res.sendStatus(500)
     }
 }
 
@@ -260,10 +273,28 @@ const createAnnouncement = async (req, res) => {
 const createCar = async (req, res) => {
     try {
         let event_id = req.params.id, team_id = req.params.team_id, team, event
-        team = await Team.findOne({_id: team_id})
+        team = await Team.findOne({ _id: team_id })
         if (team) {
-            event = await Event.findOne({})
+            event = await Event.findOne({ _id: event_id })
+            if (event) {
+                let car = await new Car({
+                    car_number: req.body.car_number,
+                    event_id: event._id,
+                    team_id: team._id
+                }).save()
+                if (car) {
+                    let out = await team.updateOne({ car_id: car._id }).exec()
+                    console.log(out)
+                    if (out.nModified >= 1 && out.ok == 1) {
+                        return res.send({
+                            message: "Created car and linked to team."
+                        })
+                    }
+                }
+
+            }
         }
+        return res.sendStatus(404)
     } catch (error) {
 
     }
@@ -285,7 +316,7 @@ const createLivetiming = async (req, res) => {
                 }).save()
                 if (liveTiming) {
                     let out = await event.updateOne({ $push: { live_timings: liveTiming._id } }).exec()
-                    if (out.isModified >= 1 && out.ok == 1) {
+                    if (out.nModified >= 1 && out.ok == 1) {
                         return res.send({
                             message: "Created live timing & linked to event."
                         })
@@ -327,7 +358,7 @@ const createTechupdate = async (req, res) => {
                 }).save()
                 if (techUpdate) {
                     let out = await event.updateOne({ $push: { tech_updates: techUpdate._id } }).exec()
-                    if (out.isModified >= 1 && out.ok == 1) {
+                    if (out.nModified >= 1 && out.ok == 1) {
                         return res.send({
                             message: "Created team update & linked to event."
                         })
@@ -369,7 +400,7 @@ const createSchedule = async (req, res) => {
             }).save()
             if (schedule) {
                 let out = await event.updateOne({ $push: { schedules: schedule } }).exec()
-                if (out.isModified >= 1 && out.ok == 1) {
+                if (out.nModified >= 1 && out.ok == 1) {
                     return res.send({
                         message: "Created schedule & linked to event."
                     })
