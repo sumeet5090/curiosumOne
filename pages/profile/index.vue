@@ -68,18 +68,6 @@ export default {
     methods: {},
     computed: {
         ...mapGetters(["currentUser", "isAuthenticated"]),
-        async getTeam({$axios}) {
-            try {
-            let {data} = await $axios.get(`/api/profile/${this.currentUser.username}/team`)
-            if(team){
-                return data.team
-            }
-            return {};
-        } catch (err) {
-            console.log(err)
-            return {}
-        }
-        }    
     }
 };
 </script>

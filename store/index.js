@@ -99,9 +99,33 @@ const actions = {
     }
   },
   async createCar({ }, params) {
-    await this.$axios.post(`/api/event/${params.event_id}/create/${String(params.team_id)}/car`, {car_number: params.car_number})
+    try {
+      let {data} =  await this.$axios.post(`/api/event/${params.event_id}/create/${String(params.team_id)}/car`, {car_number: params.car_number})
+      if (data) {
+        if(params.push_url){
+          this.$router.push({path: params.push_url})
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  async postReq({}, params){
+    try {
+      let {data} = await this.$axios.post(params.url, params.body)
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  async getReq({}, params) {
+    try {
+      const { data } = await this.$axios.get(params.url)
+      return data;
+    } catch (error) {
+      console.log(error)
+      return;
+    }
   }
-
 }
 const getters = {
   currentUser: function (state) {

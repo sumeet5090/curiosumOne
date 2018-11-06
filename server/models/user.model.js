@@ -76,7 +76,12 @@ let UserSchema = Schema({
     type: Number,
     default: 1,
     // Anything other than 1 is deactivated/deleted
-  }
+  },
+  notifications:[{
+    text: String,
+    link: String,
+    confirmed: Boolean,
+  }]
   // TODO: Social Media links
 }, {
     timestamps: true

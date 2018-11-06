@@ -6,6 +6,7 @@ const passport = require('passport')
 router.get('/', UserController.getAll)
 router.get('/:id/team', UserController.getTeam)
 router.get('/:id', UserController.getOne)
+router.get('/email/:email', UserController.getOneByEmail)
 router.get('/profile/:username/team', UserController.getTeamByUsername)
 router.get('/profile/:username', UserController.getByUsername)
 // POST

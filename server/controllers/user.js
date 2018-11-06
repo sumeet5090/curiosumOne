@@ -44,6 +44,26 @@ const getByUsername = async function (req, res) {
   }
 }
 
+const getOneByEmail = async function (req, res) {
+  try {
+    let user_email = req.params.email, user
+    user = await User.findOne({email: user_email})
+    if(!user){
+      return res.send({
+        success: false,
+        user: {}
+      })
+    }
+    return res.send({
+      success: true,
+      user: user
+    })
+  } catch (error) {
+    console.log(error)
+    return res.sendStatus(500)
+  }
+}
+
 const getTeam = async function (req, res) {
   try {
     let id = req.params.id
@@ -119,6 +139,7 @@ const remove = async function (req, res) {
 module.exports = {
   getAll,
   getOne,
+  getOneByEmail,
   getByUsername,
   update,
   remove,
