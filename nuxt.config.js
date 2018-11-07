@@ -1,6 +1,7 @@
-require('dotenv').config()
+const result = require('dotenv').config()
 const pkg = require('./package')
 const path = require('path')
+console.log(result.parsed)
 module.exports = {
   mode: 'universal',
 
@@ -41,7 +42,9 @@ module.exports = {
    ** Global CSS
    */
   css: [],
-
+  env: {
+    ...result
+  },
   /*
    ** Plugins to load before mounting the App
    */
@@ -61,7 +64,8 @@ module.exports = {
    */
   modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    ['@nuxtjs/dotenv', {path: './.env'}]
   ],
   /*
    ** Axios module configuration
@@ -69,7 +73,14 @@ module.exports = {
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
     baseURL: 'http://localhost:3000',
-    browserBaseURL: '/'
+    browserBaseURL: '/',
+    defaults:{
+      headers: {
+        post:{
+          'Content-Type':'application/x-www-form-urlencoded'
+        }
+      }
+    }
   },
 
   /*

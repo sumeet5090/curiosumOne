@@ -104,6 +104,49 @@ const isParticipant = async function (req, res) {
   }
 }
 
+const getNotifications = async function (req, res) {
+  try {
+    let user_id = req.params.id, user, notifications
+    user = await User.findOne({_id: user_id})
+    if(user){
+      return res.send({
+        success: true,
+        notifications: user.notifications
+      })
+    }
+    return res.send({
+      success: false,
+      message: 'User not found'
+    })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).send({
+      success: false,
+      message: "Internal Server Error."
+    })
+  }
+}
+
+const inviteTeam = async function (req, res)  {
+  try{
+    let user, notification, body = req.body, user_email = req.params.email
+    user = await User.findOne({email: user_email})
+    if(user){
+      notification = {
+        text: req.body.notification_text,
+        team_invite: req.body.notification_link,
+      }
+      user.updateOne({$push: {notifications: notification}}).exec()
+    }
+  }catch(error){
+
+  }
+}
+
+const createBatchNotifications = async function (req, res)  {
+  
+}
+
 const update = async function (req, res) {
   //  Put request
   let id = req.user._id
@@ -141,9 +184,12 @@ module.exports = {
   getOne,
   getOneByEmail,
   getByUsername,
-  update,
-  remove,
   getTeam,
   getTeamByUsername,
-  isParticipant
+  isParticipant,
+  getNotifications,
+  inviteTeam,
+  createBatchNotifications,
+  update,
+  remove,
 }

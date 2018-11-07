@@ -4,9 +4,9 @@ let keys = {
         port: parseInt(process.env.DB_PORT) || 27017,
         name: process.env.DB_NAME || 'website_mec_test',
         options: {
-			user: process.env.DB_USER || "",
-			pass: process.env.DB_PASSWORD || "",
-			useNewUrlParser: true
+            user: process.env.DB_USER || "",
+            pass: process.env.DB_PASSWORD || "",
+            useNewUrlParser: true
 		}
     },
     google: {

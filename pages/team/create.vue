@@ -21,13 +21,20 @@
                         <base-input id="form-institutionname--input" type="text" v-model="teamForm.institution.short_name" required placeholder="Enter institution short name.">
                         </base-input>
                     </b-form-group>
-                    <b-form-group id="form-phonenumber" label="Phone number:" label-for="form-phonenumber--input" description="We'll never share your phone number with anyone else.">
-                        <base-input id="form-phonenumber--input" type="text" v-model="teamForm.location" required placeholder="Phone number">
-                        </base-input>
+                    <b-form-group id="form-phonenumber" label="Location:" label-for="form-location--input" description="Where are you from?">
+                        <base-input id="form-location--input" type="text" v-model="teamForm.location" required placeholder="State"></base-input>
+                        <base-input id="form-country--input" type="text" v-model="teamForm.country" required placeholder="Country"></base-input>
                     </b-form-group>
                     <b-form-group id="form-picture-url" label="Team logo:" label-for="form-picture-url--input" description="Link to the team profile picture.">
                         <base-input id="form-picture-url--input" type="link" v-model="teamForm.logo_url" required placeholder="https://example.website.com/images/demo.jpg">
                         </base-input>
+                    </b-form-group>
+                    <b-form-group id="form-social-links" label="Social Media" label-for="form-social-links--input" description="Links to your teams social media">
+                      <base-input addon-left-icon="fa fa-link text-dark" placeholder="https://examplewebsite.com" v-model="teamForm.website_url"></base-input>
+                      <base-input addon-left-icon="fa fa-facebook" placeholder="https://facebook.com/example" v-model="teamForm.social.facebook"></base-input>
+                      <base-input addon-left-icon="fa fa-instagram text-danger" placeholder="https://instagram.com/example" v-model="teamForm.social.instagram"></base-input>
+                      <base-input addon-left-icon="fa fa-twitter" placeholder="https://twitter.com/example" v-model="teamForm.social.twitter"></base-input>
+                      
                     </b-form-group>
                     <b-form-group id="form-bio" label="Bio:" label-for="form-bio--input" description="Talk about yourself.">
                         <b-form-textarea id="form-bio--input" type="text" v-model="teamForm.bio" required placeholder="Bio" :rows="4" :max-rows="6" :min-rows="3">
@@ -90,8 +97,9 @@ export default {
         category: null,
         user_emails: [],
         car_number: "",
-        name: "",
+        team_name: "",
         location: "",
+        country: '',
         bio: "",
         logo_url: "",
         users: [],
@@ -100,20 +108,41 @@ export default {
           name: "",
           address: "",
           short_name: ""
-        }
-      }
-    };
+        },
+        social: {
+          facebook: null,
+          twitter: null,
+          instagram: null
+        },
+        website_url: null
+      },
+      user_ids: []
+    }; 
   },
   methods: {
-    ...mapActions(["getReq", 'postReq']),
+    ...mapActions(["getReq", "postReq"]),
     onSubmit() {
-        this.postReq({})
-        // Add tea, to database
-        // Send out team invites to each email
+      this.postReq({
+        url: "/api/team/create",
+        body: {
+          category: this.teamForm.category,
+          team_name: this.teamForm.name,
+          team_bio: this.teamForm.bio,
+          institution: this.teamForm.institution,
+          website_url: this.teamForm.website_url,
+          location: this.teamForm.location,
+          country: this.teamForm.country,
+          social: this.teamForm.social,
+          user_ids: this.user_ids,
+          user_emails: this.teamForm.user_emails
+        }
+      });
+      // Add tea, to database
+      // Send out team invites to each email
     },
     onReset() {},
     async searchUser() {
-    let email = (this.user_email).trim()
+      let email = this.user_email.trim();
       let url = `/api/user/email/${email}/`,
         res,
         unique = true;
@@ -125,15 +154,22 @@ export default {
       if (unique) {
         res = await this.getReq({ url });
         if (res.success == true) {
-            this.teamForm.user_emails.push(res.user.email)
-          this.users.push(res.user);
+          if (typeof res.user.team == "undefined") {
+            this.users.push(res.user)
+            this.teamForm.user_emails.push(res.user.email);
+            this.user_ids.push(res.user._id);
+          } else {
+            // Flash error (User already in a team)
+          }
         } else {
+          // Flash error user not found bhpndrsingh306@gmail.com
         }
       }
       this.user_email = "";
     }
   },
-  mounted() {},
+  mounted() {
+  },
   watch: {}
 };
 </script>

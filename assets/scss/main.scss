@@ -10,6 +10,18 @@
   height: 440px !important;
 }
 
+.fa {
+  &.fa-facebook, .fa-facebook-official {
+    color: #3B5999
+  }
+  &.fa-twitter {
+    color: #1DA1F2
+  }
+  &.fa-instagram {
+    color: $danger
+  }
+}
+
 .team-captain {
   border-image: $black;
 }

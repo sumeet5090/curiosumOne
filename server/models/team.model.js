@@ -68,10 +68,10 @@ let TeamSchema = Schema({
     timestamps: true
   });
 
-TeamSchema.methods.toWeb = function () {
-  let { institution_name_short, _json } = this
-  return _json
-}
+// TeamSchema.methods.toWeb = function () {
+//   let { institution, _json } = this
+//   return _json
+// }
 
 // TeamSchema.pre('save', function(next) {
   

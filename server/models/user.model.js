@@ -79,8 +79,17 @@ let UserSchema = Schema({
   },
   notifications:[{
     text: String,
-    link: String,
-    confirmed: Boolean,
+    team_invite: {
+      type: Schema.Types.ObjectId,
+      ref: 'Team'
+    },
+    link: {
+      type: String,
+    },
+    confirmed: {
+      type: Boolean,
+      default: false
+    },
   }]
   // TODO: Social Media links
 }, {
@@ -106,6 +115,7 @@ async function isUnique(username){
 function generateRandomUsername(firstname, lastname){
   return firstname + '-' + lastname + '-' + (Math.round(Math.random() * 9999)).toString()
 }
+
 UserSchema.pre('save', function (next) {
   var user = this;
   if (user.isModified('first_name') || user.isModified('last_name')) {

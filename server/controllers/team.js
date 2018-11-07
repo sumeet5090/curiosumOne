@@ -1,18 +1,20 @@
+const User = require('./../models/user.model')
 const Team = require('./../models/team.model')
-
+const Token = require('./../models/token.model')
 const Response = require('./../services/response')
+const sgMail = require('@sendgrid/mail')
+const crypto = require('crypto')
+sgMail.setApiKey(process.env.SENDGRID);
 
 const getAll = async function (req, res) {
   try {
-    let teams = await Team.find(), correctedTeams;
-    if (!(teams.length > 0)) {
-      teams.forEach(team => {
-        correctedTeams.push(team.toWeb())
-      });
-      return Response.success(res, { teams: correctedTeams }, 302)
+    let teams = await Team.find();
+    if (teams.length > 0) {
+      return Response.success(res, { teams: teams }, 302)
     }
     return Response.success(res, { message: "No teams found." }, 204)
   } catch (error) {
+    console.log(error)
     return Response.failed(res, { message: "Internal Server Error" }, 500)
   }
 }
@@ -33,42 +35,52 @@ const getOne = async function (req, res) {
 const create = async function (req, res) {
   let body = req.body
   try {
-    let users = []
-      (req.body.users_list.split(',')).forEach(user => {
-        users.push(user)
-      })
+    let users = body.user_ids
+    users.push(String(req.user._id))
     let getUser = await User.findOne({ _id: req.user })
     if (getUser.team) {
       return res.sendStatus(405)
     }
-    let team = await new Team({
+    let newTeam = {
       category: body.category || 'combustion',
-      car_number: body.car_number,
       team_name: body.team_name,
       bio: body.team_bio,
-      institution: {
-        name: body.institution_name,
-        address: body.institution_address,
-        short_name: body.institution_short_name
-      },
+      institution: body.institution,
       location: body.location,
       country: body.country,
       website_url: body.website_url,
-      social: {
-        facebook: body.facebook_url,
-        twitter: body.twitter_url,
-        instagram: body.instagram_url
-      },
-      captain_id: req.user,
+      social: body.social,
+      captain_id: req.user._id,
       users: users
-    }).save()
-    if (!team) {
-      return res.sendStatus(304)
     }
-    let output = await getUser.updateOne({ team: team._id }).exec()
-    if (output.nModified >= 1 && output.ok == 1) {
-      return res.send({ message: "Created new team" })
+    let team = await new Team(newTeam).save()
+    if (team) {
+      let output = await getUser.updateOne({ team: team._id }).exec()
+      console.log('HGee '+output)
+      if (output.nModified >= 1 && output.ok == 1) {
+        for (let i=0; i<(body.user_emails).length; i++){
+          console.log(body.user_emails[i])
+          let token = new Token({
+            user_id: users[i],
+            team_id: team._id,
+            token: crypto.randomBytes(16).toString('hex')
+          }).save()
+          if(token){
+            let genLink = 'http://'+req.headers.host+'\/confirmation\/'+token.token + '\n'
+            let msg = {
+              to: body.user_emails[i],
+              from: 'no-reply@mobilityeng.in',
+              subject: `Team Invitiation for <${team.team_name}>`,
+              text: `Hey ${body.user_emails[i]},\nYou have been invited to join the team ${team.team_name}.\nClick on the link to join:\n${genLink}`,
+              html: `Hey <strong>${body.user_emails[i]},</strong><br/><p>You have been invited to join the team ${team.team_name}</p><br/><p>Click on the <a href="${genLink}">link</a> to join.</p>.`
+            }
+            await sgMail.send(msg)
+          }
+        }
+        return res.send({ message: "Created new team" })
+      }
     }
+    return res.sendStatus(304)
   } catch (error) {
     console.log(error)
     return res.sendStatus(500)

@@ -10,7 +10,6 @@ router.get('/', (req, res) => {
         version: '1.0.0'
     })
 })
-
 router.use('/user', userRouter);
 router.use('/event', eventRouter);
 router.use('/team', teamRouter)
