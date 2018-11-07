@@ -14,11 +14,10 @@ const tokenSchema = Schema({
         type: String,
         required: true
     },
-    createAt: {
+    createdAt: {
         type: Date,
         required: true,
         default: Date.now,
-        expires: 43200
     }
 })
 
@@ -26,4 +25,4 @@ const tokenSchema = Schema({
 //     next()
 // })
 
-module.exports = mongoose.model('token', tokenSchema)
+module.exports = mongoose.model('Token', tokenSchema)

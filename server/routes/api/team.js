@@ -5,6 +5,7 @@ const passport = require('passport')
 // GET
 router.get('/', TeamController.getAll)
 router.get('/:id', TeamController.getOne)
+router.get('/confirmation/:token', TeamController.confirmToken)
 // POST
 router.post('/create', TeamController.create)
 router.post('/:id/register/event/:event_id', TeamController.linkTeamAndEvent)

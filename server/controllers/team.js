@@ -5,7 +5,6 @@ const Response = require('./../services/response')
 const sgMail = require('@sendgrid/mail')
 const crypto = require('crypto')
 sgMail.setApiKey(process.env.SENDGRID);
-
 const getAll = async function (req, res) {
   try {
     let teams = await Team.find();
@@ -56,17 +55,17 @@ const create = async function (req, res) {
     let team = await new Team(newTeam).save()
     if (team) {
       let output = await getUser.updateOne({ team: team._id }).exec()
-      console.log('HGee '+output)
+      console.log(team.team_name)
       if (output.nModified >= 1 && output.ok == 1) {
         for (let i=0; i<(body.user_emails).length; i++){
           console.log(body.user_emails[i])
-          let token = new Token({
+          let token = await new Token({
             user_id: users[i],
             team_id: team._id,
             token: crypto.randomBytes(16).toString('hex')
           }).save()
           if(token){
-            let genLink = 'http://'+req.headers.host+'\/confirmation\/'+token.token + '\n'
+            let genLink = 'http://'+req.headers.host+'\/api\/team\/confirmation\/'+token.token+'\n'
             let msg = {
               to: body.user_emails[i],
               from: 'no-reply@mobilityeng.in',
@@ -87,6 +86,46 @@ const create = async function (req, res) {
   }
 }
 
+const confirmToken = async function (req, res) {
+  let _token = req.params.token, user, team, token, user_out, user_updated=false, team_out, team_updated=false
+  try{
+    token = await Token.findOne({token: _token})
+    if (token) {
+      user = await User.findOne({_id: token.user_id})
+      if(user){
+        team = await Team.findOne({_id: token.team_id})
+        if(team) {
+          if(user.team == team._id){
+            user_updated = true
+          } else {
+            user_out = await user.updateOne({team: team._id}).exec()
+            if (user_out.nModified >= 1 && user_out.ok == 1) {
+              user_updated = true
+            }
+          }
+          if(team.users.indexOf(user._id) > -1 ){
+            team_updated = true
+          } else {
+            team_out = await team.updateOne({$push: {users: user._id}}).exec()
+            if (team_out.nModified >= 1 && team_out.ok == 1) {
+              team_updated = true
+            }
+          }
+          if (user_updated && team_updated) {
+            await Token.deleteOne({_id: token._id})
+            return Response.success(res, {message: "Successfully joined team."}, 202)
+          }
+          return Response.success(res, {message: "Try again."}, 202)
+        }
+      }
+    }
+    return Response.failed(res, {message: "Invalid token"}, )
+  } catch(error){
+    console.log(error)
+    return Response.failed(res, { message: "Internal Server Error" }, 500)    
+  }
+}
+
 const updateTeam = async function (req, res) {
   // Put request
   let id = req.params.id
@@ -97,7 +136,7 @@ const updateTeam = async function (req, res) {
     }
     return Response.success(res, { message: "Updated team.", team }, 204)
   } catch (error) {
-    return Response.failed(res, { message: "Internal Server Error" }, 204)
+    return Response.failed(res, { message: "Internal Server Error" }, 500)
   }
 }
 
@@ -250,6 +289,7 @@ module.exports = {
   getOne,
   create,
   linkTeamAndUser,
+  confirmToken,
   linkTeamAndEvent,
   linkTeamAndCar,
   updateTeam,

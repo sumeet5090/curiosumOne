@@ -1,7 +1,6 @@
 const result = require('dotenv').config()
 const pkg = require('./package')
 const path = require('path')
-console.log(result.parsed)
 module.exports = {
   mode: 'universal',
 
