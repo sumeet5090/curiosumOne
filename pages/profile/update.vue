@@ -56,7 +56,7 @@ export default {
         phone_number: "",
         link_to_logo: "",
         location: "",
-        gender:"",
+        gender: "",
       },
       user: {},
       success_msg: null,
@@ -66,6 +66,7 @@ export default {
   methods: {
     ...mapActions(["getReq", "postReq", "putReq"]),
     async onSubmit() {
+      (this.success_msg = null), (this.errors = []);
       let url = `/api/user/update`;
       try {
         let res = await this.putReq({
@@ -91,15 +92,15 @@ export default {
       }
     },
     async onReset() {
-      (this.success_msg = null), (this.errors = []);
       await this.loadFormData();
     },
     async loadFormData() {
       try {
-        let res = this.getReq({
-        url: '/api/user/profile/'+this.currentUser.username
-      })
-        if(res.success){
+        let res = await this.getReq({
+          url: '/api/user/profile/' + this.currentUser.username
+        })
+        if (res.success) {
+          this.user = res.user
           this.form.bio = this.user.bio;
           this.form.phone_number = this.user.phone_number;
           this.form.display_name = this.user.display_name;
@@ -112,7 +113,7 @@ export default {
         this.form.display_name = this.currentUser.display_name;
         this.form.link_to_logo = this.currentUser.profile.picture;
       }
-      
+
     }
   },
   computed: {

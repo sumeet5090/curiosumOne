@@ -162,10 +162,8 @@ const getAllTechupdates = async (req, res) => {
 const getAllSchedules = async (req, res) => {
     try {
         let event = await Event.findOne({ _id: req.params.id }).populate('schedules').exec()
-        if (event.length > 0) {
-            return res.send({
-                event: event
-            })
+        if (event.schedules.length > 0) {
+            return Response.success(res, {schedules: event.schedules})
         }
         return res.sendStatus(404)
     } catch (error) {

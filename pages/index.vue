@@ -37,7 +37,7 @@
                 </icon>
                 <h6 class="text-success text-uppercase">Schedule</h6>
                 <p class="description mt-3">Get the current schedule!</p>
-                <router-link tag="a" class="btn btn-success mt-2" :to="{name: 'event-id-announcements', params: {id: event._id}}">
+                <router-link tag="a" class="btn btn-success mt-2" :to="{name: 'event-id-schedule', params: {id: event._id}}">
                   Click Here
                 </router-link>
               </card>

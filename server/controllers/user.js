@@ -34,7 +34,7 @@ const getOne = async function (req, res) {
 const getByUsername = async function (req, res) {
   try {
     let username = req.params.username
-    let user = await User.findOne({ username: username })
+    let user = await User.findOne({ username: username }).populate('team').exec()
     if (!user) {
       return Response.success(res, { message: "No such user found." })
     }
