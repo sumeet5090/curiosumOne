@@ -3,10 +3,9 @@ import BootstrapVue from 'bootstrap-vue'
 import VueLazyload from 'vue-lazyload'
 
 import clickOutside from '@/directives/click-outside.js';
-import '@/assets/vendor/font-awesome/css/font-awesome.css'
+import '@fortawesome/fontawesome-free/css/all.css'
 import '@/assets/scss/main.scss';
 
 Vue.directive("click-outside", clickOutside)
 Vue.use(VueLazyload)
 Vue.use(BootstrapVue)
-  

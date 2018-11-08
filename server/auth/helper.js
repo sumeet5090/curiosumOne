@@ -4,7 +4,7 @@ Array.prototype.contains = function(element){
   return this.indexOf(element) > -1;
 }
 
-module.exports.isAuthenticated = function isAuthenticated(req, res, next) {
+const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next()
   } else {
@@ -12,11 +12,11 @@ module.exports.isAuthenticated = function isAuthenticated(req, res, next) {
   }
 }
 
-module.exports.hasRole = function hasRole(role) {
+const hasRole = (role) => {
   if (!role)
     throw new Error("Required role needs to be set")
   return function (req, res, next) {
-    return module.exports.isAuthenticated(req, res, () => {
+    return isAuthenticated(req, res, () => {
       if (req.user && req.user.role){
         if(req.user.role.contains(role)){
           return next()
@@ -27,19 +27,19 @@ module.exports.hasRole = function hasRole(role) {
   }
 }
 
-module.exports.hasAdminRole = function hasAdminRole() {
-  return module.exports.hasRole("admin")
+const isAdmin = () => {
+  return hasRole("admin")
 }
 
-module.exports.isParticipant = function isParticipant() {
-  return module.exports.hasRole("participant")
+const isParticipant = () => {
+  return hasRole("participant")
 }
 
-module.exports.isVolunteer = function isVolunteer() {
-  return module.exports.hasRole("volunteer")
+const isVolunteer = () => {
+  return hasRole("volunteer")
 }
 
-module.exports.linkSocialToAccount = async function linkSocialToAccount(opts) {
+const linkSocialToAccount = async (opts) => {
   let req = opts.req,
     accessToken = opts.accessToken,
     refreshToken = opts.refreshToken,
@@ -129,4 +129,13 @@ module.exports.linkSocialToAccount = async function linkSocialToAccount(opts) {
       return done(error, null)
     }
   }
+}
+
+module.exports = {
+  isAuthenticated,
+  hasRole,
+  isParticipant,
+  isVolunteer,
+  isAdmin,
+  linkSocialToAccount
 }

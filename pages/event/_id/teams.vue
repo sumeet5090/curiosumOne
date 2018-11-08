@@ -1,15 +1,16 @@
 <template>
-<section class="section">
+<section class="section section-hero">
     <div class="container">
         <b-row class="justify-content-center">
             <div class="display-4">
                 Registered Teams for <strong class="text-primary">{{event.name}}</strong>
             </div>
         </b-row>
-        <b-row class="justify-content-center">
+        <!-- <b-row class="justify-content-center">
             <base-pagination :page-count="pageCount" v-model="table.currentPage"></base-pagination>
-        </b-row>
+        </b-row> -->
         <b-row>
+            <!-- <b-table outlined responsive bordered hover :items="teams" :fields="fields" :per-page="table.perPage" :current-page="table.currentPage"> -->
             <b-table outlined responsive bordered hover :items="teams" :fields="fields" :per-page="table.perPage" :current-page="table.currentPage">
                 <template slot="category" slot-scope="data">
                     <div class>
@@ -57,7 +58,7 @@ export default {
         return {
             table: {
                 currentPage: 1,
-                perPage: 10
+                perPage: 50
             },
             combustion_icon: require("@/assets/images/icons/category/combustion.svg"),
             electric_icon: require("@/assets/images/icons/category/electric.svg"),
@@ -124,7 +125,6 @@ export default {
                 teams: data.teams
             };
         } catch (err) {
-            console.log(err);
             error({
                 message: "Teams not found",
                 statusCode: 404

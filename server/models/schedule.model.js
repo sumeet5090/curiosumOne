@@ -27,31 +27,40 @@ const ScheduleSchema = Schema({
     _id: Number,
     event_id: {
         type: Number,
-        ref: 'Event'
+        ref: 'Event',
+        required: true
     },
     day_number: {
         type: Number,
+        required: true
     },
     day: {
-        type: String
+        type: String,
+        required: true
     },
     date: {
-        type: Date
+        type: Date,
+        required: true
     },
     activity: {
-        type: String
+        type: String,
+        required: true
     },
     start_time: {
-        type: Date,
+        type: String,
+        required: true
     },
     end_time: {
-        type: Date
+        type: String,
+        required: true
     },
     location: {
-        type: String
+        type: String,
+        required: true
     },
     comments: {
-        type: String
+        type: String,
+        required: true
     },
     volunteer_view: {
         type: Boolean,

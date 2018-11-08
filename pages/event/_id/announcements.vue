@@ -1,27 +1,27 @@
 <template>
 <section class="section custom-gradient">
-    <b-container>
-        <b-row class="justify-content-center">
-            <div class="display-4">
-                Announcements for <strong class="text-primary">{{event.name}}</strong>
-            </div>
-        </b-row>
-        <b-row class="justify-content-center mt-4" v-for="annc in announcements" :key="annc._id">
-            <b-card>
-                <div class="display-4">{{annc.title}}</div>
-                <span class="ml-2 text-muted"><small>{{formatDate(Date.parse(annc.dateTime)) + ' by '}} <router-link tag="a" :to="{name: 'profile-id', params: {id: getAuthor(annc.author).username}}" class="card-link">{{getAuthor(annc.author).display_name}}</router-link></small></span>
-                <p class="card-text lead">{{annc.description}}</p>
-                <div>
-                    <badge v-for="tag in annc.tags" :key="tag" type="secondary">#{{tag}}</badge>
-                </div>
-            </b-card>
-        </b-row>
-    </b-container>
+  <b-container>
+    <b-row class="justify-content-center">
+      <div class="display-4 text-white">
+        Announcements for <strong class="text-primary">{{event.name}}</strong>
+      </div>
+    </b-row>
+    <b-row class="justify-content-center mt-4" v-for="annc in announcements" :key="annc._id">
+      <b-card>
+        <h4 class="">{{annc.title}}</h4>
+        <span class="ml-2 text-muted"><small>{{formatDate(Date.parse(annc.dateTime)) + ' by '}} <router-link tag="a" :to="{name: 'profile-id', params: {id: getAuthor(annc.author).username}}" class="card-link">{{getAuthor(annc.author).display_name}}</router-link></small></span>
+        <p class="card-text">{{annc.description}}</p>
+        <div>
+          <badge v-for="tag in annc.tags" :key="tag" type="secondary">#{{tag}}</badge>
+        </div>
+      </b-card>
+    </b-row>
+  </b-container>
 </section>
 </template>
 
 <script>
-let moment = require('moment')
+let moment = require("moment");
 export default {
   async asyncData({ $axios, params, error }) {
     try {
@@ -30,33 +30,37 @@ export default {
           return status < 400;
         }
       });
-      const announcements = await $axios.get(`/api/event/${params.id}/announcements`, {
+      const announcements = await $axios.get(
+        `/api/event/${params.id}/announcements`,
+        {
           validateStatus: status => {
-              return status < 400;
+            return status < 400;
           }
-      });
+        }
+      );
       return {
         // isLoaded: data.success,
         announcements: announcements.data.announcements,
         event: data.event
       };
-    } catch (err) {
-    }
+    } catch (err) {}
   },
   data() {
     return {
-      event: {},
+      event: {}
     };
   },
   methods: {
     getAuthor: function(author_obj) {
-      if(author_obj != null){
-        return {...author_obj}
+      if (author_obj != null) {
+        return {
+          ...author_obj
+        };
       }
       return {
-        display_name: '',
-        username: '',
-      }
+        display_name: "",
+        username: ""
+      };
     },
     formatDate: function(date) {
       // From https://javascript.info/date
@@ -69,7 +73,7 @@ export default {
       let min = Math.floor(diff / 60000);
       if (min < 60) return min + " min. ago";
       let d = date;
-      return moment(d).fromNow()
+      return moment(d).fromNow();
     }
   }
 };

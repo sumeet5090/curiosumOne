@@ -1,5 +1,5 @@
 <template>
-    <div class="custom-gradient">
+<div class="custom-gradient">
     <no-ssr>
         <section class="section section-hero">
             <div class="row justify-content-center">
@@ -20,7 +20,7 @@
                                     <span slot="text">
                                         Hello {{org.name}}
                                     </span>
-                                    <span slot="icon" @click.prevent="popOrganizer(org)" class="cursor-pointer">
+                                    <span slot="icon" @click.prevent="dropOrganizer(org)" class="cursor-pointer">
                                         <i class="fa fa-times"></i>
                                     </span>
                                 </b-badge>
@@ -41,44 +41,42 @@
 
 <script>
 export default {
-  data() {
-    return {
-      form: {
-        event_name: "",
-        event_date: "",
-        event_venue: "",
-        event_link: "",
-        orgranizer: "",
-        event_organizers: [
-          {
-            id: 1,
-            name: "Jeff"
-          },
-          {
-            id: 2,
-            name: "cheF"
-          },
-          {
-            id: 2,
-            name: "cheF"
-          }
-        ]
-      }
-    };
-  },
-  methods: {
-    onSubmit() {},
-    onReset() {},
-    popOrganizer(org) {
-      let el = this.form.event_organizers.indexOf(org);
-      if (el > -1) {
-        this.form.event_organizers.splice(el, 1);
-      }
+    data() {
+        return {
+            form: {
+                event_name: "",
+                event_date: "",
+                event_venue: "",
+                event_link: "",
+                orgranizer: "",
+                event_organizers: [{
+                        id: 1,
+                        name: "Jeff"
+                    },
+                    {
+                        id: 2,
+                        name: "cheF"
+                    },
+                    {
+                        id: 2,
+                        name: "cheF"
+                    }
+                ]
+            }
+        };
+    },
+    methods: {
+        onSubmit() {},
+        onReset() {},
+        dropOrganizer(org) {
+            let el = this.form.event_organizers.indexOf(org);
+            if (el > -1) {
+                this.form.event_organizers.splice(el, 1);
+            }
+        }
     }
-  }
 };
 </script>
-
 
 <style lang="scss">
 </style>

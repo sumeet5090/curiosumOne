@@ -74,8 +74,15 @@ const actions = {
     commit('auth', false)
   },
   async getTeam({ commit }, id) {
-    let response = await this.$axios.get('/api/profile/' + id + '/team')
-    console.log(response.data)
+    try {
+      let response = await this.$axios.get('/api/user/profile/' + id + '/team')
+      if(response.data.success){
+        return response.data.team
+      }
+      return {}
+    } catch (error) {
+      return {}
+    }
   },
   async getEvents({ commit }) {
     try {
@@ -113,6 +120,15 @@ const actions = {
   async postReq({}, params){
     try {
       let {data} = await this.$axios.post(params.url, params.body)
+      return data
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  async putReq({}, params){
+    try {
+      let {data} = await this.$axios.put(params.url, params.body)
+      return data
     } catch (error) {
       console.log(error)
     }
@@ -123,7 +139,6 @@ const actions = {
       return data;
     } catch (error) {
       console.log(error)
-      return;
     }
   }
 }
@@ -133,6 +148,14 @@ const getters = {
       return state.user
     }
     return null
+  },
+  isAdmin: function(state){
+    if(state.isAuthenticated){
+      if(state.user.role.indexOf('admin') > -1){
+        return true
+      }
+    }
+    return false
   },
   getModalStates: state => state.modals,
   getImages: state => state.images,

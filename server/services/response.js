@@ -9,10 +9,10 @@ module.exports = {
     },
     failed: function(res, err, code){
         if(typeof err =='object' && typeof err.message != 'undefined') err = err.message
-        // if(typeof code != 'undefined') res.statusCode = code
+        if(typeof code != 'undefined') res.statusCode = code
         return res.send({
             success: false,
-            msg: 'Error: '+err
+            message: err
         })
     },
 }

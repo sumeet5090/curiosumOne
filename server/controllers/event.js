@@ -6,6 +6,7 @@ const LiveTiming = require('./../models/livetiming.model')
 const TechUpdate = require('./../models/techUpdates.model')
 const Team = require('./../models/team.model')
 const mongoose = require('mongoose')
+const Response = require('./../services/response')
 
 const getAllEvents = async (req, res) => {
     try {
@@ -388,42 +389,42 @@ const createTechupdate = async (req, res) => {
 
 const createSchedule = async (req, res) => {
     try {
-        let event = await Event.findOne({ _id: req.params.id })
+        let event = await Event.findOne({ _id: req.params.id }), body = req.body
         if (event) {
             let schedule = await new Schedule({
-                day_number: req.body.day_number,
-                day: req.body.day,
-                date: req.body.date,
-                activity: req.body.activity,
-                start_time: req.body.start_time,
-                end_time: req.body.end_time,
-                location: req.body.location,
-                comments: req.body.comments,
-                volunteer_view: Boolean(req.body.volunteer_view),
-                participant_view: Boolean(req.body.participant_view),
-                visitor_view: Boolean(req.body.visitor_view || true),
+                day_number: body.day_number,
+                day: body.day,
+                date: body.date,
+                activity: body.activity,
+                start_time: body.start_time,
+                end_time: body.end_time,
+                location: body.location,
+                comments: body.comments,
+                volunteer_view: body.volunteer_view,
+                participant_view: body.participant_view,
+                visitor_view: body.visitor_view,
+                event_id: event._id
             }).save()
+            console.log(schedule)
             if (schedule) {
                 let out = await event.updateOne({ $push: { schedules: schedule } }).exec()
                 if (out.nModified >= 1 && out.ok == 1) {
-                    return res.send({
-                        message: "Created schedule & linked to event."
-                    })
+                    return Response.success(res, {message: "Created schedule!"}, 200)
                 }
-                return res.send({
+                return Response.failed(res, {
                     message: "Created schedule, but couldn't link it to event."
-                })
+                }, 200)
             }
-            return res.send({
+            return Response.failed(res, {
                 message: "Couldn't create schedule"
             })
         }
-        return res.send({
+        return Response.failed(res, {
             message: "Event not found."
         })
     } catch (error) {
         console.log(error)
-        res.sendStatus(500)
+        return Response.failed(res, {message: "Internal server error."}, 500)
     }
 }
 

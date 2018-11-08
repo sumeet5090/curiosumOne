@@ -1,33 +1,33 @@
 <template>
-<section class="section custom-gradient">
-    <b-container>
-        <b-row class="justify-content-center">
-                <card class="col-sm-10 col-md-8 col-lg-5">
-                    <b-form @submit.prevent="onSubmit" @reset.prevent="onReset">
-                        <b-form-group id="form-event" label="Event:" label-for="form-event--input" description="Select an event">
-                            <b-form-select id="form-event--input" required v-model="selectedEvent" class="mb-3">
-                                <option :value="null">Select an option</option>
-                                <option :value="ev._id" v-for="ev in events" :key="ev._id">{{ev.name}}</option>
-                            </b-form-select>
-                        </b-form-group>
-                        <b-form-group id="form-team" label="Team:" label-for="form-team--input" description="Select a team">
-                            <b-form-select id="form-team--input" required v-model="selectedTeam" class="mb-3">
-                                <option :value="null">Select an option</option>
-                                <option :value="tm._id" v-for="tm in teams" :key="tm._id">{{tm.team_name}}</option>
-                            </b-form-select>
-                        </b-form-group>
-                        <b-form-group id="form-carnumber" label="Car number:" label-for="form-carnumber--input" description="Choose an unique name which describes your team.">
-                            <base-input :required="true" addon-left-icon="" id="form-carnumber--input" type="text" v-model="car_number" placeholder="Enter car number">
-                            </base-input>
-                        </b-form-group>
-                        <b-row class="justify-content-center">
-                            <b-button type="submit" variant="success">Submit</b-button>
-                            <b-button type="reset" variant="danger">Reset</b-button>
-                        </b-row>
-                    </b-form>
-                </card>
-        </b-row>
-    </b-container>
+<section class="section section-hero custom-gradient">
+  <b-container>
+    <b-row class="justify-content-center">
+      <card class="col-sm-10 col-md-8 col-lg-5">
+        <b-form @submit.prevent="onSubmit" @reset.prevent="onReset">
+          <b-form-group id="form-event" label="Event:" label-for="form-event--input" description="Select an event">
+            <b-form-select id="form-event--input" required v-model="selectedEvent" class="mb-3">
+              <option :value="null">Select an option</option>
+              <option :value="ev._id" v-for="ev in events" :key="ev._id">{{ev.name}}</option>
+            </b-form-select>
+          </b-form-group>
+          <b-form-group id="form-team" label="Team:" label-for="form-team--input" description="Select a team">
+            <b-form-select id="form-team--input" required v-model="selectedTeam" class="mb-3">
+              <option :value="null">Select an option</option>
+              <option :value="tm._id" v-for="tm in teams" :key="tm._id">{{tm.team_name}}</option>
+            </b-form-select>
+          </b-form-group>
+          <b-form-group id="form-carnumber" label="Car number:" label-for="form-carnumber--input" description="Choose an unique name which describes your team.">
+            <base-input :required="true" addon-left-icon="" id="form-carnumber--input" type="text" v-model="car_number" placeholder="Enter car number">
+            </base-input>
+          </b-form-group>
+          <b-row class="justify-content-center">
+            <b-button type="submit" variant="success">Submit</b-button>
+            <b-button type="reset" variant="danger">Reset</b-button>
+          </b-row>
+        </b-form>
+      </card>
+    </b-row>
+  </b-container>
 </section>
 </template>
 

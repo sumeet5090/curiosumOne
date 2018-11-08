@@ -50,7 +50,6 @@ const create = async function (req, res) {
       website_url: body.website_url,
       social: body.social,
       captain_id: req.user._id,
-      users: users
     }
     let team = await new Team(newTeam).save()
     if (team) {

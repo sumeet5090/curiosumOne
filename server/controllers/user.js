@@ -67,7 +67,7 @@ const getOneByEmail = async function (req, res) {
 const getTeam = async function (req, res) {
   try {
     let id = req.params.id
-    let user = await User.findOne({ _id: id })
+    let user = await User.findOne({ _id: id }).populate('team').exec()
     if (!user) {
       return Response.failed(res, { message: "No such user found." })
     }
@@ -83,7 +83,7 @@ const getTeam = async function (req, res) {
 const getTeamByUsername = async function (req, res) {
   try {
     let username = req.params.username
-    let user = await User.findOne({ username: username })
+    let user = await User.findOne({ username: username }).populate('team').exec()
     if (!user) {
       return Response.failed(res, { message: "No such user found." })
     }
@@ -93,14 +93,6 @@ const getTeamByUsername = async function (req, res) {
     return Response.success(res, { team: user.team })
   } catch (error) {
     return Response.failed(res, { message: "Internal Server Error" })
-  }
-}
-
-const isParticipant = async function (req, res) {
-  try {
-    console.log("jeff")
-  } catch (error) {
-    console.log("error " + error)
   }
 }
 
@@ -147,6 +139,43 @@ const createBatchNotifications = async function (req, res)  {
   
 }
 
+const addRole = async (req, res) => {
+  try {
+    let body = req.body, user, role = body.role, out
+    user = await User.findOne({email: body.user_email})
+    if(user){
+      if(user.role.contains(role)) {
+        return Response.failed(res, {message: "Role already set."}, 200)
+      }
+      out = await user.updateOne({$push: {role: role}}).exec()
+      if(out.nModified >= 1 && out.ok == 1) {
+        return Response.success(res, {message: "Role "+role+" set"}, 200)
+      }
+    }
+    return Response.failed(res, {message: "Role couldn't be set."}, 304)
+  } catch (error) {
+    console.log(error)
+    return Response.failed(res, {message: "Internal Server Error"}, 500)
+  }
+}
+
+const removeRole = async (req, res) => {
+  try {
+    let body = req.body, user, role=body.role, out
+    user = await User.findOne({email: body.user_email})
+    if(user){
+      out = await user.updateOne({$pull: {role: role}}).exec()
+      if(out.nModified >= 1 && out.ok == 1) {
+        return Response.success(res, {message: "Role "+role+" removed"}, 200)
+      }
+    }
+    return Response.failed(res, {message: "User not found"}, 304)
+  } catch (error) {
+    console.log(error)
+    return Response.failed(res, {message: "Internal server error."}, 500)
+  }
+}
+
 const update = async function (req, res) {
   //  Put request
   let id = req.user._id
@@ -157,7 +186,7 @@ const update = async function (req, res) {
     }
     return Response.success(res, { message: "Updated profile.", user })
   } catch (error) {
-    return Response.failed(res, { message: "Internal Server Error" })
+    return Response.failed(res, { message: "Internal Server Error" }, 500)
   }
 }
 
@@ -186,10 +215,11 @@ module.exports = {
   getByUsername,
   getTeam,
   getTeamByUsername,
-  isParticipant,
   getNotifications,
   inviteTeam,
   createBatchNotifications,
+  addRole,
+  removeRole,
   update,
   remove,
 }

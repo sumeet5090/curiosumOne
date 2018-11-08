@@ -1,24 +1,25 @@
 const {Router} = require('express')
 const router = Router();
-const UserController = require('./../../controllers/user')
 const passport = require('passport')
+const helper = require('./../../auth/helper')
+const UserCont = require('./../../controllers/user')
 // GET
-router.get('/', UserController.getAll)
-router.get('/:id/team', UserController.getTeam)
-router.get('/:id', UserController.getOne)
-router.get('/email/:email', UserController.getOneByEmail)
-router.get('/profile/:username/team', UserController.getTeamByUsername)
-router.get('/profile/:username', UserController.getByUsername)
-router.get('/:id/notifications', UserController.getNotifications)
+router.get('/', UserCont.getAll)
+router.get('/:id/team', UserCont.getTeam)
+router.get('/:id', UserCont.getOne)
+router.get('/email/:email', UserCont.getOneByEmail)
+router.get('/profile/:username/team', UserCont.getTeamByUsername)
+router.get('/profile/:username', UserCont.getByUsername)
+router.get('/:id/notifications', UserCont.getNotifications)
 
-router.post('/jeff', async function(req, res) {
-    console.log(req.body.test_array)
-})
 // POST
-// router.post('/:id/:team_id/confirmation', UserController.confirmToken)
-// router.post('/:id/:team_id/resend', UserController.resendToken)
+router.post('/addrole', helper.isAdmin(), UserCont.addRole)
+router.post('/removerole', helper.isAdmin(), UserCont.removeRole)
+
+// router.post('/:id/:team_id/confirmation', UserCont.confirmToken)
+// router.post('/:id/:team_id/resend', UserCont.resendToken)
 
 // PUT
-router.put('/update', passport.authenticate('google'), UserController.update)
+router.put('/update', helper.isAuthenticated, UserCont.update)
 //DELETE
 module.exports = router;
