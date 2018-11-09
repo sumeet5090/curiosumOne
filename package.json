@@ -4,6 +4,7 @@
   "description": "Mobility Engineering Consortium Pvt. Ltd. Event Portal",
   "author": "frozen4code",
   "private": true,
+  "repository": "git@github.com:frozen4code/mec_website.git",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
     "dev:local": "cross-env NODE_ENV=development HOST=0.0.0.0 nodemon server/index.js --watch server",
