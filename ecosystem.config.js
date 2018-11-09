@@ -1,8 +1,8 @@
 module.exports = {
   apps : [{
     name: 'mec_website',
-    script: 'cross-env NODE_ENV=production node server/index.js',
-    args: '',
+    script: 'yarn',
+    args: 'start',
     instances: 1,
     autorestart: true,
     watch: false,
