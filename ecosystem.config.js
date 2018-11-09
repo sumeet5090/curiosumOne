@@ -1,8 +1,8 @@
 module.exports = {
   apps : [{
     name: 'mec_website',
-    script: 'yarn',
-    args: 'start',
+    script: 'server/index.js',
+    args: '',
     instances: 1,
     autorestart: true,
     watch: false,
