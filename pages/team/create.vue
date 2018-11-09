@@ -31,10 +31,9 @@
                         </b-form-group>
                         <b-form-group id="form-social-links" label="Social Media" label-for="form-social-links--input" description="Links to your teams social media">
                             <base-input addon-left-icon="fa fa-link text-dark" placeholder="https://examplewebsite.com" v-model="teamForm.website_url"></base-input>
-                            <base-input addon-left-icon="fa fa-facebook" placeholder="https://facebook.com/example" v-model="teamForm.social.facebook"></base-input>
-                            <base-input addon-left-icon="fa fa-instagram text-danger" placeholder="https://instagram.com/example" v-model="teamForm.social.instagram"></base-input>
-                            <base-input addon-left-icon="fa fa-twitter" placeholder="https://twitter.com/example" v-model="teamForm.social.twitter"></base-input>
-
+                            <base-input addon-left-icon="fab fa-facebook-f" placeholder="https://facebook.com/example" v-model="teamForm.social.facebook"></base-input>
+                            <base-input addon-left-icon="fab fa-instagram text-danger" placeholder="https://instagram.com/example" v-model="teamForm.social.instagram"></base-input>
+                            <base-input addon-left-icon="fab fa-twitter" placeholder="https://twitter.com/example" v-model="teamForm.social.twitter"></base-input>
                         </b-form-group>
                         <b-form-group id="form-bio" label="Bio:" label-for="form-bio--input" description="Talk about yourself.">
                             <b-form-textarea id="form-bio--input" type="text" v-model="teamForm.bio" required placeholder="Bio" :rows="4" :max-rows="6" :min-rows="3">
