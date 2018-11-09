@@ -1,5 +1,4 @@
 <template>
-import { mapActions } from 'vuex';
 <div class="custom-gradient">
   <no-ssr>
     <section class="section section-hero">
