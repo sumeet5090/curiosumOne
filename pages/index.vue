@@ -1,13 +1,45 @@
 <template>
 <div class="position-relative custom-gradient">
+  <section class="section">
+    <b-container>
+      <b-row class="justify-content-center">
+        <b-col md="12">
+          <img v-lazy="require('@/assets/images/brand/header.jpg')" class="img-thumbnail">
+        </b-col>
+      </b-row>
+    </b-container>
+  </section>
   <section class="section has-cards">
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-10 mb-2 p-2" v-for="event in events" :key="event._id">
-          <div class="row-justify-content-center">
-            <div class="text-center display-3 text-uppercase text-dark">{{event.name}}</div>
-            <div class="text-center text-dark">{{formatDate(event.date)}}</div>
+          <div class="container">
+            <div class="row justify-content-center">
+              <card no-body class="col-12">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <div class="display-3 text-uppercase text-dark">{{event.name}}</div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="py-auto text-dark">{{formatDate(event.date)}}</div>
+                      <div class="py-auto text-dark">{{event.venue}}</div>
+                    </div>
+                  </div>
+                </div>
+              </card>
+            </div>
           </div>
+          <!-- <div class="row">
+            <card no-body>
+              <div class="col-8">
+                <span class="display-3 text-uppercase text-dark">{{event.name}}</span>
+              </div>
+              <div class="col-4">
+                <span class="text-center text-dark">{{formatDate(event.date)}}</span>
+              </div>
+            </card>
+          </div> -->
           <div class="row mt-4">
             <div class="col-lg-4 mt-1">
               <card class="border-0" shadow body-classes="py-3">
@@ -141,7 +173,7 @@ export default {
   },
   methods: {
     formatDate(date) {
-      return moment(date).format('LL');
+      return moment(date).format(`DD MMM`);
     },
     async fetchEvents() {
       // let response = await api.getMany();

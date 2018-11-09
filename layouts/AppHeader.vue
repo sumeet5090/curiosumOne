@@ -21,6 +21,9 @@
       </div>
       <ul class="navbar-nav navbar-nav-hover align-items md-center">
         <li class="nav-item">
+          <nuxt-link class="text-white" tag="a" to="/"> Home </nuxt-link>
+        </li>
+        <li class="nav-item">
           <nuxt-link class="text-white" tag="a" to="/profile" v-if="!!isAuthenticated"> Profile </nuxt-link>
         </li>
       </ul>
@@ -29,9 +32,9 @@
           <div class="row ">
             <div class="text-center col-md-6">
               <a href="" class="nav-link nav-link-icon" data-toggle="tooltip" title="Notifications" @click.prevent="modalShowNotification" >
-                            <i class="fa fa-bell"></i>
-                            <span class="nav-link-inner--text d-lg-none text-uppercase font-weight-bold">Notifications</span>
-                        </a>
+                  <i class="fa fa-bell"></i>
+                  <span class="nav-link-inner--text d-lg-none text-uppercase font-weight-bold">Notifications</span>
+              </a>
             </div>
             <div class="text-center col-md-6">
               <base-dropdown tag="div" class="w-100 nav-item nav-link-icon btn-light" icon="fa fa-user" v-if="!!isAuthenticated">
@@ -41,14 +44,13 @@
                 <a class="dropdown-item text-center" href="" @click.prevent="logout"> Logout </a>
               </base-dropdown>
               <a href="/login" class="nav-link nav-link-icon btn-light" data-toggle="tooltip" title="Notifications" v-else>
-                            <span slot="icon"><img src="@/assets/images/icons/common/google.svg" alt="" class="nav-brand-logo" /></span>
-                            <span class="nav-link-inner--text d-lg-none text-uppercase font-weight-bold text-warning">Google</span>
-                        </a>
+                  <span slot="icon"><img src="@/assets/images/icons/common/google.svg" alt="" class="nav-brand-logo" /></span>
+                  <span class="nav-link-inner--text d-lg-none text-uppercase font-weight-bold text-warning">Google</span>
+              </a>
             </div>
           </div>
         </li>
       </ul>
-
     </base-nav>
   </no-ssr>
 </div>
