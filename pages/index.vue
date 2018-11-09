@@ -5,8 +5,8 @@
       <div class="row justify-content-center">
         <div class="col-md-10 mb-2 p-2" v-for="event in events" :key="event._id">
           <div class="row-justify-content-center">
-            <div class="text-center display-4 text-secondary">{{event.name}}</div>
-            <div class="text-center text-secondary">{{formatDate(event.date)}}</div>
+            <div class="text-center display-3 text-uppercase text-dark">{{event.name}}</div>
+            <div class="text-center text-dark">{{formatDate(event.date)}}</div>
           </div>
           <div class="row mt-4">
             <div class="col-lg-4 mt-1">
@@ -141,7 +141,7 @@ export default {
   },
   methods: {
     formatDate(date) {
-      return moment(date).format('LLL');
+      return moment(date).format('LL');
     },
     async fetchEvents() {
       // let response = await api.getMany();

@@ -29,11 +29,21 @@ let UserSchema = Schema({
     type: String,
     enum: ['admin', 'staff', 'volunteer', 'participant', 'alumni'],
   }],
+  secondary_role: [{
+    type: String,
+    enum: ['design-judge', 'cost-judge', 'business-judge', 'inspector-mech', 'inspector-elec', 'ground-vol', 'track'],
+    default: function(){
+      if(role.indexOf('volunteer') > -1){
+        return 'ground-vol'
+      }
+    }
+  }],
   // title: {
+  //   type: String,
   //   default: function () {
   //     if (role == 'volunteer') {
   //       titles = ['design-judge', 'cost-judge', 'business-judge', 'inspector-mech', 'inspector-elec', 'ground-vol', 'track']
-  //       // TODO
+        
   //     }
   //   }
   // },
