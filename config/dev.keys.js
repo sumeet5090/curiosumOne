@@ -6,8 +6,9 @@ let keys = {
         options: {
             user: "",
             pass: "",
-            useNewUrlParser: true
-		}
+            useNewUrlParser: true,
+            authSource: process.env.DB_AUTH_DATABASE
+        }
     },
     google: {
         clientID: '821702270771-jvo6konvg5drjege6ucn83c9vq13u9qa.apps.googleusercontent.com',
@@ -22,7 +23,7 @@ let keys = {
     },
     session: {
         secret: "HAHAHAHAHA SEssIoN SseCret!@? weQEQ",
-        maxAge: 24*7*60*60*10000
+        maxAge: 24 * 7 * 60 * 60 * 10000
     }
 }
 keys.db.uri = `mongodb://${keys.db.host}:${keys.db.port}/${keys.db.name}?authSource=${keys.db.options.authSource}`
