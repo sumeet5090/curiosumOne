@@ -4,8 +4,8 @@ let keys = {
         port: parseInt(process.env.DB_PORT) || 27017,
         name: process.env.DB_NAME || 'website_mec_test',
         options: {
-            user: "",
-            pass: "",
+            user: process.env.DB_USER || "frozen",
+			pass: process.env.DB_PASSWORD || "root",
             useNewUrlParser: true,
             authSource: process.env.DB_AUTH_DATABASE
         }
