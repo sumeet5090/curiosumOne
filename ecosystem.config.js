@@ -1,3 +1,5 @@
+const path = require('path')
+const config = require('dotenv').config({path: path.join(__dirname, '.env')}).parsed
 module.exports = {
   apps : [{
     name: 'mec_website',
@@ -11,7 +13,8 @@ module.exports = {
       NODE_ENV: 'development'
     },
     env_production: {
-      NODE_ENV: 'production'
+      NODE_ENV: 'production',
+      ...config
     }
   }],
 
