@@ -28,5 +28,5 @@ let keys = {
 }
 
 // mongodb://monguser:mongpass@192.168.2.2:27017/ps?authSource=admin
-keys.db.uri = `mongodb://${keys.db.options.user}:${keys.db.options.pass}@${keys.db.host}:${keys.db.port}/${keys.db.name}?authSource=${keys.db.options.authSource}`
+keys.db.uri = `mongodb://${keys.db.host}:${keys.db.port}/${keys.db.name}?authSource=${keys.db.options.authSource}`
 module.exports = keys
