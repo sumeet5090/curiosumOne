@@ -1,6 +1,7 @@
-const result = require('dotenv').config()
 const pkg = require('./package')
 const path = require('path')
+const result = require('dotenv').config({path: path.join(__dirname, '.env')})
+console.log("jeff", process.env.DB_NAME)
 module.exports = {
   mode: 'universal',
 
