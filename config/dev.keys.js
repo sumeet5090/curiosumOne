@@ -4,8 +4,8 @@ let keys = {
         port: parseInt(process.env.DB_PORT) || 27017,
         name: process.env.DB_NAME || 'website_mec_test',
         options: {
-            user: process.env.DB_USER || "",
-            pass: process.env.DB_PASSWORD || "",
+            user: "",
+            pass: "",
             useNewUrlParser: true
 		}
     },
@@ -25,5 +25,6 @@ let keys = {
         maxAge: 24*7*60*60*10000
     }
 }
-keys.db.uri = 'mongodb://' + keys.db.host + ':' + keys.db.port + '/' + keys.db.name
+keys.db.uri = `mongodb://${keys.db.host}:${keys.db.port}/${keys.db.name}?authSource=${keys.db.options.authSource}`
+
 module.exports = keys

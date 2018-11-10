@@ -1,5 +1,5 @@
 <template>
-<div class="custom-gradient">
+<div class="custom-gradient" v-if="!!isAdmin">
   <no-ssr>
     <section class="section section-hero">
       <div class="row justify-content-center">
@@ -16,14 +16,14 @@
                 <b-form-input id="form-eventvenue--input" type="text" v-model="form.event_venue" required placeholder="Enter place"></b-form-input>
               </b-form-group>
               <b-form-group id="form-eventorganizers" label="Event organizers:" label-for="form-eventorganizers--input" description="Where will the event take place?">
-                <b-badge v-for="org in form.event_organizers" :key="org.id" variant="primary" class="mb-1">
+                <!-- <b-badge v-for="org in form.event_organizers" :key="org.id" variant="primary" class="mb-1">
                   <span slot="text">
                     Hello {{org.name}}
                 </span>
                 <span slot="icon" @click.prevent="dropOrganizer(org)" class="cursor-pointer">
                     <i class="fa fa-times"></i>
                 </span>
-                </b-badge>
+                </b-badge> -->
                 <b-form-input id="form-eventorganizers--input" type="text" v-model="form.orgranizer" required placeholder="Enter organizers"></b-form-input>
               </b-form-group>
               <b-form-group id="form-eventorganizers-list">
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -53,6 +53,9 @@ export default {
         event_organizers: []
       }
     };
+  },
+  computed: {
+    ...mapGetters(['currentUser', 'isAdmin'])
   },
   methods: {
     ...mapActions(["postReq"]),

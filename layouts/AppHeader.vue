@@ -1,7 +1,7 @@
 <template>
 <div>
   <no-ssr>
-    <base-nav transparent type="" effect="dark" expand class="">
+    <base-nav type="none" effect="light" expand>
       <nuxt-link to="/" slot="brand" class="navbar-brand mr-lg-5">
         <div class="navbar-brand">
           <img src="@/assets/images/300x300.svg" alt="" />
@@ -21,10 +21,10 @@
       </div>
       <ul class="navbar-nav navbar-nav-hover align-items md-center">
         <li class="nav-item">
-          <nuxt-link class="text-white" tag="a" to="/"> Home </nuxt-link>
+          <nuxt-link class="nav-link" tag="a" to="/">Home</nuxt-link>
         </li>
         <li class="nav-item">
-          <nuxt-link class="text-white" tag="a" to="/profile" v-if="!!isAuthenticated"> Profile </nuxt-link>
+          <nuxt-link class="nav-link" tag="a" to="/profile" v-if="!!isAuthenticated">Profile</nuxt-link>
         </li>
       </ul>
       <ul class="navbar-nav navbar-nav-hover align-items-lg-center ml-lg-auto">

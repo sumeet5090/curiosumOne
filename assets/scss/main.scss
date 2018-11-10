@@ -1,10 +1,16 @@
 @import "argon";
 
+// Header font
+@import url('https://fonts.googleapis.com/css?family=Oswald');
+
+.header-font {
+  font-family: 'Oswald', sans-serif;
+}
 .custom-gradient {
   //   background: linear-gradient(150deg, #281483 15%, #8f6ed5 70%, #d782d9 94%);
   //   background: linear-gradient(135deg, rgba(250, 121, 33, 1) 0%, rgba(16, 135, 55, 1) 100%);
   // background: #eea849;
-  background: linear-gradient(100deg, #e5e5e5 -1%, #fefefe 175%);
+  background: linear-gradient(100deg, #fefefe -1%, #fefefe 175%);
 }
 .section-profile-cover {
   height: 440px !important;

@@ -30,9 +30,13 @@ const EventSchema = Schema({
         type: String,
         required: true
     },
-    date: {
+    start_date: {
         type: Date,
-        default: Date.now()
+        default: Date.now
+    },
+    end_date: {
+        type: Date,
+        default: Date.now
     },
     venue: {
         type: String

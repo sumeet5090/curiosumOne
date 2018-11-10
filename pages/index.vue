@@ -7,6 +7,11 @@
           <img v-lazy="require('@/assets/images/brand/header.jpg')" class="img-thumbnail">
         </b-col>
       </b-row>
+      <b-row>
+        <b-col sm=12>
+          <!-- <h3 class="display-3 text-white">Description Title</h3> -->
+        </b-col>
+      </b-row>
     </b-container>
   </section>
   <section class="section has-cards">
@@ -17,12 +22,12 @@
             <div class="row justify-content-center">
               <card no-body class="col-12">
                 <div class="container">
-                  <div class="row">
+                  <div class="row header-font">
                     <div class="col-sm-8">
                       <div class="display-3 text-uppercase text-dark">{{event.name}}</div>
                     </div>
                     <div class="col-sm-4">
-                      <div class="py-auto text-dark">{{formatDate(event.date)}}</div>
+                      <div class="py-auto text-dark">{{formatDate(event.start_date, event.end_date)}}</div>
                       <div class="py-auto text-dark">{{event.venue}}</div>
                     </div>
                   </div>
@@ -80,11 +85,6 @@
                 </icon>
                 <h6 class="text-success text-uppercase">Schedule</h6>
                 <p class="description mt-3">Get the current schedule!</p>
-                <div>
-                  <badge type="success" rounded>design</badge>
-                  <badge type="success" rounded>system</badge>
-                  <badge type="success" rounded>creative</badge>
-                </div>
                 <base-button tag="a" href="" type="success" class="mt-4">
                   Learn more
                 </base-button>
@@ -96,11 +96,6 @@
                 </icon>
                 <h6 class="text-success text-uppercase">Schedule</h6>
                 <p class="description mt-3">Get the current schedule!</p>
-                <div>
-                  <badge type="success" rounded>design</badge>
-                  <badge type="success" rounded>system</badge>
-                  <badge type="success" rounded>creative</badge>
-                </div>
                 <base-button tag="a" href="" type="success" class="mt-4">
                   Learn more
                 </base-button>
@@ -112,11 +107,6 @@
                 </icon>
                 <h6 class="text-success text-uppercase">Schedule</h6>
                 <p class="description mt-3">Get the current schedule!</p>
-                <div>
-                  <badge type="success" rounded>design</badge>
-                  <badge type="success" rounded>system</badge>
-                  <badge type="success" rounded>creative</badge>
-                </div>
                 <base-button tag="a" href="" type="success" class="mt-4">
                   Learn more
                 </base-button>
@@ -138,9 +128,7 @@
 
 <script>
 import api from "@/services/Event.service.js";
-import {
-  mapGetters
-} from "vuex";
+import { mapGetters } from "vuex";
 import moment from "moment";
 export default {
   data() {
@@ -148,14 +136,9 @@ export default {
       showMoreCards: false
     };
   },
-  async asyncData({
-    $axios,
-    error
-  }) {
+  async asyncData({ $axios, error }) {
     try {
-      const {
-        data
-      } = await $axios.get(`/api/event`, {
+      const { data } = await $axios.get(`/api/event`, {
         validateStatus: status => {
           return status < 400;
         }
@@ -172,8 +155,11 @@ export default {
     }
   },
   methods: {
-    formatDate(date) {
-      return moment(date).format(`DD MMM`);
+    formatDate(start_date, end_date) {
+      let d1 = moment(start_date).format(`DD MMM`);
+      let d2 = moment(end_date).format(`DD MMM`);
+      let y = moment(end_date).format(`YYYY`);
+      return d1 + " - " + d2 + " " + y;
     },
     async fetchEvents() {
       // let response = await api.getMany();
@@ -191,7 +177,7 @@ export default {
   },
   beforeMount() {},
   mounted() {
-    this.$nextTick(function () {
+    this.$nextTick(function() {
       this.fetchEvents();
     });
   }
