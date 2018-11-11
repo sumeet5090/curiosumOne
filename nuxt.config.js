@@ -1,7 +1,6 @@
 const pkg = require('./package')
 const path = require('path')
-const result = require('dotenv').config({path: path.join(__dirname, '.env')})
-console.log("jeff", process.env.DB_NAME)
+const result = require('dotenv').config({ path: path.join(__dirname, '.env') })
 module.exports = {
   mode: 'universal',
 
@@ -11,17 +10,17 @@ module.exports = {
   head: {
     title: pkg.name,
     meta: [{
-        charset: 'utf-8'
-      },
-      {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1'
-      },
-      {
-        hid: 'description',
-        name: 'description',
-        content: pkg.description
-      },
+      charset: 'utf-8'
+    },
+    {
+      name: 'viewport',
+      content: 'width=device-width, initial-scale=1'
+    },
+    {
+      hid: 'description',
+      name: 'description',
+      content: pkg.description
+    },
       // TODO: My dev meta
     ],
     link: [{
@@ -41,7 +40,10 @@ module.exports = {
   /*
    ** Global CSS
    */
-  css: [],
+  css: [
+    "~/assets/vendor/fonts/OpenSans.css",
+    "~/assets/vendor/fonts/Oswald.css",
+  ],
   env: {
     ...result
   },
@@ -50,7 +52,7 @@ module.exports = {
    */
   plugins: ['@/plugins/register-components', '@/plugins/argon-design'],
   router: {
-    extendRoutes(routes, resolve){
+    extendRoutes(routes, resolve) {
       // routes.push({
       //   name: 'profile',
       //   path: '/profile',
@@ -65,7 +67,7 @@ module.exports = {
   modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/axios',
-    ['@nuxtjs/dotenv', {path: './.env'}]
+    ['@nuxtjs/dotenv', { path: './.env' }]
   ],
   /*
    ** Axios module configuration
@@ -74,10 +76,10 @@ module.exports = {
     // See https://github.com/nuxt-community/axios-module#options
     baseURL: 'http://localhost:3000',
     browserBaseURL: '/',
-    defaults:{
+    defaults: {
       headers: {
-        post:{
-          'Content-Type':'application/x-www-form-urlencoded'
+        post: {
+          'Content-Type': 'application/x-www-form-urlencoded'
         }
       }
     }
@@ -94,7 +96,7 @@ module.exports = {
     extend(config, ctx) {
       config.resolve.alias['vue'] = path.resolve(__dirname, './node_modules/vue/dist/vue.js')
       config.module.noParse = [/vue\.js/]
-      // TODO: Add webpack rules for ttf otf svg scss file parsing
+      
     }
   }
 }

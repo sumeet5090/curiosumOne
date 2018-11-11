@@ -310,8 +310,8 @@ $transition-collapse:         height .35s ease !default;
 
 
 // Fonts
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
+$font-family-header: 'Oswald', sans-serif !default;
 $font-family-base: 'Open Sans', sans-serif !default;
 $font-family-alt: 'Open Sans', sans-serif !default;
 

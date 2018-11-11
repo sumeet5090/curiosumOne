@@ -1,10 +1,7 @@
 @import "argon";
 
-// Header font
-@import url('https://fonts.googleapis.com/css?family=Oswald');
-
 .header-font {
-  font-family: 'Oswald', sans-serif;
+  font-family: $font-family-header;
 }
 .custom-gradient {
   //   background: linear-gradient(150deg, #281483 15%, #8f6ed5 70%, #d782d9 94%);
@@ -131,8 +128,6 @@
     }
   }
 }
-
-
 
 .dropdown-toggle{
   &.nav-link::after {
