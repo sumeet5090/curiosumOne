@@ -27,7 +27,8 @@ module.exports = {
       rel: 'icon',
       type: 'image/x-icon',
       href: '/favicon.ico'
-    }]
+    }, { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Open+Sans' },
+  ]
   },
 
   /*
@@ -40,10 +41,10 @@ module.exports = {
   /*
    ** Global CSS
    */
-  css: [
-    "~/assets/vendor/fonts/OpenSans.css",
-    "~/assets/vendor/fonts/Oswald.css",
-  ],
+  // css: [
+  //   "~/assets/vendor/fonts/OpenSans.css",
+  //   "~/assets/vendor/fonts/Oswald.css",
+  // ],
   env: {
     ...result
   },
