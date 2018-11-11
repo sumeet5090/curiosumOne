@@ -133,9 +133,9 @@ import moment from "moment";
 export default {
   head(){
     return {
-      link: [
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Oswald' }
-      ]
+      // link: [
+      //   { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Oswald' }
+      // ]
     }
   },
   data() {
