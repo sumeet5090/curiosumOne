@@ -1,28 +1,28 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const counter = require('./counter.model')
-// async function createCounter() {
-//     try {
-//         let existingCounter = await counter.findOne({ _id: "schedule_Counter" })
-//         if (!existingCounter) {
-//             let counterDoc = new counter({
-//                 _id: "schedule_Counter",
-//                 seq: 0
-//             })
-//             let saved = await counterDoc.save()
-//             if (saved) {
-//                 return console.log("Created counter")
-//             }
-//             return console.log("Failed to create a counter.")
-//         } else {
-//             return;
-//         }
-//     } catch (error) {
-//         console.log(error)
-//         return;
-//     }
-// }
-// createCounter()
+async function createCounter() {
+    try {
+        let existingCounter = await counter.findOne({ _id: "schedule_Counter" })
+        if (!existingCounter) {
+            let counterDoc = new counter({
+                _id: "schedule_Counter",
+                seq: 0
+            })
+            let saved = await counterDoc.save()
+            if (saved) {
+                return console.log("Created counter")
+            }
+            return console.log("Failed to create a counter.")
+        } else {
+            return;
+        }
+    } catch (error) {
+        console.log(error)
+        return;
+    }
+}
+createCounter()
 const ScheduleSchema = Schema({
     _id: Number,
     event_id: {

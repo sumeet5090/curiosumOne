@@ -5,29 +5,45 @@
       <div class="row justify-content-center">
         <div class="col-md-8">
           <card>
-            <b-form @submit="onSubmit" @reset="onReset">
+            <b-form @submit.prevent="onSubmit" @reset.prevent="onReset">
               <b-form-group id="form-eventname" label="Event Name:" label-for="form-eventname--input" description="What's the event called?">
                 <b-form-input id="form-eventname--input" type="text" v-model="form.event_name" required placeholder="Enter event name"></b-form-input>
               </b-form-group>
-              <b-form-group id="form-eventdate" label="Event Date:" label-for="form-eventdate--input" description="When is the event?">
-                <b-form-input id="form-eventdate--input" type="text" v-model="form.event_date" required placeholder="Enter date"></b-form-input>
+              <b-form-group id="form-start-date" label="Start date:" label-for="form-start-date--input">
+                <base-input id="form-start-date--input" addon-left-icon="fa fa-calendar">
+                  <flatpickr slot-scope="{focus, blur}" @on-open="focus" @on-close="blur" :config="{altInput: true, dateFormat: 'Z', altFormat: 'J F Y' }" class="form-control text-dark datepicker" v-model="form.event_start_date"></flatpickr>
+                </base-input>
+              </b-form-group>
+              <b-form-group id="form-end-date" label="End date:" label-for="form-end-date--input">
+                <base-input id="form-end-date--input" addon-left-icon="fa fa-calendar">
+                  <flatpickr slot-scope="{focus, blur}" @on-open="focus" @on-close="blur" :config="{altInput: true, dateFormat: 'Z', altFormat: 'J F Y' }" class="form-control text-dark datepicker" v-model="form.event_end_date"></flatpickr>
+                </base-input>
               </b-form-group>
               <b-form-group id="form-eventvenue" label="Event Venue:" label-for="form-eventvenue--input" description="Where will the event take place?">
                 <b-form-input id="form-eventvenue--input" type="text" v-model="form.event_venue" required placeholder="Enter place"></b-form-input>
               </b-form-group>
-              <b-form-group id="form-eventorganizers" label="Event organizers:" label-for="form-eventorganizers--input" description="Where will the event take place?">
-                <!-- <b-badge v-for="org in form.event_organizers" :key="org.id" variant="primary" class="mb-1">
+              <!-- <b-form-group id="form-eventorganizers" label="Event organizers:" label-for="form-eventorganizers--input" description="Where will the event take place?">
+                <b-badge v-for="org in form.event_organizers" :key="org.id" variant="primary" class="mb-1">
                   <span slot="text">
                     Hello {{org.name}}
                 </span>
                 <span slot="icon" @click.prevent="dropOrganizer(org)" class="cursor-pointer">
                     <i class="fa fa-times"></i>
                 </span>
-                </b-badge> -->
+                </b-badge>
                 <b-form-input id="form-eventorganizers--input" type="text" v-model="form.orgranizer" required placeholder="Enter organizers"></b-form-input>
+              </b-form-group> -->
+              <b-form-group id="form-eventlink" label="Event link:" label-for="form-eventlink--input" description="Link to official webpage for event">
+                <b-form-input id="form-eventlink--input" type="text" v-model="form.event_link" required placeholder="Enter link"></b-form-input>
               </b-form-group>
               <b-form-group id="form-eventorganizers-list">
               </b-form-group>
+              <b-alert variant="danger" dismissible :show="errors.length > 0" @dismissed="showDismissibleAlert=false">
+                <div v-for="error in errors" :key="error">{{error}}</div>
+              </b-alert>
+              <b-alert variant="success" :show="!!success_msg">
+                <div>{{success_msg}}</div>
+              </b-alert>
               <b-button type="submit" variant="primary">Update</b-button>
               <b-button type="reset" variant="danger">Reset</b-button>
             </b-form>
@@ -40,34 +56,58 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import flatPicker from "vue-flatpickr-component";
+import "flatpickr/dist/flatpickr.css";
+import {
+  mapActions,
+  mapGetters
+} from "vuex";
 export default {
+  components: {
+    flatpickr: flatPicker
+  },
   data() {
     return {
       form: {
-        event_name: "",
-        event_date: "",
-        event_venue: "",
-        event_link: "",
-        orgranizer: "",
-        event_organizers: []
-      }
+        event_name: null,
+        event_start_date: null,
+        event_end_date: null,
+        event_venue: null,
+        event_link: null
+      },
+      success_msg: "",
+      errors: []
     };
   },
   computed: {
-    ...mapGetters(['currentUser', 'isAdmin'])
+    ...mapGetters(["currentUser", "isAdmin"])
   },
   methods: {
     ...mapActions(["postReq"]),
     async onSubmit() {
-        try {
-            let res = await this.postReq({
-                url: url,
-                body: {}
-            })
-        } catch (error) {
-            
+      try {
+        this.success_msg = null
+        this.errors = []
+        let url = "/api/event/create"
+        let res = await this.postReq({
+          url: url,
+          body: {
+            event_name: this.form.event_name,
+            start_date: this.form.event_start_date,
+            end_date: this.form.event_end_date,
+            event_venue: this.form.event_venue,
+            event_link: this.form.event_link
+          }
+        });
+        if (res.success) {
+          this.success_msg = res.message
+        } else {
+          this.errors.push(res.message)
         }
+      } catch (error) {
+        console.log(error)
+        this.errors.push("Couldn't reach server. Try again later.")
+      }
     },
     onReset() {},
     dropOrganizer(org) {

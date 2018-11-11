@@ -7,6 +7,8 @@ let keys = {
             user: process.env.DB_USER || "frozen",
 			pass: process.env.DB_PASSWORD || "root",
             useNewUrlParser: true,
+            useFindAndModify: false,
+            useCreateIndex: true,
             authSource: process.env.DB_AUTH_DATABASE
         }
     },

@@ -221,15 +221,15 @@ const createEvent = async (req, res) => {
             name: body.event_name,
             venue: body.event_venue,
             organizer: edited,
-            link: body.event_link
+            link: body.event_link,
+            start_date: body.start_date,
+            event_date: body.end_date
         })
         let saved = await newEvent.save()
         if (saved) {
-            return res.send({
-                event: newEvent
-            })
+            return Response.success(res, {message: "Created a event!"}, 200)
         }
-        return res.send({ message: "failed to create an event" })
+        return res.Response.failed(res, {message: "failed to create an event" }, 300)
     } catch (error) {
         console.log(error)
         return res.sendStatus(500)
