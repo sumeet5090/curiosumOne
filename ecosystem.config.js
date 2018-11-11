@@ -27,7 +27,7 @@ module.exports = {
       repo : 'git@github.com:frozen4code/mec_website.git',
       path : '~/prod/mec_website',
       "forward-agent": true,
-      'post-deploy' : 'yarn && yarn build && pm2 startOrRestart ecosystem.config.js --env production'
+      'post-deploy' : 'yarn && yarn build && pm2 startOrRestart ecosystem.config.js --env production --update-env'
     }
   }
 };
