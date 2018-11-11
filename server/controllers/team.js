@@ -1,5 +1,6 @@
 const User = require('./../models/user.model')
 const Team = require('./../models/team.model')
+const Car = require('./../models/car.model')
 const Token = require('./../models/token.model')
 const Response = require('./../services/response')
 const sgMail = require('@sendgrid/mail')
@@ -34,50 +35,54 @@ const getOne = async function (req, res) {
 const create = async function (req, res) {
   let body = req.body
   try {
-    let users = body.user_ids
-    users.push(String(req.user._id))
-    let getUser = await User.findOne({ _id: req.user })
-    if (getUser.team) {
-      return res.sendStatus(405)
-    }
-    let newTeam = {
-      category: body.category || 'combustion',
-      team_name: body.team_name,
-      bio: body.team_bio,
-      institution: body.institution,
-      location: body.location,
-      country: body.country,
-      website_url: body.website_url,
-      social: body.social,
-      captain_id: req.user._id,
-    }
-    let team = await new Team(newTeam).save()
-    if (team) {
-      let output = await getUser.updateOne({ team: team._id }).exec()
-      console.log(team.team_name)
-      if (output.nModified >= 1 && output.ok == 1) {
-        for (let i=0; i<(body.user_emails).length; i++){
-          console.log(body.user_emails[i])
-          let token = await new Token({
-            user_id: users[i],
-            team_id: team._id,
-            token: crypto.randomBytes(16).toString('hex')
-          }).save()
-          if(token){
-            let genLink = 'http://'+req.headers.host+'\/api\/team\/confirmation\/'+token.token+'\n'
-            let msg = {
-              to: body.user_emails[i],
-              from: 'no-reply@mobilityeng.in',
-              subject: `Team Invitiation for <${team.team_name}>`,
-              text: `Hey ${body.user_emails[i]},\nYou have been invited to join the team ${team.team_name}.\nClick on the link to join:\n${genLink}`,
-              html: `Hey <strong>${body.user_emails[i]},</strong><br/><p>You have been invited to join the team ${team.team_name}</p><br/><p>Click on the <a href="${genLink}">link</a> to join.</p>.`
+    let car = await new Car({
+      car_number: body.car_number
+    }).save()
+    if (car) {
+      let newTeam = {
+        category: body.category || 'combustion',
+        team_name: body.team_name,
+        bio: body.team_bio,
+        institution: body.institution,
+        location: body.location,
+        country: body.country,
+        website_url: body.website_url,
+        social: body.social,
+        car_id: car._id,
+        team_captain_email: body.team_captain_email,
+        team_captain_full_name: body.team_captain_full_name
+      }
+      let team = await new Team(newTeam).save()
+      if (team) {
+        let output = await User.updateOne({ team: team._id }).exec()
+        await car.updateOne({team_id: team._id}).exec()        
+        if (output.nModified >= 1 && output.ok == 1) {
+          if (body.user_emails) {
+            for (let i = 0; i < (body.user_emails).length; i++) {
+              console.log(body.user_emails[i])
+              let token = await new Token({
+                user_id: users[i],
+                team_id: team._id,
+                token: crypto.randomBytes(16).toString('hex')
+              }).save()
+              if (token) {
+                let genLink = 'http://' + req.headers.host + '\/api\/team\/confirmation\/' + token.token + '\n'
+                let msg = {
+                  to: body.user_emails[i],
+                  from: 'no-reply@mobilityeng.in',
+                  subject: `Team Invitiation for <${team.team_name}>`,
+                  text: `Hey ${body.user_emails[i]},\nYou have been invited to join the team ${team.team_name}.\nClick on the link to join:\n${genLink}`,
+                  html: `Hey <strong>${body.user_emails[i]},</strong><br/><p>You have been invited to join the team ${team.team_name}</p><br/><p>Click on the <a href="${genLink}">link</a> to join.</p>.`
+                }
+                await sgMail.send(msg)
+              }
             }
-            await sgMail.send(msg)
           }
+          return res.send({ message: "Created new team" })
         }
-        return res.send({ message: "Created new team" })
       }
     }
+
     return res.sendStatus(304)
   } catch (error) {
     console.log(error)
@@ -85,43 +90,52 @@ const create = async function (req, res) {
   }
 }
 
+const addCaptain = async (req, res) => {
+  let id = req.params.team_id, team, captain
+
+}
+
+const addTeamMembers = async function (req, res) {
+  let id = req.params.team_id, team, user, users
+}
+
 const confirmToken = async function (req, res) {
-  let _token = req.params.token, user, team, token, user_out, user_updated=false, team_out, team_updated=false
-  try{
-    token = await Token.findOne({token: _token})
+  let _token = req.params.token, user, team, token, user_out, user_updated = false, team_out, team_updated = false
+  try {
+    token = await Token.findOne({ token: _token })
     if (token) {
-      user = await User.findOne({_id: token.user_id})
-      if(user){
-        team = await Team.findOne({_id: token.team_id})
-        if(team) {
-          if(user.team == team._id){
+      user = await User.findOne({ _id: token.user_id })
+      if (user) {
+        team = await Team.findOne({ _id: token.team_id })
+        if (team) {
+          if (user.team == team._id) {
             user_updated = true
           } else {
-            user_out = await user.updateOne({team: team._id}).exec()
+            user_out = await user.updateOne({ team: team._id }).exec()
             if (user_out.nModified >= 1 && user_out.ok == 1) {
               user_updated = true
             }
           }
-          if(team.users.indexOf(user._id) > -1 ){
+          if (team.users.indexOf(user._id) > -1) {
             team_updated = true
           } else {
-            team_out = await team.updateOne({$push: {users: user._id}}).exec()
+            team_out = await team.updateOne({ $push: { users: user._id } }).exec()
             if (team_out.nModified >= 1 && team_out.ok == 1) {
               team_updated = true
             }
           }
           if (user_updated && team_updated) {
-            await Token.deleteOne({_id: token._id})
-            return Response.success(res, {message: "Successfully joined team."}, 202)
+            await Token.deleteOne({ _id: token._id })
+            return Response.success(res, { message: "Successfully joined team." }, 202)
           }
-          return Response.success(res, {message: "Try again."}, 202)
+          return Response.success(res, { message: "Try again." }, 202)
         }
       }
     }
-    return Response.failed(res, {message: "Invalid token"}, )
-  } catch(error){
+    return Response.failed(res, { message: "Invalid token" })
+  } catch (error) {
     console.log(error)
-    return Response.failed(res, { message: "Internal Server Error" }, 500)    
+    return Response.failed(res, { message: "Internal Server Error" }, 500)
   }
 }
 

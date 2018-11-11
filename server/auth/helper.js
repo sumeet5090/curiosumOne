@@ -1,6 +1,7 @@
 const User = require('./../models/user.model')
+const Team = require('./../models/team.model')
 
-Array.prototype.contains = function(element){
+Array.prototype.contains = function (element) {
   return this.indexOf(element) > -1;
 }
 
@@ -17,8 +18,8 @@ const hasRole = (role) => {
     throw new Error("Required role needs to be set")
   return function (req, res, next) {
     return isAuthenticated(req, res, () => {
-      if (req.user && req.user.role){
-        if(req.user.role.contains(role)){
+      if (req.user && req.user.role) {
+        if (req.user.role.contains(role)) {
           return next()
         }
       }
@@ -39,6 +40,25 @@ const isVolunteer = () => {
   return hasRole("volunteer")
 }
 
+const linkTeamCaptain = async (user, done) => {
+  try {
+    let team = await Team.findOne({ team_captain_email: user.email })
+    if (team) {
+      user.team = team._id
+      let saved = await user.save()
+      team.captain = user._id
+      team.team_captain_email = ''
+      let team_saved = await team.save()
+      if (team_saved && saved) {
+        return done(null, user)
+      }
+    }
+    return done(null, false)
+  } catch (error) {
+    return done(error, false)
+  }
+}
+
 const linkSocialToAccount = async (opts) => {
   let req = opts.req,
     accessToken = opts.accessToken,
@@ -49,7 +69,6 @@ const linkSocialToAccount = async (opts) => {
     username = opts.username,
     email = opts.email,
     userData = opts.userData
-    console.log(profile)
   if (req.user) {
     let search = {}
     search[`socialLinks.${provider}`] = profile.id
@@ -59,7 +78,7 @@ const linkSocialToAccount = async (opts) => {
         if (exisitingUser._id != req.user._id) {
           return done(null, false)
         }
-        return done(exisitingUser)
+        return linkTeamCaptain(exisitingUser, done)
       }
       let user = await User.findOne({ _id: req.user._id })
       if (!user) {
@@ -70,8 +89,9 @@ const linkSocialToAccount = async (opts) => {
       user.profile = user.profile || {}
       user.profile.picture = user.profile.picture || userData.picture
       user.profile.location = user.profile.location || userData.location
+
       await user.save()
-      return done(null, user)
+      return linkTeamCaptain(user, done)
     } catch (error_out) {
       console.log('Error out' + error_out)
       return done(error_out, false)
@@ -86,7 +106,7 @@ const linkSocialToAccount = async (opts) => {
         if (existingUser.status !== 1) {
           return done()
         }
-        return done(null, existingUser)
+        return linkTeamCaptain(existingUser, done)
       }
       if (!email) {
         return done(null, false, { message: "No email provided" })
@@ -104,7 +124,7 @@ const linkSocialToAccount = async (opts) => {
           user.profile.picture = user.profile.picture || userData.picture
           user.profile.location = user.profile.location || userData.location
           let saved = await user.save()
-          return done(null, saved)
+          return linkTeamCaptain(saved, done)
         }
         let user = new User({
           first_name: userData.first_name,
@@ -119,7 +139,7 @@ const linkSocialToAccount = async (opts) => {
           role: ["participant"]
         });
         let saved = await user.save()
-        return done(null, user)
+        return linkTeamCaptain(saved, done)
       } catch (in_error) {
         console.log('in_error' + in_error)
         return done(in_error, false)

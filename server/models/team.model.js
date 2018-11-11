@@ -64,6 +64,12 @@ let TeamSchema = Schema({
     type: Number,
     ref: 'Event'
   }],
+  team_captain_email: {
+    type: String
+  },
+  team_captain_full_name: {
+    type: String
+  }
 }, {
     timestamps: true
   });
