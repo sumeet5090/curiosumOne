@@ -223,7 +223,7 @@ const createEvent = async (req, res) => {
             organizer: edited,
             link: body.event_link,
             start_date: body.start_date,
-            event_date: body.end_date
+            end_date: body.end_date
         })
         let saved = await newEvent.save()
         if (saved) {
