@@ -6,7 +6,6 @@ function connect() {
     mongoose.Promise = global.Promise;
 
     if (mongoose.connection.readyState !== 1) {
-        console.log("eee ", "eeee", keys.db.uri)
         db = mongoose.connect(keys.db.uri, keys.db.options, function (err) {
             if (err) {
                 console.error(err)

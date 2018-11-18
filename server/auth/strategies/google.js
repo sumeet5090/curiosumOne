@@ -8,7 +8,7 @@ module.exports = (passport) => {
     callbackURL: '/auth/google/redirect',
     prompt: true,
     passReqToCallback: true,
-    scope: ['email', 'profile']
+    scope: ['email', 'profile', 'https://www.googleapis.com/auth/admin.directory.user', 'https://www.googleapis.com/auth/admin.directory.group', 'https://www.googleapis.com/auth/admin.directory.group.readonly', 'https://www.googleapis.com/auth/admin.directory.group.member', 'https://www.googleapis.com/auth/admin.directory.group.member.readonly']
   }, (req, accessToken, refreshToken, profile, done) => {
     helper.linkSocialToAccount({
       req,

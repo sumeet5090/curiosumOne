@@ -5,14 +5,14 @@ const router = Router()
 router.get('/auth/google', passport.authenticate('google'))
 
 router.get('/login', (req, res) => {
-    if(req.user){
+    if (req.user) {
         return res.redirect('/')
     } else {
         return res.redirect('/auth/google')
     }
 })
 
-router.get('/auth/google/redirect', passport.authenticate('google', { failureRedirect: '/', successRedirect: '/' }))
+router.get('/auth/google/redirect', passport.authenticate('google', { authInfo: true, failureRedirect: '/login', successRedirect: '/' }))
 
 router.post('/api/logout', (req, res) => {
     req.logout();

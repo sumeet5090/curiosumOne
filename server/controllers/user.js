@@ -1,6 +1,17 @@
+const {google} = require('googleapis')
 const User = require('./../models/user.model')
 const helper = require('./../auth/helper')
 const Response = require('./../services/response')
+
+const client_id = process.env.GOOGLE_GROUP_CLIENT_ID
+const client_secret = process.env.GOOGLE_GROUP_CLIENT_SECRET
+
+const auth = google.auth.OAuth2(client_id, client_secret)
+
+const admin = google.admin({
+  version: "directory_v1",
+  auth
+})
 
 const getAll = async function (req, res) {
   try {

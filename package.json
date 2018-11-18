@@ -11,7 +11,6 @@
     "build": "nuxt build",
     "start": "cross-env NODE_ENV=production node server/index.js",
     "generate": "nuxt generate",
-    "server": "cross-env NODE_ENV=production nodemon server/index.js --watch server",
     "deploy": "pm2 deploy production"
   },
   "dependencies": {
@@ -30,6 +29,7 @@
     "express": "^4.16.3",
     "express-session": "^1.15.6",
     "flatpickr": "^4.5.2",
+    "googleapis": "27",
     "jquery": "3",
     "jsonwebtoken": "^8.3.0",
     "moment": "^2.22.2",
@@ -37,7 +37,7 @@
     "mongoose-validator": "^2.1.0",
     "nodemailer": "^4.6.8",
     "nouislider": "^12.0.0",
-    "nuxt": "^2.2.0",
+    "nuxt": "^2.3.1",
     "passport": "^0.4.0",
     "passport-google-oauth": "^1.0.0",
     "passport-local": "^1.0.0",
@@ -63,6 +63,7 @@
     "style-loader": "^0.23.1",
     "url-loader": "^1.1.2",
     "vue-loader": "^15.4.2",
-    "vue-template-compiler": "^2.5.17"
+    "vue-template-compiler": "^2.5.17",
+    "webpack": "^4.25.1"
   }
 }

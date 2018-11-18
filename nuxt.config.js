@@ -2,7 +2,7 @@ const pkg = require('./package')
 const path = require('path')
 const result = require('dotenv').config({ path: path.join(__dirname, '.env') })
 module.exports = {
-  mode: 'universal',
+  mode: process.env.NODE_ENV || 'production',
 
   /*
    ** Headers of the page
@@ -101,8 +101,6 @@ module.exports = {
      */
     vendor: ['bootstrap-vue', 'vue-flatpickr-component', 'vue2-transition', 'vue-lazyload',],
     extend(config, ctx) {
-      config.resolve.alias['vue'] = path.resolve(__dirname, './node_modules/vue/dist/vue.js')
-      config.module.noParse = [/vue\.js/]
       
     }
   }

@@ -13,5 +13,8 @@ module.exports = function (app, mongooseConnection) {
         secret: keys.session.secret,
         resave: false,
         saveUninitialized: false,
+        cookie: {
+            expires: keys.session.maxAge
+        }
     }))
 }

@@ -53,7 +53,7 @@ const linkTeamCaptain = async (user, done) => {
         return done(null, user)
       }
     }
-    return done(null, false)
+    return done(null, user)
   } catch (error) {
     return done(error, false)
   }

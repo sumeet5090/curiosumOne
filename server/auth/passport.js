@@ -19,5 +19,4 @@ module.exports = function(app) {
         })        
     })
     require('./strategies/google')(passport)
-    require('./strategies/local')(passport)
 }
