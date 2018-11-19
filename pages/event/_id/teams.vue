@@ -8,7 +8,7 @@
             <base-pagination :page-count="pageCount" v-model="table.currentPage"></base-pagination>
         </b-row> -->
         <b-row>
-            <b-table outlined responsive bordered hover :items="teams" :fields="fields" :per-page="table.perPage" :current-page="table.currentPage">
+            <b-table outlined responsive bordered hover :items="teams" :fields="fields">
                 <template slot="category" slot-scope="data">
                     <div class>
                         <img v-lazy="combustion_icon" alt="Combustion" class="img-thumbnail icon-category" v-show="data.item.category == 'combustion'"/>
@@ -55,7 +55,7 @@ export default {
     return {
       table: {
         currentPage: 1,
-        perPage: 50
+        perPage: 100
       },
       combustion_icon: require("@/assets/images/icons/category/combustion.svg"),
       electric_icon: require("@/assets/images/icons/category/electric.svg"),

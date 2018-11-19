@@ -48,6 +48,17 @@
           <div class="row mt-4">
             <div class="col-lg-4 mt-1">
               <card class="border-0" shadow body-classes="py-3">
+                <icon name="fa fa-link" type="info" rounded class="mb-4">
+                </icon>
+                <h6 class="text-info text-uppercase">{{event.name}}</h6>
+                <p class="description mt-3">Visit event website!</p>
+                <a class="btn btn-info mt-2" :href="event.link" target="_blank">
+                  Click Here
+                </a>
+              </card>
+            </div>
+            <div class="col-lg-4 mt-1">
+              <card class="border-0" shadow body-classes="py-3">
                 <icon name="fa fa-trophy" type="primary" rounded class="mb-4">
                 </icon>
                 <h6 class="text-primary text-uppercase">Registered Teams</h6>
@@ -69,7 +80,7 @@
               </card>
             </div>
             <div class="col-lg-4 mt-1">
-              <card class="border-0" shadow body-classes="py-3">
+              <card class="border-0" shadow body-classes="py-3" v-show="showMoreCards">
                 <icon name="fa fa-calendar" type="success" rounded class="mb-4">
                 </icon>
                 <h6 class="text-success text-uppercase">Schedule</h6>
@@ -81,35 +92,24 @@
             </div>
             <div class="col-lg-4 mt-1" v-show="showMoreCards">
               <card class="border-0" shadow body-classes="py-3">
-                <icon name="fa fa-trophy" type="success" rounded class="mb-4">
+                <icon name="fa fa-user-clock" type="dark" rounded class="mb-4">
                 </icon>
-                <h6 class="text-success text-uppercase">Schedule</h6>
-                <p class="description mt-3">Get the current schedule!</p>
-                <base-button tag="a" href="" type="success" class="mt-4">
-                  Learn more
-                </base-button>
+                <h6 class="text-dark text-uppercase">Tech Updates</h6>
+                <p class="description mt-3">Get tech updates!</p>
+                <router-link tag="a" class="btn btn-light mt-2 text-dark" :to="{name: 'event-id-tech-updates', params: {id: event._id}}">
+                  Click Here
+                </router-link>
               </card>
             </div>
             <div class="col-lg-4 mt-1" v-show="showMoreCards">
               <card class="border-0" shadow body-classes="py-3">
-                <icon name="fa fa-trophy" type="success" rounded class="mb-4">
+                <icon name="fa fa-clock" type="default" rounded class="mb-4">
                 </icon>
-                <h6 class="text-success text-uppercase">Schedule</h6>
-                <p class="description mt-3">Get the current schedule!</p>
-                <base-button tag="a" href="" type="success" class="mt-4">
-                  Learn more
-                </base-button>
-              </card>
-            </div>
-            <div class="col-lg-4 mt-1" v-show="showMoreCards">
-              <card class="border-0" shadow body-classes="py-3">
-                <icon name="fa fa-trophy" type="success" rounded class="mb-4">
-                </icon>
-                <h6 class="text-success text-uppercase">Schedule</h6>
-                <p class="description mt-3">Get the current schedule!</p>
-                <base-button tag="a" href="" type="success" class="mt-4">
-                  Learn more
-                </base-button>
+                <h6 class="text-default text-uppercase">Live Updates</h6>
+                <p class="description mt-3">Check out the live updates!</p>
+                <router-link tag="a" class="btn btn-default mt-2" :to="{name: 'event-id-tech-updates', params: {id: event._id}}">
+                  Click Here
+                </router-link>
               </card>
             </div>
           </div>
@@ -128,10 +128,12 @@
 
 <script>
 import api from "@/services/Event.service.js";
-import { mapGetters } from "vuex";
+import {
+  mapGetters
+} from "vuex";
 import moment from "moment";
 export default {
-  head(){
+  head() {
     return {
       // link: [
       //   { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Oswald' }
@@ -143,9 +145,14 @@ export default {
       showMoreCards: false
     };
   },
-  async asyncData({ $axios, error }) {
+  async asyncData({
+    $axios,
+    error
+  }) {
     try {
-      const { data } = await $axios.get(`/api/event`, {
+      const {
+        data
+      } = await $axios.get(`/api/event`, {
         validateStatus: status => {
           return status < 400;
         }
@@ -184,7 +191,7 @@ export default {
   },
   beforeMount() {},
   mounted() {
-    this.$nextTick(function() {
+    this.$nextTick(function () {
       this.fetchEvents();
     });
   }
