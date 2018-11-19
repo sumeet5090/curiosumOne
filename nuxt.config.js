@@ -2,8 +2,8 @@ const pkg = require('./package')
 const path = require('path')
 const result = require('dotenv').config({ path: path.join(__dirname, '.env') })
 module.exports = {
-  mode: process.env.NODE_ENV || 'production',
-
+  mode: 'universal',
+  dev: (process.env.NODE_ENV !== 'production'),
   /*
    ** Headers of the page
    */

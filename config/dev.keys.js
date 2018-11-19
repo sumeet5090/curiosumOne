@@ -13,8 +13,8 @@ let keys = {
         }
     },
     google: {
-        clientID: '821702270771-jvo6konvg5drjege6ucn83c9vq13u9qa.apps.googleusercontent.com',
-        clientSecret: 'vZ28ZCS7KRxbGSak9sZQkBvd'
+        clientID: process.env.GOOGLE_CLIENT_ID || '821702270771-jvo6konvg5drjege6ucn83c9vq13u9qa.apps.googleusercontent.com',
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'vZ28ZCS7KRxbGSak9sZQkBvd'
     },
     bcrypt: {
         salt: 12
