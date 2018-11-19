@@ -1,5 +1,5 @@
 module.exports = [{
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: "01",
   team_name: "Orion Racing India",
   institution: {
@@ -18,7 +18,7 @@ module.exports = [{
   team_captain_email: "shreya.rajmane@orion-racing.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: "02",
   team_name: "Team Defianz Racing",
   institution: {
@@ -37,7 +37,7 @@ module.exports = [{
   team_captain_email: "tushargirotra21@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: "03",
   team_name: "Raftar Formula Racing",
   institution: {
@@ -56,7 +56,7 @@ module.exports = [{
   team_captain_email: "pharish97@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: "04",
   team_name: "DJS Racing",
   institution: {
@@ -75,7 +75,7 @@ module.exports = [{
   team_captain_email: "djsrceo18@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: "05",
   team_name: "Stallion Motorsport",
   institution: {
@@ -94,7 +94,7 @@ module.exports = [{
   team_captain_email: "stallionmotorsports4.0@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: "06",
   team_name: "Team Fateh",
   institution: {
@@ -113,7 +113,7 @@ module.exports = [{
   team_captain_email: "mayank.kad7@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: "07",
   team_name: "Camber Racing",
   institution: {
@@ -132,7 +132,7 @@ module.exports = [{
   team_captain_email: "captain.camberracing@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: "08",
   team_name: "Team Haya Racing",
   institution: {
@@ -151,7 +151,7 @@ module.exports = [{
   team_captain_email: "kalyan.simha7@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: "09",
   team_name: "Vishwaracers",
   institution: {
@@ -170,7 +170,7 @@ module.exports = [{
   team_captain_email: "sids797@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: "10",
   team_name: "Team Roadrunner",
   institution: {
@@ -189,7 +189,7 @@ module.exports = [{
   team_captain_email: "abinash.vk@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: "12",
   team_name: "Team Srijan",
   institution: {
@@ -208,7 +208,7 @@ module.exports = [{
   team_captain_email: "mayank662@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: "13",
   team_name: "Resonance Racing",
   institution: {
@@ -227,7 +227,7 @@ module.exports = [{
   team_captain_email: "sd.resonanceracing@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: "14",
   team_name: "Team KART",
   institution: {
@@ -246,7 +246,7 @@ module.exports = [{
   team_captain_email: "charandeepbagga@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: "15",
   team_name: "Team Nequit",
   institution: {
@@ -265,7 +265,7 @@ module.exports = [{
   team_captain_email: "bankarjaykumar@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: "16",
   team_name: "GTU Motorsports",
   institution: {
@@ -284,7 +284,7 @@ module.exports = [{
   team_captain_email: "prashantpatel2597@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: "17",
   team_name: "Force Ikshvaku",
   institution: {
@@ -303,7 +303,7 @@ module.exports = [{
   team_captain_email: "vikhyathadventure@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: "18",
   team_name: "DIT Motoracing",
   institution: {
@@ -322,7 +322,7 @@ module.exports = [{
   team_captain_email: "shauryaishaan13@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 19,
   team_name: "VeerRacerss",
   institution: {
@@ -341,7 +341,7 @@ module.exports = [{
   team_captain_email: "debraj.mitra.12@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 20,
   team_name: "Racing Nemos",
   institution: {
@@ -360,7 +360,7 @@ module.exports = [{
   team_captain_email: "gxyf106@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 21,
   team_name: "Team Mechismu",
   institution: {
@@ -379,7 +379,7 @@ module.exports = [{
   team_captain_email: "dipubarad52@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 23,
   team_name: "SPCE Racing",
   institution: {
@@ -398,7 +398,7 @@ module.exports = [{
   team_captain_email: "sdsavla169@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 24,
   team_name: "Ethan Racing",
   institution: {
@@ -417,7 +417,7 @@ module.exports = [{
   team_captain_email: "avinashmohanan345@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 25,
   team_name: "Team Lakshya",
   institution: {
@@ -436,7 +436,7 @@ module.exports = [{
   team_captain_email: "raghav.gupta700@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 26,
   team_name: "Velocita Racing",
   institution: {
@@ -455,7 +455,7 @@ module.exports = [{
   team_captain_email: "pranay.ketineni@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 27,
   team_name: "Team Octane Racing",
   institution: {
@@ -474,7 +474,7 @@ module.exports = [{
   team_captain_email: "teamoctaneracing2018@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 28,
   team_name: "Team Accelerons",
   institution: {
@@ -493,7 +493,7 @@ module.exports = [{
   team_captain_email: "varunlik30@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 30,
   team_name: "Team Revolution",
   institution: {
@@ -512,7 +512,7 @@ module.exports = [{
   team_captain_email: "kulkarnichaitanya88@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 31,
   team_name: "Team Corsa",
   institution: {
@@ -531,7 +531,7 @@ module.exports = [{
   team_captain_email: "sagar19961020@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 33,
   team_name: "Evolution",
   institution: {
@@ -550,7 +550,7 @@ module.exports = [{
   team_captain_email: "obashp@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 34,
   team_name: "Inspired Karters",
   institution: {
@@ -569,7 +569,7 @@ module.exports = [{
   team_captain_email: "f2016738@pilani.bits-pilani.ac.in"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 35,
   team_name: "CITizens Racing",
   institution: {
@@ -588,7 +588,7 @@ module.exports = [{
   team_captain_email: "citizensracing3@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 36,
   team_name: "Ashwa Racing",
   institution: {
@@ -607,7 +607,7 @@ module.exports = [{
   team_captain_email: "arf.admn@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 37,
   team_name: "Schnell Racing",
   institution: {
@@ -626,7 +626,7 @@ module.exports = [{
   team_captain_email: "harshkhattrri@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 38,
   team_name: "Team Infinity Racers",
   institution: {
@@ -645,7 +645,7 @@ module.exports = [{
   team_captain_email: "Shuklas328@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 39,
   team_name: "Team Mechnext Racing",
   institution: {
@@ -664,7 +664,7 @@ module.exports = [{
   team_captain_email: "tmrymca1969@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 40,
   team_name: "Formula MITE Racing",
   institution: {
@@ -683,7 +683,7 @@ module.exports = [{
   team_captain_email: "formulamite@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 41,
   team_name: "Veloce Racing",
   institution: {
@@ -702,7 +702,7 @@ module.exports = [{
   team_captain_email: "pushkarsharma1819@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 42,
   team_name: "Triumphant Racers",
   institution: {
@@ -721,7 +721,7 @@ module.exports = [{
   team_captain_email: "medesaipankaj@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 43,
   team_name: "Acceleracers",
   institution: {
@@ -740,7 +740,7 @@ module.exports = [{
   team_captain_email: "tanmaygadgil97@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 44,
   team_name: "Shaurya Racing",
   institution: {
@@ -759,7 +759,7 @@ module.exports = [{
   team_captain_email: "khottejas@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 45,
   team_name: "Manab Racing",
   institution: {
@@ -778,7 +778,7 @@ module.exports = [{
   team_captain_email: "manabracing.hit@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 46,
   team_name: "Bullethawk Racing",
   institution: {
@@ -797,7 +797,7 @@ module.exports = [{
   team_captain_email: "himanshu112711@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 48,
   team_name: "Team Grease Monkeys",
   institution: {
@@ -816,7 +816,7 @@ module.exports = [{
   team_captain_email: "kedar.khapre@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 49,
   team_name: "Team Vegadooth Racing",
   institution: {
@@ -835,7 +835,7 @@ module.exports = [{
   team_captain_email: "sharanu.me.h@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 50,
   team_name: "Team Super Ignite",
   institution: {
@@ -854,7 +854,7 @@ module.exports = [{
   team_captain_email: "anildharamoni@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 51,
   team_name: "CRCE Formula Racing",
   institution: {
@@ -873,7 +873,7 @@ module.exports = [{
   team_captain_email: "bhaveshgami98@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 52,
   team_name: "NITKRacing",
   institution: {
@@ -892,7 +892,7 @@ module.exports = [{
   team_captain_email: "captain.nitkracing@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 53,
   team_name: "Team Racing Pioneers",
   institution: {
@@ -911,7 +911,7 @@ module.exports = [{
   team_captain_email: "ajinkyakule8@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 54,
   team_name: "Team Prahaar Racing",
   institution: {
@@ -930,7 +930,7 @@ module.exports = [{
   team_captain_email: "wadate.rohit@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 55,
   team_name: "Illuminati Racers",
   institution: {
@@ -949,7 +949,7 @@ module.exports = [{
   team_captain_email: "singhdevbrat98@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 56,
   team_name: "Traxion Racing",
   institution: {
@@ -968,7 +968,7 @@ module.exports = [{
   team_captain_email: "srmithun30@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 57,
   team_name: "Automantra Racing",
   institution: {
@@ -987,7 +987,7 @@ module.exports = [{
   team_captain_email: "automantraracing@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 58,
   team_name: "Team Dhrutaha",
   institution: {
@@ -1006,7 +1006,7 @@ module.exports = [{
   team_captain_email: "automobile.sra@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 59,
   team_name: "Kreinto Racing",
   institution: {
@@ -1025,7 +1025,7 @@ module.exports = [{
   team_captain_email: "yashwanthyarra@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 60,
   team_name: "T-Rex Motorsports",
   institution: {
@@ -1044,7 +1044,7 @@ module.exports = [{
   team_captain_email: "sagar.shinde.5257@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 61,
   team_name: "Team Arion",
   institution: {
@@ -1063,7 +1063,7 @@ module.exports = [{
   team_captain_email: "Svivekkumar007@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 62,
   team_name: "Team Mirage",
   institution: {
@@ -1082,7 +1082,7 @@ module.exports = [{
   team_captain_email: "meankitpatil01@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 63,
   team_name: "Indominus Motorsport",
   institution: {
@@ -1101,7 +1101,7 @@ module.exports = [{
   team_captain_email: "iamjayant1997@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 65,
   team_name: "DYP Motorsports",
   institution: {
@@ -1120,7 +1120,7 @@ module.exports = [{
   team_captain_email: "raj631998@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 66,
   team_name: "MPSTME Phoenix Racing",
   institution: {
@@ -1139,7 +1139,7 @@ module.exports = [{
   team_captain_email: "amanpreet15singh.asp@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 68,
   team_name: "Formula Manipal",
   institution: {
@@ -1158,7 +1158,7 @@ module.exports = [{
   team_captain_email: "formulamanipal96@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 69,
   team_name: "Wrench Wielders Racing",
   institution: {
@@ -1177,7 +1177,7 @@ module.exports = [{
   team_captain_email: "jaydamani3@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 70,
   team_name: "Team RGIT Racing",
   institution: {
@@ -1196,7 +1196,7 @@ module.exports = [{
   team_captain_email: "hps6121996@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 71,
   team_name: "Pegasus Racing",
   institution: {
@@ -1215,7 +1215,7 @@ module.exports = [{
   team_captain_email: "pegasusracing08@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 72,
   team_name: "Hyperion Racing Team",
   institution: {
@@ -1234,7 +1234,7 @@ module.exports = [{
   team_captain_email: "vishal.stephens@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 74,
   team_name: "Team Rousing",
   institution: {
@@ -1253,7 +1253,7 @@ module.exports = [{
   team_captain_email: "chetan1234tule@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 75,
   team_name: "High Speed Karlsruhe",
   institution: {
@@ -1272,7 +1272,7 @@ module.exports = [{
   team_captain_email: "frieder.uerlings@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 76,
   team_name: "AeroX Motorsports",
   institution: {
@@ -1291,7 +1291,7 @@ module.exports = [{
   team_captain_email: "puneetgupta96.pg@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 77,
   team_name: "Infinity Motorsports",
   institution: {
@@ -1310,7 +1310,7 @@ module.exports = [{
   team_captain_email: "patrickautosm@gmail.com"
 },
 {
-  category: "combustion",
+  category: "combustion", events: [1],
   car_number: 78,
   team_name: "AGH Racing Team",
   institution: {

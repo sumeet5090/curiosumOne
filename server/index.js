@@ -34,6 +34,7 @@ async function start() {
   session(app, dbConn)
   // Passport
   passportInitialize(app)
+  require('./load/teams.js')()
   // Auth middlewares
   app.use('/', indexRouter)
   app.use('/api', apiRouter)
