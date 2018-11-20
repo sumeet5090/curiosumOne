@@ -1,5 +1,5 @@
 <template>
-<section class="section section-hero">
+<section class="section">
     <div class="container">
         <b-row class="justify-content-center">
             <div class="display-4 header-font">Registered Teams for <strong class="text-primary">{{event.name}}</strong></div>
@@ -11,8 +11,8 @@
             <b-table outlined responsive bordered hover :items="teams" :fields="fields">
                 <template slot="category" slot-scope="data">
                     <div class>
-                        <img v-lazy="combustion_icon" alt="Combustion" class="img-thumbnail icon-category" v-show="data.item.category == 'combustion'"/>
-                        <img v-lazy="electric_icon" alt="Electric" class="img-thumbnail icon-category" v-show="data.item.category == 'electric'"/>
+                        <img v-lazy="combustion_icon" class="img-thumbnail icon-category" v-show="data.item.category == 'combustion'"/>
+                        <img v-lazy="electric_icon" class="img-thumbnail icon-category" v-show="data.item.category == 'electric'"/>
                 </div>
                 </template>
                 <template slot="team_name" slot-scope="data">
@@ -23,9 +23,9 @@
                 </template>
                 <template slot="social" slot-scope="data">
                     <a v-if="data.item.website_url" :href="data.item.website_url" target="_blank"><icon name="fa fa-link" color="dark" size="sm"></icon></a>
-                    <a v-if="data.item.social.facebook" :href="data.item.social.facebook" target="_blank"><icon name="fa fa-facebook-official" style="color: #3B5999"  size="sm"></icon></a>
-                    <a v-if="data.item.social.twitter" :href="data.item.social.twitter" target="_blank"><icon name="fa fa-twitter" style="color: #1DA1F2"  size="sm"></icon></a>
-                    <a v-if="data.item.social.instagram" :href="data.item.social.instagram" target="_blank"><icon name="fa fa-instagram" color="danger" size="sm"></icon></a>
+                    <a v-if="data.item.social.facebook" :href="data.item.social.facebook" target="_blank"><icon name="fab fa-facebook" style="color: #3B5999"  size="sm"></icon></a>
+                    <a v-if="data.item.social.twitter" :href="data.item.social.twitter" target="_blank"><icon name="fab fa-twitter" style="color: #1DA1F2"  size="sm"></icon></a>
+                    <a v-if="data.item.social.instagram" :href="data.item.social.instagram" target="_blank"><icon name="fab fa-instagram" color="danger" size="sm"></icon></a>
                 </template>
             </b-table>
         </b-row>
@@ -150,6 +150,13 @@ export default {
   td {
     padding: 0.45rem;
     vertical-align: middle;
+  }
+}
+
+a {
+  .icon-sm {
+    width: 1rem !important;
+    height: 1rem !important;
   }
 }
 

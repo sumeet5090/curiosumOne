@@ -3,9 +3,22 @@ const Team = require('./../models/team.model')
 const Car = require('./../models/car.model')
 const Token = require('./../models/token.model')
 const Response = require('./../services/response')
-const sgMail = require('@sendgrid/mail')
+const nodemailer = require('nodemailer')
 const crypto = require('crypto')
-sgMail.setApiKey(process.env.SENDGRID);
+
+const smtpTransport = nodemailer.createTransport({
+  service: "gmail",
+    host: "smtp.gmail.com",
+    auth: {
+        type: 'OAuth2',
+        user: process.env.GMAIL_ID,
+        clientId: process.env.GMAIL_CLIENT_ID,
+        clientSecret: process.env.GMAIL_CLIENT_SECRET,
+        accessToken: process.env.GMAIL_ACCESS_TOKEN,
+        refreshToken: process.env.GMAIL_REFRESH_TOKEN
+    }
+})
+
 const getAll = async function (req, res) {
   try {
     let teams = await Team.find();
@@ -35,8 +48,9 @@ const getOne = async function (req, res) {
 const create = async function (req, res) {
   let body = req.body
   try {
+    let users = body.user_ids;
     let car = await new Car({
-      car_number: body.car_number
+      car_number: body.car_number || 1
     }).save()
     if (car) {
       let newTeam = {
@@ -49,17 +63,16 @@ const create = async function (req, res) {
         website_url: body.website_url,
         social: body.social,
         car_id: car._id,
-        team_captain_email: body.team_captain_email,
-        team_captain_full_name: body.team_captain_full_name
+        users: [req.user._id],
+        captain_id: req.user._id
       }
       let team = await new Team(newTeam).save()
       if (team) {
-        let output = await User.updateOne({ team: team._id }).exec()
+        let output = await User.findOneAndUpdate({_id: req.user._id}, { team: team._id })
         await car.updateOne({team_id: team._id}).exec()        
-        if (output.nModified >= 1 && output.ok == 1) {
+        if (output) {
           if (body.user_emails) {
             for (let i = 0; i < (body.user_emails).length; i++) {
-              console.log(body.user_emails[i])
               let token = await new Token({
                 user_id: users[i],
                 team_id: team._id,
@@ -67,14 +80,15 @@ const create = async function (req, res) {
               }).save()
               if (token) {
                 let genLink = 'http://' + req.headers.host + '\/api\/team\/confirmation\/' + token.token + '\n'
-                let msg = {
+                let teamLink = 'https://'+req.headers.host+'\/team\/'+team._id;
+                let mailOptions = {
+                  from: 'MEC Support',
                   to: body.user_emails[i],
-                  from: 'no-reply@mobilityeng.in',
                   subject: `Team Invitiation for <${team.team_name}>`,
-                  text: `Hey ${body.user_emails[i]},\nYou have been invited to join the team ${team.team_name}.\nClick on the link to join:\n${genLink}`,
-                  html: `Hey <strong>${body.user_emails[i]},</strong><br/><p>You have been invited to join the team ${team.team_name}</p><br/><p>Click on the <a href="${genLink}">link</a> to join.</p>.`
+                  generateTextFromHTML: true,
+                  html: `Hey <strong>${body.user_emails[i]},</strong><br/><p>You have been invited to join the team <a href="${teamLink}">${team.team_name}</a></p><br/><p>Click on the <a href="${genLink}">link</a> to join.</p>.`
                 }
-                await sgMail.send(msg)
+                await smtpTransport.sendMail(mailOptions)
               }
             }
           }
@@ -82,7 +96,6 @@ const create = async function (req, res) {
         }
       }
     }
-
     return res.sendStatus(304)
   } catch (error) {
     console.log(error)

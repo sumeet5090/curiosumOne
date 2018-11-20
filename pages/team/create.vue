@@ -1,7 +1,14 @@
 <template>
-<section class="section custom-gradient">
+<section class="section custom-gradient" v-if="showPage">
     <no-ssr>
-        <div class="container">
+        <div class="container" v-if="!!currentUser.team">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-sm-10 col-lg-6">
+                    <div class="lead text-center">Already in a team.</div>
+                </div>
+            </div>
+        </div>
+        <div class="container" v-if="!currentUser.team">
             <div class="row justify-content-center">
                 <card class="col-sm-10 col-md-8 col-lg-6">
                     <b-form @submit.prevent="onSubmit" @reset.prevent="onReset">
@@ -71,7 +78,7 @@
 
 <script>
 import {
-    mapActions
+    mapActions, mapGetters
 } from "vuex";
 export default {
     data() {
@@ -167,6 +174,12 @@ export default {
                 }
             }
             this.user_email = "";
+        }
+    },
+    computed: {
+        ...mapGetters(['currentUser']),
+        showPage() {
+            return !!this.currentUser ? true : false 
         }
     },
     mounted() {},

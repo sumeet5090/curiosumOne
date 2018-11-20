@@ -3,7 +3,7 @@ const path = require('path')
 const result = require('dotenv').config({ path: path.join(__dirname, '.env') })
 module.exports = {
   mode: 'universal',
-  dev: (process.env.NODE_ENV !== 'production'),
+  dev: (process.env.NODE_ENV != 'production'),
   /*
    ** Headers of the page
    */
@@ -101,7 +101,7 @@ module.exports = {
      */
     vendor: ['bootstrap-vue', 'vue-flatpickr-component', 'vue2-transition', 'vue-lazyload',],
     extend(config, ctx) {
-      
+      config.mode = (process.env.NODE_ENV == 'production') ? 'production': config.mode
     }
   }
 }

@@ -4,14 +4,14 @@
     <base-nav type="none" effect="light" expand>
       <nuxt-link to="/" slot="brand" class="navbar-brand mr-lg-5">
         <div class="navbar-brand">
-          <img src="@/assets/images/300x300.svg" alt="" />
+          <img src="@/assets/images/brand/logo.png" alt="" />
             </div>
       </nuxt-link>
       <div class="row" slot="content-header" slot-scope="{closeMenu}">
         <div class="col-6 collapse-brand">
           <nuxt-link to="/" slot="brand" class="navbar-brand mr-lg-5">
             <div class="navbar-brand">
-              <img src="@/assets/images/300x300.svg" alt="" />
+              <img src="@/assets/images/brand/logo.png" alt="" />
                     </div>
           </nuxt-link>
         </div>

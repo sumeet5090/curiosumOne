@@ -14,7 +14,7 @@
       </b-row>
     </b-container>
   </section>
-  <section class="section has-cards">
+  <section class="section has-cards header-font">
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-10 mb-2 p-2" v-for="event in events" :key="event._id">
@@ -35,25 +35,15 @@
               </card>
             </div>
           </div>
-          <!-- <div class="row">
-            <card no-body>
-              <div class="col-8">
-                <span class="display-3 text-uppercase text-dark">{{event.name}}</span>
-              </div>
-              <div class="col-4">
-                <span class="text-center text-dark">{{formatDate(event.date)}}</span>
-              </div>
-            </card>
-          </div> -->
           <div class="row mt-4">
             <div class="col-lg-4 mt-1">
               <card class="border-0" shadow body-classes="py-3">
                 <icon name="fa fa-link" type="info" rounded class="mb-4">
                 </icon>
-                <h6 class="text-info text-uppercase">{{event.name}}</h6>
-                <p class="description mt-3">Visit event website!</p>
+                <h6 class="text-info text-uppercase">Official Website</h6>
+                <p class="description mt-3">Visit {{event.name}} official website!</p>
                 <a class="btn btn-info mt-2" :href="event.link" target="_blank">
-                  Click Here
+                   Website
                 </a>
               </card>
             </div>
@@ -62,7 +52,7 @@
                 <icon name="fa fa-trophy" type="primary" rounded class="mb-4">
                 </icon>
                 <h6 class="text-primary text-uppercase">Registered Teams</h6>
-                <p class="description mt-3">Checkout the teams.</p>
+                <p class="description mt-3">List of registered teams for {{event.name}}.</p>
                 <router-link tag="a" class="btn btn-primary mt-2" :to="{name: 'event-id-teams', params: {id: event._id}}">
                   Teams
                 </router-link>
@@ -70,55 +60,55 @@
             </div>
             <div class="col-lg-4 mt-1">
               <card class="border-0" shadow body-classes="py-3">
-                <icon name="fa fa-bell" type="warning" rounded class="mb-4">
+                <icon name="fa fa-calendar" type="success" rounded class="mb-4">
                 </icon>
-                <h6 class="text-warning text-uppercase">Announcements</h6>
-                <p class="description mt-3">Get the latest announcements!</p>
-                <router-link tag="a" class="btn btn-warning mt-2" :to="{name: 'event-id-announcements', params: {id: event._id}}">
-                  Click Here
+                <h6 class="text-success text-uppercase">Schedule</h6>
+                <p class="description mt-3">Day-to-day schedule for {{event.name}}!</p>
+                <router-link tag="a" class="btn btn-success mt-2" :to="{name: 'event-id-schedule', params: {id: event._id}}">
+                  Schedule
                 </router-link>
               </card>
             </div>
             <div class="col-lg-4 mt-1">
-              <card class="border-0" shadow body-classes="py-3" v-show="showMoreCards">
-                <icon name="fa fa-calendar" type="success" rounded class="mb-4">
+              <card class="border-0" shadow body-classes="py-3">
+                <icon name="fa fa-bell" type="warning" rounded class="mb-4">
                 </icon>
-                <h6 class="text-success text-uppercase">Schedule</h6>
-                <p class="description mt-3">Get the current schedule!</p>
-                <router-link tag="a" class="btn btn-success mt-2" :to="{name: 'event-id-schedule', params: {id: event._id}}">
-                  Click Here
+                <h6 class="text-warning text-uppercase">Live Announcements</h6>
+                <p class="description mt-3">Live announcement feed duing {{event.name}}!</p>
+                <router-link tag="a" class="btn btn-warning mt-2" :to="{name: 'event-id-announcements', params: {id: event._id}}">
+                  Live Feed
                 </router-link>
               </card>
             </div>
-            <div class="col-lg-4 mt-1" v-show="showMoreCards">
+            <div class="col-lg-4 mt-1">
               <card class="border-0" shadow body-classes="py-3">
                 <icon name="fa fa-user-clock" type="dark" rounded class="mb-4">
                 </icon>
-                <h6 class="text-dark text-uppercase">Tech Updates</h6>
-                <p class="description mt-3">Get tech updates!</p>
+                <h6 class="text-dark text-uppercase">Tech Inspection Updates</h6>
+                <p class="description mt-3">Live updates of tech inspections for {{event.name}}!</p>
                 <router-link tag="a" class="btn btn-light mt-2 text-dark" :to="{name: 'event-id-tech-updates', params: {id: event._id}}">
-                  Click Here
+                  Tech Updates
                 </router-link>
               </card>
             </div>
-            <div class="col-lg-4 mt-1" v-show="showMoreCards">
+            <div class="col-lg-4 mt-1">
               <card class="border-0" shadow body-classes="py-3">
                 <icon name="fa fa-clock" type="default" rounded class="mb-4">
                 </icon>
-                <h6 class="text-default text-uppercase">Live Updates</h6>
-                <p class="description mt-3">Check out the live updates!</p>
+                <h6 class="text-default text-uppercase">Live Timing</h6>
+                <p class="description mt-3">Un-official time display of {{event.name}}!</p>
                 <router-link tag="a" class="btn btn-default mt-2" :to="{name: 'event-id-tech-updates', params: {id: event._id}}">
-                  Click Here
+                  Live Timings
                 </router-link>
               </card>
             </div>
           </div>
-          <div class="row justify-content-center mt-1">
+          <!-- <div class="row justify-content-center mt-1">
             <base-button size="sm" type="secondary" @click.prevent="handleCards">
               <div v-if="showMoreCards">Hide</div>
               <div v-else>Show more</div>
             </base-button>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

@@ -27,7 +27,7 @@
             </div>
             <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
               <div class="card-profile-actions py-2 mt-lg-1">
-                <span class="mr-4 text-center">
+                <span class="mr-2 text-center">
                     <a :href="team.website_url" target="_blank"><icon name="fa fa-link" color="dark" size="md"></icon></a>
                     <a :href="team.social.facebook" target="_blank"><icon name="fab fa-facebook-f" style="color: #3B5999"  size="md"></icon></a>
                 </span>

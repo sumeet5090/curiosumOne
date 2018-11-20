@@ -2,8 +2,8 @@
 <section class="section">
     <div class="container">
         <b-row class="justify-content-center">
-            <div class="display-4">
-                Registered Teams for <strong class="text-primary">{{event.name}}</strong>
+            <div class="display-4 header-font">
+                Tech Updates for <strong class="text-primary">{{event.name}}</strong>
             </div>
         </b-row>
         <b-row class="justify-content-center">
@@ -25,9 +25,9 @@
                 </template>
                 <template slot="social" slot-scope="data">
                     <a :href="data.item.website_url" target="_blank"><icon name="fa fa-link" color="dark" size="sm"></icon></a>
-                    <a :href="data.item.social.facebook" target="_blank"><icon name="fa fa-facebook-official" style="color: #3B5999"  size="sm"></icon></a>
-                    <a :href="data.item.social.twitter" target="_blank"><icon name="fa fa-twitter" style="color: #1DA1F2"  size="sm"></icon></a>
-                    <a :href="data.item.social.instagram" target="_blank"><icon name="fa fa-instagram" color="danger" size="sm"></icon></a>
+                    <a :href="data.item.social.facebook" target="_blank"><icon name="fab fa-facebook" style="color: #3B5999"  size="sm"></icon></a>
+                    <a :href="data.item.social.twitter" target="_blank"><icon name="fab fa-twitter" style="color: #1DA1F2"  size="sm"></icon></a>
+                    <a :href="data.item.social.instagram" target="_blank"><icon name="fab fa-instagram" color="danger" size="sm"></icon></a>
                 </template>
             </b-table>
         </b-row>
@@ -39,19 +39,21 @@
 export default {
   async asyncData({ $axios, params, error }) {
     try {
-      let { data } = $axios.get(`/api/event/${params.id}/techupdates`, {
+      let { data } = await $axios.get(`/api/event/${params.id}/techupdates`, {
         validateStatus: status => {
           return status < 400;
         }
       });
-      return {
-        tech_updates: data.tech_updates
+      if (data) {
+        return {
+          tech_updates: data.tech_updates
+        };
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
       error({
         message: "Couldn't get tech updates."
-      })
+      });
     }
   },
   data() {

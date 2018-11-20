@@ -1,8 +1,8 @@
 <template>
-<section class="section custom-gradient">
+<section class="section">
   <b-container>
     <b-row class="justify-content-center">
-      <div class="display-4 text-white">
+      <div class="display-4 header-font">
         Announcements for <strong class="text-primary">{{event.name}}</strong>
       </div>
     </b-row>
