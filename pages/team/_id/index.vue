@@ -9,7 +9,7 @@
             <div class="col-lg-3 order-lg-2">
               <div class="card-profile-image">
                 <a href="">
-                    <img v-lazy="team.logo || 'http://via.placeholder.com/400x400'" class="rounded-circle">
+                    <img v-lazy="team.logo || 'https://via.placeholder.com/400x400'" class="rounded-circle">
                 </a>
               </div>
             </div>

@@ -3,7 +3,7 @@ const config = require('dotenv').config({path: path.join(__dirname, '.env')}).pa
 module.exports = {
   apps : [{
     name: 'mec_website',
-    script: 'server/index.js',
+    script: '"yarn start"',
     args: '',
     instances: 1,
     autorestart: true,
@@ -27,7 +27,7 @@ module.exports = {
       repo : 'git@github.com:frozen4code/mec_website.git',
       path : '~/prod/mec_website',
       "forward-agent": true,
-      'post-deploy' : 'yarn && yarn build && pm2 startOrRestart ecosystem.config.js --env production --update-env'
+      'post-deploy' : 'yarn && yarn build && pm2 startOrRestart "yarn start" --env production --update-env'
     }
   }
 };

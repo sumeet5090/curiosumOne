@@ -8,7 +8,7 @@ module.exports = {
    ** Headers of the page
    */
   head: {
-    title: pkg.name,
+    title: "MEC Portal",
     meta: [{
       charset: 'utf-8'
     },
@@ -28,10 +28,6 @@ module.exports = {
       type: 'image/x-icon',
       href: '/favicon.ico'
     },
-    {
-      rel: 'stylesheet',
-      href: "https://fonts.googleapis.com/css?family=Oswald"
-    }
   ]
   },
 
@@ -99,6 +95,7 @@ module.exports = {
     /*
      ** You can extend webpack config here
      */
+    watch: ['.env'],
     vendor: ['bootstrap-vue', 'vue-flatpickr-component', 'vue2-transition', 'vue-lazyload',],
     extend(config, ctx) {
       config.mode = (process.env.NODE_ENV == 'production') ? 'production': config.mode

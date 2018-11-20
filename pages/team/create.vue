@@ -140,7 +140,8 @@ export default {
                     country: this.teamForm.country,
                     social: this.teamForm.social,
                     user_ids: this.user_ids,
-                    user_emails: this.teamForm.user_emails
+                    user_emails: this.teamForm.user_emails,
+                    logo_url: this.logo_url
                 }
             });
             // Add tea, to database

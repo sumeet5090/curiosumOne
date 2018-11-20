@@ -14,7 +14,7 @@
       </b-row>
     </b-container>
   </section>
-  <section class="section has-cards header-font">
+  <section class="section has-cards">
     <div class="container">
       <div class="row justify-content-center">
         <div class="col-md-10 mb-2 p-2" v-for="event in events" :key="event._id">
