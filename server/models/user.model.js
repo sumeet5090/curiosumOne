@@ -123,6 +123,9 @@ async function isUnique(username){
   }
 }
 function generateRandomUsername(firstname, lastname){
+  firstname = firstname.split(' ')[0]
+  lastname = lastname.split(' ')[0]
+  lastname = lastname.split('.')[0]
   return firstname + '-' + lastname + '-' + (Math.round(Math.random() * 9999)).toString()
 }
 
