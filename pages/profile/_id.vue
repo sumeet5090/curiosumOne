@@ -16,7 +16,7 @@
               </div>
               <div class="col-lg-9 order-lg-2 text-lg-right align-self-lg-center">
                 <div class="card-profile-actions py-4 mt-5 mt-lg-0">
-                  <span v-if="!!(currentUser._id == user._id)" class="ml-2 float-right"><router-link :to="{name: 'profile-update'}" class="btn btn-primary btn-sm">Update</router-link></span>
+                  <span v-if="isSameUser" class="ml-2 float-right"><router-link :to="{name: 'profile-update'}" class="btn btn-primary btn-sm">Update</router-link></span>
                 </div>
               </div>
             </div>
@@ -63,7 +63,12 @@ export default {
     ...mapGetters([
       "currentUser",
       "isAuthenticated"
-    ])
+    ]),
+    isSameUser(){
+      if(this.currentUser){
+        return !!(this.currentUser._id == this.user._id)
+      }
+    }
   },
   async asyncData({ $axios, params, error }) {
     try {

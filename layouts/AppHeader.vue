@@ -99,10 +99,13 @@ export default {
     async logout() {
       try {
         await this.$store.dispatch("logout");
+        this.$router.go(this.$router.currentRoute)
+    
       } catch (e) {
         this.formError = e.message;
       }
-    }
+    },
+    
   }
 };
 </script>

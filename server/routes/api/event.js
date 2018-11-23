@@ -13,6 +13,7 @@ router.get('/:id/techupdates', eventCont.getAllTechupdates)
 router.get('/:id/schedules', eventCont.getAllSchedules)
 router.get('/:id/livetimings', eventCont.getAllLivetimings)
 router.get('/:id/cars', eventCont.getAllCars)
+// router.get('/:event_name', eventCont.getOneEventByName)
 // POST
 router.post('/:id/create/announcement', eventCont.createAnnouncement)
 router.post('/:id/create/:team_id/car', eventCont.createCar)

@@ -8,8 +8,9 @@
           <div class="row justify-content-center">
             <div class="col-lg-3 order-lg-2">
               <div class="card-profile-image">
-                <a href="">
-                    <img v-lazy="team.logo || 'https://via.placeholder.com/400x400'" class="rounded-circle">
+                <a href="" class="profile-pic">
+                    <img v-if="team.logo" v-lazy="team.logo" class="rounded-circle"/>
+                    <img v-else src="@/assets/images/font-awesome/users-solid.svg">
                 </a>
               </div>
             </div>
@@ -28,12 +29,12 @@
             <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
               <div class="card-profile-actions py-2 mt-lg-1">
                 <span class="mr-2 text-center">
-                    <a :href="team.website_url" target="_blank"><icon name="fa fa-link" color="dark" size="md"></icon></a>
-                    <a :href="team.social.facebook" target="_blank"><icon name="fab fa-facebook-f" style="color: #3B5999"  size="md"></icon></a>
+                    <a v-if="team.website_url" :href="team.website_url" target="_blank"><icon name="fa fa-link" color="dark" size="md"></icon></a>
+                    <a v-if="team.social.facebook" :href="team.social.facebook" target="_blank"><icon name="fab fa-facebook-f" style="color: #3B5999"  size="md"></icon></a>
                 </span>
                 <span class="float-right text-center">
-                    <a :href="team.social.twitter" target="_blank"><icon name="fab fa-twitter" style="color: #1DA1F2"  size="md"></icon></a>
-                    <a :href="team.social.instagram" target="_blank"><icon name="fab fa-instagram" color="danger" size="md"></icon></a>
+                    <a v-if="team.social.twitter" :href="team.social.twitter" target="_blank"><icon name="fab fa-twitter" style="color: #1DA1F2"  size="md"></icon></a>
+                    <a v-if="team.social.instagram" :href="team.social.instagram" target="_blank"><icon name="fab fa-instagram" color="danger" size="md"></icon></a>
                 </span>
               </div>
             </div>
@@ -60,9 +61,9 @@
               <h4 class="font-weight-bold text-dark">Events</h4>
             </b-row>
             <b-row class="justify-content-center">
-              <b-col sm="6" v-for="event in team.events" :key="event._id">
+              <b-col sm="6" v-for="event in team.events" :key="event.event_short">
                 <div class="text-center text-primary">
-                  <router-link :to="'/event/'+event._id"> {{event.name}}</router-link>
+                  <router-link :to="'/event/'+event.event_short"> {{event.name}}</router-link>
                 </div>
               </b-col>
             </b-row>
@@ -134,6 +135,10 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.team-captain {}
+<style lang="scss" scoped>
+.profile-pic {
+  img {
+    box-shadow: none !important;
+  }
+}
 </style>

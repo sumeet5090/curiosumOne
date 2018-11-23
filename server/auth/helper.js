@@ -48,6 +48,7 @@ const linkTeamCaptain = async (user, done) => {
       let saved = await user.save()
       team.captain = user._id
       team.team_captain_email = ''
+      team.users.push(user._id)
       let team_saved = await team.save()
       if (team_saved && saved) {
         return done(null, user)

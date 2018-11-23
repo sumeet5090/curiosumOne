@@ -7,7 +7,7 @@ const TechUpdate = require('./../models/techUpdates.model')
 const Team = require('./../models/team.model')
 const mongoose = require('mongoose')
 const Response = require('./../services/response')
-
+const ObjectId = mongoose.Types.ObjectId
 const getAllEvents = async (req, res) => {
     try {
         let events = await Event.find().populate('organizers').exec()
@@ -27,7 +27,29 @@ const getAllEvents = async (req, res) => {
 
 const getOneEvent = async (req, res) => {
     try {
-        let event = await Event.findOne({ _id: req.params.id })
+        let id = req.params.id,
+            $or = [{ event_short: id }]
+        if (parseInt(id) == id) {
+            $or.push({ _id: id })
+        }
+        let event = await Event.findOne({ $or: $or}).exec()
+        if (event) {
+            return res.send({
+                event: event
+            })
+        }
+        return res.send({
+            message: "No event found."
+        })
+    } catch (error) {
+        console.log(error)
+        return res.sendStatus(500)
+    }
+}
+
+const getOneEventByName = async (req, res) => {
+    try {
+        let event = await Event.findOne({ event_short: req.params.event_name })
         if (event) {
             return res.send({
                 event: event
@@ -44,7 +66,12 @@ const getOneEvent = async (req, res) => {
 
 const getTeamForEvent = async (req, res) => {
     try {
-        let event = await Event.findOne({ _id: req.params.id }).populate('teams').populate('teams.users').exec()
+        let id = req.params.id,
+            $or = [{ event_short: id }]
+        if (parseInt(id) == id) {
+            $or.push({ _id: id })
+        }
+        let event = await Event.findOne({ $or: $or}).populate('teams').populate('teams.users').exec()
         if (event) {
             if (event.teams.length > 0) {
                 return res.send({
@@ -66,7 +93,12 @@ const getTeamForEvent = async (req, res) => {
 
 const getAnnouncementsForEvent = async (req, res) => {
     try {
-        let event = await Event.findOne({ _id: req.params.id })
+        let id = req.params.id,
+            $or = [{ event_short: id }]
+        if (parseInt(id) == id) {
+            $or.push({ _id: id })
+        }
+        let event = await Event.findOne({ $or: $or}).exec()
         if (event) {
             let announcements = await Announcement.find({ event: event._id }, null, { sort: { dateTime: 'desc' } }).populate('author').exec()
             if (announcements.length > 0) {
@@ -89,7 +121,12 @@ const getAnnouncementsForEvent = async (req, res) => {
 
 const getOneTechupdate = async (req, res) => {
     try {
-        let event = await Event.findOne({ _id: req.params.id })
+        let id = req.params.id,
+            $or = [{ event_short: id }]
+        if (parseInt(id) == id) {
+            $or.push({ _id: id })
+        }
+        let event = await Event.findOne({ $or: $or}).exec()
         if (event.length > 0) {
             let find_id = event.tech_updates.indexOf(req.params.id)
             let out = await event.populate('tech_updates').exec()
@@ -108,7 +145,12 @@ const getOneTechupdate = async (req, res) => {
 
 const getOneSchedule = async (req, res) => {
     try {
-        let event = await Event.findOne({ _id: req.params.id })
+        let id = req.params.id,
+            $or = [{ event_short: id }]
+        if (parseInt(id) == id) {
+            $or.push({ _id: id })
+        }
+        let event = await Event.findOne({ $or: $or}).exec()
         if (event.length > 0) {
             let find_id = event.schedules.indexOf(req.params.id)
             if (find_id > -1) {
@@ -127,7 +169,12 @@ const getOneSchedule = async (req, res) => {
 
 const getOneLivetiming = async (req, res) => {
     try {
-        let event = await Event.findOne({ _id: req.params.id })
+        let id = req.params.id,
+            $or = [{ event_short: id }]
+        if (parseInt(id) == id) {
+            $or.push({ _id: id })
+        }
+        let event = await Event.findOne({ $or: $or}).exec()
         if (event.length > 0) {
             let find_id = event.live_timings.indexOf(req.params.id)
             let out = await event.populate('tech_updates').exec()
@@ -146,7 +193,12 @@ const getOneLivetiming = async (req, res) => {
 
 const getAllTechupdates = async (req, res) => {
     try {
-        let event = await Event.findOne({ _id: req.params.id }).populate('tech_updates').exec()
+        let id = req.params.id,
+            $or = [{ event_short: id }]
+        if (parseInt(id) == id) {
+            $or.push({ _id: id })
+        }
+        let event = await Event.findOne({ $or: $or}).populate('tech_updates').exec()
         if (event.length > 0) {
             return res.send({
                 event: event
@@ -161,9 +213,14 @@ const getAllTechupdates = async (req, res) => {
 
 const getAllSchedules = async (req, res) => {
     try {
-        let event = await Event.findOne({ _id: req.params.id }).populate('schedules').exec()
+        let id = req.params.id,
+            $or = [{ event_short: id }]
+        if (parseInt(id) == id) {
+            $or.push({ _id: id })
+        }
+        let event = await Event.findOne({ $or: $or}).populate('schedules').exec()
         if (event.schedules.length > 0) {
-            return Response.success(res, {schedules: event.schedules})
+            return Response.success(res, { schedules: event.schedules })
         }
         return res.sendStatus(404)
     } catch (error) {
@@ -174,7 +231,12 @@ const getAllSchedules = async (req, res) => {
 
 const getAllLivetimings = async (req, res) => {
     try {
-        let event = await Event.findOne({ _id: req.params.id }).populate('list_timings').exec()
+        let id = req.params.id,
+            $or = [{ event_short: id }]
+        if (parseInt(id) == id) {
+            $or.push({ _id: id })
+        }
+        let event = await Event.findOne({ $or: $or}).populate('list_timings').exec()
         if (event.length > 0) {
             return res.send({
                 event: event
@@ -188,9 +250,15 @@ const getAllLivetimings = async (req, res) => {
 }
 
 const getAllCars = async (req, res) => {
-    let cars, event_id = req.params.id
+    let cars
     try {
-        cars = await Car.find({ event_id: event_id }).populate('team_id').exec()
+        let id = req.params.id,
+            $or = [{ event_short: id }]
+        if (parseInt(id) == id) {
+            $or.push({ _id: id })
+        }
+        let event = await Event.findOne({ $or: $or}).exec()
+        cars = await Car.find({ event_id: event._id }).populate('team_id').exec()
         if (cars) {
             if (cars.length > 0) {
                 return res.send({
@@ -227,9 +295,9 @@ const createEvent = async (req, res) => {
         })
         let saved = await newEvent.save()
         if (saved) {
-            return Response.success(res, {message: "Created a event!"}, 200)
+            return Response.success(res, { message: "Created a event!" }, 200)
         }
-        return res.Response.failed(res, {message: "failed to create an event" }, 300)
+        return res.Response.failed(res, { message: "failed to create an event" }, 300)
     } catch (error) {
         console.log(error)
         return res.sendStatus(500)
@@ -407,7 +475,7 @@ const createSchedule = async (req, res) => {
             if (schedule) {
                 let out = await event.updateOne({ $push: { schedules: schedule } }).exec()
                 if (out.nModified >= 1 && out.ok == 1) {
-                    return Response.success(res, {message: "Created schedule!"}, 200)
+                    return Response.success(res, { message: "Created schedule!" }, 200)
                 }
                 return Response.failed(res, {
                     message: "Created schedule, but couldn't link it to event."
@@ -422,7 +490,7 @@ const createSchedule = async (req, res) => {
         })
     } catch (error) {
         console.log(error)
-        return Response.failed(res, {message: "Internal server error."}, 500)
+        return Response.failed(res, { message: "Internal server error." }, 500)
     }
 }
 
@@ -496,6 +564,7 @@ const deleteEvent = async (req, res) => {
 module.exports = {
     getAllEvents,
     getOneEvent,
+    getOneEventByName,
     getTeamForEvent,
     getAnnouncementsForEvent,
     getOneTechupdate,

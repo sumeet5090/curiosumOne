@@ -8,8 +8,18 @@
         </b-col>
       </b-row>
       <b-row>
-        <b-col sm=12>
-          <!-- <h3 class="display-3 text-white">Description Title</h3> -->
+        <b-col sm=12 class="mt-2">
+          <div class="text-dark">
+            <div class="text-xs-left text-sm-left text-md-center text-lg-center">
+              <span>Welcome to the <strong>mobilityeng.online</strong> portal hosted by <strong>Mobility Engineering Consortium Private Limited.</strong></span>
+            </div>
+            <div class="text-xs-center text-sm-left text-md-center text-lg-center">
+              This site is meant for team and user registration to events organized by the company.
+            </div>
+            <div class="text-xs-center text-sm-left text-md-center text-lg-center">
+              You can also view additional data such as event live schedules, inspection updates, lap times etc.
+            </div>
+          </div>
         </b-col>
       </b-row>
     </b-container>
@@ -53,7 +63,7 @@
                 </icon>
                 <h6 class="text-primary text-uppercase">Registered Teams</h6>
                 <p class="description mt-3">List of registered teams for {{event.name}}.</p>
-                <router-link tag="a" class="btn btn-primary mt-2" :to="{name: 'event-id-teams', params: {id: event._id}}">
+                <router-link tag="a" class="btn btn-primary mt-2" :to="{name: 'event-id-teams', params: {id: event.event_short}}">
                   Teams
                 </router-link>
               </card>
@@ -64,7 +74,7 @@
                 </icon>
                 <h6 class="text-success text-uppercase">Schedule</h6>
                 <p class="description mt-3">Day-to-day schedule for {{event.name}}!</p>
-                <router-link tag="a" class="btn btn-success mt-2" :to="{name: 'event-id-schedule', params: {id: event._id}}">
+                <router-link tag="a" class="btn btn-success mt-2" :to="{name: 'event-id-schedule', params: {id: event.event_short}}">
                   Schedule
                 </router-link>
               </card>
@@ -75,7 +85,7 @@
                 </icon>
                 <h6 class="text-warning text-uppercase">Live Announcements</h6>
                 <p class="description mt-3">Live announcement feed duing {{event.name}}!</p>
-                <router-link tag="a" class="btn btn-warning mt-2" :to="{name: 'event-id-announcements', params: {id: event._id}}">
+                <router-link tag="a" class="btn btn-warning mt-2" :to="{name: 'event-id-announcements', params: {id: event.event_short}}">
                   Live Feed
                 </router-link>
               </card>
@@ -86,7 +96,7 @@
                 </icon>
                 <h6 class="text-dark text-uppercase">Tech Inspection Updates</h6>
                 <p class="description mt-3">Live updates of tech inspections for {{event.name}}!</p>
-                <router-link tag="a" class="btn btn-light mt-2 text-dark" :to="{name: 'event-id-tech-updates', params: {id: event._id}}">
+                <router-link tag="a" class="btn btn-light mt-2 text-dark" :to="{name: 'event-id-tech-updates', params: {id: event.event_short}}">
                   Tech Updates
                 </router-link>
               </card>
@@ -97,7 +107,7 @@
                 </icon>
                 <h6 class="text-default text-uppercase">Live Timing</h6>
                 <p class="description mt-3">Un-official time display of {{event.name}}!</p>
-                <router-link tag="a" class="btn btn-default mt-2" :to="{name: 'event-id-tech-updates', params: {id: event._id}}">
+                <router-link tag="a" class="btn btn-default mt-2" :to="{name: 'event-id-tech-updates', params: {id: event.event_short}}">
                   Live Timings
                 </router-link>
               </card>
@@ -128,7 +138,7 @@ export default {
       // link: [
       //   { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Oswald' }
       // ]
-    }
+    };
   },
   data() {
     return {
