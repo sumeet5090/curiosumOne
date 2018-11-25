@@ -112,7 +112,7 @@
               <h4 class="font-weight-bold text-dark">Team documents</h4>
             </div>
             <b-row class="justify-content-center">
-              <b-col sm="3" md="3" lg="2" v-for="(doc, key) in team.docs" :key="key">
+              <b-col sm="3" md="3" lg="2" v-for="(doc, key) in team.drive_folder" :key="key">
                 <card no-body tag="article" class="my-1">
                   <div class="text-center">
                     <a :href="doc" target="_blank" class="btn btn-link">Document {{key+1}}</a>
