@@ -64,7 +64,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["getReq", "postReq", "putReq"]),
+    ...mapActions(["getReq", "postReq", "putReq", "accessControl"]),
     async onSubmit() {
       (this.success_msg = null), (this.errors = []);
       let url = `/api/user/update`;
@@ -80,11 +80,10 @@ export default {
             display_name: this.form.display_name
           }
         });
-
         if (res.success) {
-          await this.onReset();
+          this.$router.go(this.$router.currentRoute)
           return (this.success_msg =
-            res.message == true ? "User created." : "Couldn't Create User");
+            res.success == true ? "User created." : "Couldn't Create User");
         }
         return this.errors.push(res.message);
       } catch (error) {
@@ -113,7 +112,6 @@ export default {
         this.form.display_name = this.currentUser.display_name;
         this.form.link_to_logo = this.currentUser.profile.picture;
       }
-
     }
   },
   computed: {

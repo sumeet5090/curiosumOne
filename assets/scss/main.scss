@@ -187,6 +187,16 @@
 .cursor-pointer:hover {
   cursor: pointer;
 }
+a {
+  .rounded-circle {
+    box-shadow: none !important;
+    object-fit: cover;
+    min-width: 180px;
+    min-height: 180px;
+    width: auto;
+    height: auto;
+  }
+}
 
 
 @media (min-width: 992px){

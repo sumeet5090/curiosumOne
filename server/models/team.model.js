@@ -69,6 +69,9 @@ let TeamSchema = Schema({
   },
   team_captain_full_name: {
     type: String
+  },
+  drive_folder: {
+    type: String
   }
 }, {
     timestamps: true

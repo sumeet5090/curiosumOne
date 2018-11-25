@@ -26,6 +26,9 @@
         <li class="nav-item">
           <nuxt-link class="nav-link" tag="a" to="/profile" v-if="!!isAuthenticated">Profile</nuxt-link>
         </li>
+        <li class="nav-item" v-if="!!isAdmin">
+          <nuxt-link class="nav-link" tag="a" to="/manage" v-if="!!isAdmin">Admin</nuxt-link>
+        </li>
       </ul>
       <ul class="navbar-nav navbar-nav-hover align-items-lg-center ml-lg-auto">
         <li class="nav-item">
@@ -85,7 +88,7 @@ export default {
     ...mapState({
       modalState: state => state.modals
     }),
-    ...mapGetters(["currentUser", "isAuthenticated"]),
+    ...mapGetters(["currentUser", "isAuthenticated", "isAdmin"]),
     getName: function () {
       if (this.currentUser) {
         return (this.username = this.currentUser.display_name);
@@ -98,14 +101,13 @@ export default {
     ...mapMutations(["modalShowNotification"]),
     async logout() {
       try {
+        this.$router.push('/')
         await this.$store.dispatch("logout");
-        this.$router.go(this.$router.currentRoute)
-    
       } catch (e) {
         this.formError = e.message;
       }
     },
-    
+
   }
 };
 </script>

@@ -31,7 +31,8 @@ const liveTimingSchema = Schema({
         ref: 'Team'
     },
     event_name: {
-        type: String
+        type: String,
+        enum: ['Skid Pad', 'Acceleration', 'Autocross', 'Endurance'],
     },
     lap_number: {
         type: String

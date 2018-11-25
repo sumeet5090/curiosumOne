@@ -1,7 +1,8 @@
+require('dotenv').config().parsed
+require('./../database')()
 const Team = require('./../models/team.model')
 const Event = require('./../models/event.model')
 const teams = require('./../../data/mec_teams')
-
 
 const loadTeams = async () => {
     try {
@@ -25,5 +26,4 @@ const loadTeams = async () => {
         return;
     }
 }
-
-module.exports = loadTeams
+loadTeams()

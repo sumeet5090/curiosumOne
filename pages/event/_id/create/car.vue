@@ -59,9 +59,6 @@ export default {
   computed: {
     ...mapGetters(["events", "teams"])
   },
-  async asyncData() {
-    return {};
-  },
   created() {
     this.$nextTick(function() {
       this.getEvents();

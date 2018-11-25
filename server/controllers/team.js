@@ -8,27 +8,40 @@ const crypto = require('crypto')
 
 const smtpTransport = nodemailer.createTransport({
   service: "gmail",
-    host: "smtp.gmail.com",
-    auth: {
-        type: 'OAuth2',
-        user: process.env.GMAIL_ID,
-        clientId: process.env.GMAIL_CLIENT_ID,
-        clientSecret: process.env.GMAIL_CLIENT_SECRET,
-        accessToken: process.env.GMAIL_ACCESS_TOKEN,
-        refreshToken: process.env.GMAIL_REFRESH_TOKEN
-    }
+  host: "smtp.gmail.com",
+  auth: {
+    type: 'OAuth2',
+    user: process.env.GMAIL_ID,
+    clientId: process.env.GMAIL_CLIENT_ID,
+    clientSecret: process.env.GMAIL_CLIENT_SECRET,
+    accessToken: process.env.GMAIL_ACCESS_TOKEN,
+    refreshToken: process.env.GMAIL_REFRESH_TOKEN
+  }
 })
 
 const getAll = async function (req, res) {
   try {
     let teams = await Team.find();
     if (teams.length > 0) {
-      return Response.success(res, { teams: teams }, 302)
+      return Response.success(res, { teams: teams })
     }
-    return Response.success(res, { message: "No teams found." }, 204)
+    return Response.success(res, { message: "No teams found." })
   } catch (error) {
     console.log(error)
-    return Response.failed(res, { message: "Internal Server Error" }, 500)
+    return res.sendStatus(500)
+  }
+}
+
+const getOneMini = async function (req, res) {
+  try {
+    let id = req.params.id
+    let team = await Team.findOne({ _id: id })
+    if (!team) {
+      return Response.failed(res, { message: "No such team found." })
+    }
+    return Response.success(res, { message:"Team found.",team })
+  } catch (error) {
+    return res.sendStatus(500)
   }
 }
 
@@ -37,11 +50,11 @@ const getOne = async function (req, res) {
     let id = req.params.id
     let team = await Team.findOne({ _id: id }).populate('users').populate('events').exec()
     if (!team) {
-      return Response.success(res, { message: "No such team found." }, 204)
+      return Response.success(res, { message: "No such team found." })
     }
-    return Response.success(res, { team }, 302)
+    return Response.success(res, { team })
   } catch (error) {
-    return Response.failed(res, { message: "Internal Server Error" }, 500)
+    return res.sendStatus(500)
   }
 }
 
@@ -69,8 +82,8 @@ const create = async function (req, res) {
       }
       let team = await new Team(newTeam).save()
       if (team) {
-        let output = await User.findOneAndUpdate({_id: req.user._id}, { team: team._id })
-        await car.updateOne({team_id: team._id}).exec()        
+        let output = await User.findOneAndUpdate({ _id: req.user._id }, { team: team._id })
+        await car.updateOne({ team_id: team._id }).exec()
         if (output) {
           if (body.user_emails) {
             for (let i = 0; i < (body.user_emails).length; i++) {
@@ -81,7 +94,7 @@ const create = async function (req, res) {
               }).save()
               if (token) {
                 let genLink = 'http://' + req.headers.host + '\/api\/team\/confirmation\/' + token.token + '\n'
-                let teamLink = 'https://'+req.headers.host+'\/team\/'+team._id;
+                let teamLink = 'https://' + req.headers.host + '\/team\/' + team._id;
                 let mailOptions = {
                   from: 'MEC Support',
                   to: body.user_emails[i],
@@ -313,6 +326,7 @@ const linkTeamAndCar = async (req, res) => {
 
 module.exports = {
   getAll,
+  getOneMini,
   getOne,
   create,
   linkTeamAndUser,

@@ -4,7 +4,7 @@
     <b-row class="justify-content-center">
       <div class="col-md-8" v-if="isAdmin">
         <card>
-          <b-form @submit.prevent="onSubmit" @reset.prevent="onReset">
+          <b-form @submit.prevent @reset.prevent="onReset">
             <b-form-group id="form-day-number" label="Day Number:" label-for="form-day-number--input">
               <b-form-input class="text-dark" id="form-day-number--input" type="number" min="1" v-model="day_number" required placeholder="Enter day number"></b-form-input>
             </b-form-group>
@@ -66,7 +66,7 @@
             <b-alert variant="success" :show="!!success_msg">
               <div>{{success_msg}}</div>
             </b-alert>
-            <b-button type="submit" variant="success">Update</b-button>
+            <b-button type="submit" variant="success" @click.prevent="onSubmit">Update</b-button>
             <b-button type="reset" variant="danger">Reset</b-button>
           </b-form>
         </card>

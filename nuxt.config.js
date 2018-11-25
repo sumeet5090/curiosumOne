@@ -1,5 +1,6 @@
-const pkg = require('./package')
 const path = require('path')
+const webpack = require('webpack')
+const pkg = require('./package')
 const result = require('dotenv').config({ path: path.join(__dirname, '.env') })
 module.exports = {
   mode: 'universal',
@@ -28,7 +29,7 @@ module.exports = {
       type: 'image/x-icon',
       href: '/favicon.ico'
     },
-  ]
+    ]
   },
 
   /*
@@ -42,7 +43,7 @@ module.exports = {
    ** Global CSS
    */
   css: [
-    
+
   ],
   env: {
     ...result
@@ -50,18 +51,10 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/register-components', '@/plugins/argon-design', {
-    src: '@/plugins/webFontLoader.js',
-    ssr: false
-  }],
+  plugins: ['@/plugins/register-components', '@/plugins/argon-design', { src: '@/plugins/webFontLoader.js', ssr: false }],
   router: {
-    extendRoutes(routes, resolve) {
-      // routes.push({
-      //   name: 'profile',
-      //   path: '/profile',
-      //   component: resolve(__dirname, 'pages/profile')
-      // })
-    },
+    // extendRoutes(routes, resolve) {
+    // },
     middleware: ['ssr-cookie']
   },
   /*
@@ -97,8 +90,8 @@ module.exports = {
      */
     watch: ['.env'],
     vendor: ['bootstrap-vue', 'vue-flatpickr-component', 'vue2-transition', 'vue-lazyload',],
-    extend(config, ctx) {
-      config.mode = (process.env.NODE_ENV == 'production') ? 'production': config.mode
-    }
+    plugins: [
+    ],
+    extend(config, ctx) {}
   }
 }
