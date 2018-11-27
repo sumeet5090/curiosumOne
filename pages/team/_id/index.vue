@@ -106,16 +106,16 @@
                 </router-link>
             </b-row>
           </div>
-          <div class="my-1 py-2 border-top" v-if="team.docs" v-show="!!(team.docs.length > 0)">
+          <div class="my-1 py-2 border-top" v-if="team.drive_folder" v-show="!!(team.drive_folder)">
             <div class="text-center">
               <i class="fas fa-users"></i>
-              <h4 class="font-weight-bold text-dark">Team documents</h4>
+              <h4 class="font-weight-bold text-dark">Team drive folder</h4>
             </div>
             <b-row class="justify-content-center">
-              <b-col sm="3" md="3" lg="2" v-for="(doc, key) in team.drive_folder" :key="key">
+              <b-col sm="3" md="3" lg="2">
                 <card no-body tag="article" class="my-1">
                   <div class="text-center">
-                    <a :href="doc" target="_blank" class="btn btn-link">Document {{key+1}}</a>
+                    <a :href="team.drive_folder" target="_blank" class="btn btn-link">Link</a>
                   </div>
                 </card>
               </b-col>
@@ -196,4 +196,7 @@ export default {
 </script>
 
 <style lang="scss">
+.profile-page .card-profile .card-profile-image img {
+  box-shadow:none;
+}
 </style>

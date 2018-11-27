@@ -39,7 +39,7 @@ const getOneMini = async function (req, res) {
     if (!team) {
       return Response.failed(res, { message: "No such team found." })
     }
-    return Response.success(res, { message:"Team found.",team })
+    return Response.success(res, { message: "Team found.", team })
   } catch (error) {
     return res.sendStatus(500)
   }
@@ -118,12 +118,45 @@ const create = async function (req, res) {
 }
 
 const addCaptain = async (req, res) => {
-  let id = req.params.team_id, team, captain
-
+  let id = req.params.id, body = req.body
+  let captain = 
 }
 
-const addTeamMembers = async function (req, res) {
-  let id = req.params.team_id, team, user, users
+const addMembers = async function (req, res) {
+  let id = req.params.id, team, successful_sent = [], emails = req.body.emails, users = req.body.users
+  team = await Team.findOne({ _id: id })
+  if (team) {
+    if (emails) {
+      for (let i = 0; i < users.length; i++) {
+        let user = await User.findOne({ _id: users[i]._id })
+        if (user) {
+          let token = await new Token({
+            user_id: user._id,
+            team_id: team._id,
+            token: crypto.randomBytes(16).toString('hex')
+          }).save()
+          if (token) {
+            let genLink = req.protocol + '://' + req.headers.host + '\/api\/team\/confirmation\/' + token.token + '\n'
+            let teamLink = req.protocol+'://' + req.headers.host + '\/team\/' + team._id;
+            let mailOptions = {
+              from: 'MEC Support',
+              to: emails[i],
+              subject: `Team Invitiation for ${team.team_name}`,
+              generateTextFromHTML: true,
+              html: `<p>Hey <strong>${user.display_name},</strong></p><p>You have been invited to join the team <a href="${teamLink}" target="_blank">${team.team_name}</a></p><p>Click on the <a href="${genLink}">link</a> to join.</p>.`
+            }
+            let success = await smtpTransport.sendMail(mailOptions)
+            if (success) {
+              successful_sent.push(user.email)
+            }
+          }
+        }
+      }
+      return Response.success(res, {message: `Sent team invitation`, successful_emails: successful_sent})
+    }
+    return Response.failed(res, {message: "No emails entered."})
+  }
+  return Response.failed(res, {message: "Team not found."})
 }
 
 const confirmToken = async function (req, res) {
@@ -331,6 +364,7 @@ module.exports = {
   create,
   linkTeamAndUser,
   confirmToken,
+  addMembers,
   linkTeamAndEvent,
   linkTeamAndCar,
   updateTeam,

@@ -9,6 +9,7 @@ router.get('/:id/mini', TeamController.getOneMini)
 router.get('/confirmation/:token', TeamController.confirmToken)
 // POST
 router.post('/create', TeamController.create)
+router.post('/:id/add/members', TeamController.addMembers)
 router.post('/:id/register/event/:event_id', TeamController.linkTeamAndEvent)
 router.post('/:id/register/user/:username', TeamController.linkTeamAndUser)
 router.post('/:id/register/car/:car_id', TeamController.linkTeamAndCar)
