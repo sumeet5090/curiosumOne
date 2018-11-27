@@ -119,7 +119,6 @@ const create = async function (req, res) {
 
 const addCaptain = async (req, res) => {
   let id = req.params.id, body = req.body
-  let captain = 
 }
 
 const addMembers = async function (req, res) {
