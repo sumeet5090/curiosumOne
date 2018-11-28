@@ -35,8 +35,8 @@
                 <h4>
                   <router-link tag="a" class="cursor-pointer text-primary" :to="'/team/'+team._id">{{team.team_name}}</router-link>
                 </h4>
-                <div v-if="currentUser._id === team.captain_id">Team Captain</div>
-                <div else>Team Member</div>
+                <div v-if="currentUser._id === team.captain">Team Captain</div>
+                <div v-else>Team Member</div>
               </div>
             </div>
             <div class="mt-5 py-2 border-top text-center">
@@ -71,9 +71,9 @@ export default {
     error
   }) {},
   methods: {
-    ...mapActions(["getTeam"]),
+    ...mapActions(["getUserTeam"]),
     saveTeam: async function () {
-      let res = await this.getTeam(this.currentUser.username);
+      let res = await this.getUserTeam(this.currentUser.username);
       if (res._id) {
         this.team = res;
       } else {

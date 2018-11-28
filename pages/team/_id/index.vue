@@ -80,7 +80,7 @@
           <div class="my-1 py-2 border-top" v-if="!!(team.users.length > 0)">
             <div class="text-center">
               <i class="fas fa-users"></i>
-              <h4 class="font-weight-bold text-dark">Team Members</h4>
+              <router-link tag="div" :to="{name: 'team-id-members', params: team._id}" class="h4 font-weight-bold text-dark cursor-pointer">Team Members</router-link>
             </div>
             <b-row class="justify-content-center">
               <b-col sm="4" md="3" lg="2" v-for="user in team.users" :key="user.id" v-bind:class="{'team-captain order-first': !!isCaptain(team.captain, user._id), 'order-2': !isCaptain(team.captain, user._id)}">

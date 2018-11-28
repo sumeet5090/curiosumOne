@@ -12,7 +12,7 @@ const state = {
     login: false,
     register: false
   },
-  team: null,
+  team: {},
   announcements: [],
   isAuthenticated: false,
   user: {},
@@ -51,8 +51,8 @@ const mutations = {
   SET_EVENTS: function (state, events) {
     state.events = events
   },
-  EMPTY: function (state, val){
-    state.team = val
+  SET_TEAM: function (state, team) {
+    state.team = team
   }
 }
 const actions = {
@@ -73,15 +73,24 @@ const actions = {
     commit('SET_USER', null)
     commit('auth', false)
   },
-  async getTeam({ commit }, id) {
+  async getUserTeam({ commit }, id) {
     try {
       let response = await this.$axios.get('/api/user/profile/' + id + '/team')
-      if(response.data.success){
+      if (response.data.success) {
         return response.data.team
       }
-      return {}
     } catch (error) {
       return {}
+    }
+  },
+  async setTeam({ commit }, id) {
+    try {
+      let res = await this.$axios.get('/api/team/' + id + '/user')
+      if (res.data.success) {
+        return commit('SET_TEAM', res.data.team)
+      }
+    } catch (error) {
+      return
     }
   },
   async getEvents({ commit }) {
@@ -107,33 +116,33 @@ const actions = {
   },
   async createCar({ }, params) {
     try {
-      let {data} =  await this.$axios.post(`/api/event/${params.event_id}/create/${String(params.team_id)}/car`, {car_number: params.car_number})
+      let { data } = await this.$axios.post(`/api/event/${params.event_id}/create/${String(params.team_id)}/car`, { car_number: params.car_number })
       if (data) {
-        if(params.push_url){
-          this.$router.push({path: params.push_url})
+        if (params.push_url) {
+          this.$router.push({ path: params.push_url })
         }
       }
     } catch (error) {
       console.log(error)
     }
   },
-  async postReq({}, params){
+  async postReq({ }, params) {
     try {
-      let {data} = await this.$axios.post(params.url, params.body)
+      let { data } = await this.$axios.post(params.url, params.body)
       return data
     } catch (error) {
       console.log(error)
     }
   },
-  async putReq({}, params){
+  async putReq({ }, params) {
     try {
-      let {data} = await this.$axios.put(params.url, params.body)
+      let { data } = await this.$axios.put(params.url, params.body)
       return data
     } catch (error) {
       console.log(error)
     }
   },
-  async getReq({}, params) {
+  async getReq({ }, params) {
     try {
       const { data } = await this.$axios.get(params.url)
       return data;
@@ -149,9 +158,9 @@ const getters = {
     }
     return null
   },
-  isAdmin: function(state){
-    if(state.isAuthenticated){
-      if(state.user.role.indexOf('admin') > -1){
+  isAdmin: function (state) {
+    if (state.isAuthenticated) {
+      if (state.user.role.indexOf('admin') > -1) {
         return true
       }
     }
@@ -162,7 +171,8 @@ const getters = {
   getAnnouncements: state => state.announcements,
   isAuthenticated: state => state.isAuthenticated,
   events: state => state.events,
-  teams: state => state.teams
+  teams: state => state.teams,
+  getTeam: state => state.team
 }
 
 const createStore = () => {

@@ -35,8 +35,8 @@
                 <h4>
                   <router-link tag="a" class="cursor-pointer text-primary" :to="'/team/'+team._id">{{team.team_name}}</router-link>
                 </h4>
-                <div v-if="user._id === team.captain_id">Team Captain</div>
-                <div else>Team Member</div>
+                <div v-if="user._id === team.captain">Team Captain</div>
+                <div v-else>Team Member</div>
               </div>
             </div>
             <div class="mt-5 py-2 border-top text-center">

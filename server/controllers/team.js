@@ -32,6 +32,19 @@ const getAll = async function (req, res) {
   }
 }
 
+const getTeamExpandUser = async function (req, res) {
+  try {
+    let id = req.params.id
+    let team = await Team.findOne({ _id: id }).populate('users').exec()
+    if (!team) {
+      return Response.failed(res, { message: "No such team found." })
+    }
+    return Response.success(res, { message: "Team found.", team })
+  } catch (error) {
+    return res.sendStatus(500)
+  }
+}
+
 const getOneMini = async function (req, res) {
   try {
     let id = req.params.id
@@ -50,7 +63,7 @@ const getOne = async function (req, res) {
     let id = req.params.id
     let team = await Team.findOne({ _id: id }).populate('users').populate('events').exec()
     if (!team) {
-      return Response.success(res, { message: "No such team found." })
+      return Response.failed(res, { message: "No such team found." })
     }
     return Response.success(res, { team })
   } catch (error) {
@@ -77,7 +90,7 @@ const create = async function (req, res) {
         social: body.social,
         car_id: car._id,
         users: [req.user._id],
-        captain_id: req.user._id,
+        captain: req.user._id,
         logo: body.logo_url
       }
       let team = await new Team(newTeam).save()
@@ -93,16 +106,16 @@ const create = async function (req, res) {
                 token: crypto.randomBytes(16).toString('hex')
               }).save()
               if (token) {
-                let genLink = 'http://' + req.headers.host + '\/api\/team\/confirmation\/' + token.token + '\n'
-                let teamLink = 'https://' + req.headers.host + '\/team\/' + team._id;
+                let genLink = req.protocol + '://' + req.headers.host + '\/api\/team\/confirmation\/' + token.token + '\n'
+                let teamLink = req.protocol + '://' + req.headers.host + '\/team\/' + team._id;
                 let mailOptions = {
                   from: 'MEC Support',
-                  to: body.user_emails[i],
-                  subject: `Team Invitiation for <${team.team_name}>`,
+                  to: emails[i],
+                  subject: `Team Invitiation for ${team.team_name}`,
                   generateTextFromHTML: true,
-                  html: `Hey <strong>${body.user_emails[i]},</strong><br/><p>You have been invited to join the team <a href="${teamLink}">${team.team_name}</a></p><br/><p>Click on the <a href="${genLink}">link</a> to join.</p>.`
+                  html: `<p>Hey <strong>${user.display_name},</strong></p><p>You have been invited to join the team <a href="${teamLink}" target="_blank">${team.team_name}</a></p><p>Click on the <a href="${genLink}">link</a> to join.</p>.`
                 }
-                await smtpTransport.sendMail(mailOptions)
+                let success = await smtpTransport.sendMail(mailOptions)
               }
             }
           }
@@ -136,7 +149,7 @@ const addMembers = async function (req, res) {
           }).save()
           if (token) {
             let genLink = req.protocol + '://' + req.headers.host + '\/api\/team\/confirmation\/' + token.token + '\n'
-            let teamLink = req.protocol+'://' + req.headers.host + '\/team\/' + team._id;
+            let teamLink = req.protocol + '://' + req.headers.host + '\/team\/' + team._id;
             let mailOptions = {
               from: 'MEC Support',
               to: emails[i],
@@ -151,11 +164,11 @@ const addMembers = async function (req, res) {
           }
         }
       }
-      return Response.success(res, {message: `Sent team invitation`, successful_emails: successful_sent})
+      return Response.success(res, { message: `Sent team invitation`, successful_emails: successful_sent })
     }
-    return Response.failed(res, {message: "No emails entered."})
+    return Response.failed(res, { message: "No emails entered." })
   }
-  return Response.failed(res, {message: "Team not found."})
+  return Response.failed(res, { message: "Team not found." })
 }
 
 const confirmToken = async function (req, res) {
@@ -359,6 +372,7 @@ const linkTeamAndCar = async (req, res) => {
 module.exports = {
   getAll,
   getOneMini,
+  getTeamExpandUser,
   getOne,
   create,
   linkTeamAndUser,
