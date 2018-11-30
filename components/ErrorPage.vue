@@ -2,10 +2,10 @@
     <b-container>
         <b-row class="justify-content-center py-5">
             <b-col sm="12" class="text-center">
-              <i class="fas fa-exclamation-triangle text-warning fa-3x"></i>
+              <i :class="[icon + ' ' + 'text-'+color + ' ' + 'fa-'+size+'x']"></i>
             </b-col>
-            <b-col sm="12" class="text-center h3  text-uppercase font-weight-bold text-warning">
-              Error
+            <b-col sm="12" :class="'h3 text-center text-uppercase font-weight-bold text-'+color">
+              {{heading}}
             </b-col>
             <b-col sm="12" class="text-center text-dark">
               {{message}}
@@ -21,6 +21,25 @@ export default {
     message: {
       type: String,
       description: "Error message"
+    },
+    icon: {
+      type: String,
+      description: "Icon",
+    },
+    color: {
+      type: String,
+      description: "Icon color",
+      default: "warning"
+    },
+    size: {
+      type: Number,
+      description: "Icon size",
+      default: 4,
+    },
+    heading: {
+      type: String,
+      description: "Header",
+      default: "Error"
     }
   }
 };

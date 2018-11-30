@@ -1,64 +1,90 @@
 <template>
-<section class="section section-hero">
-  <no-ssr v-if="loaded">
-    <div class="container" v-if="!!accessControl('adminOrTeamCaptain')">
-      <!-- Team Captain or Admin -->
-      <div class="row justify-content-center">
-        <card class="col-sm-10 col-md-8 col-lg-8">
-          <b-form @submit.prevent @reset.prevent>
-            <b-form-group id="form-teamname" label="User email:" label-for="form-teamname--input" description="Enter emails (seperated by space)">
-              <b-row>
-                <b-col sm="12" md="10">
-                  <base-input addon-left-icon="fa fa-user" id="form-teamname--input" type="text" required placeholder="Enter user email" v-model="user_email"></base-input>
-                </b-col>
-                <b-col sm="12" md="2">
-                  <b-button type="submit" variant="success" @click.prevent="searchUser">
-                    <i class="fa fa-search"></i>
-                  </b-button>
-                </b-col>
-              </b-row>
-            </b-form-group>
-            <div v-if="!!(users.length > 0)">
-              <b-form-group id="form-usernames" label="Users:" label-for="form-usernames--badge">
-                <span class="h4" v-for="(user, key) in users" :key="key">
-                    <badge class="text-capitalize text-dark m-1 vertical-align-middle" type="primary">
+  <section class="section section-hero">
+    <no-ssr v-if="loaded">
+      <div class="container" v-if="!!accessControl('adminOrTeamCaptain')">
+        <!-- Team Captain or Admin -->
+        <div class="row justify-content-center">
+          <card class="col-sm-10 col-md-8 col-lg-8">
+            <b-form @submit.prevent @reset.prevent>
+              <b-form-group
+                id="form-teamname"
+                label="User email:"
+                label-for="form-teamname--input"
+                description="Enter emails (seperated by space)"
+              >
+                <b-row>
+                  <b-col sm="12" md="10">
+                    <base-input
+                      addon-left-icon="fa fa-user"
+                      id="form-teamname--input"
+                      type="text"
+                      required
+                      placeholder="Enter user email"
+                      v-model="user_email"
+                    ></base-input>
+                  </b-col>
+                  <b-col sm="12" md="2">
+                    <b-button type="submit" variant="success" @click.prevent="searchUser">
+                      <i class="fa fa-search"></i>
+                    </b-button>
+                  </b-col>
+                </b-row>
+              </b-form-group>
+              <div v-if="!!(users.length > 0)">
+                <b-form-group id="form-usernames" label="Users:" label-for="form-usernames--badge">
+                  <span class="h4" v-for="(user, key) in users" :key="key">
+                    <badge
+                      class="text-capitalize text-dark m-1 vertical-align-middle"
+                      type="primary"
+                    >
                       {{user.display_name}}
-                      <base-button size="sm" type="warning" class="border-none" outline @click.prevent="removeUser(key)">
+                      <base-button
+                        size="sm"
+                        type="warning"
+                        class="border-none"
+                        outline
+                        @click.prevent="removeUser(key)"
+                      >
                         <i class="fas fa-times"></i>
                       </base-button>
                     </badge>
                   </span>
-              </b-form-group>
-            </div>
-            <b-alert variant="danger" dismissible v-if="errors.length > 0" :show="showDismissableAlert" @dismissed="showDismissableAlert=false">
-              <div v-for="error in errors" :key="error">{{error}}</div>
-            </b-alert>
-            <b-alert variant="success" :show="!!success_msg">
-              <div>{{success_msg}}</div>
-              <div v-if="!!(sentEmails.length>0)">
-                <div>Invite sent to:</div>
-                <span class="mx-1" v-for="(email, key) in sentEmails" :key="key">{{email}}</span>
+                </b-form-group>
               </div>
-            </b-alert>
-            <b-button type="submit" variant="success" @click.prevent="onSubmit">Add</b-button>
-            <b-button type="reset" variant="danger" @click.prevent="onReset">Reset</b-button>
-          </b-form>
-        </card>
+              <b-alert
+                variant="danger"
+                dismissible
+                v-if="errors.length > 0"
+                :show="showDismissableAlert"
+                @dismissed="showDismissableAlert=false"
+              >
+                <div v-for="error in errors" :key="error">{{error}}</div>
+              </b-alert>
+              <b-alert variant="success" :show="!!success_msg">
+                <div>{{success_msg}}</div>
+                <div v-if="!!(sentEmails.length>0)">
+                  <div>Invite sent to:</div>
+                  <span class="mx-1" v-for="(email, key) in sentEmails" :key="key">{{email}}</span>
+                </div>
+              </b-alert>
+              <b-button type="submit" variant="success" @click.prevent="onSubmit">Add</b-button>
+              <b-button type="reset" variant="danger" @click.prevent="onReset">Reset</b-button>
+            </b-form>
+          </card>
+        </div>
       </div>
-    </div>
-    <error-page v-else message="You are not authorized to add members."></error-page>
-  </no-ssr>
-</section>
+      <error-page v-else
+        icon="fas fa-exclamation-circle"
+        color="warning"
+        message="You are not authorized to add members."
+      ></error-page>
+    </no-ssr>
+  </section>
 </template>
 
 <script>
-import {
-  mapActions,
-  mapGetters
-} from "vuex";
-import {
-  isNullOrUndefined
-} from "util";
+import { mapActions, mapGetters } from "vuex";
+import { isNullOrUndefined } from "util";
 export default {
   data() {
     return {
@@ -69,7 +95,7 @@ export default {
       emails: [],
       user_email: null,
       sentEmails: [],
-      loaded: false,
+      loaded: false
     };
   },
   methods: {
@@ -175,21 +201,18 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["currentUser", "isAdmin"]),
+    ...mapGetters(["currentUser", "isAdmin"])
   },
-  async asyncData({
-    params,
-    $axios
-  }) {
+  async asyncData({ params, $axios }) {
     let res = await $axios({
       url: `/api/team/${params.id}/mini`
-    })
+    });
     if (res.success) {
       return {
         params,
         team: res.team,
         loaded: true
-      }
+      };
     }
     return {
       params,

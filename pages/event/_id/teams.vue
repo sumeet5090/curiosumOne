@@ -11,8 +11,8 @@
             <b-table outlined responsive bordered hover :items="teams" :fields="fields">
                 <template slot="category" slot-scope="data">
                     <div class>
-                        <img v-lazy="combustion_icon" class="img-thumbnail icon-category" v-show="data.item.category == 'combustion'"/>
-                        <img v-lazy="electric_icon" class="img-thumbnail icon-category" v-show="data.item.category == 'electric'"/>
+                        <img v-lazy="combustion_icon" class="img-thumbnail icon-category" v-if="data.item.category == 'combustion'"/>
+                        <img v-lazy="electric_icon" class="img-thumbnail icon-category" v-if="data.item.category == 'electric'"/>
                 </div>
                 </template>
                 <template slot="team_name" slot-scope="data">

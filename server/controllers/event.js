@@ -128,7 +128,7 @@ const getOneTechupdate = async (req, res) => {
     }
     let event = await Event.findOne({ $or: $or }).exec()
     if (event.length > 0) {
-      let find_id = event.tech_updates.indexOf(req.params.id)
+      let find_id = event.tech_updates.indexOf(req.params.tu_id)
       let out = await event.populate('tech_updates').exec()
       if (find_id > -1) {
         return Response.success(res,{
@@ -198,8 +198,8 @@ const getAllTechupdates = async (req, res) => {
     if (parseInt(id) == id) {
       $or.push({ _id: id })
     }
-    let event = await Event.findOne({ $or: $or }).populate('tech_updates').exec()
-    if (event.length > 0) {
+    let event = await Event.findOne({ $or: $or }).populate('tech_updates').populate({path: 'tech_updates', populate: {path: 'team'}}).exec()
+    if (event) {
       return Response.success(res,{
         event: event
       })
@@ -220,7 +220,7 @@ const getAllSchedules = async (req, res) => {
     }
     let event = await Event.findOne({ $or: $or }).populate('schedules').exec()
     if (event.schedules.length > 0) {
-      return Response.success(res, { schedules: event.schedules })
+      return Response.success(res, { event: event })
     }
     return Response.failed(res, {message: "Not found"})
   } catch (error) {
@@ -236,8 +236,8 @@ const getAllLivetimings = async (req, res) => {
     if (parseInt(id) == id) {
       $or.push({ _id: id })
     }
-    let event = await Event.findOne({ $or: $or }).populate('list_timings').exec()
-    if (event.length > 0) {
+    let event = await Event.findOne({ $or: $or }).populate('live_timings').populate('live_timings.team').exec()
+    if (event) {
       return Response.success(res,{
         event: event
       })
