@@ -88,7 +88,7 @@ const create = async function (req, res) {
         country: body.country,
         website_url: body.website_url,
         social: body.social,
-        car_id: car._id,
+        car: car._id,
         users: [req.user._id],
         captain: req.user._id,
         logo: body.logo_url
@@ -343,11 +343,11 @@ const linkTeamAndCar = async (req, res) => {
             car2team = true
           }
         }
-        if (team.car_id == car._id) {
+        if (team.car == car._id) {
           team2car = true
         }
         else {
-          let output = await team.updateOne({ car_id: car._id }).exec()
+          let output = await team.updateOne({ car: car._id }).exec()
           if (output.nModified >= 1 && output.ok == 1) {
             team2car = true
           }

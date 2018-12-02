@@ -1,32 +1,37 @@
 <template>
-<div class="custom-gradient" v-if="!!isAdmin">
+<div>
   <no-ssr>
-    <section class="section section-hero">
-      <div class="row justify-content-center">
+    <section class="section">
+      <b-container v-if="!!isAdmin">
+        <div class="row justify-content-center">
         <div class="col-md-8">
           <card>
             <b-form @submit.prevent="onSubmit" @reset.prevent="onReset">
-              <b-form-group id="form-eventname" label="Event Name:" label-for="form-eventname--input" description="What's the event called?">
-                <b-form-input id="form-eventname--input" type="text" v-model="form.event_name" required placeholder="Enter event name"></b-form-input>
+              <b-form-select id="form-event--input" required v-model="selectedEvent" class="mb-3 text-dark">
+                <option :value="{}" class="text-dark">Select an option</option>
+                <option :value="ev" v-for="ev in events" :key="ev._id" class="text-dark">{{ev.name}}</option>
+              </b-form-select>
+              <b-form-group id="form-eventname" label="Event name:" label-for="form-eventname--input" v-if="!!selectedEvent._id">
+                <b-form-input id="form-eventname--input" type="text" v-model="form.event_name" class="text-dark" required placeholder="Enter event name."></b-form-input>
               </b-form-group>
-              <b-form-group id="form-start-date" label="Start date:" label-for="form-start-date--input">
+              <b-form-group id="form-start-date" label="Start date:" label-for="form-start-date--input" v-if="!!selectedEvent._id">
                 <base-input id="form-start-date--input" addon-left-icon="fa fa-calendar">
                   <flatpickr slot-scope="{focus, blur}" @on-open="focus" @on-close="blur" :config="{altInput: true, dateFormat: 'Z', altFormat: 'J F Y' }" class="form-control text-dark datepicker" v-model="form.event_start_date"></flatpickr>
                 </base-input>
               </b-form-group>
-              <b-form-group id="form-end-date" label="End date:" label-for="form-end-date--input">
+              <b-form-group id="form-end-date" label="End date:" label-for="form-end-date--input" v-if="!!selectedEvent._id">
                 <base-input id="form-end-date--input" addon-left-icon="fa fa-calendar">
                   <flatpickr slot-scope="{focus, blur}" @on-open="focus" @on-close="blur" :config="{altInput: true, dateFormat: 'Z', altFormat: 'J F Y' }" class="form-control text-dark datepicker" v-model="form.event_end_date"></flatpickr>
                 </base-input>
               </b-form-group>
-              <b-form-group id="form-eventshort" label="Event short name:" label-for="form-eventshort--input" description="Example: fb2019">
-                <b-form-input id="form-eventshort--input" type="text" v-model="form.event_short" required placeholder="Enter place"></b-form-input>
+              <b-form-group id="form-eventshort" label="Event short name:" label-for="form-eventshort--input" description="Example: fb2019" v-if="!!selectedEvent._id">
+                <b-form-input id="form-eventshort--input" type="text" v-model="form.event_short" class="text-dark" required placeholder="Enter short name"></b-form-input>
               </b-form-group>
-              <b-form-group id="form-eventvenue" label="Event Venue:" label-for="form-eventvenue--input" description="Where will the event take place?">
-                <b-form-input id="form-eventvenue--input" type="text" v-model="form.event_venue" required placeholder="Enter place"></b-form-input>
+              <b-form-group id="form-eventvenue" label="Event Venue:" label-for="form-eventvenue--input" description="Where will the event take place?" v-if="!!selectedEvent._id">
+                <b-form-input id="form-eventvenue--input" type="text" v-model="form.event_venue" class="text-dark" required placeholder="Enter place"></b-form-input>
               </b-form-group>
-              <b-form-group id="form-eventlink" label="Event link:" label-for="form-eventlink--input" description="Link to official webpage for event">
-                <b-form-input id="form-eventlink--input" type="text" v-model="form.event_link" required placeholder="Enter link"></b-form-input>
+              <b-form-group id="form-eventlink" label="Event link:" label-for="form-eventlink--input" description="Link to official webpage for event" v-if="!!selectedEvent._id">
+                <b-form-input id="form-eventlink--input" type="text" v-model="form.event_link" class="text-dark" required placeholder="Enter link"></b-form-input>
               </b-form-group>
               <b-form-group id="form-eventorganizers-list">
               </b-form-group>
@@ -36,12 +41,14 @@
               <b-alert variant="success" :show="!!success_msg">
                 <div>{{success_msg}}</div>
               </b-alert>
-              <b-button type="submit" variant="primary">Update</b-button>
-              <b-button type="reset" variant="danger">Reset</b-button>
+              <b-button type="submit" variant="primary" v-if="!!selectedEvent._id">Update</b-button>
+              <b-button type="reset" variant="danger" v-if="!!selectedEvent._id">Reset</b-button>
             </b-form>
           </card>
         </div>
       </div>
+      </b-container>
+      <error-page v-else icon="fas fa-exclamation-triangle" message="You are not authorized to view this content."></error-page>
     </section>
   </no-ssr>
 </div>
@@ -60,6 +67,8 @@ export default {
   },
   data() {
     return {
+      selectedEventId: null,
+      selectedEvent: {},
       form: {
         event_name: null,
         event_start_date: null,
@@ -73,28 +82,29 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["currentUser", "isAdmin"])
+    ...mapGetters(["currentUser", "isAdmin", "events"])
   },
   methods: {
-    ...mapActions(["postReq"]),
+    ...mapActions(["getEvents", "putReq"]),
     async onSubmit() {
       try {
         this.success_msg = null
         this.errors = []
-        let url = "/api/event/create"
-        let res = await this.postReq({
+        let url = `/api/event/${this.selectedEventId}`
+        let res = await this.putReq({
           url: url,
           body: {
-            event_name: this.form.event_name,
             start_date: this.form.event_start_date,
             end_date: this.form.event_end_date,
-            event_venue: this.form.event_venue,
-            event_link: this.form.event_link,
+            venue: this.form.event_venue,
+            link: this.form.event_link,
             event_short: this.form.event_short
           }
         });
         if (res.success) {
+          this.onReset()
           this.success_msg = res.message
+          this.getEvents()
         } else {
           this.errors.push(res.message)
         }
@@ -103,11 +113,42 @@ export default {
         this.errors.push("Couldn't reach server. Try again later.")
       }
     },
-    onReset() {},
+    onReset() {
+      this.selectedEvent = {}
+      this.selectedEventId = null
+      this.form.event_name = null
+      this.form.event_link = null
+      this.form.event_venue = null
+      this.form.event_short = null
+      this.form.event_start_date = null
+      this.form.event_end_date = null
+      this.errors = []
+      this.success_msg = ""
+    },
     dropOrganizer(org) {
       let el = this.form.event_organizers.indexOf(org);
       if (el > -1) {
         this.form.event_organizers.splice(el, 1);
+      }
+    },
+  },
+  created() {
+    this.$nextTick(function () {
+      this.getEvents();
+    });
+  },
+  watch: {
+    selectedEvent: function () {
+      if (this.selectedEvent != undefined) {
+        this.selectedEventId = this.selectedEvent._id
+        this.form.event_name = this.selectedEvent.name
+        this.form.event_start_date = this.selectedEvent.start_date
+        this.form.event_end_date = this.selectedEvent.end_date
+        this.form.event_link = this.selectedEvent.link
+        this.form.event_venue = this.selectedEvent.venue
+        this.form.event_short = this.selectedEvent.event_short
+      } else {
+        this.onReset()
       }
     }
   }
@@ -115,4 +156,9 @@ export default {
 </script>
 
 <style lang="scss">
+.form-control[readonly] {
+    background-color: initial;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+}
 </style>

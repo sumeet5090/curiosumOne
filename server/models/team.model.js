@@ -8,7 +8,7 @@ let TeamSchema = Schema({
     enum: ['combustion', 'electric'],
     required: true,
   },
-  car_id: {
+  car: {
     type: Number,
     ref: 'Car'
   },

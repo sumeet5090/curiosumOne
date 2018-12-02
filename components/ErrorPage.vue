@@ -25,6 +25,7 @@ export default {
     icon: {
       type: String,
       description: "Icon",
+      default: "fas fa-exclamation-triangle"
     },
     color: {
       type: String,

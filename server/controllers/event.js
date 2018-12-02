@@ -12,11 +12,11 @@ const getAllEvents = async (req, res) => {
   try {
     let events = await Event.find().populate('organizers').exec()
     if (events.length > 0) {
-      return Response.success(res,{
+      return Response.success(res, {
         events: events
       })
     }
-    return Response.failed(res,{
+    return Response.failed(res, {
       message: "No events found."
     })
   } catch (error) {
@@ -34,11 +34,11 @@ const getOneEvent = async (req, res) => {
     }
     let event = await Event.findOne({ $or: $or }).exec()
     if (event) {
-      return Response.success(res,{
+      return Response.success(res, {
         event: event
       })
     }
-    return Response.failed(res,{
+    return Response.failed(res, {
       message: "No event found."
     })
   } catch (error) {
@@ -51,11 +51,11 @@ const getOneEventByName = async (req, res) => {
   try {
     let event = await Event.findOne({ event_short: req.params.event_name })
     if (event) {
-      return Response.success(res,{
+      return Response.success(res, {
         event: event
       })
     }
-    return Response.failed(res,{
+    return Response.failed(res, {
       message: "No event found."
     })
   } catch (error) {
@@ -71,18 +71,18 @@ const getTeamForEvent = async (req, res) => {
     if (parseInt(id) == id) {
       $or.push({ _id: id })
     }
-    let event = await Event.findOne({ $or: $or }).populate('teams').populate('teams.users').exec()
+    let event = await Event.findOne({ $or: $or }).populate('teams').populate({ path: 'teams', populate: { path: 'car', select: 'car_number' } }).populate({ path: 'teams', populate: { path: 'users' } }).exec()
     if (event) {
       if (event.teams.length > 0) {
-        return Response.success(res,{
+        return Response.success(res, {
           teams: event.teams
         })
       }
-      return Response.failed(res,{
+      return Response.failed(res, {
         message: "Event has no teams."
       })
     }
-    return Response.failed(res,{
+    return Response.failed(res, {
       message: "No event found."
     })
   } catch (error) {
@@ -102,15 +102,15 @@ const getAnnouncementsForEvent = async (req, res) => {
     if (event) {
       let announcements = await Announcement.find({ event: event._id }, null, { sort: { dateTime: 'desc' } }).populate('author').exec()
       if (announcements.length > 0) {
-        return Response.success(res,{
+        return Response.success(res, {
           announcements: announcements
         })
       }
-      return Response.failed(res,{
+      return Response.failed(res, {
         message: "Event has no announcements."
       })
     }
-    return Response.failed(res,{
+    return Response.failed(res, {
       message: "No event found."
     })
   } catch (error) {
@@ -131,12 +131,12 @@ const getOneTechupdate = async (req, res) => {
       let find_id = event.tech_updates.indexOf(req.params.tu_id)
       let out = await event.populate('tech_updates').exec()
       if (find_id > -1) {
-        return Response.success(res,{
+        return Response.success(res, {
           tech_update: event.tech_updates[find_id]
         })
       }
     }
-    return Response.failed(res, {message: "Not found"})
+    return Response.failed(res, { message: "Not found" })
   } catch (error) {
     console.log(error)
     return res.sendStatus(500)
@@ -155,12 +155,12 @@ const getOneSchedule = async (req, res) => {
       let find_id = event.schedules.indexOf(req.params.id)
       if (find_id > -1) {
         let out = await event.populate('schedules').exec()
-        return Response.success(res,{
+        return Response.success(res, {
           schedules: out.schedules[find_id]
         })
       }
     }
-    return Response.failed(res, {message: "Not found"})
+    return Response.failed(res, { message: "Not found" })
   } catch (error) {
     console.log(error)
     return res.sendStatus(500)
@@ -179,12 +179,12 @@ const getOneLivetiming = async (req, res) => {
       let find_id = event.live_timings.indexOf(req.params.id)
       let out = await event.populate('tech_updates').exec()
       if (find_id > -1) {
-        return Response.success(res,{
+        return Response.success(res, {
           live_timings: out.live_timings[find_id]
         })
       }
     }
-    return Response.failed(res, {message: "Not found"})
+    return Response.failed(res, { message: "Not found" })
   } catch (error) {
     console.log(error)
     return res.sendStatus(500)
@@ -198,13 +198,13 @@ const getAllTechupdates = async (req, res) => {
     if (parseInt(id) == id) {
       $or.push({ _id: id })
     }
-    let event = await Event.findOne({ $or: $or }).populate('tech_updates').populate({path: 'tech_updates', populate: {path: 'team'}}).exec()
+    let event = await Event.findOne({ $or: $or }).populate('tech_updates').populate({ path: 'tech_updates', populate: { path: 'team' } }).exec()
     if (event) {
-      return Response.success(res,{
+      return Response.success(res, {
         event: event
       })
     }
-    return Response.failed(res, {message: "Not found"})
+    return Response.failed(res, { message: "Not found" })
   } catch (error) {
     console.log(error)
     return res.sendStatus(500)
@@ -222,7 +222,7 @@ const getAllSchedules = async (req, res) => {
     if (event.schedules.length > 0) {
       return Response.success(res, { event: event })
     }
-    return Response.failed(res, {message: "Not found"})
+    return Response.failed(res, { message: "Not found" })
   } catch (error) {
     console.log(error)
     return res.sendStatus(500)
@@ -238,11 +238,11 @@ const getAllLivetimings = async (req, res) => {
     }
     let event = await Event.findOne({ $or: $or }).populate('live_timings').populate('live_timings.team').exec()
     if (event) {
-      return Response.success(res,{
+      return Response.success(res, {
         event: event
       })
     }
-    return Response.failed(res, {message: "Not found"})
+    return Response.failed(res, { message: "Not found" })
   } catch (error) {
     console.log(error)
     return res.sendStatus(500)
@@ -261,20 +261,45 @@ const getAllCars = async (req, res) => {
     cars = await Car.find({ event_id: event._id }).populate('team_id').exec()
     if (cars) {
       if (cars.length > 0) {
-        return Response.success(res,{
+        return Response.success(res, {
           cars: cars
         })
       }
-      return Response.success(res,{
+      return Response.success(res, {
         cars: []
       })
     }
-    return Response.failed(res, {message: "Not found"})
+    return Response.failed(res, { message: "Not found" })
   } catch (error) {
     console.log(error)
     return res.sendStatus(500)
   }
 }
+
+const getTeamCar = async (req, res) => {
+  try {
+    let id = req.params.id,
+      $or = [{ event_short: id }]
+    if (parseInt(id) == id) {
+      $or.push({ _id: id })
+    }
+    let event = await Event.findOne({ $or: $or }).exec()
+    let team = await Team.findOne({ _id: req.params.team_id })
+    if (event && team) {
+      let car = await Car.findOne({ event_id: event._id, team_id: team._id })
+      if (car) {
+        return Response.success(res, {
+          car: car
+        })
+      }
+    }
+    return Response.failed(res, { message: "Not found" })
+  } catch (error) {
+    console.log(error)
+    return res.sendStatus(500)
+  }
+}
+
 
 const createEvent = async (req, res) => {
   try {
@@ -349,17 +374,16 @@ const createCar = async (req, res) => {
           team_id: team._id
         }).save()
         if (car) {
-          let out = await team.updateOne({ car_id: car._id }).exec()
+          let out = await team.updateOne({ car: car._id }).exec()
           if (out.nModified >= 1 && out.ok == 1) {
-            return Response.success(res,{
+            return Response.success(res, {
               message: "Created car and linked to team."
-            })
-          } else {
-            return Response.failed(res,{
-              message: "Couldn't create car."
             })
           }
         }
+        return Response.failed(res, {
+          message: "Couldn't create car."
+        })
       }
     }
     return res.sendStatus(404)
@@ -389,11 +413,11 @@ const createLivetiming = async (req, res) => {
               message: "Created live timing & linked to event."
             })
           }
-          return Response.failed(res,{
+          return Response.failed(res, {
             message: "Created live timing, but couldn't link it to event."
           })
         }
-        return Response.failed(res,{
+        return Response.failed(res, {
           message: "Couldn't create live timing."
         })
       }
@@ -430,16 +454,16 @@ const createTechupdate = async (req, res) => {
               message: "Created team update & linked to event."
             })
           }
-          return Response.failed(res,{
+          return Response.failed(res, {
             message: "Created team update, but couldn't link it to event."
           })
         }
-        return Response.failed(res,{
+        return Response.failed(res, {
           message: "Couldn't create team update."
         })
       }
     }
-    return Response.failed(res,{
+    return Response.failed(res, {
       message: "Event not found."
     })
   } catch (error) {
@@ -497,21 +521,21 @@ const addTeam = async (req, res) => {
       let event = await Event.findOne({ _id: event_id })
       if (event) {
         if (event.teams.indexOf(team_id) > -1) {
-          return Response.success(res,{
+          return Response.success(res, {
             message: "Team already registered for event."
           })
         } else {
           let output = await event.updateOne({ $push: { teams: team_id } }, { new: true }).exec()
           if (output.nModified >= 1 && output.ok == 1) {
-            return Response.success(res,{
+            return Response.success(res, {
               message: "Team registered."
             })
           }
         }
       }
-      return Response.failed(res,{ message: "Couldn't update event." })
+      return Response.failed(res, { message: "Couldn't update event." })
     }
-    return Response.failed(res,{
+    return Response.failed(res, {
       message: "No such team in records."
     })
   } catch (err) {
@@ -522,14 +546,38 @@ const addTeam = async (req, res) => {
 
 const updateEvent = async (req, res) => {
   try {
-    let id = req.params.id,
-      event = await Event.findOneAndUpdate({ _id: id }, { new: true })
+    let id = req.params.id, event 
+    console.log(req.body)
+    event = await Event.findOneAndUpdate({ _id: id }, req.body, { new: true })
     if (!event) {
-      return Response.success(res,{ message: "No event found." })
+      return Response.success(res, { message: "No event found." })
     }
-    return Response.success(res,{
+    return Response.success(res, {
+      message: "Event updated.",
       event: event
     })
+  } catch (error) {
+    console.log(error)
+    return res.sendStatus(500)
+  }
+}
+
+const updateCar = async (req, res) => {
+  try {
+    let id = req.params.id,
+      team_id = req.params.team_id,
+      event, team, car
+    if(req.body.car_number != null) {
+      car = await Car.findOneAndUpdate({ team_id: team_id, event_id: id }, { car_number: req.body.car_number }, { upsert: true, new: true })
+      if(car){
+        return Response.success(res, {
+          message: "Updated car.",
+          car: car
+        })
+      }
+      return Response.failed(res, {message: "Car not found!"})
+    }
+    return Response.failed(res, {message: "Provide a valid car number."})
   } catch (error) {
     console.log(error)
     return res.sendStatus(500)
@@ -541,11 +589,11 @@ const deleteEvent = async (req, res) => {
     let id = req.params.id,
       event = await Event.findOneAndDelete({ _id: id })
     if (!event) {
-      return Response.success(res,{
+      return Response.success(res, {
         message: "Couldn't delete event."
       })
     }
-    return Response.success(res,{
+    return Response.success(res, {
       deleted_event: event
     })
   } catch (error) {
@@ -567,6 +615,7 @@ module.exports = {
   getAllSchedules,
   getAllLivetimings,
   getAllCars,
+  getTeamCar,
   createEvent,
   createAnnouncement,
   createCar,
@@ -575,6 +624,6 @@ module.exports = {
   createSchedule,
   addTeam,
   updateEvent,
+  updateCar,
   deleteEvent
-
 }

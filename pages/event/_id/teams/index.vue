@@ -66,7 +66,7 @@ export default {
         },
         {
           label: " ",
-          key: "car_number",
+          key: "car.car_number",
           sortable: true
         },
         {
