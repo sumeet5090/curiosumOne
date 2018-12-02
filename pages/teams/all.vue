@@ -4,8 +4,11 @@
     <b-row class="justify-content-center">
       <div class="h2 font-weight-bold header-font text-uppercase">All teams</div>
     </b-row>
+    <b-row class="justify-content-center">
+        <base-input class="col-sm-12 col-md-6 px-0 mx-0" v-model="filter" type="text" placeholder="Search" addon-left-icon="fas fa-search text-success"></base-input>
+    </b-row>
     <b-row>
-      <b-table outlined responsive bordered hover :items="teams" :fields="fields">
+      <b-table outlined responsive bordered hover :items="teams" :fields="fields" :filter="filter">
         <template slot="category" slot-scope="data">
           <div class>
             <img src="@/assets/images/icons/category/combustion.svg" class="img-thumbnail icon-category" v-if="data.item.category == 'combustion'"/>
@@ -39,6 +42,7 @@ export default {
   computed: {},
   data() {
     return {
+      filter: null,
       table: {
         currentPage: 1,
         perPage: 100

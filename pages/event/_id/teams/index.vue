@@ -2,10 +2,15 @@
 <section class="section">
   <div class="container">
     <b-row class="justify-content-center">
-      <div class="display-4 header-font">Registered Teams for <strong class="text-primary">{{event.name}}</strong></div>
+      <div class="display-4 header-font">
+        Registered Teams for <strong class="text-primary">{{event.name}}</strong>
+      </div>
     </b-row>
-    <b-row>
-      <b-table outlined responsive bordered hover :items="teams" :fields="fields">
+    <b-row class="justify-content-center">
+      <base-input class="col-sm-12 col-md-6 px-0 mx-0" v-model="filter" type="text" placeholder="Search" addon-left-icon="fas fa-search text-success"></base-input>
+    </b-row>
+    <b-row class="justify-content-center">
+      <b-table outlined responsive bordered hover :items="teams" :fields="fields" :filter="filter">
         <template slot="category" slot-scope="data">
           <div class>
             <img src="@/assets/images/icons/category/combustion.svg" class="img-thumbnail icon-category" v-if="data.item.category == 'combustion'"/>
@@ -26,7 +31,6 @@
         </template>
       </b-table>
     </b-row>
-
   </div>
 </section>
 </template>
@@ -50,6 +54,7 @@ export default {
   },
   data() {
     return {
+      filter: null,
       table: {
         currentPage: 1,
         perPage: 100

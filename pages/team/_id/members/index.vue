@@ -1,10 +1,10 @@
 <template>
 <section class="section">
   <no-ssr>
-    <b-container>
+    <b-container v-if="!!accessControl('adminOrTeamCaptain')">
       <b-row class="justify-content-center">
         <b-col sm="12" md="10" lg="10">
-          <card shadow class="card-profile" no-body >
+          <card shadow class="card-profile" no-body>
             <div class="container" v-if="getTeam._id">
               <div class="row justify-content-center">
                 <router-link tag="a" :to="{name: 'team-id', params: {id: getTeam._id}}" class="h3 font-weight-bold cursor-pointer">{{getTeam.team_name}}</router-link>
@@ -68,8 +68,9 @@ export default {
           return false;
           break;
         case "adminOrTeamCaptain":
-          if (this.isAdmin || this.team.captain == this.currentUser._id) {
-            return true;
+          if (!!this.currentUser) {
+            if (this.isAdmin || this.getTeam.captain == this.currentUser._id)
+              return true;
           }
           return false;
           break;
@@ -87,7 +88,9 @@ export default {
     };
   },
   created() {
-    this.setTeam(this.params.id);
+    this.$nextTick(function () {
+      this.setTeam(this.params.id);
+    })
   }
 };
 </script>
