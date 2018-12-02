@@ -9,6 +9,9 @@ module.exports = {
    ** Headers of the page
    */
   head: {
+    htmlAttrs: {
+      lang: 'en',
+    },
     title: "MEC Portal",
     meta: [{
       charset: 'utf-8'
@@ -92,6 +95,6 @@ module.exports = {
     vendor: ['bootstrap-vue', 'vue-flatpickr-component', 'vue2-transition', 'vue-lazyload',],
     plugins: [
     ],
-    extend(config, ctx) {}
+    extend(config, ctx) { }
   }
 }

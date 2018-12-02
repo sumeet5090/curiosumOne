@@ -72,7 +72,11 @@ let TeamSchema = Schema({
   },
   drive_folder: {
     type: String
-  }
+  },
+  alumnus: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }]
 }, {
     timestamps: true
   });

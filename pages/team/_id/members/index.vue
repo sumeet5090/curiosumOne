@@ -1,5 +1,5 @@
 <template>
-<section class="section section-hero">
+<section class="section">
   <no-ssr>
     <b-container>
       <b-row class="justify-content-center">

@@ -10,7 +10,7 @@
               <div class="col-lg-3 order-lg-1">
                 <div class="card-profile-image">
                   <a href="">
-                    <img v-lazy="user.profile.picture" class="rounded-circle">
+                    <img v-lazy="user.profile.picture" alt="Profile Pic" class="rounded-circle">
                 </a>
                 </div>
               </div>

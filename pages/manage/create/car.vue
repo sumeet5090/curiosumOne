@@ -42,13 +42,14 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["getEvents", "getTeamsForEvent", "createCar"]),
-    onSubmit() {
-      this.createCar({
-        event_id: this.selectedEvent,
-        team_id: this.selectedTeam,
-        car_number: this.car_number
-      });
+    ...mapActions(["getEvents", "getTeamsForEvent", "postReq"]),
+    async onSubmit() {
+      let res = await this.postReq({
+        url: `/api/event/${this.selectedEvent}/create/${this.selectedTeam}/car`,
+        body: {
+          car_number: this.car_number
+        }
+      })
     },
     onReset() {
       this.car_number = "";

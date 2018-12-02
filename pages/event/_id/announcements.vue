@@ -7,7 +7,8 @@
       </div>
     </b-row>
     <b-row class="justify-content-center mt-4" v-for="annc in announcements" :key="annc._id">
-      <b-card>
+      <b-col sm="12" md="10" lg="8">
+        <b-card>
         <h4 class="">{{annc.title}}</h4>
         <span class="ml-2 text-muted"><small>{{formatDate(Date.parse(annc.dateTime)) + ' by '}} <router-link tag="a" :to="{name: 'profile-id', params: {id: getAuthor(annc.author).username}}" class="card-link">{{getAuthor(annc.author).display_name}}</router-link></small></span>
         <p class="card-text">{{annc.description}}</p>
@@ -15,6 +16,7 @@
           <badge v-for="tag in annc.tags" :key="tag" type="secondary">#{{tag}}</badge>
         </div>
       </b-card>
+      </b-col>
     </b-row>
   </b-container>
 </section>

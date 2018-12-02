@@ -2,22 +2,21 @@
   <section class="section section-hero">
     <div class="container">
       <b-row class="justify-content-center">
-        <div class="h2 header-font">
-          Tech Updates for <strong class="text-primary text-capitalize">{{event.name}}</strong>
+        <div class="display-4 header-font">
+          Live Updates for
+          <strong class="text-primary">{{event.name}}</strong>
         </div>
       </b-row>
       <b-row>
         <b-table outlined responsive bordered hover :items="event.tech_updates" :fields="fields">
           <template slot="team.category" slot-scope="data">
             <div class="icon-container text-center">
-              <img src="@/assets/images/icons/category/combustion.svg" alt="Combustion" class="img-thumbnail icon-category" v-if="data.item.team.category == 'combustion'" v-b-tooltip.hover.bottom title="Combustion"/>
-              <img src="@/assets/images/icons/category/electric.svg" alt="Electric" class="img-thumbnail icon-category" v-if="data.item.team.category == 'electric'"  v-b-tooltip.hover.bottom title="Electric"/>
+              <img src="@/assets/images/icons/category/combustion.svg" class="img-thumbnail icon-category" v-if="data.item.team.category == 'combustion'" v-b-tooltip.hover.bottom title="Combustion"/>
+              <img src="@/assets/images/icons/category/electric.svg" class="img-thumbnail icon-category" v-if="data.item.team.category == 'electric'"  v-b-tooltip.hover.bottom title="Electric"/>
             </div>
           </template>
           <template slot="team.team_name" slot-scope="data">
-            <div class="text-center px-0">
-            <router-link tag="a" class="btn btn-link text-capitalize" :to="{name: 'team-id', params: {id: data.item.team._id}}">{{data.item.team.team_name}}</router-link>
-            </div>
+            <div class="text-center px-0">{{data.item.team.team_name}}</div>
           </template>
           <template slot="team.car" slot-scope="data">
             <div class="text-center px-0">
@@ -35,7 +34,7 @@
                 class="icon-category"
                 src="@/assets/images/icons/tech/accumulator.png"
                 :class="[{'gray-img': !data.item.accumulator}]"
-                v-b-tooltip.hover.bottom  title="Accumulator" alt="Accumulator"
+                v-b-tooltip.hover.bottom title="Accumulator"
               >
             </div>
           </template>
@@ -45,7 +44,7 @@
                 class="icon-category"
                 src="@/assets/images/icons/tech/scrut-elec.png"
                 :class="[{'gray-img': !data.item.scrutineering_elec}]"
-                v-b-tooltip.hover.bottom title="Scrutineering Electric" alt="Scrutineering Electric"
+                v-b-tooltip.hover.bottom title="Scrutineering Electric"
               >
             </div>
           </template>
@@ -56,7 +55,6 @@
                 src="@/assets/images/icons/tech/scrut-mech.png"
                 :class="[{'gray-img': !data.item.scrutineering_mech}]"
                 v-b-tooltip.hover.bottom title="Scrutineering Mechanical"
-                alt="Scrutineering Mechanical"
               >
             </div>
           </template>
@@ -65,7 +63,6 @@
               <img
                 class="icon-category"
                 src="@/assets/images/icons/tech/egress.png"
-                alt="Driver Egress"
                 :class="[{'gray-img': !data.item.driver_egress}]"
                 v-b-tooltip.hover.bottom title="Driver Egress"
               >
@@ -76,7 +73,6 @@
               <img
                 class="icon-category"
                 src="@/assets/images/icons/tech/tilt.png"
-                alt="Tilt"
                 :class="[{'gray-img': !data.item.tilt}]"
                 v-b-tooltip.hover.bottom title="Tilt"
               >
@@ -88,7 +84,7 @@
                 class="icon-category"
                 src="@/assets/images/icons/tech/noise.png"
                 :class="[{'gray-img': !data.item.noise_ready_to_drive_sound}]"
-                v-b-tooltip.hover.bottom title="Noise Ready to Drive Sound" alt="Noise Ready to Drive Sound"
+                v-b-tooltip.hover.bottom title="Noise Ready to Drive Sound"
               >
             </div>
           </template>
@@ -98,7 +94,7 @@
                 class="icon-category"
                 src="@/assets/images/icons/tech/brakes.png"
                 :class="[{'gray-img': !data.item.brakes}]"
-                v-b-tooltip.hover.bottom title="Breaks" alt="Breaks"
+                v-b-tooltip.hover.bottom title="Breaks"
               >
             </div>
           </template>
@@ -108,7 +104,7 @@
                 class="icon-category"
                 src="@/assets/images/icons/tech/rain.png"
                 :class="[{'gray-img': !data.item.rain}]"
-                v-b-tooltip.hover.bottom title="Rain" alt="Rain"
+                v-b-tooltip.hover.bottom title="Rain"
               >
             </div>
           </template>
@@ -128,51 +124,51 @@ export default {
       teams: [{}],
       fields: [
         {
-          label: "",
-          key: "team.category",
+          label: " ",
+          key: "team.category"
         },
         {
-          label: "",
+          label: " ",
           key: "team.team_name"
         },
         {
-          label: "",
+          label: " ",
           key: "team.car"
         },
         {
-          label: "",
+          label: " ",
           key: "team.institution.short_name"
         },
         {
-          label: "",
+          label: " ",
           key: "accumulator"
         },
         {
-          label: "",
+          label: " ",
           key: "scrutineering_elec"
         },
         {
-          label: "",
+          label: " ",
           key: "scrutineering_mech"
         },
         {
-          label: "",
+          label: " ",
           key: "driver_egress"
         },
         {
-          label: "",
+          label: " ",
           key: "tilt"
         },
         {
-          label: "",
+          label: " ",
           key: "noise_ready_to_drive_sound"
         },
         {
-          label: "",
+          label: " ",
           key: "brakes"
         },
         {
-          label: "",
+          label: " ",
           key: "rain"
         }
       ]

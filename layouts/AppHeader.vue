@@ -4,14 +4,14 @@
     <base-nav type="none" effect="light" expand>
       <nuxt-link to="/" slot="brand" class="navbar-brand mr-lg-5">
         <div class="navbar-brand">
-          <img src="@/assets/images/brand/logo.png" alt="" />
+          <img src="@/assets/images/brand/logo.png" alt="MEC" />
             </div>
       </nuxt-link>
       <div class="row" slot="content-header" slot-scope="{closeMenu}">
         <div class="col-6 collapse-brand">
           <nuxt-link to="/" slot="brand" class="navbar-brand mr-lg-5">
             <div class="navbar-brand">
-              <img src="@/assets/images/brand/logo.png" alt="" />
+              <img src="@/assets/images/brand/logo.png" alt="MEC" />
                     </div>
           </nuxt-link>
         </div>
@@ -34,9 +34,8 @@
         <li class="nav-item">
           <div class="row ">
             <div class="text-center col-md-6">
-              <a href="" class="nav-link nav-link-icon" data-toggle="tooltip" title="Notifications" @click.prevent="modalShowNotification" >
-                  <i class="fa fa-bell"></i>
-                  <span class="nav-link-inner--text d-lg-none text-uppercase font-weight-bold">Notifications</span>
+              <a href="" class="nav-link nav-link-icon" v-b-tooltip.hover title="Notifications" @click.prevent="modalShowNotification" >
+                  <i class="fa fa-bell" aria-label="Notifications"></i>
               </a>
             </div>
             <div class="text-center col-md-6">
@@ -47,7 +46,7 @@
                 <a class="dropdown-item text-center" href="" @click.prevent="logout"> Logout </a>
               </base-dropdown>
               <a href="/login" class="nav-link nav-link-icon btn-light" data-toggle="tooltip" title="Notifications" v-else>
-                  <span slot="icon"><img src="@/assets/images/icons/common/google.svg" alt="" class="nav-brand-logo" /></span>
+                  <span slot="icon"><img src="@/assets/images/icons/common/google.svg" alt="GOOGLE" class="nav-brand-logo" aria-label="Google"/></span>
                   <span class="nav-link-inner--text d-lg-none text-uppercase font-weight-bold text-warning">Google</span>
               </a>
             </div>

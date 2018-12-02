@@ -115,16 +115,16 @@ const actions = {
     }
   },
   async createCar({ }, params) {
-    try {
-      let { data } = await this.$axios.post(`/api/event/${params.event_id}/create/${String(params.team_id)}/car`, { car_number: params.car_number })
-      if (data) {
-        if (params.push_url) {
-          this.$router.push({ path: params.push_url })
-        }
-      }
-    } catch (error) {
-      console.log(error)
-    }
+    // try {
+    //   let { data } = await this.$axios.post(`/api/event/${params.event_id}/create/${String(params.team_id)}/car`, { car_number: params.car_number })
+    //   if (data) {
+    //     if (params.push_url) {
+    //       this.$router.push({ path: params.push_url })
+    //     }
+    //   }
+    // } catch (error) {
+    //   console.log(error)
+    // }
   },
   async postReq({ }, params) {
     try {

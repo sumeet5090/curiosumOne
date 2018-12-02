@@ -1,5 +1,5 @@
 <template>
-<section class="section section-hero">
+<section class="section">
   <no-ssr>
     <b-container v-if="accessControl('user') && accessControl('adminOrTeamCaptain')">
       <b-row>
@@ -45,13 +45,16 @@
         </div>
       </b-row>
     </b-container>
-    <error-page message="You are not authorized to view this content." v-else v-show="loaded"/>
+    <error-page message="You are not authorized to view this content." v-else v-show="loaded" />
   </no-ssr>
 </section>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import {
+  mapGetters,
+  mapActions
+} from "vuex";
 export default {
   data() {
     return {
@@ -89,8 +92,7 @@ export default {
       if (res.success) {
         this.$router.go(this.$router.currentRoute);
         return (this.success_msg = res.message ? res.message : "Team updated.");
-      } else {
-      }
+      } else {}
     },
     async onReset() {
       this.success_msg = null;
@@ -144,7 +146,9 @@ export default {
       }
     }
   },
-  async asyncData({ params }) {
+  async asyncData({
+    params
+  }) {
     try {
       return {
         params
@@ -152,7 +156,7 @@ export default {
     } catch (error) {}
   },
   created() {
-    this.$nextTick(function() {
+    this.$nextTick(function () {
       this.loadFormData();
     });
   }
@@ -163,9 +167,11 @@ export default {
 .facebook-icon {
   color: rgb(59, 89, 153);
 }
+
 .twitter-icon {
   color: rgb(29, 161, 242);
 }
+
 .form-control {
   &:focus {
     color: black;

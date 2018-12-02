@@ -9,8 +9,8 @@
             <div class="col-lg-3 order-lg-2">
               <div class="card-profile-image">
                 <a href="" class="profile-pic">
-                  <img v-if="team.logo" v-lazy="team.logo" class="rounded-circle"/>
-                  <img v-else src="@/assets/images/font-awesome/users-solid.svg">
+                  <img v-if="team.logo" v-lazy="team.logo" class="rounded-circle" alt="Team Logo"/>
+                  <img v-else src="@/assets/images/font-awesome/users-solid.svg" alt="Team Logo">
                 </a>
               </div>
             </div>
@@ -29,21 +29,19 @@
             <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
               <div class="card-profile-actions py-2 mt-lg-1">
                 <span class="mr-1 text-center">
-                    <a v-if="team.website_url" :href="team.website_url" target="_blank"><icon name="fa fa-link" color="dark" size="md"></icon></a>
-                    <a v-if="team.social.facebook" :href="team.social.facebook" target="_blank"><icon name="fab fa-facebook-f" style="color: #3B5999"  size="md"></icon></a>
+                    <a v-if="team.website_url" :href="team.website_url" target="_blank" rel="noreferrer" ><icon name="fa fa-link" color="dark" size="md"></icon></a>
+                    <a v-if="team.social.facebook" :href="team.social.facebook" target="_blank" rel="noreferrer" ><icon name="fab fa-facebook-f" style="color: #3B5999"  size="md"></icon></a>
                 </span>
                 <span class="float-right text-center">
-                    <a v-if="team.social.twitter" :href="team.social.twitter" target="_blank"><icon name="fab fa-twitter" style="color: #1DA1F2"  size="md"></icon></a>
-                    <a v-if="team.social.instagram" :href="team.social.instagram" target="_blank"><icon name="fab fa-instagram" color="danger" size="md"></icon></a>
+                    <a v-if="team.social.twitter" :href="team.social.twitter" target="_blank" rel="noreferrer" ><icon name="fab fa-twitter" style="color: #1DA1F2"  size="md"></icon></a>
+                    <a v-if="team.social.instagram" :href="team.social.instagram" target="_blank" rel="noreferrer" ><icon name="fab fa-instagram" color="danger" size="md"></icon></a>
                 </span>
               </div>
             </div>
             <div class="col-md-12 order-lg-4">
               <div class="container">
-                <div class="row-fluid">
-                  <span class="text-right">
-                    <router-link tag="a" v-if="showSettings" :to="{name: 'team-id-update', params: {id: team._id}}"><icon name="fas fa-cogs" color="dark" size="md"></icon></router-link>
-                  </span>
+                <div class="row justify-content-end">
+                  <router-link tag="a" v-if="showSettings" class="btn btn-primary btn-sm mr-5" :to="{name: 'team-id-update', params: {id: team._id}}">Update</router-link>
                 </div>
               </div>
             </div>
@@ -72,7 +70,7 @@
             <b-row class="justify-content-center">
               <b-col sm="6" v-for="event in team.events" :key="event.event_short">
                 <div class="text-center text-primary">
-                  <router-link :to="'/event/'+event.event_short" tag="a" class="btn btn-link"> {{event.name}}</router-link>
+                  <a :href="event.link" tag="a" class="btn btn-link"> {{event.name}}</a>
                 </div>
               </b-col>
             </b-row>
@@ -86,7 +84,7 @@
               <b-col sm="4" md="3" lg="2" v-for="user in team.users" :key="user.id" v-bind:class="{'team-captain order-first': !!isCaptain(team.captain, user._id), 'order-2': !isCaptain(team.captain, user._id)}">
                 <card no-body tag="article" class="team-user-profiles my-1">
                   <div class="text-center">
-                    <img class="rounded-circle" v-lazy="user.profile.picture">
+                    <img class="rounded-circle" v-lazy="user.profile.picture" alt="User profile">
                     <div class="my-2">
                       <router-link :to="'/profile/'+user.username" class="text-primary font-weight-300">{{user.display_name}}</router-link>
                       <div v-if="isCaptain(team.captain, user._id)"><small class="text-muted">(captain)</small></div>
@@ -94,16 +92,16 @@
                   </div>
                 </card>
               </b-col>
-                <router-link class="col-sm-4 col-md-3 col-lg-2 order-last" tag="div" v-if="accessControl('adminOrTeamCaptain')" :to="{name: 'team-id-members-add', params: {id: team._id}}">
-                  <card no-body tag="article" class="team-user-profiles text-center cursor-pointer">
-                    <div class="card-body">
-                    </div>
-                    <small>Add members</small>
-                    <i class="far fa-plus-square fa-2x"></i>
-                    <div class="card-body">
-                    </div>
-                  </card>
-                </router-link>
+              <router-link class="col-sm-4 col-md-3 col-lg-2 order-last" tag="div" v-if="accessControl('adminOrTeamCaptain')" :to="{name: 'team-id-members-add', params: {id: team._id}}">
+                <card no-body tag="article" class="team-user-profiles text-center cursor-pointer">
+                  <div class="card-body">
+                  </div>
+                  <small>Add members</small>
+                  <i class="far fa-plus-square fa-2x"></i>
+                  <div class="card-body">
+                  </div>
+                </card>
+              </router-link>
             </b-row>
           </div>
           <div class="my-1 py-2 border-top" v-if="team.drive_folder" v-show="!!(team.drive_folder)">
@@ -115,7 +113,7 @@
               <b-col sm="3" md="3" lg="2">
                 <card no-body tag="article" class="my-1">
                   <div class="text-center">
-                    <a :href="team.drive_folder" target="_blank" class="btn btn-link">Link</a>
+                    <a :href="team.drive_folder" target="_blank" rel="noreferrer"  class="btn btn-link">Link</a>
                   </div>
                 </card>
               </b-col>
@@ -178,7 +176,7 @@ export default {
           return !!this.isAdmin;
           break;
         case "adminOrTeamCaptain":
-          if(this.currentUser){
+          if (this.currentUser) {
             return !!(this.isAdmin || this.team.captain == this.currentUser._id);
           }
           return false
@@ -197,6 +195,6 @@ export default {
 
 <style lang="scss">
 .profile-page .card-profile .card-profile-image img {
-  box-shadow:none;
+  box-shadow: none;
 }
 </style>
