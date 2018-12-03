@@ -1,8 +1,8 @@
 <template>
 <section class="section section-hero custom-gradient">
-  <b-container>
+  <b-container  v-if="isAdmin">
     <b-row class="justify-content-center">
-      <div class="col-md-8" v-if="isAdmin">
+      <div class="col-md-8">
         <card>
           <b-form @submit.prevent="onSubmit" @reset.prevent="onReset">
             <b-form-group id="form-user_email" label="Email:" label-for="form-user_email--input">
@@ -11,26 +11,20 @@
             <b-form-group id="form-input-role" label="Role:" label-for="form-input-role--input">
               <b-form-select id="form-input-role--input" required v-model="input_role" :options="roles" class="mb-3 text-dark"></b-form-select>
             </b-form-group>
-            <b-alert variant="danger" dismissible :show="errors.length > 0" @dismissed="showDismissibleAlert=false">
-              <div v-for="error in errors" :key="error">{{error}}</div>
-            </b-alert>
-            <b-alert variant="success" :show="!!success_msg">
-              <div>{{success_msg}}</div>
-            </b-alert>
+            <b-alert variant="danger" dismissible v-if="errors.length > 0" :show="showDismissableAlert" @dismissed="showDismissableAlert=false">
+                <div v-for="error in errors" :key="error">{{error}}</div>
+              </b-alert>
+              <b-alert variant="success" :show="!!success_msg">
+                <div>{{success_msg}}</div>
+              </b-alert>
             <b-button type="submit" variant="primary">Update</b-button>
             <b-button type="reset" variant="danger">Reset</b-button>
           </b-form>
         </card>
       </div>
-      <div class="col-md-8" v-else>
-        <card>
-          <div class="text-center display-3 text-warning text-uppercase">
-            Access denied
-          </div>
-        </card>
-      </div>
     </b-row>
   </b-container>
+  <error-page v-else message="You are not authorized to view this content." icon="fas fa-exclamation-circle"></error-page>
 </section>
 </template>
 
@@ -98,11 +92,21 @@ export default {
             role: this.input_role
           }
         });
-        this.success_msg = res.message;
+        if(res){
+          if(res.success){
+            this.success_msg = res.message;
+          } else {
+            this.showError(res.message)
+          }
+        }
       }
     },
     onReset() {
       (this.input_role = null), (this.errors = []), (this.user_email = null);
+    },
+    showError(msg) {
+      this.showDismissableAlert = true;
+      this.errors.push(msg);
     }
   }
 };

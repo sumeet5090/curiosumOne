@@ -122,6 +122,23 @@
           </card>
         </div>
       </div>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="text-uppercase font-weight-bold h4 mt-2">Role</div>
+        </div>
+        <div class="row">
+          <card class="col-sm-6 col-md-4">
+            <div class="card-title"><i class="fas fa-plus-square pr-1"></i>Add role</div>
+            <div class="mb-3">Assign roles to a user.</div>
+            <router-link class="btn btn-sm btn-primary" to="/manage/role/add">Add</router-link>
+          </card>
+          <card class="col-sm-6 col-md-4">
+            <div class="card-title"><i class="fas fa-plus-square pr-1"></i>Remove role</div>
+            <div class="mb-3">Take away roles from a user.</div>
+            <router-link class="btn btn-sm btn-primary" to="/manage/role/remove">Remove</router-link>
+          </card>
+        </div>
+      </div>
     </div>
   </section>
 </div>

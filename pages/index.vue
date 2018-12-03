@@ -92,7 +92,7 @@
                 <icon name="fa fa-clock" type="default" rounded class="mb-3"></icon>
                 <h6 class="text-default text-uppercase font-weight-bold">Live Timing</h6>
                 <p class="description mt-3">Un-official time display of {{event.name}}!</p>
-                <router-link tag="a" class="btn btn-default mt-2" :to="{name: 'event-id-tech-updates', params: {id: event.event_short}}">Live Timings</router-link>
+                <router-link tag="a" class="btn btn-default mt-2" :to="{name: 'event-id-live-timings', params: {id: event.event_short}}">Live Timings</router-link>
               </card>
             </div>
           </div>
