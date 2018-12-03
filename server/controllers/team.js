@@ -171,8 +171,8 @@ const addMembers = async function (req, res) {
   return Response.failed(res, { message: "Team not found." })
 }
 
-const confirmToken = async function (req, res) {
-  let _token = req.params.token, user, team, token, user_out, user_updated = false, team_out, team_updated = false
+const confirmToken = async function (req, res, next) {
+  let _token = req.params.token, user, team, token, user_out, user_updated = false, team_out, team_updated = false, message, success = false
   try {
     token = await Token.findOne({ token: _token })
     if (token) {
@@ -198,13 +198,17 @@ const confirmToken = async function (req, res) {
           }
           if (user_updated && team_updated) {
             await Token.deleteOne({ _id: token._id })
-            return Response.success(res, { message: "Successfully joined team." }, 202)
+            success = true
+            message = "Successfully joined team."
           }
-          return Response.success(res, { message: "Try again." }, 202)
+          message = "Try again."
         }
       }
     }
-    return Response.failed(res, { message: "Invalid token" })
+    message = "Invalid token."
+    res.locals.success = success
+    res.locals.message = message
+    return next();
   } catch (error) {
     console.log(error)
     return Response.failed(res, { message: "Internal Server Error" }, 500)
