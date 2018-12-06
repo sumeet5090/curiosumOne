@@ -14,7 +14,7 @@ module.exports = function (app, mongooseConnection) {
         resave: false,
         saveUninitialized: false,
         cookie: {
-            expires: keys.session.maxAge
+            maxAge: parseInt(keys.session.maxAge)
         }
     }))
 }
