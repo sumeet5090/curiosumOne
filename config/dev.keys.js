@@ -25,7 +25,7 @@ let keys = {
     },
     session: {
         secret: "HAHAHAHAHA SEssIoN SseCret!@? weQEQ",
-        maxAge: 24 * 7 * 60 * 60 * 10000
+        maxAge: 604800000
     }
 }
 keys.db.uri = `mongodb://${keys.db.host}:${keys.db.port}/${keys.db.name}?authSource=${keys.db.options.authSource}`

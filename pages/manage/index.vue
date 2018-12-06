@@ -73,7 +73,7 @@
           </card>
           <card class="col-sm-6 col-md-4">
             <div class="card-title"><i class="fas fa-trash-alt pr-1"></i>Remove live timings</div>
-            <div class="mb-3">Remove an live timings.</div>
+            <div class="mb-3">Remove a live timing.</div>
             <router-link class="btn btn-sm btn-primary" to="/manage/delete/livetiming">Remove</router-link>
           </card>
         </div>

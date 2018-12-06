@@ -1,7 +1,8 @@
 <template>
 <section class="section">
   <b-container v-if="isAdmin">
-    <error-page message="Under construction" color="info" heading="Wait..." icon="fas fa-hammer"></error-page>
+    <error-page v-if="isReady" message="Under construction" color="info" heading="Wait..." icon="fas fa-hammer"></error-page>
+    
   </b-container>
   <error-page v-else message="You are not authorized to view this content." icon="fas fa-exclamation-circle"></error-page>
 </section>
@@ -15,8 +16,9 @@ import {
 export default {
   data() {
     return {
+      isReady: false,
       errors: [],
-      success_msg: null
+      success_msg: null,
     };
   },
   computed: {
