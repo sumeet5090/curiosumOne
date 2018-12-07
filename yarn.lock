@@ -9177,6 +9177,18 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
+vue-clazy-load@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/vue-clazy-load/-/vue-clazy-load-0.4.2.tgz#8a83c8bc3bae291cedbde72baa52fdbf8938c766"
+  integrity sha512-p60BlFuCaKbCNKOafyGO3ArswrpEdg5kpS8zUBDg2UON6GqAehoBxUiTPNulYNHAbPIxNyiwHmHE6HZwdsozoQ==
+
+vue-content-loader@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/vue-content-loader/-/vue-content-loader-0.2.1.tgz#0eb332e2a72643d57fb209d72d6526573b191f5a"
+  integrity sha1-DrMy4qcmQ9V/sgnXLWUmVzsZH1o=
+  dependencies:
+    babel-helper-vue-jsx-merge-props "^2.0.3"
+
 vue-flatpickr-component@^8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/vue-flatpickr-component/-/vue-flatpickr-component-8.0.0.tgz#d5ce18981ad1c6fdf32106ae441f5160978e46b3"

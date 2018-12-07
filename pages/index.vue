@@ -3,9 +3,9 @@
   <section class="section pt-0">
     <b-container>
       <b-row class="justify-content-center">
-        <b-col md="12">
-          <img v-lazy="require('@/assets/images/brand/header.jpg')" class="img-thumbnail border-0 shadow-none" alt="Mobility Engineering Consortium Online Portal"/>
-        </b-col>
+        <clazy-load :src="imageHeader.src">
+          <img :src="imageHeader.src" class="img-thumbnail border-0 shadow-none" alt="Mobility Engineering Consortium Online Portal">
+        </clazy-load>
       </b-row>
       <b-row class="mt-2">
         <b-col sm="12">
@@ -106,13 +106,28 @@
 <script>
 import api from "@/services/Event.service.js";
 import {
+  ContentLoader,
+  FacebookLoader,
+  CodeLoader,
+  BulletListLoader,
+  InstagramLoader,
+  ListLoader
+} from 'vue-content-loader'
+import {
   mapGetters
 } from "vuex";
 import moment from "moment";
 export default {
+  components: {
+    ContentLoader,
+  },
   data() {
     return {
-      showMoreCards: false
+      showMoreCards: false,
+      imageHeader: {
+        src: require('@/assets/images/brand/header.jpg'),
+        loading: ''
+      }
     };
   },
   async asyncData({

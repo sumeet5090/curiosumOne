@@ -15,10 +15,11 @@ import CloseButton from "@/components/CloseButton";
 import Modal from "@/components/Modal";
 import Icon from "@/components/Icon";
 import ErrorPage from "@/components/ErrorPage";
+import Loading from "@/components/Loading";
 let components = [
   Badge, BaseAlert, BaseButton, BaseCheckbox, BaseInput, BasePagination,
   BaseProgress, BaseRadio, BaseSlider, BaseSwitch, Card, CloseButton, Icon, 
-  Modal, BaseDropdown, ErrorPage
+  Modal, BaseDropdown, ErrorPage, Loading
 ]
 
 components.forEach(comp => {

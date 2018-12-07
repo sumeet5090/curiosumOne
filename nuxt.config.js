@@ -25,7 +25,19 @@ module.exports = {
       name: 'description',
       content: pkg.description
     },
-      // TODO: My dev meta
+    {
+      name: 'theme-color',
+      content: '#33CCCC'
+    },
+    {
+      name: 'msapplication-navbutton-color',
+      content: '#33CCCC'
+    },
+    {
+      name: 'apple-mobile-web-app-status-bar-style',
+      content: '#33CCCC'
+    },
+    // More Meta pls
     ],
     link: [{
       rel: 'icon',
@@ -34,7 +46,6 @@ module.exports = {
     },
     ]
   },
-
   /*
    ** Customize the progress-bar color
    */

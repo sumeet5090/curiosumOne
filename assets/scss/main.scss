@@ -109,6 +109,22 @@
   overflow: hidden scroll;
 }
 
+// .btn-success {
+//   &, &:hover, &:focus, &:active {
+//     border-width: 0.0625rem;
+//     border-style: solid;
+//     border-color: adjust_color($success, $lightness: 12%, $saturation: 60%);
+//   }
+// }
+
+// .btn-primary {
+//   &, &:hover, &:focus, &:active {
+//     border-width: 1px;
+//     border-style: solid;
+//     border-color: adjust_color($primary, $lightness: 12%, $saturation: 60%);
+//   }
+// }
+
 .navbar {
   .nav-link {
     &.dropdown-toggle {
@@ -167,9 +183,6 @@
   .navbar-nav .nav-link-icon {
     padding: 0.5rem !important;
     background-color: white;
-    i {
-      // color: #172B4D;
-    }
   }
   .dropdown-toggle.nav-link {
     padding: 0 !important;

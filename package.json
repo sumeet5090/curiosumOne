@@ -43,6 +43,8 @@
     "passport-local": "^1.0.0",
     "popper.js": "^1.14.5",
     "vue": "^2.5.17",
+    "vue-clazy-load": "^0.4.2",
+    "vue-content-loader": "^0.2.1",
     "vue-flatpickr-component": "^8.0.0",
     "vue-good-table": "^2.16.0",
     "vue-kindergarten": "^0.3.3",
