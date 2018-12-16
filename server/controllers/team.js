@@ -134,6 +134,30 @@ const addCaptain = async (req, res) => {
   let id = req.params.id, body = req.body
 }
 
+const changeCaptain = async (req, res) => {
+  let id = req.params.id, user = req.body.new_captain, team, find_user
+  team = await Team.findOne({ _id: id })
+  if (team) {
+    find_user = await User.findOne({ _id: user })
+    if (find_user) {
+      if (team.users.contains(find_user._id)) {
+        console.log("yes")
+        let team_out = await team.updateOne({ captain: find_user._id }).exec()
+        if (team_out.nModified >= 1 && team_out.ok == 1) {
+          return Response.success(res, {
+            message: 'Updated captain',
+          })
+        }
+      }
+      console.log("no 1")
+      return Response.failed(res, { message: "Couldn't update." })
+    }
+    console.log("no 2")
+  }
+  console.log("no 3")
+  return Response.failed(res, { message: "Not found" })
+}
+
 const addMembers = async function (req, res) {
   let id = req.params.id, team, successful_sent = [], emails = req.body.emails, users = req.body.users
   team = await Team.findOne({ _id: id })
@@ -215,11 +239,28 @@ const confirmToken = async function (req, res, next) {
   }
 }
 
+const addAlumnus = async (req, res) => {
+  try {
+    let team_id = req.params.id, user_to_alumni, team
+    team = await Team.findOne({_id: team_id})
+    if(team){
+      user = await User.findOne({_id: req.body.user_id_for_alumni})
+      if(user){
+        // Todo b
+      }
+    }
+    return Response.failed(res, {message: "Not found"})
+  } catch (error) {
+    console.log(error)
+    return res.sendStatus(500)
+  }
+}
+
 const updateTeam = async function (req, res) {
   // Put request
   let id = req.params.id
   try {
-    let team = await Team.findOneAndUpdate({ _id: id }, req.body, { new: true })
+    let team = await Team.findOneAndUpdate({ _id: id }, req.body, { new: true }).exec()
     if (!team) {
       return Response.success(res, { message: "Couldn't update team." }, 204)
     }
@@ -385,5 +426,6 @@ module.exports = {
   linkTeamAndEvent,
   linkTeamAndCar,
   updateTeam,
+  changeCaptain,
   deleteTeam
 }

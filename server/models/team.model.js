@@ -34,23 +34,29 @@ let TeamSchema = Schema({
   },
   website_url: {
     type: String,
+    default: ""
   },
   social: {
     facebook: {
       type: String,
+      default: ""
     },
     twitter: {
-      type: String
+      type: String,
+      default: ""
     },
     instagram: {
       type: String,
+      default: ""
     }
   },
   logo: {
-    type: String
+    type: String,
+    default: ""
   },
   bio: {
-    type: String
+    type: String,
+    default: ""
   },
   users: [{
     type: Schema.Types.ObjectId,
@@ -76,20 +82,12 @@ let TeamSchema = Schema({
   alumnus: [{
     type: Schema.Types.ObjectId,
     ref: 'User'
+  }],
+  old_events: [{
+    name: "",
+    link: String,
   }]
 }, {
     timestamps: true
   });
-
-// TeamSchema.methods.toWeb = function () {
-//   let { institution, _json } = this
-//   return _json
-// }
-
-// TeamSchema.pre('save', function(next) {
-  
-//   next()
-// })
-
-
 module.exports = mongoose.model('Team', TeamSchema)

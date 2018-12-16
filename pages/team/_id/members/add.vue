@@ -2,41 +2,27 @@
 <section class="section section-hero">
   <no-ssr v-if="loaded">
     <div class="container" v-if="!!accessControl('adminOrTeamCaptain')">
-      <!-- Team Captain or Admin -->
       <div class="row justify-content-center">
         <card class="col-sm-10 col-md-8 col-lg-8">
           <b-form @submit.prevent @reset.prevent>
-            <b-form-group id="form-teamname" label="User email:" label-for="form-teamname--input" description="Enter emails (seperated by space)">
+            <b-form-group id="form-teamname" label="User email:" label-for="form-teamname--input">
               <b-row>
                 <b-col sm="12" md="10">
                   <base-input addon-left-icon="fa fa-user" id="form-teamname--input" type="text" required placeholder="Enter user email" v-model="user_email"></base-input>
                 </b-col>
                 <b-col sm="12" md="2">
-                  <b-button type="submit" variant="success" @click.prevent="searchUser">
-                    <i class="fa fa-search"></i>
-                  </b-button>
+                  <b-button type="submit" variant="success" @click.prevent="searchUser"> <i class="fa fa-search"></i> </b-button>
                 </b-col>
               </b-row>
             </b-form-group>
             <div v-if="!!(users.length > 0)">
               <b-form-group id="form-usernames" label="Users:" label-for="form-usernames--badge">
                 <span class="h4" v-for="(user, key) in users" :key="key">
-                    <badge
-                      class="text-capitalize text-dark m-1 vertical-align-middle"
-                      type="primary"
-                    >
-                      {{user.display_name}}
-                      <base-button
-                        size="sm"
-                        type="warning"
-                        class="border-none"
-                        outline
-                        @click.prevent="removeUser(key)"
-                      >
-                        <i class="fas fa-times"></i>
-                      </base-button>
-                    </badge>
-                  </span>
+                           <badge class="text-capitalize text-dark m-1 vertical-align-middle" type="primary" >
+                              {{user.display_name}}
+                              <base-button size="sm" type="warning" class="border-none" outline @click.prevent="removeUser(key)" > <i class="fas fa-times"></i> </base-button>
+                           </badge>
+                        </span>
               </b-form-group>
             </div>
             <b-alert variant="danger" dismissible v-if="errors.length > 0" :show="showDismissableAlert" @dismissed="showDismissableAlert=false">
@@ -113,8 +99,8 @@ export default {
     async searchUser() {
       this.errors = [];
       this.success_msg = null;
-      if (this.user_email) {
-        let email = this.user_email.trim();
+      let email = this.user_email.trim();
+      if (email) {
         let url = `/api/user/email/${email}/`,
           res,
           unique = true;
@@ -172,8 +158,8 @@ export default {
           return !!this.isAdmin;
           break;
         case "adminOrTeamCaptain":
-          if(this.currentUser){
-            if(this.isAdmin || this.team.captain == this.currentUser._id) {
+          if (this.currentUser) {
+            if (this.isAdmin || this.team.captain == this.currentUser._id) {
               return true
             }
           }
@@ -200,18 +186,18 @@ export default {
     };
   },
   created() {
-    this.$nextTick(async function(){
+    this.$nextTick(async function () {
       let res = await this.getReq({
         url: `/api/team/${this.params.id}/mini`
       })
-      if(res.success){
+      if (res.success) {
         this.team = res.team
         this.loaded = true
       } else {
         this.loaded = false
         this.team = {}
       }
-    }) 
+    })
   },
   watch: {}
 };

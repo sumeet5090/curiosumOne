@@ -1,10 +1,6 @@
 const User = require('./../models/user.model')
 const Team = require('./../models/team.model')
 
-Array.prototype.contains = function (element) {
-  return this.indexOf(element) > -1;
-}
-
 const isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     return next()
@@ -38,6 +34,32 @@ const isParticipant = () => {
 
 const isVolunteer = () => {
   return hasRole("volunteer")
+}
+
+const isCaptainOrAdmin = (id=null) => {
+  return async function (req, res, next) {
+    if(req.user) {
+      let user = req.user, team, captain
+      if(req.params.id){
+        id = req.params.id
+        console.log(req.params.id)
+      }
+      try {
+        if (user.role.contains("admin")) {
+          return next()
+        }
+        team = await Team.findOne({_id: req.params.id})
+        if(team){
+          if(team.captain.equals(user._id)){
+            return next()
+          }
+        }
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    return res.sendStatus(401)
+  }
 }
 
 const linkTeamCaptain = async (user, done) => {
@@ -158,5 +180,6 @@ module.exports = {
   isParticipant,
   isVolunteer,
   isAdmin,
+  isCaptainOrAdmin,
   linkSocialToAccount
 }

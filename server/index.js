@@ -1,11 +1,11 @@
 
 const express = require('express')
 const consola = require('consola')
+require('./prototypes')
 const { Nuxt, Builder } = require('nuxt')
 // Import and Set Nuxt.js options
 let config = require('../nuxt.config.js')
 // Init Nuxt.js
-const nuxt = new Nuxt(config)
 const passportInitialize = require('./auth/passport')
 const indexRouter = require('./routes')
 const teamRouter = require('./routes/api/team')
@@ -18,7 +18,7 @@ const port = process.env.PORT || 3000
 app.set('port', port)
 
 async function start() {
-  // Init Nuxt.js
+  const nuxt = new Nuxt(config)
   // Build only in dev mode
   if (config.dev) {
     const builder = await new Builder(nuxt)
