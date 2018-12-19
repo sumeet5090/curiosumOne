@@ -42,7 +42,6 @@ const isCaptainOrAdmin = (id=null) => {
       let user = req.user, team, captain
       if(req.params.id){
         id = req.params.id
-        console.log(req.params.id)
       }
       try {
         if (user.role.contains("admin")) {

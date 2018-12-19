@@ -61,7 +61,7 @@ const getOneMini = async function (req, res) {
 const getOne = async function (req, res) {
   try {
     let id = req.params.id
-    let team = await Team.findOne({ _id: id }).populate('users').populate('events').exec()
+    let team = await Team.findOne({ _id: id }).populate(['users', 'events', 'alumnus']).exec()
     if (!team) {
       return Response.failed(res, { message: "No such team found." })
     }
@@ -136,29 +136,155 @@ const addCaptain = async (req, res) => {
 
 const changeCaptain = async (req, res) => {
   let id = req.params.id, user = req.body.new_captain, team, find_user
-  team = await Team.findOne({ _id: id })
-  if (team) {
-    find_user = await User.findOne({ _id: user })
-    if (find_user) {
-      if (team.users.contains(find_user._id)) {
-        console.log("yes")
-        let team_out = await team.updateOne({ captain: find_user._id }).exec()
-        if (team_out.nModified >= 1 && team_out.ok == 1) {
-          return Response.success(res, {
-            message: 'Updated captain',
-          })
+  try {
+    team = await Team.findOne({ _id: id })
+    if (team) {
+      find_user = await User.findOne({ _id: user })
+      if (find_user) {
+        if (team.users.contains(find_user._id)) {
+          let team_out = await team.updateOne({ captain: find_user._id }).exec()
+          if (team_out.nModified >= 1 && team_out.ok == 1) {
+            return Response.success(res, {
+              message: 'Updated captain',
+            })
+          }
         }
+        return Response.failed(res, { message: "Couldn't update." })
       }
-      console.log("no 1")
-      return Response.failed(res, { message: "Couldn't update." })
     }
-    console.log("no 2")
+    return Response.failed(res, { message: "Not found" })
+  } catch (error) {
+    console.log(error)
+    return res.sendStatus(500)
   }
-  console.log("no 3")
-  return Response.failed(res, { message: "Not found" })
 }
 
 const addMembers = async function (req, res) {
+  let id = req.params.id, team, successful_sent = [], emails = req.body.emails, users = req.body.users
+  try {
+    team = await Team.findOne({ _id: id })
+    if (team) {
+      if (emails) {
+        for (let i = 0; i < users.length; i++) {
+          let user = await User.findOne({ _id: users[i]._id })
+          if (user) {
+            let token = await new Token({
+              user_id: user._id,
+              team_id: team._id,
+              token: crypto.randomBytes(16).toString('hex'),
+              for: 'member'
+            }).save()
+            if (token) {
+              let genLink = req.protocol + '://' + req.headers.host + '\/api\/team\/confirmation\/' + token.token + '\n'
+              let teamLink = req.protocol + '://' + req.headers.host + '\/team\/' + team._id;
+              let mailOptions = {
+                from: 'MEC Support',
+                to: emails[i],
+                subject: `Team Invitiation for ${team.team_name}`,
+                generateTextFromHTML: true,
+                html: `<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><head><title></title><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style type="text/css">#outlook a{padding:0}.ReadMsgBody{width:100%}.ExternalClass{width:100%}.ExternalClass *{line-height:100%}body{margin:0;padding:0;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}table,td{border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt}img{border:0;height:auto;line-height:100%;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic}p{display:block;margin:13px 0}</style><!--[if !mso]><!--><style type="text/css">@media only screen and (max-width:480px){@-ms-viewport{width:320px}@viewport{width:320px}}</style><link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css"><link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700" rel="stylesheet" type="text/css"><style type="text/css">@import url(https://fonts.googleapis.com/css?family=Lato);@import url(https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700);</style><style type="text/css">@media only screen and (min-width:480px){.mj-column-per-100{width:100% !important}}</style></head><body style="background: #FFFFFF;"><div class="mj-container" style="background-color:#FFFFFF;"><table role="presentation" cellpadding="0" cellspacing="0" style="background:#33CBCC;font-size:0px;width:100%;" border="0"><tbody><tr><td><div style="margin:0px auto;max-width:600px;"><table role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;" align="center" border="0"><tbody><tr><td style="text-align:center;vertical-align:top;direction:ltr;font-size:0px;padding:0px 0px 0px 0px;"><div class="mj-column-per-100 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;"><table role="presentation" cellpadding="0" cellspacing="0" style="vertical-align:top;" width="100%" border="0"><tbody><tr><td style="word-wrap:break-word;font-size:0px;"><div style="font-size:1px;line-height:50px;white-space:nowrap;">&#xA0;</div></td></tr><tr><td style="word-wrap:break-word;font-size:0px;padding:0px 0px 0px 0px;" align="center"><table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border-spacing:0px;" align="center" border="0"><tbody><tr><td style="width:600px;"><img alt="" title="" height="auto" src="https://mobilityeng.online/_nuxt/img/ecad00c.jpg" style="border:none;border-radius:0px;display:block;font-size:13px;outline:none;text-decoration:none;width:100%;height:auto;" width="600"></td></tr></tbody></table></td></tr><tr><td style="word-wrap:break-word;font-size:0px;padding:0px 0px 0px 0px;" align="center"><div style="cursor:auto;color:#FFFFFF;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:center;"><p><span style="font-size:16px;">Hey&#xA0;<strong>${user.display_name}</strong></span></p></div></td></tr><tr><td style="word-wrap:break-word;font-size:0px;padding:0px 0px 0px 0px;" align="center"><div style="cursor:auto;color:#FFFFFF;font-family:Lato, Tahoma, sans-serif;font-size:14px;line-height:22px;text-align:center;"><h2 style="color: #757575; line-height: 100%;"><span style="color:#ffffff;">You have been invited to join <a href="${teamLink}" target="_blank" style="color: #fffe00;">${team.team_name}</a>&#xA0;</span></h2></div></td></tr><tr><td style=" word-wrap:break-word;font-size:0px;padding:45px 0px 45px 0px;" align="center"><table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse:separate;width:100%;" align="center" border="0"><tbody><tr><td style="border:0px solid #000;border-radius:5px;color:#FFFFFF;cursor:auto;padding:16px 48px;" align="center" valign="middle" bgcolor="#FEA114"> <a href="${genLink}" style="text-decoration:none;background:#FEA114;color:#FFFFFF;font-family:Ubuntu, Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif;font-size:24px;font-weight:normal;line-height:120%;text-transform:none;margin:0px;" target="_blank">JOIN</a></td></tr></tbody></table></td></tr><tr><td style="word-wrap:break-word;font-size:0px;padding:0px 0px 0px 0px;" align="center"><div style="cursor:auto;color:#FFFFFF;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:center;"><p><span style="font-size:16px;"><small>Copyright &#xA9; 2018&#xA0;<a draggable="false" href="http://mobilityeng.in/" rel="noreferrer" style="text-decoration: none;" target="_blank"> <span style="color:#fffe00;"> Mobility Engineering Consortium Pvt. Ltd.</span> </a>&#xA0;All Rights Reserved.</small></span></p></div></td></tr></tbody></table></div></td></tr></tbody></table></div></td></tr></tbody></table></div></body></html>`
+              }
+              let success = await smtpTransport.sendMail(mailOptions)
+              if (success) {
+                successful_sent.push(user.email)
+              }
+            }
+          }
+        }
+        return Response.success(res, { message: `Sent team invitation`, successful_emails: successful_sent })
+      }
+      return Response.failed(res, { message: "No emails entered." })
+    }
+    return Response.failed(res, { message: "Team not found." })
+  } catch (error) {
+    console.log(error)
+    return Response.failed(res, { message: "Internal Server Error" }, 500)
+  }
+}
+
+const confirmToken = async function (req, res, next) {
+  let _token = req.params.token, user, team, token, user_out, user_updated = false, team_out, team_updated = false, message, success = false
+  try {
+    token = await Token.findOne({ token: _token })
+    if (token) {
+      user = await User.findOne({ _id: token.user_id })
+      if (user) {
+        team = await Team.findOne({ _id: token.team_id })
+        if (team) {
+          if (token.for == 'member') {
+            if (user.team == team._id) {
+              user_updated = true
+            } else {
+              user_out = await user.updateOne({ team: team._id }).exec()
+              if (user_out.nModified >= 1 && user_out.ok == 1) {
+                user_updated = true
+              }
+            }
+            if (team.users.indexOf(user._id) > -1) {
+              team_updated = true
+            } else {
+              team_out = await team.updateOne({ $push: { users: user._id } }).exec()
+              if (team_out.nModified >= 1 && team_out.ok == 1) {
+                team_updated = true
+              }
+            }
+            if (user_updated && team_updated) {
+              await Token.deleteOne({ _id: token._id })
+              success = true
+              message = "Successfully joined team."
+            } else {
+              message = "Try again."
+            }
+          } else if (token.for == 'alumni') {
+            if (user.team == team._id) {
+              user_updated = true
+            } else {
+              // Link user to team
+              user.team = team._id
+              // update user role to alumni (push)
+              user.role.push('alumni')
+              // Add user._id to team.alumnus
+              team.alumnus.push(user._id)
+
+              let savedT = await team.save()
+              let savedU = await user.save()
+              if (savedU) {
+                user_updated = true
+              }
+              if (savedT) {
+                team_updated = true
+              }
+              if (user_updated && team_updated) {
+                await Token.deleteOne({ _id: token._id })
+                success = true
+                message = "Successfully joined team."
+              } else {
+                message = "Try again."
+              }
+            }
+          }
+          else {
+            message = "Invalid token."
+          }
+        } else {
+          message = "Invalid token."
+        }
+      } else {
+        message = "Invalid token."
+      }
+    } else {
+      message = "Invalid token."
+    }
+    res.locals.success = success
+    res.locals.message = message
+    return next();
+  } catch (error) {
+    console.log(error)
+    return Response.failed(res, { message: "Internal Server Error" }, 500)
+  }
+}
+
+const addAlumnus = async function (req, res) {
   let id = req.params.id, team, successful_sent = [], emails = req.body.emails, users = req.body.users
   team = await Team.findOne({ _id: id })
   if (team) {
@@ -169,7 +295,8 @@ const addMembers = async function (req, res) {
           let token = await new Token({
             user_id: user._id,
             team_id: team._id,
-            token: crypto.randomBytes(16).toString('hex')
+            token: crypto.randomBytes(16).toString('hex'),
+            for: 'alumni'
           }).save()
           if (token) {
             let genLink = req.protocol + '://' + req.headers.host + '\/api\/team\/confirmation\/' + token.token + '\n'
@@ -179,7 +306,7 @@ const addMembers = async function (req, res) {
               to: emails[i],
               subject: `Team Invitiation for ${team.team_name}`,
               generateTextFromHTML: true,
-              html: `<p>Hey <strong>${user.display_name},</strong></p><p>You have been invited to join the team <a href="${teamLink}" target="_blank">${team.team_name}</a></p><p>Click on the <a href="${genLink}">link</a> to join.</p>.`
+              html: `<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><head><title></title><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style type="text/css">#outlook a{padding:0}.ReadMsgBody{width:100%}.ExternalClass{width:100%}.ExternalClass *{line-height:100%}body{margin:0;padding:0;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}table,td{border-collapse:collapse;mso-table-lspace:0pt;mso-table-rspace:0pt}img{border:0;height:auto;line-height:100%;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic}p{display:block;margin:13px 0}</style><!--[if !mso]><!--><style type="text/css">@media only screen and (max-width:480px){@-ms-viewport{width:320px}@viewport{width:320px}}</style><link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css"><link href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700" rel="stylesheet" type="text/css"><style type="text/css">@import url(https://fonts.googleapis.com/css?family=Lato);@import url(https://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700);</style><style type="text/css">@media only screen and (min-width:480px){.mj-column-per-100{width:100% !important}}</style></head><body style="background: #FFFFFF;"><div class="mj-container" style="background-color:#FFFFFF;"><table role="presentation" cellpadding="0" cellspacing="0" style="background:#33CBCC;font-size:0px;width:100%;" border="0"><tbody><tr><td><div style="margin:0px auto;max-width:600px;"><table role="presentation" cellpadding="0" cellspacing="0" style="font-size:0px;width:100%;" align="center" border="0"><tbody><tr><td style="text-align:center;vertical-align:top;direction:ltr;font-size:0px;padding:0px 0px 0px 0px;"><div class="mj-column-per-100 outlook-group-fix" style="vertical-align:top;display:inline-block;direction:ltr;font-size:13px;text-align:left;width:100%;"><table role="presentation" cellpadding="0" cellspacing="0" style="vertical-align:top;" width="100%" border="0"><tbody><tr><td style="word-wrap:break-word;font-size:0px;"><div style="font-size:1px;line-height:50px;white-space:nowrap;">&#xA0;</div></td></tr><tr><td style="word-wrap:break-word;font-size:0px;padding:0px 0px 0px 0px;" align="center"><table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border-spacing:0px;" align="center" border="0"><tbody><tr><td style="width:600px;"><img alt="" title="" height="auto" src="https://mobilityeng.online/_nuxt/img/ecad00c.jpg" style="border:none;border-radius:0px;display:block;font-size:13px;outline:none;text-decoration:none;width:100%;height:auto;" width="600"></td></tr></tbody></table></td></tr><tr><td style="word-wrap:break-word;font-size:0px;padding:0px 0px 0px 0px;" align="center"><div style="cursor:auto;color:#FFFFFF;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:center;"><p><span style="font-size:16px;">Hey&#xA0;<strong>${user.display_name}</strong></span></p></div></td></tr><tr><td style="word-wrap:break-word;font-size:0px;padding:0px 0px 0px 0px;" align="center"><div style="cursor:auto;color:#FFFFFF;font-family:Lato, Tahoma, sans-serif;font-size:14px;line-height:22px;text-align:center;"><h2 style="color: #757575; line-height: 100%;"><span style="color:#ffffff;">You have been invited to join <a href="${teamLink}" target="_blank" style="color: #fffe00;">${team.team_name}</a>&#xA0;</span></h2></div></td></tr><tr><td style=" word-wrap:break-word;font-size:0px;padding:45px 0px 45px 0px;" align="center"><table role="presentation" cellpadding="0" cellspacing="0" style="border-collapse:separate;width:100%;" align="center" border="0"><tbody><tr><td style="border:0px solid #000;border-radius:5px;color:#FFFFFF;cursor:auto;padding:16px 48px;" align="center" valign="middle" bgcolor="#FEA114"> <a href="${genLink}" style="text-decoration:none;background:#FEA114;color:#FFFFFF;font-family:Ubuntu, Helvetica, Arial, sans-serif, Helvetica, Arial, sans-serif;font-size:24px;font-weight:normal;line-height:120%;text-transform:none;margin:0px;" target="_blank">JOIN</a></td></tr></tbody></table></td></tr><tr><td style="word-wrap:break-word;font-size:0px;padding:0px 0px 0px 0px;" align="center"><div style="cursor:auto;color:#FFFFFF;font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:11px;line-height:1.5;text-align:center;"><p><span style="font-size:16px;"><small>Copyright &#xA9; 2018&#xA0;<a draggable="false" href="http://mobilityeng.in/" rel="noreferrer" style="text-decoration: none;" target="_blank"> <span style="color:#fffe00;"> Mobility Engineering Consortium Pvt. Ltd.</span> </a>&#xA0;All Rights Reserved.</small></span></p></div></td></tr></tbody></table></div></td></tr></tbody></table></div></td></tr></tbody></table></div></body></html>`
             }
             let success = await smtpTransport.sendMail(mailOptions)
             if (success) {
@@ -195,64 +322,58 @@ const addMembers = async function (req, res) {
   return Response.failed(res, { message: "Team not found." })
 }
 
-const confirmToken = async function (req, res, next) {
-  let _token = req.params.token, user, team, token, user_out, user_updated = false, team_out, team_updated = false, message, success = false
+const removeMembers = async function (req, res) {
+  let team_id = req.params.id, user_id = req.params.user_id, user = {}, team = {}, updatedTeam, updatedUser
   try {
-    token = await Token.findOne({ token: _token })
-    if (token) {
-      user = await User.findOne({ _id: token.user_id })
-      if (user) {
-        team = await Team.findOne({ _id: token.team_id })
-        if (team) {
-          if (user.team == team._id) {
-            user_updated = true
-          } else {
-            user_out = await user.updateOne({ team: team._id }).exec()
-            if (user_out.nModified >= 1 && user_out.ok == 1) {
-              user_updated = true
-            }
-          }
-          if (team.users.indexOf(user._id) > -1) {
-            team_updated = true
-          } else {
-            team_out = await team.updateOne({ $push: { users: user._id } }).exec()
-            if (team_out.nModified >= 1 && team_out.ok == 1) {
-              team_updated = true
-            }
-          }
-          if (user_updated && team_updated) {
-            await Token.deleteOne({ _id: token._id })
-            success = true
-            message = "Successfully joined team."
-          }
-          message = "Try again."
-        }
-      }
-    }
-    message = "Invalid token."
-    res.locals.success = success
-    res.locals.message = message
-    return next();
-  } catch (error) {
-    console.log(error)
-    return Response.failed(res, { message: "Internal Server Error" }, 500)
-  }
-}
-
-const addAlumnus = async (req, res) => {
-  try {
-    let team_id = req.params.id, user_to_alumni, team
     team = await Team.findOne({_id: team_id})
-    if(team){
-      user = await User.findOne({_id: req.body.user_id_for_alumni})
+    if(team) {
+      user = await User.findOne({_id: user_id})
       if(user){
-        // Todo b
+        if(team._id == user.team){
+          user.team = null
+        }
+        updatedUser = await user.save()
+        // Pull role if alumni
+        team.users.pull(user._id)
+        updatedTeam = await team.save()
+        if(updatedTeam && updatedUser){
+          return Response.success(res, {message: "Removed member."})
+        }
+        return Response.failed(res, {message: "Couldn't remove member."})
       }
     }
     return Response.failed(res, {message: "Not found"})
   } catch (error) {
     console.log(error)
-    return res.sendStatus(500)
+    return Response.failed(res, {message: "Internal server error."}, 500)
+  }
+}
+
+const removeAlumnus = async function (req, res) {
+  let team_id = req.params.id, user_id = req.params.user_id, user = {}, team = {}, updatedTeam, updatedUser
+  try {
+    team = await Team.findOne({_id: team_id})
+    if(team) {
+      user = await User.findOne({_id: user_id})
+      if(user){
+        if(String(team._id) == String(user.team)){
+          user.team = null
+        }
+        user.role.pull('alumni')
+        updatedUser = await user.save()
+        // Pull role if alumni
+        team.alumnus.pull(user._id)
+        updatedTeam = await team.save()
+        if(updatedTeam && updatedUser){
+          return Response.success(res, {message: "Removed member."})
+        }
+        return Response.failed(res, {message: "Couldn't remove member."})
+      }
+    }
+    return Response.failed(res, {message: "Not found"})
+  } catch (error) {
+    console.log(error)
+    return Response.failed(res, {message: "Internal server error."}, 500)
   }
 }
 
@@ -423,6 +544,9 @@ module.exports = {
   linkTeamAndUser,
   confirmToken,
   addMembers,
+  addAlumnus,
+  removeMembers,
+  removeAlumnus,
   linkTeamAndEvent,
   linkTeamAndCar,
   updateTeam,

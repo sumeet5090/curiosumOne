@@ -59,12 +59,12 @@ export default {
         },
         {
           label: " ",
-          key: "team_id.team_name",
+          key: "team_id.car",
           sortable: true
         },
         {
           label: " ",
-          key: "team_id.car",
+          key: "team_id.team_name",
           sortable: true
         },
         {

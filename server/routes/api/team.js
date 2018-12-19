@@ -20,6 +20,9 @@ router.get('/confirmation/:token', TeamController.confirmToken, (req, res) => {
 // POST
 router.post('/create', TeamController.create)
 router.post('/:id/add/members', helper.isCaptainOrAdmin(), TeamController.addMembers)
+router.post('/:id/add/alumnus', helper.isCaptainOrAdmin(), TeamController.addAlumnus)
+router.post('/:id/remove/member/:user_id', helper.isCaptainOrAdmin(), TeamController.removeMembers)
+router.post('/:id/remove/alumni/:user_id', helper.isCaptainOrAdmin(), TeamController.removeAlumnus)
 router.post('/:id/register/event/:event_id', TeamController.linkTeamAndEvent)
 router.post('/:id/register/user/:username', TeamController.linkTeamAndUser)
 router.post('/:id/register/car/:car_id', TeamController.linkTeamAndCar)

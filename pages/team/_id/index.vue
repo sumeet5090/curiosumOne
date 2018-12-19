@@ -46,24 +46,19 @@
                   </span>
                 </div>
               </div>
-              <div class="col-md-12 order-lg-4">
+              <!-- <div class="col-md-12 order-lg-4">
                 <div class="container">
                   <div class="row justify-content-end">
-                    <router-link
-                      :to="{name: 'team-id-update', params: {id: team._id}}"
-                      class="btn btn-primary btn-sm mr-5"
-                      tag="a"
-                      v-if="showSettings"
-                    >Update</router-link>
+                    <router-link :to="{name: 'team-id-update', params: {id: team._id}}" class="btn mr-5 btn-sm btn-link" tag="a" v-if="showSettings"><i class="fas fa-pen fa-2x"></i></router-link>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
             <div class="text-center mt-0 mt-md-2 pt-lg-2">
-              <h3 class="pt-0 pt-sm--100 pt-md-2 pt-lg-1 display-3">{{team.team_name}}</h3>
-              <div
-                class="h6 font-weight-300 text-muted"
-              >{{team.location}}{{team.country && team.location ? ", ": ""}}{{team.country}}</div>
+              <div class="pt-0 pt-sm--100 pt-md-2 pt-lg-1">
+                <span class="display-3">{{team.team_name}}</span><router-link :to="{name: 'team-id-settings', params: {id: team._id}}" class="btn btn-sm btn-link cursor-pointer mb-3" tag="a" v-if="showSettings"><i class="fas fa-pen fa-2x"></i></router-link>
+              </div>
+              <div class="h6 font-weight-300 text-muted">{{team.location}}{{team.country && team.location ? ", ": ""}}{{team.country}}</div>
               <div class="h6 mt-2">
                 <i class="mr-2 fa fa-university"></i>
               </div>
@@ -95,55 +90,46 @@
             <div class="my-1 py-2 border-top" v-if="!!(team.users.length > 0)">
               <div class="text-center">
                 <i class="fas fa-users"></i>
-                <router-link
-                  :to="{name: 'team-id-members', params: team._id}"
-                  class="h4 font-weight-bold text-dark cursor-pointer"
-                  tag="div"
-                >Team Members</router-link>
+                <router-link :to="{name: 'team-id-members', params: team._id}" class="h4 font-weight-bold text-dark cursor-pointer" tag="div">Team Members</router-link>
               </div>
               <b-row class="justify-content-center">
-                <b-col
-                  :key="user.id"
-                  lg="2"
-                  md="3"
-                  sm="4"
-                  v-bind:class="{'team-captain order-first': !!isCaptain(team.captain, user._id), 'order-2': !isCaptain(team.captain, user._id)}"
-                  v-for="user in team.users"
-                >
+                <b-col :key="user.id" lg="2" md="3" sm="4" v-bind:class="{'team-captain order-first': !!isCaptain(team.captain, user._id), 'order-2': !isCaptain(team.captain, user._id)}" v-for="user in team.users">
                   <card class="team-user-profiles my-1" no-body tag="article">
                     <div class="text-center">
                       <img alt="User profile" class="rounded-circle" v-lazy="user.profile.picture">
                       <div class="my-2">
-                        <router-link
-                          :to="'/profile/'+user.username"
-                          class="text-primary font-weight-300"
-                        >{{user.display_name}}</router-link>
+                        <router-link :to="'/profile/'+user.username" class="text-primary font-weight-300">{{user.display_name}}</router-link>
                         <div v-if="isCaptain(team.captain, user._id)">
-                          <small class="text-muted">(captain)</small>
+                          <small class="text-muted">Captain</small>
                         </div>
                       </div>
                     </div>
                   </card>
                 </b-col>
-                <router-link
-                  :to="{name: 'team-id-settings', params: team._id}"
-                  class="col-sm-4 col-md-3 col-lg-2 order-last"
-                  tag="div"
-                  v-if="accessControl('adminOrTeamCaptain')"
-                >
-                  <card class="team-user-profiles text-center cursor-pointer" no-body tag="article">
-                    <div class="card-body"></div>
-                    <small>Settings</small>
-                    <i class="fas fa-cogs fa-2x text-info"></i>
-                    <div class="card-body"></div>
+              </b-row>
+            </div>
+            <div class="my-1 py-2 border-top" v-if="!!(team.alumnus.length > 0)">
+              <div class="text-center">
+                <i class="fas fa-user-graduate"></i>
+                <router-link :to="{name: 'team-id-members', params: team._id}" class="h4 font-weight-bold text-dark cursor-pointer" tag="div">Alumni</router-link>
+              </div>
+              <b-row class="justify-content-center">
+                <b-col :key="user.id" lg="2" md="3" sm="4" v-bind:class="{'team-captain order-first': !!isCaptain(team.captain, user._id), 'order-2': !isCaptain(team.captain, user._id)}" v-for="user in team.alumnus">
+                  <card class="team-user-profiles my-1" no-body tag="article">
+                    <div class="text-center">
+                      <img alt="User profile" class="rounded-circle" v-lazy="user.profile.picture">
+                      <div class="my-2">
+                        <router-link :to="'/profile/'+user.username" class="text-primary font-weight-300">{{user.display_name}}</router-link>
+                      </div>
+                    </div>
                   </card>
-                </router-link>
+                </b-col>
               </b-row>
             </div>
             <div class="my-1 py-2 border-top" v-if="team.drive_folder" v-show="!!(team.drive_folder)">
               <div class="text-center">
-                <i class="fas fa-users"></i>
-                <h4 class="font-weight-bold text-dark">Team drive folder</h4>
+                <i class="fab fa-google-drive"></i>
+                <h4 class="font-weight-bold text-dark">Team Drive folder</h4>
               </div>
               <b-row class="justify-content-center">
                 <b-col lg="2" md="3" sm="3">

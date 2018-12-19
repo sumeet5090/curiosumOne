@@ -18,6 +18,11 @@ const tokenSchema = Schema({
         type: Date,
         required: true,
         default: Date.now,
+    },
+    for: {
+        type: String,
+        default: 'member',
+        enum: ['member', 'alumni']
     }
 })
 

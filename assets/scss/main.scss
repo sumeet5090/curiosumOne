@@ -214,6 +214,9 @@ a {
   }
 }
 
+.modal-secondary .close > span:not(.sr-only) {
+  color: $black;
+}
 
 @media (min-width: 992px){
   .navbar {
