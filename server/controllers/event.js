@@ -5,9 +5,11 @@ const Schedule = require('./../models/schedule.model')
 const LiveTiming = require('./../models/livetiming.model')
 const TechUpdate = require('./../models/techUpdates.model')
 const Team = require('./../models/team.model')
+const StaticSchedule = require('./../models/static_schedule.model')
 const mongoose = require('mongoose')
 const Response = require('./../services/response')
 const ObjectId = mongoose.Types.ObjectId
+
 const getAllEvents = async (req, res) => {
   try {
     let events = await Event.find().populate('organizers').exec()
@@ -276,6 +278,59 @@ const getAllCars = async (req, res) => {
   }
 }
 
+const getAllStaticSchedulesForEvent = async (req, res) => {
+  let schedules, event_id = req.params.event_id,
+    $or = [{ event_short: event_id }]
+  if (parseInt(event_id) == event_id) {
+    $or.push({ event: event_id })
+  }
+  try {
+    schedules = await StaticSchedule.find({ $or }).exec()
+    if (schedules) {
+      if (schedules.length > 0) {
+        return Response.success(res, { static_schedules: schedules })
+      }
+      return Response.success(res, { static_schedules: [] })
+    }
+    return Response.failed(res, { message: "Couldn't get static schedules." })
+  } catch (error) {
+    console.log(error)
+    return Response.failed(res, { message: "Internal server error." })
+  }
+}
+
+const getAllStaticSchedulesForTeam = async (req, res) => {
+  let schedules, team_id = req.params.team_id;
+  try {
+    schedules = await StaticSchedule.find({ team: team_id })
+    if (schedules) {
+      if (schedules.length > 0) {
+        return Response.success(res, { static_schedules: schedules })
+      }
+      return Response.success(res, { static_schedules: [] })
+    }
+    return Response.failed(res, { message: "Couldn't get static schedules." })
+  } catch (error) {
+    console.log(error)
+    return Response.failed(res, { message: "Internal server error." })
+  }
+}
+
+/* /api/static-schedule/st_id */
+const getOneStaticSchedule = async (req, res) => {
+  let stSchedule, st_id = req.params.st_id, team
+  try {
+    stSchedule = await StaticSchedule.findOne({ _id: st_id })
+    if (stSchedule) {
+      return Response.success(res, { static_schedule: stSchedule })
+    }
+    return Response.failed(res, { message: "Couldn't get static schedules" })
+  } catch (error) {
+    console.log(error)
+    return res.sendStatus(500)
+  }
+}
+
 const getTeamCar = async (req, res) => {
   try {
     let id = req.params.id,
@@ -512,6 +567,55 @@ const createSchedule = async (req, res) => {
   }
 }
 
+const createStaticSchedule = async (req, res) => {
+  try {
+    console.log(req.params)
+    let event = await Event.findOne({ _id: req.params.id }),
+      body = req.body,
+      team = await Team.findOne({ _id: req.params.team_id })
+    console.log(event, team)
+    if (event && team) {
+      let staticSchedule = await new StaticSchedule({
+        event: event._id,
+        team: team._id,
+        business: {
+          queue: body.business_queue,
+          start_time: body.business_start_time,
+          duration: body.business_end_time
+        },
+        cost: {
+          queue: body.cost_queue,
+          start_time: body.cost_start_time,
+          duration: body.cost_end_time
+        },
+        design: {
+          queue: body.design_queue,
+          start_time: body.design_start_time,
+          duration: body.design_end_time
+        }
+      }).save()
+      if (staticSchedule) {
+        let out = await team.updateOne({ $push: { static_schedules: staticSchedule } }).exec()
+        if (out.nModified >= 1 && out.ok == 1) {
+          return Response.success(res, { message: "Created schedule!" }, 200)
+        }
+        return Response.failed(res, {
+          message: "Created schedule, but couldn't link it to event."
+        }, 200)
+      }
+      return Response.failed(res, {
+        message: "Couldn't create schedule"
+      })
+    }
+    return Response.failed(res, {
+      message: "Event not found."
+    })
+  } catch (error) {
+    console.log(error)
+    return Response.failed(res, { message: "Internal server error." }, 500)
+  }
+}
+
 const addTeam = async (req, res) => {
   let event_id = req.params.id
   try {
@@ -546,7 +650,7 @@ const addTeam = async (req, res) => {
 
 const updateEvent = async (req, res) => {
   try {
-    let id = req.params.id, event 
+    let id = req.params.id, event
     console.log(req.body)
     event = await Event.findOneAndUpdate({ _id: id }, req.body, { new: true })
     if (!event) {
@@ -567,20 +671,119 @@ const updateCar = async (req, res) => {
     let id = req.params.id,
       team_id = req.params.team_id,
       event, team, car
-    if(req.body.car_number != null) {
+    if (req.body.car_number != null) {
       car = await Car.findOneAndUpdate({ team_id: team_id, event_id: id }, { car_number: req.body.car_number }, { upsert: true, new: true })
-      if(car){
+      if (car) {
         return Response.success(res, {
           message: "Updated car.",
           car: car
         })
       }
-      return Response.failed(res, {message: "Car not found!"})
+      return Response.failed(res, { message: "Car not found!" })
     }
-    return Response.failed(res, {message: "Provide a valid car number."})
+    return Response.failed(res, { message: "Provide a valid car number." })
   } catch (error) {
     console.log(error)
     return res.sendStatus(500)
+  }
+}
+
+const updateLiveTiming = async (req, res) => {
+  let live_timing, lt_id = req.params.lt_id, update_body
+  try {
+    update_body = {
+      event_name: req.body.event_name,
+      lap_number: req.body.lap_number,
+      lap_time: req.body.lap_time,
+      driver_initial: req.body.driver_initial
+    }
+    live_timing = await LiveTiming.findOneAndUpdate({ _id: lt_id }, update_body, { new: true })
+    if (live_timing) {
+      return Response.success(res, { live_timing: live_timing })
+    }
+    return Response.failed(res, { message: "Couldn't update live timing." })
+  } catch (error) {
+    console.log(error)
+    return Response.success(res, { message: "Internal server error." })
+  }
+}
+const updateSchedule = async (req, res) => {
+  let schedule, sc_id = req.params.sc_id, update_body
+  try {
+    update_body = {
+      day_number: req.body.day_number,
+      day: req.body.day,
+      date: req.body.date,
+      activity: req.body.activity,
+      start_time: req.body.start_time,
+      end_time: req.body.end_date,
+      location: req.body.location,
+      comments: req.body.comments,
+      volunteer_view: req.body.volunteer_view,
+      participant_view: req.body.participant_view,
+      visitor_view: req.body.visitor_view
+    }
+    schedule = await Schedule.findOneAndUpdate({ _id: sc_id }, update_body, { new: true })
+    if (schedule) {
+      return Response.success(res, { schedule: schedule })
+    }
+    return Response.failed(res, { message: "Couldn't update schedule." })
+  } catch (error) {
+    console.log(error)
+    return Response.success(res, { message: "Internal server error." })
+  }
+}
+const updateStaticSchedule = async (req, res) => {
+  let static_schedule, st_id = req.params.st_id, update_body
+  try {
+    update_body = {
+      business: {
+        queue: req.body.business_queue,
+        start_time: req.body.business_start_time,
+        end_time: req.body.business_end_time
+      },
+      cost: {
+        queue: req.body.cost_queue,
+        start_time: req.body.cost_start_time,
+        end_time: req.body.cost_end_time
+      },
+      design: {
+        queue: req.body.design_queue,
+        start_time: req.body.design_start_time,
+        end_time: req.body.design_end_time
+      }
+    }
+    static_schedule = await StaticSchedule.findOneAndUpdate({ _id: st_id }, update_body, { new: true })
+    if (static_schedule) {
+      return Response.success(res, { static_schedule })
+    }
+    return Response.failed(res, { message: "Couldn't update statuc schedule." })
+  } catch (error) {
+    console.log(error)
+    return Response.failed(res, { message: "Internal server error." })
+  }
+}
+const updateTechUpdate = async (req, res) => {
+  let tech_update, tu_id = req.params.tu_id, update_body
+  try {
+    update_body = {
+      accumulator: req.body.accumulator,
+      scrutineering_elec: req.body.scrutineering_elec,
+      scrutineering_mech: req.body.scrutineering_mech,
+      driver_egress: req.body.driver_egress,
+      tilt: req.body.tilt,
+      noise_ready_to_drive_sound: req.body.noise_ready_to_drive_sound,
+      brakes: req.body.brakes,
+      rain: req.body.rain
+    }
+    tech_update = await Schedule.findOneAndUpdate({ _id: tu_id }, update_body, { new: true })
+    if (tech_update) {
+      return Response.success(res, { tech_update: tech_update })
+    }
+    return Response.failed(res, { message: "Couldn't update tech update." })
+  } catch (error) {
+    console.log(error)
+    return Response.success(res, { message: "Internal server error." })
   }
 }
 
@@ -601,6 +804,76 @@ const deleteEvent = async (req, res) => {
     return res.sendStatus(500)
   }
 }
+const deleteLiveTiming = async (req, res) => {
+  let id = req.params.id,
+    lt_id = req.params.lt_id,
+    event, live_timing
+  try {
+    event = await Event.findOne({ _id: id })
+    live_timing = await LiveTiming.findOneAndDelete({ _id: lt_id })
+    event.live_timings.pull(live_timing._id)
+  } catch (error) {
+
+  }
+}
+const deleteSchedule = async (req, res) => {
+  let schedule, sc_id= req.params.sc_id
+  try {
+    schedule = await Schedule.findOneAndDelete({_id: sc_id})
+    if(schedule){
+      console.log(schedule)
+    }
+    return Response.failed(res, {message: "Deleted schedule."})
+  } catch (error) {
+    console.log(error)
+    return Response.failed(res, {message: "Internal server error."})
+  }
+}
+const deleteTechUpdate = async (req, res) => {
+  let schedule, tu_id = req.params.tu_id
+  try {
+    schedule = await Schedule.findOneAndDelete({_id: sc_id})
+    if(schedule){
+      console.log(schedule)
+    }
+    return Response.failed(res, {message: "Deleted schedule."})
+  } catch (error) {
+    console.log(error)
+    return Response.failed(res, {message: "Internal server error."})
+  }
+}
+const deleteStaticSchedule = async (req, res) => {
+  let schedule, st_id = req.params.st_id
+  try {
+    schedule = await StaticSchedule.findOneAndDelete({_id: st_id})
+    if(schedule){
+      console.log(schedule)
+    }
+    return Response.failed(res, {message: "Deleted schedule."})
+  } catch (error) {
+    console.log(error)
+    return Response.failed(res, {message: "Internal server error."})
+  }
+}
+const unlinkTeamFromEvent = async (req, res) => {
+  let team, event, team_id, event_id, deleted=false
+  try {
+    team = await Team.findOne({_id: team_id})
+    event = await Event.findOne({_id: event_id})
+    if(team && event){
+      let out1 = await team.updateOne({ $pull: { events: event._id } }).exec()
+      let out2 = await event.updateOne({ $pull: { teams: team._id } }).exec()
+      if(out1.nModified >= 1 && out1.ok == 1 && out2.nModified >= 1 && out2.ok == 1 ) {
+        return Response.success(res, {message: "Unlinked team and event."})
+      }
+      return Response.failed(res, {message: "Couldn't unlink team and event."})
+    }
+    return Response.failed(res, {message: "Not found."})
+  } catch (error) {
+    console.log(error)
+    return Response.failed(res, {message: "Internal server error."})
+  }
+}
 
 module.exports = {
   getAllEvents,
@@ -611,10 +884,13 @@ module.exports = {
   getOneTechupdate,
   getOneSchedule,
   getOneLivetiming,
+  getOneStaticSchedule,
   getAllTechupdates,
   getAllSchedules,
   getAllLivetimings,
   getAllCars,
+  getAllStaticSchedulesForEvent,
+  getAllStaticSchedulesForTeam,
   getTeamCar,
   createEvent,
   createAnnouncement,
@@ -622,8 +898,18 @@ module.exports = {
   createLivetiming,
   createTechupdate,
   createSchedule,
+  createStaticSchedule,
   addTeam,
   updateEvent,
+  updateLiveTiming,
+  updateTechUpdate,
+  updateSchedule,
+  updateStaticSchedule,
   updateCar,
-  deleteEvent
+  deleteEvent,
+  deleteLiveTiming,
+  deleteSchedule,
+  deleteTechUpdate,
+  deleteStaticSchedule,
+  unlinkTeamFromEvent,
 }

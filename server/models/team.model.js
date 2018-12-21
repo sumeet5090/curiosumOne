@@ -1,74 +1,86 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose")
 
 let Schema = mongoose.Schema;
 
 let TeamSchema = Schema({
-  category: {
+  alumnus: [{
+    type: Schema.Types.ObjectId,
+    ref: "User"
+  }],
+  bio: {
     type: String,
-    enum: ['combustion', 'electric'],
-    required: true,
+    default: ""
+  },
+  captain: {
+    type: Schema.Types.ObjectId,
+    ref: "User"
   },
   car: {
     type: Number,
-    ref: 'Car'
+    ref: "Car"
   },
-  team_name: {
+  category: {
     type: String,
+    enum: ["combustion", "electric"],
+    required: true,
   },
+  country: {
+    type: String
+  },
+  drive_folder: {
+    type: String
+  },
+  events: [{
+    type: Number,
+    ref: "Event"
+  }],
   institution: {
-    name: {
+    address: {
       type: String
     },
-    address: {
+    name: {
       type: String
     },
     short_name: {
       type: String
     }
   },
+  live_timings: [{
+    type: Number,
+    ref: "LiveTiming"
+  }],
   location: {
     type: String
-  },
-  country: {
-    type: String
-  },
-  website_url: {
-    type: String,
-    default: ""
-  },
-  social: {
-    facebook: {
-      type: String,
-      default: ""
-    },
-    twitter: {
-      type: String,
-      default: ""
-    },
-    instagram: {
-      type: String,
-      default: ""
-    }
   },
   logo: {
     type: String,
     default: ""
   },
-  bio: {
-    type: String,
-    default: ""
-  },
-  users: [{
-    type: Schema.Types.ObjectId,
-    ref: 'User'
+  old_events: [{
+    name: "",
+    link: String,
   }],
-  captain: {
-    type: Schema.Types.ObjectId,
-    ref: 'User'
-  },
-  events: [{
+  past_event: [{
     type: Number,
-    ref: 'Event'
+    ref: "PastEvent"
+  }],
+  social: {
+    facebook: {
+      default: "",
+      type: String
+    },
+    instagram: {
+      default: "",
+      type: String
+    },
+    twitter: {
+      default: "",
+      type: String
+    }
+  },
+  static_schedules: [{
+    ref: "StaticSchedule",
+    type: Number,
   }],
   team_captain_email: {
     type: String
@@ -76,18 +88,23 @@ let TeamSchema = Schema({
   team_captain_full_name: {
     type: String
   },
-  drive_folder: {
-    type: String
+  team_name: {
+    type: String,
   },
-  alumnus: [{
-    type: Schema.Types.ObjectId,
-    ref: 'User'
+  tech_updates: [{
+    type: Number,
+    ref: "TechUpdate"
   }],
-  old_events: [{
-    name: "",
-    link: String,
-  }]
+  users: [{
+    type: Schema.Types.ObjectId,
+    ref: "User"
+  }],
+  website_url: {
+    type: String,
+    default: ""
+  },
 }, {
     timestamps: true
-  });
-module.exports = mongoose.model('Team', TeamSchema)
+  }
+  );
+module.exports = mongoose.model("Team", TeamSchema)

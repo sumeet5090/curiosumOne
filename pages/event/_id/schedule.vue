@@ -5,7 +5,7 @@
         <div class="display-4">Schedules</div>
       </b-row>
       <b-row class="justify-content-center">
-        <b-table small outlined responsive bordered hover :items="schedules" :fields="fields">
+        <b-table :fields="fields" :items="event.schedules" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" bordered hover outlined responsive small>
           <template slot="date" slot-scope="data">{{getDate(data.item.date)}}</template>
         </b-table>
       </b-row>
@@ -19,7 +19,11 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
-      schedules: [],
+      event: {
+        schedules: []
+      },
+      sortBy: "date",
+      sortDesc: true,
       fields: [
         {
           label: "Day #",
@@ -71,12 +75,12 @@ export default {
           url: `/api/event/${this.$route.params.id}/schedules`
         });
         if (res.success) {
-          return (this.schedules = res.schedules);
+          return (this.event = res.event);
         }
-        return (this.schedules = []);
+        return (this.event = { schedules: [] });
       } catch (error) {
         console.log(error);
-        return (this.schedules = []);
+        return (this.event = { schedules: [] });
       }
     },
     getDate(date) {

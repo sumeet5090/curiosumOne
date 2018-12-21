@@ -57,7 +57,7 @@ const techSchema = Schema({
     event: {
         type: Number,
         ref: 'Event'
-    }
+    },
 })
 
 techSchema.pre('save', async function (next) {

@@ -78,6 +78,10 @@ const EventSchema = Schema({
   tech_updates: [{
     type: Number,
     ref: 'TechUpdate'
+  }],
+  static_schedule: [{
+    type: Number,
+    ref: 'StaticSchedule'
   }]
 }, { timestamps: true })
 
