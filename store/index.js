@@ -1,10 +1,6 @@
 import Vuex from 'vuex';
 import axios from 'axios';
 const state = {
-  images: {
-    imgLanding: require('@/assets/images/theme/landing.jpg'),
-    imgProfile: require("@/assets/images/theme/profile.jpg")
-  },
   fields: {},
   modals: {
     notifications: false,
@@ -20,8 +16,6 @@ const state = {
   teams: []
 }
 const mutations = {
-  // userStatus(state, user) {   if (user) {     state.currentUser = user   } else
-  // {     state.currentUser = null   } },
   modalShowNotification(state) {
     state.modals.notifications = !state.modals.notifications;
   },
@@ -101,6 +95,9 @@ const actions = {
       console.log(error)
       commit('SET_EVENTS', [])
     }
+  },
+  async unsetTeams({ commit }) {
+    return commit('SET_TEAMS', [])
   },
   async getTeamsForEvent({ commit }, id) {
     try {

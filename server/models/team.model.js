@@ -1,10 +1,9 @@
 const mongoose = require("mongoose")
-
-let Schema = mongoose.Schema;
-
+const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId
 let TeamSchema = Schema({
   alumnus: [{
-    type: Schema.Types.ObjectId,
+    type: ObjectId,
     ref: "User"
   }],
   bio: {
@@ -12,7 +11,7 @@ let TeamSchema = Schema({
     default: ""
   },
   captain: {
-    type: Schema.Types.ObjectId,
+    type: ObjectId,
     ref: "User"
   },
   car: {
@@ -96,7 +95,7 @@ let TeamSchema = Schema({
     ref: "TechUpdate"
   }],
   users: [{
-    type: Schema.Types.ObjectId,
+    type: ObjectId,
     ref: "User"
   }],
   website_url: {
@@ -106,5 +105,5 @@ let TeamSchema = Schema({
 }, {
     timestamps: true
   }
-  );
+);
 module.exports = mongoose.model("Team", TeamSchema)

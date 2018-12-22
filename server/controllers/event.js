@@ -817,61 +817,61 @@ const deleteLiveTiming = async (req, res) => {
   }
 }
 const deleteSchedule = async (req, res) => {
-  let schedule, sc_id= req.params.sc_id
+  let schedule, sc_id = req.params.sc_id
   try {
-    schedule = await Schedule.findOneAndDelete({_id: sc_id})
-    if(schedule){
+    schedule = await Schedule.findOneAndDelete({ _id: sc_id })
+    if (schedule) {
       console.log(schedule)
     }
-    return Response.failed(res, {message: "Deleted schedule."})
+    return Response.failed(res, { message: "Deleted schedule." })
   } catch (error) {
     console.log(error)
-    return Response.failed(res, {message: "Internal server error."})
+    return Response.failed(res, { message: "Internal server error." })
   }
 }
 const deleteTechUpdate = async (req, res) => {
   let schedule, tu_id = req.params.tu_id
   try {
-    schedule = await Schedule.findOneAndDelete({_id: sc_id})
-    if(schedule){
+    schedule = await Schedule.findOneAndDelete({ _id: sc_id })
+    if (schedule) {
       console.log(schedule)
     }
-    return Response.failed(res, {message: "Deleted schedule."})
+    return Response.failed(res, { message: "Deleted schedule." })
   } catch (error) {
     console.log(error)
-    return Response.failed(res, {message: "Internal server error."})
+    return Response.failed(res, { message: "Internal server error." })
   }
 }
 const deleteStaticSchedule = async (req, res) => {
   let schedule, st_id = req.params.st_id
   try {
-    schedule = await StaticSchedule.findOneAndDelete({_id: st_id})
-    if(schedule){
+    schedule = await StaticSchedule.findOneAndDelete({ _id: st_id })
+    if (schedule) {
       console.log(schedule)
     }
-    return Response.failed(res, {message: "Deleted schedule."})
+    return Response.failed(res, { message: "Deleted schedule." })
   } catch (error) {
     console.log(error)
-    return Response.failed(res, {message: "Internal server error."})
+    return Response.failed(res, { message: "Internal server error." })
   }
 }
 const unlinkTeamFromEvent = async (req, res) => {
-  let team, event, team_id, event_id, deleted=false
+  let team, event, team_id, event_id, deleted = false
   try {
-    team = await Team.findOne({_id: team_id})
-    event = await Event.findOne({_id: event_id})
-    if(team && event){
+    team = await Team.findOne({ _id: team_id })
+    event = await Event.findOne({ _id: event_id })
+    if (team && event) {
       let out1 = await team.updateOne({ $pull: { events: event._id } }).exec()
       let out2 = await event.updateOne({ $pull: { teams: team._id } }).exec()
-      if(out1.nModified >= 1 && out1.ok == 1 && out2.nModified >= 1 && out2.ok == 1 ) {
-        return Response.success(res, {message: "Unlinked team and event."})
+      if (out1.nModified >= 1 && out1.ok == 1 && out2.nModified >= 1 && out2.ok == 1) {
+        return Response.success(res, { message: "Unlinked team and event." })
       }
-      return Response.failed(res, {message: "Couldn't unlink team and event."})
+      return Response.failed(res, { message: "Couldn't unlink team and event." })
     }
-    return Response.failed(res, {message: "Not found."})
+    return Response.failed(res, { message: "Not found." })
   } catch (error) {
     console.log(error)
-    return Response.failed(res, {message: "Internal server error."})
+    return Response.failed(res, { message: "Internal server error." })
   }
 }
 
