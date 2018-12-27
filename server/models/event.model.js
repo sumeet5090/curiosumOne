@@ -36,7 +36,7 @@ const EventSchema = Schema({
       let words = (this.name).split(' ')
       let short_name = ''
       words.forEach(word => {
-        if(parseInt(word) == word){
+        if (parseInt(word) == word) {
           short_name += word
         } else {
           short_name += word[0]

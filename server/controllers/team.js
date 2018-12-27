@@ -1,5 +1,6 @@
 const User = require('./../models/user.model')
 const Team = require('./../models/team.model')
+const Event = require('./../models/event.model')
 const Car = require('./../models/car.model')
 const Token = require('./../models/token.model')
 const Response = require('./../services/response')
@@ -325,38 +326,38 @@ const addAlumnus = async function (req, res) {
 const removeMembers = async function (req, res) {
   let team_id = req.params.id, user_id = req.params.user_id, user = {}, team = {}, updatedTeam, updatedUser
   try {
-    team = await Team.findOne({_id: team_id})
-    if(team) {
-      user = await User.findOne({_id: user_id})
-      if(user){
-        if(team._id == user.team){
+    team = await Team.findOne({ _id: team_id })
+    if (team) {
+      user = await User.findOne({ _id: user_id })
+      if (user) {
+        if (team._id == user.team) {
           user.team = null
         }
         updatedUser = await user.save()
         // Pull role if alumni
         team.users.pull(user._id)
         updatedTeam = await team.save()
-        if(updatedTeam && updatedUser){
-          return Response.success(res, {message: "Removed member."})
+        if (updatedTeam && updatedUser) {
+          return Response.success(res, { message: "Removed member." })
         }
-        return Response.failed(res, {message: "Couldn't remove member."})
+        return Response.failed(res, { message: "Couldn't remove member." })
       }
     }
-    return Response.failed(res, {message: "Not found"})
+    return Response.failed(res, { message: "Not found" })
   } catch (error) {
     console.log(error)
-    return Response.failed(res, {message: "Internal server error."}, 500)
+    return Response.failed(res, { message: "Internal server error." }, 500)
   }
 }
 
 const removeAlumnus = async function (req, res) {
   let team_id = req.params.id, user_id = req.params.user_id, user = {}, team = {}, updatedTeam, updatedUser
   try {
-    team = await Team.findOne({_id: team_id})
-    if(team) {
-      user = await User.findOne({_id: user_id})
-      if(user){
-        if(String(team._id) == String(user.team)){
+    team = await Team.findOne({ _id: team_id })
+    if (team) {
+      user = await User.findOne({ _id: user_id })
+      if (user) {
+        if (String(team._id) == String(user.team)) {
           user.team = null
         }
         user.role.pull('alumni')
@@ -364,16 +365,16 @@ const removeAlumnus = async function (req, res) {
         // Pull role if alumni
         team.alumnus.pull(user._id)
         updatedTeam = await team.save()
-        if(updatedTeam && updatedUser){
-          return Response.success(res, {message: "Removed member."})
+        if (updatedTeam && updatedUser) {
+          return Response.success(res, { message: "Removed member." })
         }
-        return Response.failed(res, {message: "Couldn't remove member."})
+        return Response.failed(res, { message: "Couldn't remove member." })
       }
     }
-    return Response.failed(res, {message: "Not found"})
+    return Response.failed(res, { message: "Not found" })
   } catch (error) {
     console.log(error)
-    return Response.failed(res, {message: "Internal server error."}, 500)
+    return Response.failed(res, { message: "Internal server error." }, 500)
   }
 }
 
@@ -535,6 +536,30 @@ const linkTeamAndCar = async (req, res) => {
   }
 }
 
+const unlinkTeamAndEvent = async (req, res) => {
+  try {
+    let team, team_id = req.params.id, event, event_id = req.params.event_id
+    team = await Team.findOne({_id: team_id})
+    event = await Event.findOne({_id: event_id})
+    if (team && event) {
+      // Check if they are linked
+      if(team.events.contains(event._id)){
+        let out1 = await team.updateOne({$pull: { "events": event._id }}).exec()
+      } 
+      if(event.teams.contains(team._id)){
+        let out2 = await event.updateOne({$pull: { "teams": team._id }}).exec()
+      }
+      if(out1.ok && out2.ok && (out1.nModified >= 0 || out2.nModified >= 0)) {
+        return Response.success(res, {message: "Team and event unlinked."})
+      }
+    }
+    return Response.failed(res, {message: "Couldn't remove."}, 404)
+  } catch (err) {
+    console.log(err)
+    return res.sendStatus(500) 
+  }
+}
+
 module.exports = {
   getAll,
   getOneMini,
@@ -549,6 +574,7 @@ module.exports = {
   removeAlumnus,
   linkTeamAndEvent,
   linkTeamAndCar,
+  unlinkTeamAndEvent,
   updateTeam,
   changeCaptain,
   deleteTeam

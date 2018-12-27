@@ -23,9 +23,10 @@ router.post('/:id/add/members', helper.isCaptainOrAdmin(), TeamController.addMem
 router.post('/:id/add/alumnus', helper.isCaptainOrAdmin(), TeamController.addAlumnus)
 router.post('/:id/remove/member/:user_id', helper.isCaptainOrAdmin(), TeamController.removeMembers)
 router.post('/:id/remove/alumni/:user_id', helper.isCaptainOrAdmin(), TeamController.removeAlumnus)
-router.post('/:id/register/event/:event_id', TeamController.linkTeamAndEvent)
-router.post('/:id/register/user/:username', TeamController.linkTeamAndUser)
-router.post('/:id/register/car/:car_id', TeamController.linkTeamAndCar)
+router.post('/:id/register/event/:event_id', helper.isCaptainOrAdmin(), TeamController.linkTeamAndEvent)
+router.post('/:id/register/user/:username', helper.isCaptainOrAdmin(), TeamController.linkTeamAndUser)
+router.post('/:id/register/car/:car_id', helper.isAdmin(), TeamController.linkTeamAndCar)
+router.post('/:id/unlink/event/:event_id', helper.isAdmin(), TeamController.unlinkTeamAndEvent)
 // PUT
 router.put('/:id', helper.isCaptainOrAdmin(), TeamController.updateTeam)
 router.put('/:id/captain', helper.isCaptainOrAdmin(), TeamController.changeCaptain)

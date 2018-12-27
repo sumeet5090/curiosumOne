@@ -101,9 +101,12 @@ const actions = {
   },
   async getTeamsForEvent({ commit }, id) {
     try {
-      let { data } = await this.$axios.get(`/api/event/${id}/teams`)
-      if (data.teams.length > 0) {
-        return commit('SET_TEAMS', data.teams)
+      if (id) {
+        let { data } = await this.$axios.get(`/api/event/${id}/teams`)
+        if (data.teams.length > 0) {
+          return commit('SET_TEAMS', data.teams)
+        }
+        return commit('SET_TEAMS', [])
       }
       return commit('SET_TEAMS', [])
     } catch (err) {

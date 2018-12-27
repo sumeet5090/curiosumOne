@@ -5,7 +5,8 @@
         <b-container>
           <b-row class="justify-content-center">
             <card class="col-md-8">
-              <static-schedule />
+              <static-schedule v-if="!!isAdmin"/>
+              <error-page message="You are not authorized." v-else/>
             </card>
           </b-row>
         </b-container>
@@ -15,18 +16,16 @@
 </template>
 
 <script>
-import StaticSchedule from './../../../components/create/staticSchedule.vue';
+import StaticSchedule from "@/components/create/staticSchedule.vue";
+import { mapGetters } from "vuex";
 export default {
   components: {
-    'static-schedule': StaticSchedule
+    "static-schedule": StaticSchedule
+  },
+  computed: {
+    ...mapGetters(["isAdmin", "currentUser"])
   }
-}
+};
 </script>
 
-<style lang="scss">
-.form-control[readonly] {
-  background-color: initial;
-  padding-left: 0.5rem !important;
-  padding-right: 0.5rem !important;
-}
-</style>
+<style lang="scss"></style>

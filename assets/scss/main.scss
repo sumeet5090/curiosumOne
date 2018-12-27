@@ -85,6 +85,11 @@
   }
 }
 
+.form-control[readonly] {
+  background-color: initial;
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
+}
 
 .profile-page .card-profile .card-profile-image img {
   z-index: 2;

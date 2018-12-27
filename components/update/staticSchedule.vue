@@ -111,7 +111,7 @@ export default {
     ...mapGetters(["currentUser", "isAdmin", "teams"])
   },
   methods: {
-    ...mapActions(["getReq", "postReq", "getTeamsForEvent", "unsetTeams"]),
+    ...mapActions(["getReq", "postReq", "getTeamsForEvent", "unsetTeams", "putReq"]),
     async getEvents() {
       try {
         let url = "/api/event/";
@@ -180,8 +180,6 @@ export default {
     onReset() {
       this.selectedEvent = null;
       this.selectedTeam = null;
-      this.teams = [];
-      this.events = [];
       this.form = {
         business: {
           queue: null,

@@ -29,6 +29,11 @@
           <a v-if="data.item.social.twitter" :href="data.item.social.twitter" target="_blank" rel="noreferrer" ><icon name="fab fa-twitter" style="color: #1DA1F2"  size="sm"></icon></a>
           <a v-if="data.item.social.instagram" :href="data.item.social.instagram" target="_blank" rel="noreferrer" ><icon name="fab fa-instagram" color="danger" size="sm"></icon></a>
         </template>
+        <template slot-scope="data">
+          <div class="btn btn-icon">
+            <i class="fas fa-bell"></i>
+          </div>
+        </template>
       </b-table>
     </b-row>
   </div>
