@@ -13,13 +13,16 @@
           <div class>
             <img src="@/assets/images/icons/category/combustion.svg" class="img-thumbnail icon-category" v-if="data.item.category == 'combustion'"/>
             <img src="@/assets/images/icons/category/electric.svg" class="img-thumbnail icon-category" v-if="data.item.category == 'electric'"/>
-                </div>
+          </div>
         </template>
         <template slot="team_name" slot-scope="data">
-          <router-link :to="{name: 'team-id', params: {id: data.item._id}}" tag="a" class="text-primary">{{data.item.team_name}}</router-link>
+          <div class="d-flex justify-content-between">
+            <router-link :to="{name: 'team-id', params: {id: data.item._id}}" tag="a" class="text-primary">{{data.item.team_name}}</router-link>
+            <router-link :to="{name: 'team-id-settings', params: {id: data.item._id}}" class="btn btn-sm btn-link cursor-pointer ml-auto" tag="a" v-if="isAdmin"><i class="fas fa-pen"></i></router-link>
+          </div>
         </template>
         <template slot="institution" slot-scope="data">
-          <truncate action-class="truncated-less-sign" clamp=" ... " :length="54" less="[hide]" :text="(data.item.institution.name || '').toString()"></truncate>
+          <truncate action-class="truncated-less-sign" clamp=" ... " :length="45" less="[hide]" :text="(data.item.institution.name || '').toString()"></truncate>
         </template>
         <template slot="social" slot-scope="data">
           <a v-if="data.item.website_url" :href="data.item.website_url" target="_blank" rel="noreferrer" ><icon name="fa fa-link" color="dark" size="sm"></icon></a>
@@ -35,11 +38,14 @@
 
 <script>
 import truncate from "vue-truncate-collapsed";
+import { mapGetters } from 'vuex';
 export default {
   components: {
     truncate
   },
-  computed: {},
+  computed: {
+    ...mapGetters(['isAdmin'])
+  },
   data() {
     return {
       filter: null,

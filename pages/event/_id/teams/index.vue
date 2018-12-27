@@ -18,21 +18,19 @@
           </div>
         </template>
         <template slot="team_name" slot-scope="data">
-          <router-link :to="{name: 'team-id', params: {id: data.item._id}}" tag="a" class="text-primary">{{data.item.team_name}}</router-link>
+          <div class="d-flex justify-content-between">
+            <router-link :to="{name: 'team-id', params: {id: data.item._id}}" tag="a" class="text-primary">{{data.item.team_name}}</router-link>
+            <router-link :to="{name: 'team-id-settings', params: {id: data.item._id}}" class="btn btn-sm btn-link cursor-pointer ml-auto" tag="a" v-if="isAdmin"><i class="fas fa-pen"></i></router-link>
+          </div>
         </template>
         <template slot="institution" slot-scope="data">
-          <truncate action-class="truncated-less-sign" clamp=" ... " :length="54" less="[hide]" :text="(data.item.institution.name || '').toString()"></truncate>
+          <truncate action-class="truncated-less-sign" clamp=" ... " :length="45" less="[hide]" :text="(data.item.institution.name || '').toString()"></truncate>
         </template>
         <template slot="social" slot-scope="data">
           <a v-if="data.item.website_url" :href="data.item.website_url" target="_blank" rel="noreferrer" ><icon name="fa fa-link" color="dark" size="sm"></icon></a>
           <a v-if="data.item.social.facebook" :href="data.item.social.facebook" target="_blank" rel="noreferrer" ><icon name="fab fa-facebook" style="color: #3B5999"  size="sm"></icon></a>
           <a v-if="data.item.social.twitter" :href="data.item.social.twitter" target="_blank" rel="noreferrer" ><icon name="fab fa-twitter" style="color: #1DA1F2"  size="sm"></icon></a>
           <a v-if="data.item.social.instagram" :href="data.item.social.instagram" target="_blank" rel="noreferrer" ><icon name="fab fa-instagram" color="danger" size="sm"></icon></a>
-        </template>
-        <template slot-scope="data">
-          <div class="btn btn-icon">
-            <i class="fas fa-bell"></i>
-          </div>
         </template>
       </b-table>
     </b-row>
@@ -42,11 +40,13 @@
 
 <script>
 import truncate from "vue-truncate-collapsed";
+import { mapGetters } from 'vuex';
 export default {
   components: {
     truncate
   },
   computed: {
+    ...mapGetters(['isAdmin']),
     pageCount: function () {
       if (this.teams) {
         let x = this.teams.length / this.table.perPage;
