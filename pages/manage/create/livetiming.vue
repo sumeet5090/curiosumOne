@@ -17,7 +17,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import liveTiming from "@/components/create/livetiming.vue";
+import liveTiming from "@/components/create/liveTiming.vue";
 export default {
   components: {
     "live-timing": liveTiming
