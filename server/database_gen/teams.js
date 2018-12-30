@@ -37,7 +37,7 @@ let data_fsev2018_oct = require('../../data/fsev2018_oct');
             team_id: team._id,
             car_number: data_fb_2017[d].car_number
           }).save()
-          let saved_team = await team.updateOne({ $addToSet: { events: event._id } }).exec()
+          let saved_team = await team.update({ $addToSet: { events: event._id } }).exec()
           if (already_team_car && saved_team.nModified == 1) {
             console.log(`Car ${already_team_car.car_number} created for ${team.team_name}`)
           }
@@ -60,13 +60,13 @@ let data_fsev2018_oct = require('../../data/fsev2018_oct');
               car_number: data_fb_2017[d].car_number
             }).save()
             if (new_car) {
-              await new_team.updateOne({car: new_car._id}).exec()
+              await new_team.update({car: new_car._id}).exec()
               console.log(`${new_car.car_number} created for ${new_team.team_name}`)
             }
           }
         }
       }
-      let save_ev = await event.updateOne({ $addToSet: { teams: link_these_teams_to_event } }).exec()
+      let save_ev = await event.update({ $addToSet: { teams: link_these_teams_to_event } }).exec()
       if (save_ev) {
         console.log(`Event updated with ${link_these_teams_to_event.length} teams`)
       }
@@ -104,7 +104,7 @@ let data_fsev2018_oct = require('../../data/fsev2018_oct');
             team_id: team._id,
             car_number: data_fb_2018[d].car_number
           }).save()
-          let saved_team = await team.updateOne({ $addToSet: { events: event._id } }).exec()
+          let saved_team = await team.update({ $addToSet: { events: event._id } }).exec()
           if (already_team_car && saved_team.nModified == 1) {
             console.log(`Car ${already_team_car.car_number} created for ${team.team_name}`)
           }
@@ -128,13 +128,13 @@ let data_fsev2018_oct = require('../../data/fsev2018_oct');
               car_number: data_fb_2018[d].car_number
             }).save()
             if (new_car) {
-              await new_team.updateOne({car: new_car._id}).exec()
+              await new_team.update({car: new_car._id}).exec()
               console.log(`${new_car.car_number} created for ${new_team.team_name}`)
             }
           }
         }
       }
-      let save_ev = await event.updateOne({ $addToSet: { teams: link_these_teams_to_event } }).exec()
+      let save_ev = await event.update({ $addToSet: { teams: link_these_teams_to_event } }).exec()
       if (save_ev) {
         console.log(`Event updated with ${link_these_teams_to_event.length} teams`)
       }
@@ -171,7 +171,7 @@ let data_fsev2018_oct = require('../../data/fsev2018_oct');
             team_id: team._id,
             car_number: data_fsev2018_jan[d].car_number
           }).save()
-          let saved_team = await team.updateOne({ $addToSet: { events: event._id } }).exec()
+          let saved_team = await team.update({ $addToSet: { events: event._id } }).exec()
           if (already_team_car && saved_team.nModified == 1) {
             console.log(`Car ${already_team_car.car_number} created for ${team.team_name}`)
           }
@@ -195,13 +195,13 @@ let data_fsev2018_oct = require('../../data/fsev2018_oct');
               car_number: data_fsev2018_jan[d].car_number
             }).save()
             if (new_car) {
-              await new_team.updateOne({car: new_car._id}).exec()
+              await new_team.update({car: new_car._id}).exec()
               console.log(`${new_car.car_number} created for ${new_team.team_name}`)
             }
           }
         }
       }
-      let save_ev = await event.updateOne({ $addToSet: { teams: link_these_teams_to_event } }).exec()
+      let save_ev = await event.update({ $addToSet: { teams: link_these_teams_to_event } }).exec()
       if (save_ev) {
         console.log(`Event updated with ${link_these_teams_to_event.length} teams`)
       }
@@ -238,7 +238,7 @@ let data_fsev2018_oct = require('../../data/fsev2018_oct');
             team_id: team._id,
             car_number: data_fsev2018_oct[d].car_number
           }).save()
-          let saved_team = await team.updateOne({ $addToSet: { events: event._id } }).exec()
+          let saved_team = await team.update({ $addToSet: { events: event._id } }).exec()
           if (already_team_car && saved_team.nModified == 1) {
             console.log(`Car ${already_team_car.car_number} created for ${team.team_name}`)
           }
@@ -262,13 +262,13 @@ let data_fsev2018_oct = require('../../data/fsev2018_oct');
               car_number: data_fsev2018_oct[d].car_number
             }).save()
             if (new_car) {
-              await new_team.updateOne({car: new_car._id}).exec()
+              await new_team.update({car: new_car._id}).exec()
               console.log(`${new_car.car_number} created for ${new_team.team_name}`)
             }
           }
         }
       }
-      let save_ev = await event.updateOne({ $addToSet: { teams: link_these_teams_to_event } }).exec()
+      let save_ev = await event.update({ $addToSet: { teams: link_these_teams_to_event } }).exec()
       if (save_ev) {
         console.log(`Event updated with ${link_these_teams_to_event.length} teams`)
       }
