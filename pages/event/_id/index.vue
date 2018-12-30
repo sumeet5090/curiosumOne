@@ -1,12 +1,22 @@
 <template>
 <section class="section custom-gradient">
-    <div class="container mt-5">
-        <card no-body class="p-2 px-3" >
+    <div class="container mt-2">
+        <card no-body class="p-2 px-3 text-dark" >
             <b-row class="justify-content-center">
+              <div class="h3 font-weight-900">{{event.name}}</div>
               <b-table class="m-2" bordered stacked responsive :items="[event]" :fields="fields">
-                <template slot="date" slot-scope="data">{{formatDate(data.item.date)}}</template>
+                <template slot="name" slot-scope="data">
+                  <span class="font-weight-bold">
+                    {{data.item.name}}
+                  </span>
+                  <span v-if="isAdmin" v-show="isAdmin">
+                    <router-link :to="{name: 'manage-update-event'}"><i class="fas fa-pen"></i></router-link>
+                  </span>
+                </template>
+                <template slot="start_date" slot-scope="data">{{formatDate(data.item.start_date)}}</template>
+                <template slot="end_date" slot-scope="data">{{formatDate(data.item.end_date)}}</template>
                 <template slot="link" slot-scope="data">
-                  <a :href="data.item.link">Link</a>
+                  <a :href="data.item.link">Website</a>
                 </template>
               </b-table>
             </b-row>
@@ -17,6 +27,7 @@
 
 <script>
 let moment = require('moment')
+import {mapGetters} from 'vuex'
 export default {
   data() {
     return {
@@ -26,8 +37,12 @@ export default {
           label: "Name"
         },
         {
-          key: "date",
-          label: "Date"
+          key: "start_date",
+          label: "Start Date"
+        },
+        {
+          key: "end_date",
+          label: "End Date"
         },
         {
           key: "venue",
@@ -39,7 +54,9 @@ export default {
       ]
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters(['isAdmin'])
+  },
   async asyncData({ $axios, params, error }) {
     try {
       const { data } = await $axios.get(`/api/event/${params.id}`, {
@@ -60,7 +77,7 @@ export default {
   },
   methods: {
     formatDate(date) {
-      return moment(date).format('LLLL');;
+      return moment(date).format('dddd, LL');;
     }
   }
 };

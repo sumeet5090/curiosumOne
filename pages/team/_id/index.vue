@@ -46,17 +46,13 @@
                   </span>
                 </div>
               </div>
-              <!-- <div class="col-md-12 order-lg-4">
-                <div class="container">
-                  <div class="row justify-content-end">
-                    <router-link :to="{name: 'team-id-update', params: {id: team._id}}" class="btn mr-5 btn-sm btn-link" tag="a" v-if="showSettings"><i class="fas fa-pen fa-2x"></i></router-link>
-                  </div>
-                </div>
-              </div> -->
             </div>
             <div class="text-center mt-0 mt-md-2 pt-lg-2">
               <div class="pt-0 pt-sm--100 pt-md-2 pt-lg-1">
-                <span class="display-3">{{team.team_name}}</span><router-link :to="{name: 'team-id-settings', params: {id: team._id}}" class="btn btn-sm btn-link cursor-pointer mb-3" tag="a" v-if="showSettings"><i class="fas fa-pen fa-2x"></i></router-link>
+                <span class="display-3">{{team.team_name}}</span>
+                <router-link :to="{name: 'team-id-settings', params: {id: team._id}}" class="btn btn-sm btn-link cursor-pointer mb-3" tag="a" v-if="showSettings">
+                  <i class="fas fa-pen fa-2x"></i>
+                </router-link>
               </div>
               <div class="h6 font-weight-300 text-muted">{{team.location}}{{team.country && team.location ? ", ": ""}}{{team.country}}</div>
               <div class="h6 mt-2">
@@ -79,7 +75,7 @@
               <b-row class="justify-content-center">
                 <h4 class="font-weight-bold text-dark">Events</h4>
               </b-row>
-              <b-row class="justify-content-center">
+              <b-row class="justify-content-start">
                 <b-col :key="event.event_short" sm="6" v-for="event in team.events">
                   <div class="text-center text-primary">
                     <a :href="event.link" class="btn btn-link" tag="a">{{event.name}}</a>
@@ -150,6 +146,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import _ from "lodash";
 export default {
   async asyncData({ $axios, params, error }) {
     try {
@@ -158,10 +155,15 @@ export default {
           return status < 400;
         }
       });
+      data.team.events.sort(
+        (d1, d2) =>
+          new Date(d2.start_date).getTime() - new Date(d1.start_date).getTime()
+      );
       return {
         team: data.team
       };
     } catch (err) {
+      console.log(err);
       return error({
         message: "Couldn't get team."
       });
@@ -203,6 +205,10 @@ export default {
           return false;
           break;
       }
+    },
+    sortByDate(events) {
+      var a = events;
+      return events;
     }
   }
 };

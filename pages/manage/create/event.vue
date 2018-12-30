@@ -6,6 +6,7 @@
         <div class="row justify-content-center">
           <div class="col-md-8">
             <card>
+              <div class="display-3 text-dark text-center mb-2">Create Event</div>
               <b-form @submit.prevent="onSubmit" @reset.prevent="onReset">
                 <b-form-group id="form-eventname" label="Event Name:" label-for="form-eventname--input" description="What's the event called?">
                   <b-form-input id="form-eventname--input" type="text" v-model="form.event_name" required placeholder="Enter event name" class="text-dark"></b-form-input>
@@ -31,14 +32,22 @@
                 </b-form-group>
                 <b-form-group id="form-eventorganizers-list">
                 </b-form-group>
+                <b-form-group id="form-event-past">
+                  <div class="container">
+                    <span class="row align-items-center">
+                      <base-switch class="mb-1" v-model="form.past"></base-switch>
+                      <span class="ml-2">Past event?</span>
+                    </span>
+                  </div>
+                </b-form-group>
                 <b-alert variant="danger" dismissible :show="errors.length > 0" @dismissed="showDismissibleAlert=false">
                   <div v-for="error in errors" :key="error">{{error}}</div>
                 </b-alert>
                 <b-alert variant="success" :show="!!success_msg">
                   <div>{{success_msg}}</div>
                 </b-alert>
-                <b-button type="submit" variant="primary">Update</b-button>
-                <b-button type="reset" variant="danger">Reset</b-button>
+                <b-button type="submit" variant="success">Create</b-button>
+                <b-button type="reset" variant="warning">Reset</b-button>
               </b-form>
             </card>
           </div>
@@ -69,7 +78,8 @@ export default {
         event_end_date: null,
         event_venue: null,
         event_link: null,
-        event_short: null
+        event_short: null,
+        past: false,
       },
       success_msg: "",
       errors: []
@@ -93,7 +103,8 @@ export default {
             end_date: this.form.event_end_date,
             event_venue: this.form.event_venue,
             event_link: this.form.event_link,
-            event_short: this.form.event_short
+            event_short: this.form.event_short,
+            past: this.form.past
           }
         });
         if (res.success) {
@@ -113,6 +124,7 @@ export default {
       this.form.event_venue = null
       this.form.event_link = null
       this.form.event_short = null
+      this.form.past = false
       this.success_msg = ""
       this.errors = []
     },

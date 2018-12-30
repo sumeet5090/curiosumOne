@@ -38,20 +38,33 @@ const CarSchema = Schema({
         type: String,
         required: true,
         trim: true
+    },
+    category: {
+        type: String,
+        trim: true,
+        enum: ["electric", "combustion"],
+        default: function() {
+            if(this.car_number[0] == "E"){
+                return "electric"
+            }
+            return "combustion"
+        }
     }
 }, { timestamps: true })
 
 CarSchema.pre('save', async function (next) {
     let doc = this
-    try {
-        let incCounter = await counter.findOneAndUpdate({ _id: 'car_Counter' }, { $inc: { seq: 1 } }, { new: true })
-        if (incCounter) {
-            doc._id = incCounter.seq
-            return next()
+    if (doc.isNew) {
+        try {
+            let incCounter = await counter.findOneAndUpdate({ _id: 'car_Counter' }, { $inc: { seq: 1 } }, { new: true })
+            if (incCounter) {
+                doc._id = incCounter.seq
+                return next()
+            }
+            return next({ "message": "Couldn't Update the counter." })
+        } catch (error) {
+            next(error)
         }
-        return next({ "message": "Couldn't Update the counter." })
-    } catch (error) {
-        next(error)
     }
 })
 

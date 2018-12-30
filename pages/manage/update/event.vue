@@ -6,9 +6,10 @@
         <div class="row justify-content-center">
         <div class="col-md-8">
           <card>
+            <div class="display-3 text-dark text-center mb-2">Update Event</div>
             <b-form @submit.prevent="onSubmit" @reset.prevent="onReset">
               <b-form-select id="form-event--input" required v-model="selectedEvent" class="mb-3 text-dark">
-                <option :value="{}" class="text-dark">Select an option</option>
+                <option :value="{}" class="text-dark">Select an event</option>
                 <option :value="ev" v-for="ev in events" :key="ev._id" class="text-dark">{{ev.name}}</option>
               </b-form-select>
               <b-form-group id="form-eventname" label="Event name:" label-for="form-eventname--input" v-if="!!selectedEvent._id">

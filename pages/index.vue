@@ -7,14 +7,14 @@
             <img
               :src="imageHeader.src"
               alt="Mobility Engineering Consortium Online Portal"
-              class="img-thumbnail border-0 shadow-none"
+              class="img-thumbnail border-0 shadow-none px-4"
             >
           </clazy-load>
         </b-row>
         <b-row class="mt-2">
           <b-col sm="12">
             <div class="text-dark">
-              <div class="text-xs-left text-sm-left text-md-center text-lg-center">
+              <div class="text-center">
                 <span>
                   Welcome to the
                   <strong>mobilityeng.online</strong> portal hosted by
@@ -22,10 +22,10 @@
                 </span>
               </div>
               <div
-                class="text-xs-center text-sm-left text-md-center text-lg-center"
+                class="text-center"
               >This site is meant for team and user registration to events organized by the company.</div>
               <div
-                class="text-xs-center text-sm-left text-md-center text-lg-center"
+                class="text-center"
               >You can also view additional data such as event live schedules, inspection updates, lap times etc.</div>
             </div>
           </b-col>
@@ -35,16 +35,16 @@
     <section class="section has-cards pt-0">
       <div class="container">
         <div class="row justify-content-center">
-          <div :key="event._id" class="col-11 mb-2 p-2" v-for="event in events">
+          <div :key="event._id" class="col-11 mb-2 p-2" v-for="event in events" v-if="!event.past" v-show="!event.past">
             <div class="container">
               <div class="row justify-content-center">
                 <card class="col-12 border-0" no-body>
                   <div class="container">
                     <div class="row header-font">
-                      <div class="col-sm-8">
-                        <div class="display-3 text-uppercase text-dark">{{event.name}}</div>
+                      <div class="col-lg-8">
+                        <router-link :to="{name: 'event-id', params: {id: event.event_short}}" class="display-3 text-uppercase text-dark">{{event.name}}</router-link>
                       </div>
-                      <div class="col-sm-4">
+                      <div class="col-lg-4">
                         <div class="py-auto text-dark">{{formatDate(event.start_date, event.end_date)}}</div>
                         <div class="py-auto text-dark">{{event.venue}}</div>
                       </div>
@@ -141,7 +141,7 @@ export default {
     return {
       showMoreCards: false,
       imageHeader: {
-        src: require("@/assets/images/brand/header.jpg"),
+        src: require("@/assets/images/brand/header.png"),
         loading: ""
       }
     };
@@ -158,6 +158,7 @@ export default {
         events: data.events
       };
     } catch (err) {
+      console.log(err);
       error({
         message: "Event not found",
         statusCode: 404
@@ -180,10 +181,15 @@ export default {
     },
     handleCards() {
       this.showMoreCards = !this.showMoreCards;
+    },
+    sortEvents() {
+      this.events.sort(function (a, b) {
+        return a.start_date > b.start_date
+      })
     }
   },
   computed: {
-    ...mapGetters(["currentUser"])
+    ...mapGetters(["currentUser", "isAdmin"])
   },
   beforeMount() {},
   mounted() {

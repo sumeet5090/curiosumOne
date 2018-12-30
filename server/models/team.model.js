@@ -102,6 +102,9 @@ let TeamSchema = Schema({
     type: String,
     default: ""
   },
+  former_name: {
+    type: String
+  }
 }, {
     timestamps: true
   }

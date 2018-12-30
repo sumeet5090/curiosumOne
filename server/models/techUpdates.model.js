@@ -62,15 +62,17 @@ const techSchema = Schema({
 
 techSchema.pre('save', async function (next) {
   let doc = this;
-  try {
-    let incCounter = await counter.findOneAndUpdate({ _id: 'tech_updates_Counter' }, { $inc: { seq: 1 } }, { new: true });
-    if (incCounter) {
-      doc._id = incCounter.seq
-      return next()
+  if (doc.isNew) {
+    try {
+      let incCounter = await counter.findOneAndUpdate({ _id: 'tech_updates_Counter' }, { $inc: { seq: 1 } }, { new: true });
+      if (incCounter) {
+        doc._id = incCounter.seq
+        return next()
+      }
+      return next({ "message": "Couldn't Update the counter." })
+    } catch (error) {
+      next(error)
     }
-    return next({ "message": "Couldn't Update the counter." })
-  } catch (error) {
-    next(error)
   }
 })
 

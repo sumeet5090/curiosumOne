@@ -29,7 +29,7 @@ router.post('/:id/add/team', helper.hasRole("admin"), eventCont.addTeam)
 router.post('/create', helper.hasRole("admin"), eventCont.createEvent)
 // PUT
 router.put('/:id', helper.hasRole("admin"), eventCont.updateEvent)
-router.put('/:id/car/:car_id', helper.hasRole("admin"), eventCont.updateCar)
+router.put('/:id/:team_id/car', helper.hasRole("admin"), eventCont.updateCar)
 router.put('/:id/techupdate/:lt_id', helper.hasRole("admin"), eventCont.updateLiveTiming)
 router.put('/:id/livetiming/:tu_id', helper.hasRole("admin"), eventCont.updateTechUpdate)
 router.put('/:id/schedule/:sc_id', helper.hasRole("admin"), eventCont.updateSchedule)

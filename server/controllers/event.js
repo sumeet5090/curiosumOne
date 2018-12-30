@@ -12,7 +12,7 @@ const ObjectId = mongoose.Types.ObjectId
 
 const getAllEvents = async (req, res) => {
   try {
-    let events = await Event.find().populate('organizers').exec()
+    let events = await Event.find().sort({start_date: 'descending'}).populate('organizers').exec()
     if (events.length > 0) {
       return Response.success(res, {
         events: events
@@ -341,7 +341,7 @@ const getTeamCar = async (req, res) => {
     let event = await Event.findOne({ $or: $or }).exec()
     let team = await Team.findOne({ _id: req.params.team_id })
     if (event && team) {
-      let car = await Car.findOne({ event_id: event._id, team_id: team._id })
+      let car = await Car.findOne({ event_id: event._id, team_id: team._id }).populate(['event_id', 'team_id']).exec()
       if (car) {
         return Response.success(res, {
           car: car

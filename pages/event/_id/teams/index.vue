@@ -1,53 +1,68 @@
 <template>
-<section class="section">
-  <div class="container">
-    <b-row class="justify-content-center">
-      <div class="display-4 header-font">
-        Registered Teams for <strong class="text-primary">{{event.name}}</strong>
-      </div>
-    </b-row>
-    <b-row class="justify-content-center">
-      <base-input class="col-sm-12 col-md-6 px-0 mx-0" v-model="filter" type="text" placeholder="Search" addon-left-icon="fas fa-search text-success"></base-input>
-    </b-row>
-    <b-row class="justify-content-center">
-      <b-table outlined responsive bordered hover :items="teams" :fields="fields" :filter="filter">
-        <template slot="category" slot-scope="data">
-          <div class>
-            <img src="@/assets/images/icons/category/combustion.svg" class="img-thumbnail icon-category" v-if="data.item.category == 'combustion'"/>
-            <img src="@/assets/images/icons/category/electric.svg" class="img-thumbnail icon-category" v-if="data.item.category == 'electric'"/>
-          </div>
-        </template>
-        <template slot="team_name" slot-scope="data">
-          <div class="d-flex justify-content-between">
-            <router-link :to="{name: 'team-id', params: {id: data.item._id}}" tag="a" class="text-primary">{{data.item.team_name}}</router-link>
-            <router-link :to="{name: 'team-id-settings', params: {id: data.item._id}}" class="btn btn-sm btn-link cursor-pointer ml-auto" tag="a" v-if="isAdmin"><i class="fas fa-pen"></i></router-link>
-          </div>
-        </template>
-        <template slot="institution" slot-scope="data">
-          <truncate action-class="truncated-less-sign" clamp=" ... " :length="45" less="[hide]" :text="(data.item.institution.name || '').toString()"></truncate>
-        </template>
-        <template slot="social" slot-scope="data">
-          <a v-if="data.item.website_url" :href="data.item.website_url" target="_blank" rel="noreferrer" ><icon name="fa fa-link" color="dark" size="sm"></icon></a>
-          <a v-if="data.item.social.facebook" :href="data.item.social.facebook" target="_blank" rel="noreferrer" ><icon name="fab fa-facebook" style="color: #3B5999"  size="sm"></icon></a>
-          <a v-if="data.item.social.twitter" :href="data.item.social.twitter" target="_blank" rel="noreferrer" ><icon name="fab fa-twitter" style="color: #1DA1F2"  size="sm"></icon></a>
-          <a v-if="data.item.social.instagram" :href="data.item.social.instagram" target="_blank" rel="noreferrer" ><icon name="fab fa-instagram" color="danger" size="sm"></icon></a>
-        </template>
-      </b-table>
-    </b-row>
-  </div>
-</section>
+  <section class="section">
+    <div class="container">
+      <b-row class="justify-content-center">
+        <div class="display-4 header-font">
+          Registered Teams for
+          <strong class="text-primary">{{event.name}}</strong>
+        </div>
+      </b-row>
+      <b-row class="justify-content-center">
+        <base-input addon-left-icon="fas fa-search text-success" class="col-sm-12 col-md-6 px-0 mx-0" placeholder="Search" type="text" v-model="filter"></base-input>
+      </b-row>
+      <b-row class="justify-content-center">
+        <no-ssr>
+          <b-table :fields="fields" :filter="filter" :items="teams" :sort-by.sync="table.sortBy" :sort-compare="sortCompareAdvanced" bordered hover outlined responsive>
+            <template slot="category" slot-scope="data">
+              <div class>
+                <img class="img-thumbnail icon-category" src="@/assets/images/icons/category/combustion.svg" v-if="data.item.category == 'combustion'">
+                <img class="img-thumbnail icon-category" src="@/assets/images/icons/category/electric.svg" v-if="data.item.category == 'electric'">
+              </div>
+            </template>
+            <template slot="car.car_number" slot-scope="data">{{data.item.car.car_number}}</template>
+            <template slot="team_name" slot-scope="data">
+              <div class="d-flex justify-content-between">
+                <router-link :to="{name: 'team-id', params: {id: data.item._id}}" class="text-primary" tag="a">{{data.item.team_name}}</router-link>
+                <router-link :to="{name: 'team-id-settings', params: {id: data.item._id}}" class="btn btn-sm btn-link cursor-pointer ml-auto" tag="a" v-if="isAdmin">
+                  <i class="fas fa-pen"></i>
+                </router-link>
+              </div>
+            </template>
+            <template slot="institution.name" slot-scope="data">
+              <truncate :length="45" :text="(data.item.institution.name || '').toString()" action-class="truncated-less-sign" clamp=" ... " less="[hide]"></truncate>
+            </template>
+            <template slot="social" slot-scope="data">
+              <a :href="data.item.website_url" rel="noreferrer" target="_blank" v-if="data.item.website_url">
+                <icon color="dark" name="fa fa-link" size="sm"></icon>
+              </a>
+              <a :href="data.item.social.facebook" rel="noreferrer" target="_blank" v-if="data.item.social.facebook">
+                <icon name="fab fa-facebook" size="sm" style="color: #3B5999"></icon>
+              </a>
+              <a :href="data.item.social.twitter" rel="noreferrer" target="_blank" v-if="data.item.social.twitter">
+                <icon name="fab fa-twitter" size="sm" style="color: #1DA1F2"></icon>
+              </a>
+              <a :href="data.item.social.instagram" rel="noreferrer" target="_blank" v-if="data.item.social.instagram">
+                <icon color="danger" name="fab fa-instagram" size="sm"></icon>
+              </a>
+            </template>
+          </b-table>
+        </no-ssr>
+      </b-row>
+    </div>
+  </section>
 </template>
 
 <script>
 import truncate from "vue-truncate-collapsed";
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
+import flatten from "flat";
 export default {
   components: {
     truncate
   },
   computed: {
-    ...mapGetters(['isAdmin']),
-    pageCount: function () {
+    ...mapGetters(["isAdmin"]),
+    pageCount: function() {
       if (this.teams) {
         let x = this.teams.length / this.table.perPage;
         let y = parseInt(x);
@@ -57,14 +72,29 @@ export default {
       }
     }
   },
+  methods: {
+    sortCompareAdvanced: function(a, b, key) {
+      if (typeof a[key] === "number" && typeof b[key] === "number") {
+        return a[key] < b[key] ? -1 : a[key] > b[key] ? 1 : 0;
+      } else if (typeof a[key] === "undefined") {
+        return 1;
+      } else {
+        return flatten(a)
+          [key].toString()
+          .localeCompare(flatten(b)[key].toString(), undefined, {
+            numeric: true
+          });
+      }
+    }
+  },
   data() {
     return {
       filter: null,
       table: {
-        currentPage: 1,
-        perPage: 100
+        sortBy: "car.car_number"
       },
-      fields: [{
+      fields: [
+        {
           label: "",
           key: "category",
           sortable: true
@@ -80,14 +110,20 @@ export default {
           key: "team_name"
         },
         {
-          key: "institution",
+          key: "institution.name",
           label: " ",
           sortable: true
         },
         {
           sortable: true,
           label: " ",
-          key: "location"
+          key: "location",
+          formatter: function(val) {
+            if (val) {
+              return val;
+            }
+            return "-";
+          }
         },
         {
           sortable: true,
@@ -97,19 +133,13 @@ export default {
         {
           label: " ",
           key: "social"
-        },
+        }
       ]
     };
   },
-  async asyncData({
-    $axios,
-    params,
-    error
-  }) {
+  async asyncData({ $axios, params, error }) {
     try {
-      const {
-        data
-      } = await $axios.get(`/api/event/${params.id}/teams`, {
+      const { data } = await $axios.get(`/api/event/${params.id}/teams`, {
         validateStatus: status => {
           return status < 400;
         }
@@ -150,7 +180,6 @@ export default {
 }
 
 .table {
-
   th {
     padding: 0;
   }
@@ -168,7 +197,7 @@ a {
   }
 }
 
-td>.icon.icon-shape {
+td > .icon.icon-shape {
   padding: 0;
   margin: 0;
 }

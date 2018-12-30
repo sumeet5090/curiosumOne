@@ -51,10 +51,10 @@ const pastEventSchema = Schema({
   website_url: {
     type: String
   },
-  date_start: {
+  start_date: {
     type: Date
   },
-  date_end: {
+  end_date: {
     type: Date
   }
 }, { timestamps: true })
