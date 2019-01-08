@@ -16,12 +16,12 @@ const host = process.env.HOST || 'localhost'
 const port = process.env.PORT || 3000
 app.set('port', port)
 
-function start() {
+async function start() {
   const nuxt = new Nuxt(config)
   // Build only in dev mode
   if (config.dev) {
-    const builder = new Builder(nuxt)
-    builder.build()
+    const builder = await new Builder(nuxt)
+    await builder.build()
   }
   // Body parser
   app.use(express.urlencoded({ extended: false }))
