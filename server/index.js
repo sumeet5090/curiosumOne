@@ -8,7 +8,6 @@ let config = require('../nuxt.config.js')
 // Init Nuxt.js
 const passportInitialize = require('./auth/passport')
 const indexRouter = require('./routes')
-const teamRouter = require('./routes/api/team')
 const apiRouter = require('./routes/api')
 const database = require('./database')
 const session = require('./session')
@@ -17,15 +16,15 @@ const host = process.env.HOST || 'localhost'
 const port = process.env.PORT || 3000
 app.set('port', port)
 
-async function start() {
+function start() {
   const nuxt = new Nuxt(config)
   // Build only in dev mode
   if (config.dev) {
-    const builder = await new Builder(nuxt)
-    await builder.build()
+    const builder = new Builder(nuxt)
+    builder.build()
   }
   // Body parser
-  app.use(express.urlencoded({ extended: true }))
+  app.use(express.urlencoded({ extended: false }))
   app.use(express.json())
   // Database
   let dbConn = database()

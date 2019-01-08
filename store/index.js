@@ -134,6 +134,14 @@ const actions = {
       console.log(error)
     }
   },
+  async delReq({ }, params) {
+    try {
+      let { data } = await this.$axios.delete(params.url)
+      return data
+    } catch (error) {
+      console.log(error)
+    }
+  },
   async putReq({ }, params) {
     try {
       let { data } = await this.$axios.put(params.url, params.body)

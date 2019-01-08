@@ -7,9 +7,6 @@ module.exports = function (app, mongooseConnection) {
         store: new mongoStore({
             mongooseConnection: mongooseConnection
         }),
-        // store: new redisStore(options: {
-        //     foo: 'bar'
-        // }),
         secret: keys.session.secret,
         resave: false,
         saveUninitialized: false,

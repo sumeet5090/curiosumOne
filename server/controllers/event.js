@@ -12,7 +12,7 @@ const ObjectId = mongoose.Types.ObjectId
 
 const getAllEvents = async (req, res) => {
   try {
-    let events = await Event.find().sort({start_date: 'descending'}).populate('organizers').exec()
+    let events = await Event.find().sort({ start_date: 'descending' }).populate('organizers').exec()
     if (events.length > 0) {
       return Response.success(res, {
         events: events
@@ -220,8 +220,27 @@ const getAllSchedules = async (req, res) => {
     if (parseInt(id) == id) {
       $or.push({ _id: id })
     }
-    let event = await Event.findOne({ $or: $or }).populate('schedules').exec()
-    if (event.schedules.length > 0) {
+    let schedules
+    let isAuthenticated = req.isAuthenticated() || false
+    let event = await Event.findOne({ $or: $or })
+    if (isAuthenticated) {
+      let user_roles = req.user.role
+      if (user_roles.contains('admin') || user_roles.contains('staff')) {
+        schedules = await Schedule.find({ event_id: event._id })
+      } else if (user_roles.contains('participant') && user_roles.contains('volunteer')) {
+        schedules = await Schedule.find({ event_id: event._id, $or: [{ volunteer_view: true }, { participant_view: true }, { visitor_view: true }] })
+      } else if (user_roles.contains('volunteer') && !user_roles.contains('participant')) {
+        schedules = await Schedule.find({ event_id: event._id, $or: [{volunteer_view: true }, { visitor_view: true }]})
+      } else if (!user_roles.contains('volunteer') && user_roles.contains('participant')) {
+        schedules = await Schedule.find({ event_id: event._id, $or: [{participant_view: true }, { visitor_view: true }]})
+      } else {
+        schedules = await Schedule.find({ event_id: event._id, visitor_view: true })
+      }
+    } else {
+      schedules = await Schedule.find({ event_id: event._id, visitor_view: true })
+    }
+    if (schedules.length > 0) {
+      event.schedules = schedules
       return Response.success(res, { event: event })
     }
     return Response.failed(res, { message: "Not found" })
@@ -279,16 +298,16 @@ const getAllCars = async (req, res) => {
 }
 
 const getAllStaticSchedulesForEvent = async (req, res) => {
-  let schedules, event_id = req.params.event_id,
+  let schedules, event_id = req.params.id,
     $or = [{ event_short: event_id }]
   if (parseInt(event_id) == event_id) {
-    $or.push({ event: event_id })
+    $or.push({ _id: event_id })
   }
   try {
-    schedules = await StaticSchedule.find({ $or }).exec()
-    if (schedules) {
-      if (schedules.length > 0) {
-        return Response.success(res, { static_schedules: schedules })
+    let event = await Event.findOne({$or}).populate({path: 'static_schedule', populate: {path: 'team'}}).exec()
+    if (event.static_schedule) {
+      if (event.static_schedule.length > 0) {
+        return Response.success(res, { static_schedules: event.static_schedule })
       }
       return Response.success(res, { static_schedules: [] })
     }
@@ -429,7 +448,7 @@ const createCar = async (req, res) => {
           team_id: team._id
         }).save()
         if (car) {
-          let out = await team.updateOne({ car: car._id }).exec()
+          let out = await team.updateOne({ car: car._id })
           if (out.nModified >= 1 && out.ok == 1) {
             return Response.success(res, {
               message: "Created car and linked to team."
@@ -462,7 +481,7 @@ const createLivetiming = async (req, res) => {
           event_id: event._id
         }).save()
         if (liveTiming) {
-          let out = await event.updateOne({ $push: { live_timings: liveTiming._id } }).exec()
+          let out = await event.updateOne({ $push: { live_timings: liveTiming._id } })
           if (out.nModified >= 1 && out.ok == 1) {
             return Response.success(res, {
               message: "Created live timing & linked to event."
@@ -503,7 +522,7 @@ const createTechupdate = async (req, res) => {
           event: event._id
         }).save()
         if (techUpdate) {
-          let out = await event.updateOne({ $push: { tech_updates: techUpdate._id } }).exec()
+          let out = await event.updateOne({ $push: { tech_updates: techUpdate._id } })
           if (out.nModified >= 1 && out.ok == 1) {
             return Response.success(res, {
               message: "Created team update & linked to event."
@@ -546,7 +565,7 @@ const createSchedule = async (req, res) => {
         event_id: event._id
       }).save()
       if (schedule) {
-        let out = await event.updateOne({ $push: { schedules: schedule } }).exec()
+        let out = await event.updateOne({ $push: { schedules: schedule } })
         if (out.nModified >= 1 && out.ok == 1) {
           return Response.success(res, { message: "Created schedule!" }, 200)
         }
@@ -569,11 +588,9 @@ const createSchedule = async (req, res) => {
 
 const createStaticSchedule = async (req, res) => {
   try {
-    console.log(req.params)
     let event = await Event.findOne({ _id: req.params.id }),
       body = req.body,
       team = await Team.findOne({ _id: req.params.team_id })
-    console.log(event, team)
     if (event && team) {
       let staticSchedule = await new StaticSchedule({
         event: event._id,
@@ -595,20 +612,21 @@ const createStaticSchedule = async (req, res) => {
         }
       }).save()
       if (staticSchedule) {
-        let out = await team.updateOne({ $push: { static_schedules: staticSchedule } }).exec()
-        if (out.nModified >= 1 && out.ok == 1) {
-          return Response.success(res, { message: "Created schedule!" }, 200)
+        let out1 = await event.updateOne({ $push: {static_schedule: staticSchedule}})
+        let out2 = await team.updateOne({ $push: { static_schedules: staticSchedule } })
+        if (out1.nModified >= 1 && out1.ok == 1 && out2.nModified >= 1 && out2.ok == 1) {
+          return Response.success(res, { message: "Created static schedule!" }, 200)
         }
         return Response.failed(res, {
-          message: "Created schedule, but couldn't link it to event."
+          message: "Created static schedule, but couldn't link it to event."
         }, 200)
       }
       return Response.failed(res, {
-        message: "Couldn't create schedule"
+        message: "Couldn't create static schedule"
       })
     }
     return Response.failed(res, {
-      message: "Event not found."
+      message: "Not found."
     })
   } catch (error) {
     console.log(error)
@@ -629,7 +647,7 @@ const addTeam = async (req, res) => {
             message: "Team already registered for event."
           })
         } else {
-          let output = await event.updateOne({ $push: { teams: team_id } }, { new: true }).exec()
+          let output = await event.updateOne({ $push: { teams: team_id } }, { new: true })
           if (output.nModified >= 1 && output.ok == 1) {
             return Response.success(res, {
               message: "Team registered."
@@ -730,7 +748,7 @@ const updateSchedule = async (req, res) => {
     return Response.failed(res, { message: "Couldn't update schedule." })
   } catch (error) {
     console.log(error)
-    return Response.success(res, { message: "Internal server error." })
+    return Response.failed(res, { message: "Internal server error." })
   }
 }
 const updateStaticSchedule = async (req, res) => {
@@ -843,13 +861,13 @@ const deleteTechUpdate = async (req, res) => {
   }
 }
 const deleteStaticSchedule = async (req, res) => {
-  let schedule, st_id = req.params.st_id
+  let st_schedule, st_id = req.params.st_id
   try {
-    schedule = await StaticSchedule.findOneAndDelete({ _id: st_id })
-    if (schedule) {
-      console.log(schedule)
+    st_schedule = await StaticSchedule.findOneAndDelete({ _id: st_id })
+    if (st_schedule) {
+      return Response.success(res, { message: "Deleted static schedule." })
     }
-    return Response.failed(res, { message: "Deleted schedule." })
+    return Response.failed(res, { message: "Couldn't delete static schedule." })
   } catch (error) {
     console.log(error)
     return Response.failed(res, { message: "Internal server error." })
@@ -861,8 +879,8 @@ const unlinkTeamFromEvent = async (req, res) => {
     team = await Team.findOne({ _id: team_id })
     event = await Event.findOne({ _id: event_id })
     if (team && event) {
-      let out1 = await team.updateOne({ $pull: { events: event._id } }).exec()
-      let out2 = await event.updateOne({ $pull: { teams: team._id } }).exec()
+      let out1 = await team.updateOne({ $pull: { events: event._id } })
+      let out2 = await event.updateOne({ $pull: { teams: team._id } })
       if (out1.nModified >= 1 && out1.ok == 1 && out2.nModified >= 1 && out2.ok == 1) {
         return Response.success(res, { message: "Unlinked team and event." })
       }

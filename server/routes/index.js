@@ -12,7 +12,7 @@ router.get('/login', (req, res) => {
     }
 })
 
-router.get('/auth/google/redirect', passport.authenticate('google', { authInfo: true, failureRedirect: '/login', successRedirect: '/' }))
+router.get('/auth/google/redirect', passport.authenticate('google', { authInfo: true, successRedirect: '/', failureRedirect: '/login' }))
 
 router.post('/api/logout', (req, res) => {
     req.logout();

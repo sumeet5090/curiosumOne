@@ -228,10 +228,10 @@
                     </card>
                   </div>
                 </b-row>
-                <b-row class="justify-content-center border-top mt-3" v-if="team.alumnus.length > 0">
+                <b-row class="justify-content-center border-top mt-3">
                   <h4 class="text-capitalize text-primary font-weight-bold">Alumni</h4>
                 </b-row>
-                <b-row class="justify-content-center" v-if="team.alumnus.length > 0">
+                <b-row class="justify-content-center">
                   <b-col :key="alumni.id" lg="3" md="4" v-for="alumni in team.alumnus">
                     <card class="team-user-profiles mt-3" no-body tag="article">
                       <div class="text-center">
@@ -262,7 +262,9 @@
           </div>
         </b-row>
       </b-container>
-      <error-page message="You are not authorized to view this content." v-else v-show="loaded"/>
+      <b-container v-else>
+        <error-page message="You are not authorized to view this content."/>
+      </b-container>
     </no-ssr>
   </section>
 </template>

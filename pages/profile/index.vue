@@ -1,22 +1,23 @@
 <template>
-<div class="profile-page">
-    <section class="section-profile-cover custom-gradient">
-    </section>
+  <div class="profile-page">
+    <section class="section-profile-cover custom-gradient"></section>
     <section class="section section-hero custom-gradient" v-if="!!currentUser">
       <div class="container">
-        <card shadow class="card-profile mt--300" no-body>
+        <card class="card-profile mt--300" no-body shadow>
           <div class="px-4">
             <div class="row justify-content-center">
               <div class="col-lg-3 order-lg-1">
                 <div class="card-profile-image">
-                  <a href="">
-                    <img v-lazy="currentUser.profile.picture" alt="Profile Pic" class="rounded-circle">
-                </a>
+                  <a href>
+                    <img alt="Profile Pic" class="rounded-circle" v-lazy="currentUser.profile.picture">
+                  </a>
                 </div>
               </div>
               <div class="col-lg-9 order-lg-2 text-lg-right align-self-lg-center">
                 <div class="card-profile-actions py-4 mt-5 mt-lg-0">
-                  <span class="ml-2 float-right"><router-link :to="{name: 'profile-update'}" class="btn btn-primary btn-sm">Update</router-link></span>
+                  <span class="ml-2 float-right">
+                    <router-link :to="{name: 'profile-update'}" class="btn btn-primary btn-sm">Update</router-link>
+                  </span>
                 </div>
               </div>
             </div>
@@ -33,7 +34,7 @@
               <div class="border-top" v-if="!!team">
                 <i class="mt-4 fa fa-users mr-2"></i>
                 <h4>
-                  <router-link tag="a" class="cursor-pointer text-primary" :to="'/team/'+team._id">{{team.team_name}}</router-link>
+                  <router-link :to="'/team/'+team._id" class="cursor-pointer text-primary" tag="a">{{team.team_name}}</router-link>
                 </h4>
                 <div v-if="currentUser._id === team.captain">Team Captain</div>
                 <div v-else>Team Member</div>
@@ -52,32 +53,28 @@
         </card>
       </div>
     </section>
-</div>
+  </div>
 </template>
 
 <script>
-import {
-  mapActions,
-  mapGetters
-} from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
       team: null
     };
   },
-  async asyncData({
-    $axios,
-    error
-  }) {},
+  async asyncData({ $axios, error }) {},
   methods: {
     ...mapActions(["getUserTeam"]),
-    saveTeam: async function () {
-      let res = await this.getUserTeam(this.currentUser.username);
-      if (res._id) {
-        this.team = res;
-      } else {
-        this.team = null;
+    saveTeam: async function() {
+      if (this.currentUser) {
+        let res = await this.getUserTeam(this.currentUser.username);
+        if (res._id) {
+          this.team = res;
+        } else {
+          this.team = null;
+        }
       }
     }
   },

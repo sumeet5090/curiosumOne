@@ -1,7 +1,7 @@
 <template>
 <div class="custom-gradient">
   <no-ssr>
-    <section class="section section-hero">
+    <section class="section ">
       <b-container>
         <div class="row justify-content-center">
           <div class="col-md-8">

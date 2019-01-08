@@ -4,11 +4,7 @@
       <b-container>
         <b-row class="justify-content-center">
           <clazy-load :src="imageHeader.src">
-            <img
-              :src="imageHeader.src"
-              alt="Mobility Engineering Consortium Online Portal"
-              class="img-thumbnail border-0 shadow-none px-4"
-            >
+            <img :src="imageHeader.src" alt="Mobility Engineering Consortium Online Portal" class="img-thumbnail border-0 shadow-none px-4">
           </clazy-load>
         </b-row>
         <b-row class="mt-2">
@@ -21,12 +17,8 @@
                   <strong>Mobility Engineering Consortium Private Limited.</strong>
                 </span>
               </div>
-              <div
-                class="text-center"
-              >This site is meant for team and user registration to events organized by the company.</div>
-              <div
-                class="text-center"
-              >You can also view additional data such as event live schedules, inspection updates, lap times etc.</div>
+              <div class="text-center">This site is meant for team and user registration to events organized by the company.</div>
+              <div class="text-center">You can also view additional data such as event live schedules, inspection updates, lap times etc.</div>
             </div>
           </b-col>
         </b-row>
@@ -35,93 +27,75 @@
     <section class="section has-cards pt-0">
       <div class="container">
         <div class="row justify-content-center">
-          <div :key="event._id" class="col-11 mb-2 p-2" v-for="event in events" v-if="!event.past" v-show="!event.past">
-            <div class="container">
-              <div class="row justify-content-center">
-                <card class="col-12 border-0" no-body>
-                  <div class="container">
-                    <div class="row header-font">
-                      <div class="col-lg-8">
-                        <router-link :to="{name: 'event-id', params: {id: event.event_short}}" class="display-3 text-uppercase text-dark">{{event.name}}</router-link>
-                      </div>
-                      <div class="col-lg-4">
-                        <div class="py-auto text-dark">{{formatDate(event.start_date, event.end_date)}}</div>
-                        <div class="py-auto text-dark">{{event.venue}}</div>
+          <div :key="event._id" class="col-11 mb-2 p-2" v-for="event in events">
+            <div v-if="!event.past" v-show="!event.past">
+              <div class="container">
+                <div class="row justify-content-center">
+                  <card class="col-12 border-0" no-body>
+                    <div class="container">
+                      <div class="row header-font">
+                        <div class="col-lg-8">
+                          <router-link :to="{name: 'event-id', params: {id: event.event_short}}" class="display-3 text-uppercase text-dark">{{event.name}}</router-link>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="py-auto text-dark">{{formatDate(event.start_date, event.end_date)}}</div>
+                          <div class="py-auto text-dark">{{event.venue}}</div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </card>
+                  </card>
+                </div>
               </div>
-            </div>
-            <div class="row mt-4">
-              <div class="col-md-6 col-lg-4 mt-1 mt-lg-3">
-                <card body-classes="py-3" class="border-0" shadow>
-                  <icon class="mb-3" name="fa fa-link" rounded type="info"></icon>
-                  <h6 class="text-info text-uppercase font-weight-bold">Official Website</h6>
-                  <p class="description mt-3">Visit {{event.name}} official website!</p>
-                  <a :href="event.link" class="btn btn-info mt-2" rel="noreferrer" target="_blank">Website</a>
-                </card>
-              </div>
-              <div class="col-md-6 col-lg-4 mt-1 mt-lg-3">
-                <card body-classes="py-3" class="border-0" shadow>
-                  <icon class="mb-3" name="fa fa-trophy" rounded type="primary"></icon>
-                  <h6 class="text-primary text-uppercase font-weight-bold">Teams</h6>
-                  <p class="description mt-3">Check out all team for {{event.name}}!</p>
-                  <router-link
-                    :to="{name: 'event-id-teams', params: {id: event.event_short}}"
-                    class="btn btn-primary mt-2"
-                    tag="a"
-                  >2019 Teams</router-link>
-                  <router-link :to="{name: 'teams-all'}" class="btn btn-danger mt-2" tag="a">All</router-link>
-                </card>
-              </div>
-              <div class="col-md-6 col-lg-4 mt-1 mt-lg-3">
-                <card body-classes="py-3" class="border-0" shadow>
-                  <icon class="mb-3" name="fa fa-calendar" rounded type="success"></icon>
-                  <h6 class="text-success text-uppercase font-weight-bold">Schedule</h6>
-                  <p class="description mt-3">Day-to-day schedule for {{event.name}}!</p>
-                  <router-link
-                    :to="{name: 'event-id-schedule', params: {id: event.event_short}}"
-                    class="btn btn-success mt-2"
-                    tag="a"
-                  >Schedule</router-link>
-                </card>
-              </div>
-              <div class="col-md-6 col-lg-4 mt-1 mt-lg-3">
-                <card body-classes="py-3" class="border-0" shadow>
-                  <icon class="mb-3" name="fa fa-bell" rounded type="warning"></icon>
-                  <h6 class="text-warning text-uppercase font-weight-bold">Live Announcements</h6>
-                  <p class="description mt-3">Live announcement feed duing {{event.name}}!</p>
-                  <router-link
-                    :to="{name: 'event-id-announcements', params: {id: event.event_short}}"
-                    class="btn btn-warning mt-2"
-                    tag="a"
-                  >Live Feed</router-link>
-                </card>
-              </div>
-              <div class="col-md-6 col-lg-4 mt-1 mt-lg-3">
-                <card body-classes="py-3" class="border-0" shadow>
-                  <icon class="mb-3" name="fa fa-user-clock" rounded type="dark"></icon>
-                  <h6 class="text-dark text-uppercase font-weight-bold">Tech Inspection Updates</h6>
-                  <p class="description mt-3">Live updates of tech inspections for {{event.name}}!</p>
-                  <router-link
-                    :to="{name: 'event-id-tech-updates', params: {id: event.event_short}}"
-                    class="btn btn-light mt-2 text-dark"
-                    tag="a"
-                  >Tech Updates</router-link>
-                </card>
-              </div>
-              <div class="col-md-6 col-lg-4 mt-1 mt-lg-3">
-                <card body-classes="py-3" class="border-0" shadow>
-                  <icon class="mb-3" name="fa fa-clock" rounded type="default"></icon>
-                  <h6 class="text-default text-uppercase font-weight-bold">Live Timing</h6>
-                  <p class="description mt-3">Un-official time display of {{event.name}}!</p>
-                  <router-link
-                    :to="{name: 'event-id-live-timings', params: {id: event.event_short}}"
-                    class="btn btn-default mt-2"
-                    tag="a"
-                  >Live Timings</router-link>
-                </card>
+              <div class="row mt-4">
+                <div class="col-md-6 col-lg-4 mt-1 mt-lg-3">
+                  <card body-classes="py-3" class="border-0" shadow>
+                    <icon class="mb-3" name="fa fa-link" rounded type="info"></icon>
+                    <h6 class="text-info text-uppercase font-weight-bold">Official Website</h6>
+                    <p class="description mt-3">Visit {{event.name}} official website!</p>
+                    <a :href="event.link" class="btn btn-info mt-2" rel="noreferrer" target="_blank">Website</a>
+                  </card>
+                </div>
+                <div class="col-md-6 col-lg-4 mt-1 mt-lg-3">
+                  <card body-classes="py-3" class="border-0" shadow>
+                    <icon class="mb-3" name="fa fa-trophy" rounded type="primary"></icon>
+                    <h6 class="text-primary text-uppercase font-weight-bold">Teams</h6>
+                    <p class="description mt-3">Check out all team for {{event.name}}!</p>
+                    <router-link :to="{name: 'event-id-teams', params: {id: event.event_short}}" class="btn btn-primary mt-2" tag="a">2019 Teams</router-link>
+                    <router-link :to="{name: 'teams-all'}" class="btn btn-danger mt-2" tag="a">All</router-link>
+                  </card>
+                </div>
+                <div class="col-md-6 col-lg-4 mt-1 mt-lg-3">
+                  <card body-classes="py-3" class="border-0" shadow>
+                    <icon class="mb-3" name="fa fa-calendar" rounded type="success"></icon>
+                    <h6 class="text-success text-uppercase font-weight-bold">Schedule</h6>
+                    <p class="description mt-3">Day-to-day schedule for {{event.name}}!</p>
+                    <router-link :to="{name: 'event-id-schedule', params: {id: event.event_short}}" class="btn btn-success mt-2" tag="a">Schedule</router-link>
+                  </card>
+                </div>
+                <div class="col-md-6 col-lg-4 mt-1 mt-lg-3">
+                  <card body-classes="py-3" class="border-0" shadow>
+                    <icon class="mb-3" name="fa fa-bell" rounded type="warning"></icon>
+                    <h6 class="text-warning text-uppercase font-weight-bold">Live Announcements</h6>
+                    <p class="description mt-3">Live announcement feed duing {{event.name}}!</p>
+                    <router-link :to="{name: 'event-id-announcements', params: {id: event.event_short}}" class="btn btn-warning mt-2" tag="a">Live Feed</router-link>
+                  </card>
+                </div>
+                <div class="col-md-6 col-lg-4 mt-1 mt-lg-3">
+                  <card body-classes="py-3" class="border-0" shadow>
+                    <icon class="mb-3" name="fa fa-user-clock" rounded type="dark"></icon>
+                    <h6 class="text-dark text-uppercase font-weight-bold">Tech Inspection Updates</h6>
+                    <p class="description mt-3">Live updates of tech inspections for {{event.name}}!</p>
+                    <router-link :to="{name: 'event-id-tech-updates', params: {id: event.event_short}}" class="btn btn-light mt-2 text-dark" tag="a">Tech Updates</router-link>
+                  </card>
+                </div>
+                <div class="col-md-6 col-lg-4 mt-1 mt-lg-3">
+                  <card body-classes="py-3" class="border-0" shadow>
+                    <icon class="mb-3" name="fa fa-clock" rounded type="default"></icon>
+                    <h6 class="text-default text-uppercase font-weight-bold">Live Timing</h6>
+                    <p class="description mt-3">Un-official time display of {{event.name}}!</p>
+                    <router-link :to="{name: 'event-id-live-timings', params: {id: event.event_short}}" class="btn btn-default mt-2" tag="a">Live Timings</router-link>
+                  </card>
+                </div>
               </div>
             </div>
           </div>
@@ -183,9 +157,9 @@ export default {
       this.showMoreCards = !this.showMoreCards;
     },
     sortEvents() {
-      this.events.sort(function (a, b) {
-        return a.start_date > b.start_date
-      })
+      this.events.sort(function(a, b) {
+        return a.start_date > b.start_date;
+      });
     }
   },
   computed: {

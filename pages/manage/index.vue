@@ -1,145 +1,124 @@
 <template>
-<div v-if="isAdmin">
-  <section class="section">
+<div>
+  <section class="section" v-if="isAdmin">
     <div class="container">
-      <div class="row justify-content-center">
-        <div class="text-uppercase font-weight-bold h4 mt-2">Event</div>
-      </div>
       <div class="row">
-        <card class="col-sm-6 col-md-4">
-          <div class="card-title"><i class="fas fa-plus-square pr-1"></i>Create Event</div>
-          <div class="mb-3">Create a new event.</div>
-          <router-link class="btn btn-sm btn-primary" to="/manage/create/event">Create</router-link>
+        <card class="col-12 mb-2">
+          <div class="card-title h4 font-weight-bold text-center">Event</div>
+          <div class="my-1 text-center">
+            <div class="mb-2">Manage entries related to events.</div>
+            <router-link class="btn btn-outline-success" to="/manage/create/event">
+              <i class="fas fa-plus-square pr-2"></i>Create
+            </router-link>
+            <router-link class="btn btn-outline-info" to="/manage/update/event">
+              <i class="fas fa-edit pr-2"></i>Update
+            </router-link>
+          </div>
         </card>
-        <card class="col-sm-6 col-md-4">
-          <div class="card-title"><i class="fas fa-edit pr-1"></i>Update Event</div>
-          <div class="mb-3">Update event information.</div>
-          <router-link class="btn btn-sm btn-primary" to="/manage/update/event">Update</router-link>
+        <card class="col-12 mb-2">
+          <div class="card-title h4 font-weight-bold text-center">Team</div>
+          <div class="my-1 text-center">
+            <div class="mb-2">Manage cars linking events and teams.</div>
+            <router-link class="btn btn-outline-success" to="/manage/create/car">
+              <i class="fas fa-plus-square pr-2"></i>Add Car
+            </router-link>
+            <router-link class="btn btn-outline-info" to="/manage/update/car">
+              <i class="fas fa-edit pr-2"></i>Update
+            </router-link>
+          </div>
         </card>
-      </div>
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="text-uppercase font-weight-bold h4 mt-2">Team</div>
-        </div>
-        <div class="row">
-          <card class="col-sm-6 col-md-4">
-            <div class="card-title"><i class="fas fa-plus-square pr-1"></i>Add Car</div>
-            <div class="mb-3">Assign a car to a team.</div>
-            <router-link class="btn btn-sm btn-primary" to="/manage/create/car">Add</router-link>
-          </card>
-          <card class="col-sm-6 col-md-4">
-            <div class="card-title"><i class="fas fa-edit pr-1"></i>Update Car</div>
-            <div class="mb-3">Update car for team.</div>
-            <router-link class="btn btn-sm btn-primary" to="/manage/update/car">Update</router-link>
-          </card>
-        </div>
-      </div>
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="text-uppercase font-weight-bold h4 mt-2">Announcements</div>
-        </div>
-        <div class="row">
-          <card class="col-sm-6 col-md-4">
-            <div class="card-title"><i class="fas fa-plus-square pr-1"></i>Create announcement</div>
-            <div class="mb-3">Create a new announcement for an event.</div>
-            <router-link class="btn btn-sm btn-primary" to="/manage/create/announcement">Create</router-link>
-          </card>
-          <card class="col-sm-6 col-md-4">
-            <div class="card-title"><i class="fas fa-edit pr-1"></i>Update announcement</div>
-            <div class="mb-3">Update an announcement for an event.</div>
-            <router-link class="btn btn-sm btn-primary" to="/manage/update/announcement">Update</router-link>
-          </card>
-          <card class="col-sm-6 col-md-4">
-            <div class="card-title"><i class="fas fa-trash-alt pr-1"></i>Remove announcement</div>
-            <div class="mb-3">Remove an announcement.</div>
-            <router-link class="btn btn-sm btn-primary" to="/manage/delete/announcement">Remove</router-link>
-          </card>
-        </div>
-      </div>
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="text-uppercase font-weight-bold h4 mt-2">Live Timings</div>
-        </div>
-        <div class="row">
-          <card class="col-sm-6 col-md-4">
-            <div class="card-title"><i class="fas fa-plus-square pr-1"></i>Create live timings</div>
-            <div class="mb-3">Create a new live timing for an event.</div>
-            <router-link class="btn btn-sm btn-primary" to="/manage/create/livetiming">Create</router-link>
-          </card>
-          <card class="col-sm-6 col-md-4">
-            <div class="card-title"><i class="fas fa-edit pr-1"></i>Update live timings</div>
-            <div class="mb-3">Update a live timing for an event.</div>
-            <router-link class="btn btn-sm btn-primary" to="/manage/update/livetiming">Update</router-link>
-          </card>
-          <card class="col-sm-6 col-md-4">
-            <div class="card-title"><i class="fas fa-trash-alt pr-1"></i>Remove live timings</div>
-            <div class="mb-3">Remove a live timing.</div>
-            <router-link class="btn btn-sm btn-primary" to="/manage/delete/livetiming">Remove</router-link>
-          </card>
-        </div>
-      </div>
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="text-uppercase font-weight-bold h4 mt-2">Schedule</div>
-        </div>
-        <div class="row">
-          <card class="col-sm-6 col-md-4">
-            <div class="card-title"><i class="fas fa-plus-square pr-1"></i>Create schedule</div>
-            <div class="mb-3">Create a new schedule for an event.</div>
-            <router-link class="btn btn-sm btn-primary" to="/manage/create/schedule">Create</router-link>
-          </card>
-          <card class="col-sm-6 col-md-4">
-            <div class="card-title"><i class="fas fa-edit pr-1"></i>Update schedule</div>
-            <div class="mb-3">Update a schedule for an event.</div>
-            <router-link class="btn btn-sm btn-primary" to="/manage/update/schedule">Update</router-link>
-          </card>
-          <card class="col-sm-6 col-md-4">
-            <div class="card-title"><i class="fas fa-trash-alt pr-1"></i>Remove schedule</div>
-            <div class="mb-3">Remove a schedule.</div>
-            <router-link class="btn btn-sm btn-primary" to="/manage/delete/schedule">Remove</router-link>
-          </card>
-        </div>
-      </div>
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="text-uppercase font-weight-bold h4 mt-2">Tech Updates</div>
-        </div>
-        <div class="row">
-          <card class="col-sm-6 col-md-4">
-            <div class="card-title"><i class="fas fa-plus-square pr-1"></i>Create Tech Updates</div>
-            <div class="mb-3">Create a new tech update for an event.</div>
-            <router-link class="btn btn-sm btn-primary" to="/manage/create/techupdate">Create</router-link>
-          </card>
-          <card class="col-sm-6 col-md-4">
-            <div class="card-title"><i class="fas fa-edit pr-1"></i>Update tech update</div>
-            <div class="mb-3">Update a tech update for an event.</div>
-            <router-link class="btn btn-sm btn-primary" to="/manage/update/techupdate">Update</router-link>
-          </card>
-          <card class="col-sm-6 col-md-4">
-            <div class="card-title"><i class="fas fa-trash-alt pr-1"></i>Remove tech update</div>
-            <div class="mb-3">Remove a tech update.</div>
-            <router-link class="btn btn-sm btn-primary" to="/manage/delete/techupdate">Remove</router-link>
-          </card>
-        </div>
-      </div>
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="text-uppercase font-weight-bold h4 mt-2">Role</div>
-        </div>
-        <div class="row">
-          <card class="col-sm-6 col-md-4">
-            <div class="card-title"><i class="fas fa-plus-square pr-1"></i>Add role</div>
-            <div class="mb-3">Assign roles to a user.</div>
-            <router-link class="btn btn-sm btn-primary" to="/manage/role/add">Add</router-link>
-          </card>
-          <card class="col-sm-6 col-md-4">
-            <div class="card-title"><i class="fas fa-plus-square pr-1"></i>Remove role</div>
-            <div class="mb-3">Take away roles from a user.</div>
-            <router-link class="btn btn-sm btn-primary" to="/manage/role/remove">Remove</router-link>
-          </card>
-        </div>
+        <card class="col-12 mb-2">
+          <div class="card-title h4 font-weight-bold text-center">Announcements</div>
+          <div class="my-1 text-center">
+            <div class="mb-2">Manage announcements.</div>
+            <router-link class="btn btn-outline-success" to="/manage/create/announcement">
+              <i class="fas fa-plus-square pr-2"></i>Create
+            </router-link>
+            <router-link class="btn btn-outline-info" to="/manage/update/announcement">
+              <i class="fas fa-edit pr-2"></i>Update
+            </router-link>
+            <router-link class="btn btn-outline-danger" to="/manage/delete/announcement">
+              <i class="fas fa-trash-alt pr-1"></i>Remove
+            </router-link>
+          </div>
+        </card>
+        <card class="col-12 mb-2">
+          <div class="card-title h4 font-weight-bold text-center">Live Timings</div>
+          <div class="my-1 text-center">
+            <div class="mb-2">Manage live timings.</div>
+            <router-link class="btn btn-outline-success" to="/manage/create/livetiming">
+              <i class="fas fa-plus-square pr-2"></i>Create
+            </router-link>
+            <router-link class="btn btn-outline-info" to="/manage/update/livetiming">
+              <i class="fas fa-edit pr-2"></i>Update
+            </router-link>
+            <router-link class="btn btn-outline-danger" to="/manage/delete/livetiming">
+              <i class="fas fa-trash-alt pr-1"></i>Remove
+            </router-link>
+          </div>
+        </card>
+        <card class="col-12 mb-2">
+          <div class="card-title h4 font-weight-bold text-center">Schedule</div>
+          <div class="my-1 text-center">
+            <div class="mb-2">Manage schedules.</div>
+            <router-link class="btn btn-outline-success" to="/manage/create/schedule">
+              <i class="fas fa-plus-square pr-2"></i>Create
+            </router-link>
+            <router-link class="btn btn-outline-info" to="/manage/update/schedule">
+              <i class="fas fa-edit pr-2"></i>Update
+            </router-link>
+            <router-link class="btn btn-outline-danger" to="/manage/delete/schedule">
+              <i class="fas fa-trash-alt pr-1"></i>Remove
+            </router-link>
+          </div>
+        </card>
+        <card class="col-12 mb-2">
+          <div class="card-title h4 font-weight-bold text-center">Tech Updates</div>
+          <div class="my-1 text-center">
+            <div class="mb-2">Manage tech updates.</div>
+            <router-link class="btn btn-outline-success" to="/manage/create/techupdate">
+              <i class="fas fa-plus-square pr-2"></i>Create
+            </router-link>
+            <router-link class="btn btn-outline-info" to="/manage/update/techupdate">
+              <i class="fas fa-edit pr-2"></i>Update
+            </router-link>
+            <router-link class="btn btn-outline-danger" to="/manage/delete/techupdate">
+              <i class="fas fa-trash-alt pr-1"></i>Remove
+            </router-link>
+          </div>
+        </card>
+        <card class="col-12 mb-2">
+          <div class="card-title h4 font-weight-bold text-center">Static Schedules</div>
+          <div class="my-1 text-center">
+            <div class="mb-2">Manage static schedules.</div>
+            <router-link class="btn btn-outline-success" to="/manage/create/static-schedule">
+              <i class="fas fa-plus-square pr-2"></i>Create
+            </router-link>
+            <router-link class="btn btn-outline-info" to="/manage/update/static-schedule">
+              <i class="fas fa-edit pr-1"></i>Update
+            </router-link>
+            <router-link class="btn btn-outline-danger" to="/manage/delete/static-schedule">
+              <i class="fas fa-trash-alt pr-1"></i>Delete
+            </router-link>
+          </div>
+        </card>
+        <card class="col-12 mb-2">
+          <div class="card-title h4 font-weight-bold text-center">Roles</div>
+          <div class="my-1 text-center">
+            <div class="mb-2">Manage user roles.</div>
+            <router-link class="btn btn-outline-success" to="/manage/role/add">
+              <i class="fas fa-plus-square pr-2"></i>Add
+            </router-link>
+            <router-link class="btn btn-outline-danger" to="/manage/role/remove">
+              <i class="fas fa-trash-alt pr-1"></i>Remove
+            </router-link>
+          </div>
+        </card>
       </div>
     </div>
+  </section>
+  <section class="section section-xl my-5" v-else>
+    <error-page class="my-3" message="Nice try, you aren't an admin." />
   </section>
 </div>
 </template>

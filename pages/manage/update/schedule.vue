@@ -1,18 +1,24 @@
 <template>
 <section class="section">
-  <b-container v-if="isAdmin">
-    <error-page message="Under construction" color="info" heading="Wait..." icon="fas fa-hammer"></error-page>
+  <b-container>
+    <b-row class="justify-content-center">
+      <schedule class="col-md-10" v-if="isAdmin" />
+      <error-page v-else message="You are not authorized to view this content." icon="fas fa-exclamation-circle" />
+    </b-row>
   </b-container>
-  <error-page v-else message="You are not authorized to view this content." icon="fas fa-exclamation-circle"></error-page>
 </section>
 </template>
 
 <script>
+import updateSchedule from "@/components/update/schedule.vue"
 import {
   mapActions,
   mapGetters
 } from "vuex";
 export default {
+  components: {
+    schedule: updateSchedule
+  },
   data() {
     return {
       errors: [],
@@ -22,11 +28,7 @@ export default {
   computed: {
     ...mapGetters(["currentUser", "isAdmin"])
   },
-  methods: {
-    ...mapActions(["postReq"]),
-    async onSubmit() {},
-    onReset() {}
-  }
+  methods: {}
 };
 </script>
 
