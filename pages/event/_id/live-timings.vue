@@ -1,42 +1,92 @@
 <template>
-<section class="section section-hero">
+<section class="section">
   <div class="container">
+    <modal :show.sync="editModalActive" gradient="secondary" modal-classes="modal-secondary modal-dialog-centered" v-if="editModalActive">
+      <h6 class="modal-title" id="modal-title-notification" slot="header">Edit</h6>
+      <b-form @submit.prevent @reset.prevent>
+        <b-form-group id="form-input-event_names" label="Event name:" label-for="form-input-event_names--input" v-if="editModalActive">
+          <b-form-select :options="event_names" class="mb-3 text-dark" id="form-input-event_names--input" required v-model="selectedRowEdit.event_name"></b-form-select>
+        </b-form-group>
+        <b-form-group id="form-lap-num" label="Lap number:" label-for="form-lap-num--input" v-if="editModalActive">
+          <b-form-input class="mb-3 text-dark" id="form-lap-num--input" placeholder="Enter lap number." type="number" min=0 max=1000 v-model="selectedRowEdit.lap_number"></b-form-input>
+        </b-form-group>
+        <b-form-group id="form-lap-time" label="Lap time:" label-for="form-lap-time--input" v-if="editModalActive">
+          <b-form-input class="mb-3 text-dark" id="form-lap-time--input" placeholder="Enter lap time (seconds)" type="text" v-model="selectedRowEdit.lap_time"></b-form-input>
+        </b-form-group>
+        <b-form-group id="form-driver-initial" label="Driver initial:" label-for="form-driver-initial--input" v-if="editModalActive">
+          <b-form-input class="mb-3 text-dark" id="form-driver-initial--input" placeholder="Enter driver initial" type="text" v-model="selectedRowEdit.driver_initial"></b-form-input>
+        </b-form-group>
+        <b-alert :show="errors.length > 0" @dismissed="showDismissibleAlert=false" dismissible variant="danger" v-if="showDismissibleAlert">
+          <div :key="error" v-for="error in errors">{{error}}</div>
+        </b-alert>
+        <b-alert :show="!!success_msg" variant="success">
+          <div>{{success_msg}}</div>
+        </b-alert>
+      </b-form>
+      <template slot="footer">
+        <base-button @click.prevent="cancelEdit" class="mr-auto" text-color="dark" type="link">Cancel</base-button>
+        <base-button @click.prevent="confirmEdit" type="success">Confirm</base-button>
+      </template>
+    </modal>
+    <modal :show.sync="deleteModalActive" gradient="danger" modal-classes="modal-danger modal-dialog-centered" v-if="deleteModalActive">
+      <h6 class="modal-title" id="modal-title-notification" slot="header">Delete</h6>
+      <div class="row">
+        <div class="col-12 text-center">
+          <div class="text-white">By confirming you are deleting this entry.</div>
+          <div class="text-white">Are you sure?</div>
+        </div>
+      </div>
+      <template slot="footer">
+        <base-button @click.prevent="cancelDelete" class="mr-auto" text-color="white" type="link">Cancel</base-button>
+        <base-button @click.prevent="confirmDelete" type="success">Confirm</base-button>
+      </template>
+    </modal>
     <b-row class="justify-content-center">
-      <div class="display-4 header-font">
-        Live Timings for
-        <strong class="text-primary">{{event.name}}</strong>
+      <span class="display-4 header-font">Live Timings for <strong class="text-primary">{{event.name}}</strong></span>
+    </b-row>
+    <b-row class="justify-content-center">
+      <div class="header-font">
+        The following entries are unofficial.
       </div>
     </b-row>
-    <b-row>
-      <b-table outlined responsive bordered hover :items="event.live_timings" :fields="fields">
-        <template slot="team_id.category" slot-scope="data">
-          <div class="icon-container text-center">
-            <img src="@/assets/images/icons/category/combustion.svg" class="img-thumbnail icon-category" v-if="data.item.team_id.category == 'combustion'" v-b-tooltip.hover.bottom title="Combustion"/>
-            <img src="@/assets/images/icons/category/electric.svg" class="img-thumbnail icon-category" v-if="data.item.team_id.category == 'electric'"  v-b-tooltip.hover.bottom title="Electric"/>
+    <b-row class="justify-content-center">
+      <div class="col-12">
+        <b-table outlined small responsive bordered hover :items="event.live_timings" :fields="fields">
+          <template slot="team_id.category" slot-scope="data">
+            <div class="icon-container text-center">
+              <img src="@/assets/images/icons/category/combustion.svg" class="img-thumbnail icon-category" v-if="data.item.team_id.category == 'combustion'" v-b-tooltip.hover.bottom title="Combustion"/>
+              <img src="@/assets/images/icons/category/electric.svg" class="img-thumbnail icon-category" v-if="data.item.team_id.category == 'electric'"  v-b-tooltip.hover.bottom title="Electric"/>
             </div>
-        </template>
-        <template slot="team_id.car" slot-scope="data">
-          <div class="text-center px-0">{{data.item.team_id.car}}</div>
-        </template>
-        <template slot="team_id.team_name" slot-scope="data">
-          <div class="text-center px-0">{{data.item.team_id.team_name}}</div>
-        </template>
-        <template slot="team_id.institution.short_name" slot-scope="data">
-          <div class="text-center px-0">{{data.item.team_id.institution.short_name}}</div>
-        </template>
-        <template slot="event_name" slot-scope="data">
-          <div class="text-center px-0">{{data.item.event_name}}</div>
-        </template>
-        <template slot="lap_number" slot-scope="data">
-          <div class="text-center px-0">{{data.item.lap_number}}</div>
-        </template>
-        <template slot="lap_time" slot-scope="data">
-          <div class="text-center px-0">{{data.item.lap_time}}</div>
-        </template>
-        <template slot="driver_initial" slot-scope="data">
-          <div class="text-center px-0">{{data.item.driver_initial}}</div>
-        </template>
-      </b-table>
+          </template>
+          <template slot="team_id.car" slot-scope="data">
+            <div class="text-center px-0">{{data.item.team_id.car}}</div>
+          </template>
+          <template slot="team_id.team_name" slot-scope="data">
+            <div class="text-center px-1">{{data.item.team_id.team_name}}</div>
+          </template>
+          <template slot="team_id.institution.short_name" slot-scope="data">
+            <div class="text-center px-1">{{data.item.team_id.institution.short_name}}</div>
+          </template>
+          <template slot="event_name" slot-scope="data">
+            <div class="text-center">{{data.item.event_name}}</div>
+          </template>
+          <template slot="lap_number" slot-scope="data">
+            <div class="text-center px-0">{{data.item.lap_number}}</div>
+          </template>
+          <template slot="lap_time" slot-scope="data">
+            <div class="text-center px-0">{{data.item.lap_time}}</div>
+          </template>
+          <template slot="driver_initial" slot-scope="data">
+            <div class="text-center px-0">{{data.item.driver_initial}}</div>
+          </template>
+          <template slot="actions" slot-scope="data">
+            <div class="text-center" v-if="isAdmin">
+              <i class="fas fa-pen mr-2 cursor-pointer" @click="editItem(data.item)"></i>
+              <i class="fas fa-trash-alt cursor-pointer" @click="deleteItem(data.item)"></i>
+            </div>
+          </template>
+        </b-table>
+      </div>
     </b-row>
   </div>
 </section>
@@ -50,10 +100,47 @@ import {
 export default {
   data() {
     return {
+      pagination: {
+        sortBy: 'name'
+      },
+      editModalActive: false,
+      deleteModalActive: false,
+      selectedRowEdit: {
+        _id: null,
+        event_name: null,
+        lap_time: null,
+        lap_number: null,
+        driver_initial: null
+      },
+      selectedRowDelete: {
+        _id: null,
+      },
+      event_names: [{
+          value: null,
+          text: "Select event name"
+        },
+        {
+          value: "Skid Pad",
+          text: "Skid Pad"
+        },
+        {
+          value: "Acceleration",
+          text: "Acceleration"
+        },
+        {
+          value: "Autocross",
+          text: "Autocross"
+        },
+        {
+          value: "Endurance",
+          text: "Endurance"
+        }
+      ],
+      selected: [],
       event: {},
       teams: [{}],
       fields: [{
-          label: " ",
+          label: "⠀",
           key: "team_id.category",
           sortable: true
         },
@@ -73,33 +160,117 @@ export default {
           sortable: true
         },
         {
-          label: " ",
+          label: "Event name",
           key: "event_name",
           sortable: true
         },
         {
-          label: " ",
+          label: "Lap #",
           key: "lap_number",
           sortable: true
         },
         {
-          label: " ",
+          label: "Time",
           key: "lap_time",
           sortable: true
         },
         {
-          label: " ",
+          label: "Driver",
           key: "driver_initial",
           sortable: true
+        },
+        {
+          label: "Actions",
+          key: "actions",
+          thClass: 'd-none',
+          tdClass: 'd-none'
         }
-      ]
+      ],
+      errors: [],
+      success_msg: '',
+      showDismissibleAlert: false
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters(['currentUser', 'isAdmin'])
+  },
   methods: {
-    ...mapActions(["getReq"])
+    ...mapActions(["getReq", "putReq", "delReq"]),
+    editItemModal(item) {
+      this.editModalActive = true
+      this.selectedRowEdit = JSON.parse(JSON.stringify(item))
+    },
+    cancelEdit() {
+      this.editModalActive = false
+      this.selectedRowEdit = {
+        _id: null,
+        event_name: null,
+        lap_time: null,
+        lap_number: null,
+        driver_initial: null
+      }
+    },
+    async confirmEdit() {
+      /**
+       * Send Request to /:id/livetiming/:lt_id
+       */
+      let updateItem = this.selectedRowEdit
+      if (updateItem._id && this.event._id) {
+        if (updateItem.lap_number >= 0 && updateItem.driver_initial.length > 0 && updateItem.lap_time && updateItem.event_name.length >= 0) {
+          let url = `/api/event/${this.event._id}/livetiming/${updateItem._id}`,
+            body = {
+              event_name: updateItem.event_name,
+              lap_number: updateItem.lap_number,
+              lap_time: updateItem.lap_time,
+              driver_initial: updateItem.driver_initial
+            }
+          try {
+            let res = await this.putReq({
+              url,
+              body
+            })
+            if (res.success) {
+              this.success_msg = res.message || "Live timing updated!"
+              this.event.live_timings.find((lt, id) => {
+                if (lt._id === updateItem._id) {
+                  console.log("Found event, updated?");
+                  Object.keys(updateItem).forEach(key => {
+                    this.event.live_timings[id][key] = updateItem[key]
+                  })
+                }
+              })
+            } else {
+              this.showErr(res.message)
+            }
+          } catch (error) {
+            this.showErr("Internal Server Error.")
+          }
+        }
+      } else {
+        this.showErr('Please enter the required information.')
+      }
+    },
+    async confirmDelete() {
+      let deleteItem = this.selectedRowDelete
+      if(deleteItem._id && this.event._id){
+        let url = `/api/event/${this.event._id}/livetiming/${deleteItem._id}`
+      }
+    },
+    showErr(msg) {
+      this.success_msg = ''
+      this.showDismissibleAlert = true
+      this.errors.push(msg)
+    },
+    async deleteItem(item) {
+      this.deleteModalActive = true
+      this.selectedRowDelete = JSON.parse(JSON.stringify(item))
+    }
   },
   mounted() {
+    if (this.isAdmin == true) {
+      this.fields[8].thClass = ''
+      this.fields[8].tdClass = ''
+    }
     this.$nextTick(async function () {
       try {
         let res = await this.getReq({
@@ -107,6 +278,7 @@ export default {
         });
         if (res.success) {
           this.event = res.event;
+
         } else {
           this.event = {};
         }
@@ -118,13 +290,42 @@ export default {
 };
 </script>
 
+</style>
+
 <style lang="scss">
+.editable-input {
+  input {
+    border-width: 0;
+    height: auto;
+    width: auto;
+
+    text-align: center;
+    font-size: inherit;
+    color: inherit;
+
+    &.form-control {
+      width: auto !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+  }
+
+  &.focused {
+    input {
+      border-width: 1px;
+    }
+  }
+}
+
 .icon-container {
   padding: 0;
 }
-th.sorting::before, th.sorting::after {
+
+th.sorting::before,
+th.sorting::after {
   padding-bottom: 0 !important;
 }
+
 .icon-category {
   width: auto;
   height: 32px;
@@ -142,5 +343,9 @@ th.sorting::before, th.sorting::after {
 
 .table td {
   padding: 1rem 0;
+}
+
+th {
+  text-align: center !important;
 }
 </style>

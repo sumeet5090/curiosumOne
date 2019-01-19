@@ -19,13 +19,31 @@ export default {
       success_msg: null
     };
   },
+  components: {
+  },
   computed: {
     ...mapGetters(["currentUser", "isAdmin"])
   },
   methods: {
-    ...mapActions(["postReq"]),
+    ...mapActions(["postReq", "getReq"]),
     async onSubmit() {},
     onReset() {}
+  },
+  mounted() {
+    this.$nextTick(async function () {
+      try {
+        let res = await this.getReq({
+          url: `/api/event/${this.$route.params.id}/livetimings/`
+        });
+        if (res.success) {
+          this.event = res.event;
+        } else {
+          this.event = {};
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    });
   }
 };
 </script>

@@ -13,7 +13,7 @@
       <b-form-select :options="event_names" class="mb-3 text-dark" id="form-input-event_names--input" required v-model="form.event_name"></b-form-select>
     </b-form-group>
     <b-form-group id="form-lap-num" label="Lap number:" label-for="form-lap-num--input" v-if="selectedTeam">
-      <b-form-input class="mb-3 text-dark" id="form-lap-num--input" placeholder="Enter lap number." type="text" v-model="form.lap_number"></b-form-input>
+      <b-form-input class="mb-3 text-dark" id="form-lap-num--input" placeholder="Enter lap number." type="number" v-model="form.lap_number"></b-form-input>
     </b-form-group>
     <b-form-group id="form-lap-time" label="Lap time:" label-for="form-lap-time--input" v-if="selectedTeam">
       <b-form-input class="mb-3 text-dark" id="form-lap-time--input" placeholder="Enter lap time (seconds)" type="text" v-model="form.lap_time"></b-form-input>

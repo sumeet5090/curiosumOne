@@ -1,21 +1,25 @@
 <template>
     <b-container>
-        <b-row class="justify-content-center py-5">
+        <b-row class="justify-content-center p-0 m-0 pt-5">
             <b-col sm="12" class="text-center">
               <i :class="[icon + ' ' + 'text-'+color + ' ' + 'fa-'+size+'x']"></i>
             </b-col>
-            <b-col sm="12" :class="'h3 text-center text-uppercase font-weight-bold text-'+color">
+            <b-col sm="12" :class="'h3 text-center m-0 text-uppercase font-weight-bold text-'+color">
               {{heading}}
             </b-col>
             <b-col sm="12" class="text-center text-dark">
-              {{message}}
+              <vue-markdown>{{message}}</vue-markdown>
             </b-col>
         </b-row>
     </b-container>
 </template>
 
 <script>
+import VueMarkdown from "vue-markdown";
 export default {
+  components: {
+    "vue-markdown": VueMarkdown
+  },
   name: "error-page",
   props: {
     message: {

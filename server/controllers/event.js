@@ -717,7 +717,7 @@ const updateLiveTiming = async (req, res) => {
     }
     live_timing = await LiveTiming.findOneAndUpdate({ _id: lt_id }, update_body, { new: true })
     if (live_timing) {
-      return Response.success(res, { live_timing: live_timing })
+      return Response.success(res, { live_timing: live_timing, message: "Updated live timing." })
     }
     return Response.failed(res, { message: "Couldn't update live timing." })
   } catch (error) {
@@ -828,10 +828,17 @@ const deleteLiveTiming = async (req, res) => {
     event, live_timing
   try {
     event = await Event.findOne({ _id: id })
-    live_timing = await LiveTiming.findOneAndDelete({ _id: lt_id })
+    if(event) {
+      live_timing = await LiveTiming.findOneAndDelete({ _id: lt_id })
+      if(live_timing) {
+        return Response.success(res, {message: `Successfully deleted live timing ${live_timing._id}`})
+      }
+      return Response.failed(res, {message:"Couldn't delete live timing."})
+    }
     event.live_timings.pull(live_timing._id)
   } catch (error) {
-
+    console.log(error)
+    return Response.failed(res, "Internal server error.")
   }
 }
 const deleteSchedule = async (req, res) => {

@@ -29,30 +29,29 @@
           <li class="nav-item" v-if="!!isAdmin">
             <nuxt-link class="nav-link" tag="a" to="/manage" v-if="!!isAdmin">Dashboard (Admin)</nuxt-link>
           </li>
+          <li class="nav-item">
+            <nuxt-link class="nav-link" tag="a" to="/faq">FAQ</nuxt-link>
+          </li>
         </ul>
         <ul class="navbar-nav navbar-nav-hover align-items-lg-center ml-lg-auto">
           <li class="nav-item">
-            <div class="row">
-              <div class="text-center col-md-6">
-                <a @click.prevent="modalShowNotification" class="nav-link nav-link-icon" data-toggle="tooltip" href title="Notifications">
-                  <i aria-label="Notifications" class="fa fa-bell"></i>
-                  <span class="nav-link-inner--text d-lg-none">Notifications</span>
-                </a>
-              </div>
-              <div class="text-center col-md-6">
-                <base-dropdown class="w-100 nav-item nav-link-icon btn-light" icon="fa fa-user" tag="div" v-if="!!isAuthenticated">
-                  <nuxt-link class="dropdown-item text-center" tag="a" to="/profile">{{getName}}</nuxt-link>
-                  <div class="dropdown-divider"></div>
-                  <a @click.prevent="logout" class="dropdown-item text-center" href>Logout</a>
-                </base-dropdown>
-                <a class="nav-link nav-link-icon btn-light" data-toggle="tooltip" href="/login" title="Notifications" v-else>
-                  <span slot="icon">
-                    <img alt="GOOGLE" aria-label="Google" class="nav-brand-logo" src="@/assets/images/icons/common/google.svg">
-                  </span>
-                  <span class="nav-link-inner--text d-lg-none text-uppercase font-weight-bold text-warning">Google</span>
-                </a>
-              </div>
-            </div>
+            <a @click.prevent="modalShowNotification" class="nav-link nav-link-icon text-center" data-toggle="tooltip" href title="Notifications">
+              <i aria-label="Notifications" class="fa fa-bell"></i>
+              <span class="nav-link-inner--text d-lg-none">Notifications</span>
+            </a>
+          </li>
+          <li class="nav-item text-center">
+            <base-dropdown class="w-100 nav-item nav-link-icon" icon="fa fa-user" tag="div" v-if="!!isAuthenticated">
+              <nuxt-link class="dropdown-item text-center" tag="a" to="/profile">{{getName}}</nuxt-link>
+              <div class="dropdown-divider"></div>
+              <a @click.prevent="logout" class="dropdown-item text-center" href>Logout</a>
+            </base-dropdown>
+            <a class="nav-link nav-link-icon" data-toggle="tooltip" href="/login" title="Notifications" v-else>
+              <span slot="icon">
+                <img alt="GOOGLE" aria-label="Google" class="nav-brand-logo" src="@/assets/images/icons/common/google.svg">
+              </span>
+              <span class="nav-link-inner--text d-lg-none text-uppercase font-weight-bold text-warning">Google</span>
+            </a>
           </li>
         </ul>
       </base-nav>

@@ -7,18 +7,16 @@
             <img :src="imageHeader.src" alt="Mobility Engineering Consortium Online Portal" class="img-thumbnail border-0 shadow-none px-4">
           </clazy-load>
         </b-row>
-        <b-row class="mt-2">
+        <b-row class="mt-2 px-4 mx-1">
           <b-col sm="12">
-            <div class="text-dark">
+            <div class="text-dark font-md-small">
               <div class="text-center">
                 <span>
                   Welcome to the
                   <strong>mobilityeng.online</strong> portal hosted by
                   <strong>Mobility Engineering Consortium Private Limited.</strong>
                 </span>
-              </div>
-              <div class="text-center">This site is meant for team and user registration to events organized by the company.</div>
-              <div class="text-center">You can also view additional data such as event live schedules, inspection updates, lap times etc.</div>
+              This site is meant for team and user registration to events organized by the company. You can also view additional data such as event live schedules, inspection updates, lap times etc.</div>
             </div>
           </b-col>
         </b-row>
@@ -171,3 +169,10 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+  @media screen and (max-width: 767px) {
+    .font-md-small {
+      font-size: 0.8rem;
+    }
+  }
+</style>
