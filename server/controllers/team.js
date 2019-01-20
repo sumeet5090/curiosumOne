@@ -97,7 +97,7 @@ const create = async function (req, res) {
       let team = await new Team(newTeam).save()
       if (team) {
         let output = await User.findOneAndUpdate({ _id: req.user._id }, { team: team._id })
-        await car.updateOne({ team_id: team._id }).exec()
+        await car.updateOne({ team_id: team._id })
         if (output) {
           if (body.user_emails) {
             for (let i = 0; i < (body.user_emails).length; i++) {
@@ -143,7 +143,7 @@ const changeCaptain = async (req, res) => {
       find_user = await User.findOne({ _id: user })
       if (find_user) {
         if (team.users.contains(find_user._id)) {
-          let team_out = await team.updateOne({ captain: find_user._id }).exec()
+          let team_out = await team.updateOne({ captain: find_user._id })
           if (team_out.nModified >= 1 && team_out.ok == 1) {
             return Response.success(res, {
               message: 'Updated captain',
@@ -216,7 +216,7 @@ const confirmToken = async function (req, res, next) {
             if (user.team == team._id) {
               user_updated = true
             } else {
-              user_out = await user.updateOne({ team: team._id }).exec()
+              user_out = await user.updateOne({ team: team._id })
               if (user_out.nModified >= 1 && user_out.ok == 1) {
                 user_updated = true
               }
@@ -224,7 +224,7 @@ const confirmToken = async function (req, res, next) {
             if (team.users.indexOf(user._id) > -1) {
               team_updated = true
             } else {
-              team_out = await team.updateOne({ $push: { users: user._id } }).exec()
+              team_out = await team.updateOne({ $push: { users: user._id } })
               if (team_out.nModified >= 1 && team_out.ok == 1) {
                 team_updated = true
               }
@@ -382,7 +382,7 @@ const updateTeam = async function (req, res) {
   // Put request
   let id = req.params.id
   try {
-    let team = await Team.findOneAndUpdate({ _id: id }, req.body, { new: true }).exec()
+    let team = await Team.findOneAndUpdate({ _id: id }, req.body, { new: true })
     if (!team) {
       return Response.success(res, { message: "Couldn't update team." }, 204)
     }
@@ -422,7 +422,7 @@ const linkTeamAndUser = async (req, res) => {
         if (String(user.team) == String(team._id)) {
           user2team = true
         } else {
-          let output = await user.updateOne({ team: team_id }, { new: true }).exec()
+          let output = await user.updateOne({ team: team_id }, { new: true })
           if (output.nModified >= 1 && output.ok == 1) {
             user2team = true
           }
@@ -431,7 +431,7 @@ const linkTeamAndUser = async (req, res) => {
         if (team.users.indexOf(user._id) > -1) {
           team2user = true
         } else {
-          let output = await team.updateOne({ $push: { users: user._id } }, { new: true }).exec()
+          let output = await team.updateOne({ $push: { users: user._id } }, { new: true })
           if (output.nModified >= 1 && output.ok == 1) {
             team2user = true
           }
@@ -465,7 +465,7 @@ const linkTeamAndEvent = async (req, res) => {
         if (event.teams.indexOf(team_id) > -1) {
           event2team = true
         } else {
-          let output = await event.updateOne({ $push: { teams: team_id } }, { new: true }).exec()
+          let output = await event.updateOne({ $push: { teams: team_id } }, { new: true })
           if (output.nModified >= 1 && output.ok == 1) {
             event2team = true
           }
@@ -473,7 +473,7 @@ const linkTeamAndEvent = async (req, res) => {
         if (team.events.indexOf(event._id) > -1) {
           team2event = true
         } else {
-          let output = await team.updateOne({ $push: { events: event._id } }, { new: true }).exec()
+          let output = await team.updateOne({ $push: { events: event._id } }, { new: true })
           if (output.nModified >= 1 && output.ok == 1) {
             team2event = true
           }
@@ -505,7 +505,7 @@ const linkTeamAndCar = async (req, res) => {
         if (car.team_id == team._id) {
           car2team = true
         } else {
-          let output = await car.updateOne({ team: team._id }).exec()
+          let output = await car.updateOne({ team: team._id })
           if (output.nModified >= 1 && output.ok == 1) {
             car2team = true
           }
@@ -514,7 +514,7 @@ const linkTeamAndCar = async (req, res) => {
           team2car = true
         }
         else {
-          let output = await team.updateOne({ car: car._id }).exec()
+          let output = await team.updateOne({ car: car._id })
           if (output.nModified >= 1 && output.ok == 1) {
             team2car = true
           }
@@ -544,10 +544,10 @@ const unlinkTeamAndEvent = async (req, res) => {
     if (team && event) {
       // Check if they are linked
       if(team.events.contains(event._id)){
-        let out1 = await team.updateOne({$pull: { "events": event._id }}).exec()
+        let out1 = await team.updateOne({$pull: { "events": event._id }})
       } 
       if(event.teams.contains(team._id)){
-        let out2 = await event.updateOne({$pull: { "teams": team._id }}).exec()
+        let out2 = await event.updateOne({$pull: { "teams": team._id }})
       }
       if(out1.ok && out2.ok && (out1.nModified >= 0 || out2.nModified >= 0)) {
         return Response.success(res, {message: "Team and event unlinked."})

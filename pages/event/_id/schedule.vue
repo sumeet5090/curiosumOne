@@ -36,24 +36,24 @@
       <b-form-group>
         <div class="container">
           <span class="row align-items-center">
-                <base-switch class v-model="selectedRowEdit.visitor_view"></base-switch>
-                <span class="ml-2">Visitor</span>
+              <base-switch class v-model="selectedRowEdit.visitor_view"></base-switch>
+              <span class="ml-2">Visitor</span>
           </span>
         </div>
       </b-form-group>
       <b-form-group>
         <div class="container">
           <span class="row align-items-center">
-                <base-switch class="mb-1" v-model="selectedRowEdit.participant_view"></base-switch>
-                <span class="ml-2">Participant</span>
+              <base-switch class="mb-1" v-model="selectedRowEdit.participant_view"></base-switch>
+              <span class="ml-2">Participant</span>
           </span>
         </div>
       </b-form-group>
       <b-form-group>
         <div class="container">
           <span class="row align-items-center">
-                <base-switch class="mb-1" v-model="selectedRowEdit.volunteer_view"></base-switch>
-                <span class="ml-2">Volunteer</span>
+              <base-switch class="mb-1" v-model="selectedRowEdit.volunteer_view"></base-switch>
+              <span class="ml-2">Volunteer</span>
           </span>
         </div>
       </b-form-group>
@@ -92,8 +92,8 @@
     <div class="display-4">Schedules</div>
   </b-row>
   <b-row class="justify-content-center">
-    <div class="col-11">
-      <b-table :fields="fields" :items="event.schedules" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" bordered hover outlined responsive small class="font-md-small">
+    <div class="col-10">
+      <b-table :fields="fields" :items="event.schedules" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" bordered class="font-small" hover outlined responsive small>
         <template slot="date" slot-scope="data">{{getDate(data.item.date)}}</template>
         <template slot="actions" slot-scope="data">
           <div class="text-center" v-if="isAdmin">
@@ -133,8 +133,8 @@ export default {
       selectedRowDelete: {
         _id: null
       },
-      sortBy: "date",
-      sortDesc: true,
+      sortBy: "day_number",
+      sortDesc: false,
       fields: [{
           label: "Day #",
           key: "day_number",
@@ -279,10 +279,10 @@ export default {
           });
           if (res.success) {
             this.success_msg = res.message || "Deleted schedule.";
-            for(let i = 0; i<this.event.schedules.length; i++) {
-              if(this.event.schedules[i]._id === updateEdit._id) {
-                var removedObject = this.event.schedules.splice(i, 1)
-                removedObject = null
+            for (let i = 0; i < this.event.schedules.length; i++) {
+              if (this.event.schedules[i]._id === updateEdit._id) {
+                var removedObject = this.event.schedules.splice(i, 1);
+                removedObject = null;
                 break;
               }
             }
@@ -334,4 +334,7 @@ export default {
 </script>
 
 <style lang="scss">
+.font-small {
+  font-size: 0.8rem;
+}
 </style>

@@ -139,9 +139,9 @@ const inviteTeam = async function (req, res)  {
         text: req.body.notification_text,
         team_invite: req.body.notification_link,
       }
-      user.updateOne({$push: {notifications: notification}}).exec()
+      await user.updateOne({$push: {notifications: notification}})
     }
-  }catch(error){
+  } catch(error){
 
   }
 }
@@ -158,7 +158,7 @@ const addRole = async (req, res) => {
       if(user.role.contains(role)) {
         return Response.failed(res, {message: "Role already set."}, 200)
       }
-      out = await user.updateOne({$push: {role: role}}).exec()
+      out = await user.updateOne({$push: {role: role}})
       if(out.nModified >= 1 && out.ok == 1) {
         return Response.success(res, {message: "Role "+role+" set"}, 200)
       }
@@ -175,7 +175,7 @@ const removeRole = async (req, res) => {
     let body = req.body, user, role=body.role, out
     user = await User.findOne({email: body.user_email})
     if(user){
-      out = await user.updateOne({$pull: {role: role}}).exec()
+      out = await user.updateOne({$pull: {role: role}})
       if(out.nModified >= 1 && out.ok == 1) {
         return Response.success(res, {message: "Role "+role+" removed"}, 200)
       }
