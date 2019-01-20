@@ -4,7 +4,7 @@
   font-family: $font-family-header;
 }
 .navbar-light .navbar-nav .nav-link {
-  color: #595959 !important
+  color: #595959 !important;
 }
 .custom-gradient {
   //   background: linear-gradient(150deg, #281483 15%, #8f6ed5 70%, #d782d9 94%);
@@ -31,14 +31,15 @@
 }
 
 .fa {
-  &.fa-facebook, .fa-facebook-official {
-    color: #3B5999
+  &.fa-facebook,
+  .fa-facebook-official {
+    color: #3b5999;
   }
   &.fa-twitter {
-    color: #1DA1F2
+    color: #1da1f2;
   }
   &.fa-instagram {
-    color: $danger
+    color: $danger;
   }
 }
 
@@ -63,7 +64,6 @@
 }
 
 .list-group-item {
-
   &:first-child,
   &:last-child {
     border-radius: 0;
@@ -104,7 +104,7 @@
       color: #0c0c0c;
     }
     a {
-      color: #5E72E4;
+      color: #5e72e4;
     }
   }
 }
@@ -129,14 +129,12 @@
 //     border-color: adjust_color($primary, $lightness: 12%, $saturation: 60%);
 //   }
 // }
-
 .navbar {
   .nav-link {
     &.dropdown-toggle {
       font-size: 1.05rem !important;
     }
   }
-  
   .btn.btn-outline-secondary {
     border: 0;
     i {
@@ -146,14 +144,13 @@
     &:hover {
       box-shadow: none;
       i {
-      color: white;
+        color: white;
       }
       background: none;
     }
   }
 }
-
-.dropdown-toggle{
+.dropdown-toggle {
   &.nav-link::after {
     content: none !important;
   }
@@ -164,7 +161,6 @@
 .nav-brand-logo {
   height: 1.5rem;
 }
-
 .nav-link.nav-link-icon.btn {
   &:hover {
     border: 0;
@@ -174,6 +170,11 @@
 .navbar-nav .nav-link-icon {
   padding: 0.5rem !important;
   background-color: white;
+}
+@media screen and (max-width: 767px) {
+  .font-md-small {
+    font-size: 0.8rem;
+  }
 }
 @media (min-width: 992px) {
   ul.dropdown-menu {
@@ -193,11 +194,11 @@
     padding: 0 !important;
   }
 }
-.btn-light.dropdown{
+.btn-light.dropdown {
   background: none !important;
   box-shadow: none;
 }
-.col-md-6{
+.col-md-6 {
   .nav-link.nav-link-icon {
     border: 0;
     background: none !important;
@@ -223,7 +224,7 @@ a {
   color: $black;
 }
 
-@media (min-width: 992px){
+@media (min-width: 992px) {
   .navbar {
     .dropdown {
       .dropdown-menu {

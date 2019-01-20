@@ -93,7 +93,7 @@
   </b-row>
   <b-row class="justify-content-center">
     <div class="col-11">
-      <b-table :fields="fields" :items="event.schedules" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" bordered hover outlined responsive small>
+      <b-table :fields="fields" :items="event.schedules" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" bordered hover outlined responsive small class="font-md-small">
         <template slot="date" slot-scope="data">{{getDate(data.item.date)}}</template>
         <template slot="actions" slot-scope="data">
           <div class="text-center" v-if="isAdmin">

@@ -88,7 +88,7 @@
         </div>
       </b-row>
       <b-row>
-        <b-table :fields="fields" :items="event.tech_updates" bordered hover outlined responsive>
+        <b-table :fields="fields" :items="event.tech_updates" class="font-md-small" bordered hover outlined responsive>
           <template slot="team.category" slot-scope="data">
             <div class="icon-container text-center">
               <img alt="Combustion" class="img-thumbnail icon-category" src="@/assets/images/icons/category/combustion.svg" title="Combustion" v-b-tooltip.hover.bottom v-if="data.item.team.category == 'combustion'">

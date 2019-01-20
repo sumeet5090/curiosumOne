@@ -12,7 +12,7 @@
       </b-row>
       <b-row class="justify-content-center">
         <no-ssr>
-          <b-table :fields="fields" :filter="filter" :items="teams" :sort-by.sync="table.sortBy" :sort-compare="sortCompareAdvanced" bordered hover outlined responsive>
+          <b-table :fields="fields" :filter="filter" :items="teams" :sort-by.sync="table.sortBy" :sort-compare="sortCompareAdvanced" bordered class="font-md-small" hover outlined responsive>
             <template slot="category" slot-scope="data">
               <div class>
                 <img class="img-thumbnail icon-category" src="@/assets/images/icons/category/combustion.svg" v-if="data.item.category == 'combustion'">

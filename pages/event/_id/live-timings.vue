@@ -51,7 +51,7 @@
       </b-row>
       <b-row class="justify-content-center">
         <div class="col-12">
-          <b-table :fields="fields" :items="event.live_timings" bordered hover outlined responsive small>
+          <b-table :fields="fields" :items="event.live_timings" bordered hover outlined responsive small class="font-md-small">
             <template slot="team_id.category" slot-scope="data">
               <div class="icon-container text-center">
                 <img class="img-thumbnail icon-category" src="@/assets/images/icons/category/combustion.svg" title="Combustion" v-b-tooltip.hover.bottom v-if="data.item.team_id.category == 'combustion'">
@@ -94,6 +94,7 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import { setInterval } from 'timers';
 export default {
   data() {
     return {
@@ -287,14 +288,8 @@ export default {
       this.errors = []
       this.deleteModalActive = true;
       this.selectedRowDelete = JSON.parse(JSON.stringify(item));
-    }
-  },
-  mounted() {
-    if (this.isAdmin == true) {
-      this.fields[8].thClass = "";
-      this.fields[8].tdClass = "";
-    }
-    this.$nextTick(async function() {
+    },
+    async liveTiming() {
       try {
         let res = await this.getReq({
           url: `/api/event/${this.$route.params.id}/livetimings/`
@@ -307,6 +302,18 @@ export default {
       } catch (err) {
         console.log(err);
       }
+    }
+  },
+  mounted() {
+    if (this.isAdmin == true) {
+      this.fields[8].thClass = "";
+      this.fields[8].tdClass = "";
+    }
+    let _this = this
+    this.$nextTick( () => {
+      setInterval(async () => {
+        await _this.liveTiming()
+      }, 7500)
     });
   }
 };

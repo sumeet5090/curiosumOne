@@ -8,7 +8,7 @@
         <base-input addon-left-icon="fas fa-search text-success" class="col-sm-12 col-md-6 px-0 mx-0" placeholder="Search" type="text" v-model="filter"></base-input>
       </b-row>
       <b-row>
-        <b-table :fields="fields" :filter="filter" :items="teams" :sort-compare="sortCompareAdvanced" bordered hover outlined responsive>
+        <b-table :fields="fields" :filter="filter" :items="teams" :sort-compare="sortCompareAdvanced" bordered class="font-md-small" hover outlined responsive>
           <template slot="category" slot-scope="data">
             <div class>
               <img class="img-thumbnail icon-category" src="@/assets/images/icons/category/combustion.svg" v-if="data.item.category == 'combustion'">
