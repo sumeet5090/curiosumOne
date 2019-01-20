@@ -1,6 +1,10 @@
 <template>
 <div>
-  <error-page :message="message" :heading="heading" :color="color" :icon="icon" />
+  <section class="section section-hero">
+    <div class="row justify-content-center">
+      <error-page :message="message" :heading="heading" :color="color" :icon="icon" />
+    </div>
+  </section>
 </div>
 </template>
 

@@ -48,19 +48,19 @@ const ScheduleSchema = Schema({
   },
   start_time: {
     type: String,
-    required: true
   },
   end_time: {
     type: String,
-    required: true
   },
   location: {
     type: String,
-    required: true
   },
   comments: {
     type: String,
-    required: true
+  },
+  restriction: {
+    type: String,
+    default: ""
   },
   volunteer_view: {
     type: Boolean,
@@ -72,7 +72,7 @@ const ScheduleSchema = Schema({
   },
   visitor_view: {
     type: Boolean,
-    default: true
+    default: false
   },
 })
 

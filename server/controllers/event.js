@@ -230,9 +230,9 @@ const getAllSchedules = async (req, res) => {
       } else if (user_roles.contains('participant') && user_roles.contains('volunteer')) {
         schedules = await Schedule.find({ event_id: event._id, $or: [{ volunteer_view: true }, { participant_view: true }, { visitor_view: true }] })
       } else if (user_roles.contains('volunteer') && !user_roles.contains('participant')) {
-        schedules = await Schedule.find({ event_id: event._id, $or: [{volunteer_view: true }, { visitor_view: true }]})
+        schedules = await Schedule.find({ event_id: event._id, $or: [{ volunteer_view: true }, { visitor_view: true }] })
       } else if (!user_roles.contains('volunteer') && user_roles.contains('participant')) {
-        schedules = await Schedule.find({ event_id: event._id, $or: [{participant_view: true }, { visitor_view: true }]})
+        schedules = await Schedule.find({ event_id: event._id, $or: [{ participant_view: true }, { visitor_view: true }] })
       } else {
         schedules = await Schedule.find({ event_id: event._id, visitor_view: true })
       }
@@ -304,7 +304,7 @@ const getAllStaticSchedulesForEvent = async (req, res) => {
     $or.push({ _id: event_id })
   }
   try {
-    let event = await Event.findOne({$or}).populate({path: 'static_schedule', populate: {path: 'team'}}).exec()
+    let event = await Event.findOne({ $or }).populate({ path: 'static_schedule', populate: { path: 'team' } }).exec()
     if (event.static_schedule) {
       if (event.static_schedule.length > 0) {
         return Response.success(res, { static_schedules: event.static_schedule })
@@ -559,6 +559,7 @@ const createSchedule = async (req, res) => {
         end_time: body.end_time,
         location: body.location,
         comments: body.comments,
+        restriction: body.restriction,
         volunteer_view: body.volunteer_view,
         participant_view: body.participant_view,
         visitor_view: body.visitor_view,
@@ -612,7 +613,7 @@ const createStaticSchedule = async (req, res) => {
         }
       }).save()
       if (staticSchedule) {
-        let out1 = await event.updateOne({ $push: {static_schedule: staticSchedule}})
+        let out1 = await event.updateOne({ $push: { static_schedule: staticSchedule } })
         let out2 = await team.updateOne({ $push: { static_schedules: staticSchedule } })
         if (out1.nModified >= 1 && out1.ok == 1 && out2.nModified >= 1 && out2.ok == 1) {
           return Response.success(res, { message: "Created static schedule!" }, 200)
@@ -794,7 +795,7 @@ const updateTechUpdate = async (req, res) => {
       brakes: req.body.brakes,
       rain: req.body.rain
     }
-    tech_update = await Schedule.findOneAndUpdate({ _id: tu_id }, update_body, { new: true })
+    tech_update = await TechUpdate.findOneAndUpdate({ _id: tu_id }, update_body, { new: true })
     if (tech_update) {
       return Response.success(res, { tech_update: tech_update })
     }
@@ -828,53 +829,85 @@ const deleteLiveTiming = async (req, res) => {
     event, live_timing
   try {
     event = await Event.findOne({ _id: id })
-    if(event) {
+    if (event) {
       live_timing = await LiveTiming.findOneAndDelete({ _id: lt_id })
-      if(live_timing) {
-        return Response.success(res, {message: `Successfully deleted live timing ${live_timing._id}`})
+      if (live_timing) {
+        event.live_timings.pull(live_timing._id)
+        let saved = await event.save()
+        if (saved) {
+          return Response.success(res, { message: `Successfully deleted live timing ${live_timing._id}` })
+        }
       }
-      return Response.failed(res, {message:"Couldn't delete live timing."})
+      return Response.failed(res, { message: "Couldn't delete live timing." })
     }
-    event.live_timings.pull(live_timing._id)
+    return Response.failed(res, { message: "Event not found." })
   } catch (error) {
     console.log(error)
     return Response.failed(res, "Internal server error.")
   }
 }
 const deleteSchedule = async (req, res) => {
-  let schedule, sc_id = req.params.sc_id
+  let schedule, event, id = req.params.id, sc_id = req.params.sc_id
   try {
-    schedule = await Schedule.findOneAndDelete({ _id: sc_id })
-    if (schedule) {
-      console.log(schedule)
+    event = await Event.findOne({ _id: id })
+    if (event) {
+      schedule = await Schedule.findOneAndDelete({ _id: sc_id })
+      if (schedule) {
+        event.schedules.pull(schedule._id)
+        let saved = await event.save()
+        if(saved){
+          return Response.success(res, { message: "Deleted schedule." })
+        }
+      }
     }
-    return Response.failed(res, { message: "Deleted schedule." })
+    return Response.failed(res, { message: "Couldn't delete schedule." })
   } catch (error) {
     console.log(error)
     return Response.failed(res, { message: "Internal server error." })
   }
 }
 const deleteTechUpdate = async (req, res) => {
-  let schedule, tu_id = req.params.tu_id
+  let techupdt, event, id = req.params.id, tu_id = req.params.tu_id
   try {
-    schedule = await Schedule.findOneAndDelete({ _id: sc_id })
-    if (schedule) {
-      console.log(schedule)
+    event = await Event.findOne({ _id: id })
+    if (event) {
+      techupdt = await TechUpdate.findOneAndDelete({ _id: tu_id })
+      if (techupdt) {
+        event.tech_updates.pull(techupdt._id)
+        let saved = await event.save()
+        if(saved){
+          return Response.success(res, { message: "Deleted tech update." })
+        }
+      }
     }
-    return Response.failed(res, { message: "Deleted schedule." })
+    return Response.failed(res, { message: "Couldn't delete tech update." })
   } catch (error) {
     console.log(error)
     return Response.failed(res, { message: "Internal server error." })
   }
 }
 const deleteStaticSchedule = async (req, res) => {
-  let st_schedule, st_id = req.params.st_id
+  let st_schedule, event, id = req.params.id, st_id = req.params.st_id
   try {
-    st_schedule = await StaticSchedule.findOneAndDelete({ _id: st_id })
-    if (st_schedule) {
-      return Response.success(res, { message: "Deleted static schedule." })
+    event = await Event.findOne({_id: id})
+    if(event){
+      st_schedule = await StaticSchedule.findOneAndDelete({_id: st_id})
+      if(st_schedule) {
+        let team = await team.findOne({_id: st_schedule.team})
+        if(team) {
+          await event.static_schedule.pull(st_id)
+          await team.static_schedules.pull(st_id)
+          let saved_e = await event.saved()
+          let saved_t = await team.saved()
+          if(saved_e && saved_t) {
+            return Response.success(res, {message: "Removed static schedule."})
+          }
+        }
+        return Response.failed(res, {message: "Couldn't find team."})
+      }
+      return Response.failed(res, {message: "Couldn't delete static schedule."})
     }
-    return Response.failed(res, { message: "Couldn't delete static schedule." })
+    return Response.failed(res, {message: "Couldn't find event."})
   } catch (error) {
     console.log(error)
     return Response.failed(res, { message: "Internal server error." })

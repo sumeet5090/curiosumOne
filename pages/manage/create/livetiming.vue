@@ -1,7 +1,7 @@
 <template>
   <div>
     <no-ssr>
-      <section class="section">
+      <section class="section section-xl">
         <b-container>
           <b-row class="justify-content-center">
             <card class="col-md-8">

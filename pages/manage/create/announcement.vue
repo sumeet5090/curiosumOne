@@ -5,6 +5,7 @@
       <div class="row justify-content-center">
         <card class="col-md-8">
           <announcement v-if="!!isAdmin"/>
+          <error-page message="You are not authorized." v-else/>
         </card>
       </div>
     </section>

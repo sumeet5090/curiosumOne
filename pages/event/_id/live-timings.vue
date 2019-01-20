@@ -1,107 +1,104 @@
 <template>
-<section class="section">
-  <div class="container">
-    <modal :show.sync="editModalActive" gradient="secondary" modal-classes="modal-secondary modal-dialog-centered" v-if="editModalActive">
-      <h6 class="modal-title" id="modal-title-notification" slot="header">Edit</h6>
-      <b-form @submit.prevent @reset.prevent>
-        <b-form-group id="form-input-event_names" label="Event name:" label-for="form-input-event_names--input" v-if="editModalActive">
-          <b-form-select :options="event_names" class="mb-3 text-dark" id="form-input-event_names--input" required v-model="selectedRowEdit.event_name"></b-form-select>
-        </b-form-group>
-        <b-form-group id="form-lap-num" label="Lap number:" label-for="form-lap-num--input" v-if="editModalActive">
-          <b-form-input class="mb-3 text-dark" id="form-lap-num--input" placeholder="Enter lap number." type="number" min=0 max=1000 v-model="selectedRowEdit.lap_number"></b-form-input>
-        </b-form-group>
-        <b-form-group id="form-lap-time" label="Lap time:" label-for="form-lap-time--input" v-if="editModalActive">
-          <b-form-input class="mb-3 text-dark" id="form-lap-time--input" placeholder="Enter lap time (seconds)" type="text" v-model="selectedRowEdit.lap_time"></b-form-input>
-        </b-form-group>
-        <b-form-group id="form-driver-initial" label="Driver initial:" label-for="form-driver-initial--input" v-if="editModalActive">
-          <b-form-input class="mb-3 text-dark" id="form-driver-initial--input" placeholder="Enter driver initial" type="text" v-model="selectedRowEdit.driver_initial"></b-form-input>
-        </b-form-group>
-        <b-alert :show="errors.length > 0" @dismissed="showDismissibleAlert=false" dismissible variant="danger" v-if="showDismissibleAlert">
-          <div :key="error" v-for="error in errors">{{error}}</div>
-        </b-alert>
-        <b-alert :show="!!success_msg" variant="success">
-          <div>{{success_msg}}</div>
-        </b-alert>
-      </b-form>
-      <template slot="footer">
-        <base-button @click.prevent="cancelEdit" class="mr-auto" text-color="dark" type="link">Cancel</base-button>
-        <base-button @click.prevent="confirmEdit" type="success">Confirm</base-button>
-      </template>
-    </modal>
-    <modal :show.sync="deleteModalActive" gradient="danger" modal-classes="modal-danger modal-dialog-centered" v-if="deleteModalActive">
-      <h6 class="modal-title" id="modal-title-notification" slot="header">Delete</h6>
-      <div class="row">
-        <div class="col-12 text-center">
-          <div class="text-white">By confirming you are deleting this entry.</div>
-          <div class="text-white">Are you sure?</div>
+  <section class="section">
+    <div class="container">
+      <modal :show.sync="editModalActive" gradient="secondary" modal-classes="modal-secondary modal-dialog-centered" v-if="editModalActive">
+        <h6 class="modal-title" id="modal-title-notification" slot="header">Edit</h6>
+        <b-form @reset.prevent @submit.prevent>
+          <b-form-group id="form-input-event_names" label="Event name:" label-for="form-input-event_names--input" v-if="editModalActive">
+            <b-form-select :options="event_names" class="mb-3 text-dark" id="form-input-event_names--input" required v-model="selectedRowEdit.event_name"></b-form-select>
+          </b-form-group>
+          <b-form-group id="form-lap-num" label="Lap number:" label-for="form-lap-num--input" v-if="editModalActive">
+            <b-form-input class="mb-3 text-dark" id="form-lap-num--input" max="1000" min="0" placeholder="Enter lap number." type="number" v-model="selectedRowEdit.lap_number"></b-form-input>
+          </b-form-group>
+          <b-form-group id="form-lap-time" label="Lap time:" label-for="form-lap-time--input" v-if="editModalActive">
+            <b-form-input class="mb-3 text-dark" id="form-lap-time--input" placeholder="Enter lap time (seconds)" type="text" v-model="selectedRowEdit.lap_time"></b-form-input>
+          </b-form-group>
+          <b-form-group id="form-driver-initial" label="Driver initial:" label-for="form-driver-initial--input" v-if="editModalActive">
+            <b-form-input class="mb-3 text-dark" id="form-driver-initial--input" placeholder="Enter driver initial" type="text" v-model="selectedRowEdit.driver_initial"></b-form-input>
+          </b-form-group>
+          <b-alert :show="errors.length > 0" @dismissed="showDismissibleAlert=false" dismissible v-if="showDismissibleAlert" variant="danger">
+            <div :key="error" v-for="error in errors">{{error}}</div>
+          </b-alert>
+          <b-alert :show="!!success_msg" variant="success">
+            <div>{{success_msg}}</div>
+          </b-alert>
+        </b-form>
+        <template slot="footer">
+          <base-button @click.prevent="cancelEdit" class="mr-auto" text-color="dark" type="link">Cancel</base-button>
+          <base-button @click.prevent="confirmEdit" type="success">Confirm</base-button>
+        </template>
+      </modal>
+      <modal :show.sync="deleteModalActive" gradient="danger" modal-classes="modal-danger modal-dialog-centered modal-sm" v-if="deleteModalActive">
+        <h6 class="modal-title" id="modal-title-notification" slot="header">Delete</h6>
+        <div class="row">
+          <div class="col-12 text-center">
+            <div class="text-white">By confirming you are deleting this entry.</div>
+            <div class="text-white">Are you sure?</div>
+          </div>
         </div>
-      </div>
-      <template slot="footer">
-        <base-button @click.prevent="cancelDelete" class="mr-auto" text-color="white" type="link">Cancel</base-button>
-        <base-button @click.prevent="confirmDelete" type="success">Confirm</base-button>
-      </template>
-    </modal>
-    <b-row class="justify-content-center">
-      <span class="display-4 header-font">Live Timings for <strong class="text-primary">{{event.name}}</strong></span>
-    </b-row>
-    <b-row class="justify-content-center">
-      <div class="header-font">
-        The following entries are unofficial.
-      </div>
-    </b-row>
-    <b-row class="justify-content-center">
-      <div class="col-12">
-        <b-table outlined small responsive bordered hover :items="event.live_timings" :fields="fields">
-          <template slot="team_id.category" slot-scope="data">
-            <div class="icon-container text-center">
-              <img src="@/assets/images/icons/category/combustion.svg" class="img-thumbnail icon-category" v-if="data.item.team_id.category == 'combustion'" v-b-tooltip.hover.bottom title="Combustion"/>
-              <img src="@/assets/images/icons/category/electric.svg" class="img-thumbnail icon-category" v-if="data.item.team_id.category == 'electric'"  v-b-tooltip.hover.bottom title="Electric"/>
-            </div>
-          </template>
-          <template slot="team_id.car" slot-scope="data">
-            <div class="text-center px-0">{{data.item.team_id.car}}</div>
-          </template>
-          <template slot="team_id.team_name" slot-scope="data">
-            <div class="text-center px-1">{{data.item.team_id.team_name}}</div>
-          </template>
-          <template slot="team_id.institution.short_name" slot-scope="data">
-            <div class="text-center px-1">{{data.item.team_id.institution.short_name}}</div>
-          </template>
-          <template slot="event_name" slot-scope="data">
-            <div class="text-center">{{data.item.event_name}}</div>
-          </template>
-          <template slot="lap_number" slot-scope="data">
-            <div class="text-center px-0">{{data.item.lap_number}}</div>
-          </template>
-          <template slot="lap_time" slot-scope="data">
-            <div class="text-center px-0">{{data.item.lap_time}}</div>
-          </template>
-          <template slot="driver_initial" slot-scope="data">
-            <div class="text-center px-0">{{data.item.driver_initial}}</div>
-          </template>
-          <template slot="actions" slot-scope="data">
-            <div class="text-center" v-if="isAdmin">
-              <i class="fas fa-pen mr-2 cursor-pointer" @click="editItem(data.item)"></i>
-              <i class="fas fa-trash-alt cursor-pointer" @click="deleteItem(data.item)"></i>
-            </div>
-          </template>
-        </b-table>
-      </div>
-    </b-row>
-  </div>
-</section>
+        <template slot="footer">
+          <base-button @click.prevent="cancelDelete" class="mr-auto" text-color="white" type="link">Cancel</base-button>
+          <base-button @click.prevent="confirmDelete" type="success">Confirm</base-button>
+        </template>
+      </modal>
+      <b-row class="justify-content-center">
+        <span class="display-4 header-font">Live Timings for
+          <strong class="text-primary">{{event.name}}</strong>
+        </span>
+      </b-row>
+      <b-row class="justify-content-center">
+        <div class="header-font">The following entries are unofficial.</div>
+      </b-row>
+      <b-row class="justify-content-center">
+        <div class="col-12">
+          <b-table :fields="fields" :items="event.live_timings" bordered hover outlined responsive small>
+            <template slot="team_id.category" slot-scope="data">
+              <div class="icon-container text-center">
+                <img class="img-thumbnail icon-category" src="@/assets/images/icons/category/combustion.svg" title="Combustion" v-b-tooltip.hover.bottom v-if="data.item.team_id.category == 'combustion'">
+                <img class="img-thumbnail icon-category" src="@/assets/images/icons/category/electric.svg" title="Electric" v-b-tooltip.hover.bottom v-if="data.item.team_id.category == 'electric'">
+              </div>
+            </template>
+            <template slot="team_id.car" slot-scope="data">
+              <div class="text-center px-0">{{data.item.team_id.car}}</div>
+            </template>
+            <template slot="team_id.team_name" slot-scope="data">
+              <div class="text-center px-1">{{data.item.team_id.team_name}}</div>
+            </template>
+            <template slot="team_id.institution.short_name" slot-scope="data">
+              <div class="text-center px-1">{{data.item.team_id.institution.short_name}}</div>
+            </template>
+            <template slot="event_name" slot-scope="data">
+              <div class="text-center">{{data.item.event_name}}</div>
+            </template>
+            <template slot="lap_number" slot-scope="data">
+              <div class="text-center px-0">{{data.item.lap_number}}</div>
+            </template>
+            <template slot="lap_time" slot-scope="data">
+              <div class="text-center px-0">{{data.item.lap_time}}</div>
+            </template>
+            <template slot="driver_initial" slot-scope="data">
+              <div class="text-center px-0">{{data.item.driver_initial}}</div>
+            </template>
+            <template slot="actions" slot-scope="data">
+              <div class="text-center" v-if="isAdmin">
+                <i @click="editItemModal(data.item)" class="fas fa-pen mr-2 cursor-pointer"></i>
+                <i @click="deleteItemModal(data.item)" class="fas fa-trash-alt cursor-pointer"></i>
+              </div>
+            </template>
+          </b-table>
+        </div>
+      </b-row>
+    </div>
+  </section>
 </template>
 
 <script>
-import {
-  mapActions,
-  mapGetters
-} from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
       pagination: {
-        sortBy: 'name'
+        sortBy: "name"
       },
       editModalActive: false,
       deleteModalActive: false,
@@ -113,9 +110,10 @@ export default {
         driver_initial: null
       },
       selectedRowDelete: {
-        _id: null,
+        _id: null
       },
-      event_names: [{
+      event_names: [
+        {
           value: null,
           text: "Select event name"
         },
@@ -139,7 +137,8 @@ export default {
       selected: [],
       event: {},
       teams: [{}],
-      fields: [{
+      fields: [
+        {
           label: "⠀",
           key: "team_id.category",
           sortable: true
@@ -182,103 +181,126 @@ export default {
         {
           label: "Actions",
           key: "actions",
-          thClass: 'd-none',
-          tdClass: 'd-none'
+          thClass: "d-none",
+          tdClass: "d-none"
         }
       ],
       errors: [],
-      success_msg: '',
+      success_msg: "",
       showDismissibleAlert: false
     };
   },
   computed: {
-    ...mapGetters(['currentUser', 'isAdmin'])
+    ...mapGetters(["currentUser", "isAdmin"])
   },
   methods: {
     ...mapActions(["getReq", "putReq", "delReq"]),
     editItemModal(item) {
-      this.editModalActive = true
-      this.selectedRowEdit = JSON.parse(JSON.stringify(item))
+      this.editModalActive = true;
+      this.selectedRowEdit = JSON.parse(JSON.stringify(item));
     },
     cancelEdit() {
-      this.editModalActive = false
+      this.editModalActive = false;
       this.selectedRowEdit = {
         _id: null,
         event_name: null,
         lap_time: null,
         lap_number: null,
         driver_initial: null
-      }
+      };
     },
     async confirmEdit() {
-      /**
-       * Send Request to /:id/livetiming/:lt_id
-       */
-      let updateItem = this.selectedRowEdit
+      this.success_msg = ''
+      this.errors = []
+      let updateItem = this.selectedRowEdit;
       if (updateItem._id && this.event._id) {
-        if (updateItem.lap_number >= 0 && updateItem.driver_initial.length > 0 && updateItem.lap_time && updateItem.event_name.length >= 0) {
+        if (
+          updateItem.lap_number >= 0 &&
+          updateItem.driver_initial.length > 0 &&
+          updateItem.lap_time &&
+          updateItem.event_name.length >= 0
+        ) {
           let url = `/api/event/${this.event._id}/livetiming/${updateItem._id}`,
             body = {
               event_name: updateItem.event_name,
               lap_number: updateItem.lap_number,
               lap_time: updateItem.lap_time,
               driver_initial: updateItem.driver_initial
-            }
+            };
           try {
             let res = await this.putReq({
               url,
               body
-            })
+            });
             if (res.success) {
-              this.success_msg = res.message || "Live timing updated!"
+              this.success_msg = res.message || "Live timing updated!";
               this.event.live_timings.find((lt, id) => {
                 if (lt._id === updateItem._id) {
                   console.log("Found event, updated?");
                   Object.keys(updateItem).forEach(key => {
-                    this.event.live_timings[id][key] = updateItem[key]
-                  })
+                    this.event.live_timings[id][key] = updateItem[key];
+                  });
                 }
-              })
+              });
             } else {
-              this.showErr(res.message)
+              this.showErr(res.message);
             }
           } catch (error) {
-            this.showErr("Internal Server Error.")
+            this.showErr("Internal Server Error.");
           }
         }
       } else {
-        this.showErr('Please enter the required information.')
+        this.showErr("Please enter the required information.");
       }
     },
     async confirmDelete() {
-      let deleteItem = this.selectedRowDelete
-      if(deleteItem._id && this.event._id){
-        let url = `/api/event/${this.event._id}/livetiming/${deleteItem._id}`
+      this.success_msg = ''
+      this.errors = []
+      let deleteItem = this.selectedRowDelete;
+      if (deleteItem._id && this.event._id) {
+        let url = `/api/event/${this.event._id}/livetiming/${deleteItem._id}`;
+        let res = await this.delReq({ url });
+        if (res.success) {
+          this.success_msg = res.message || "Deleted Live timing."
+        } else {
+          this.showErr(res.message)
+        }
+      } else {
+        this.showErr("Some error, try again.")
       }
     },
-    showErr(msg) {
-      this.success_msg = ''
-      this.showDismissibleAlert = true
-      this.errors.push(msg)
+    cancelDelete(){
+      this.success_msg = ""
+      this.errors = []
+      this.deleteModalActive = false;
+      this.selectedRowDelete = {
+        _id: null
+      };
     },
-    async deleteItem(item) {
-      this.deleteModalActive = true
-      this.selectedRowDelete = JSON.parse(JSON.stringify(item))
+    showErr(msg) {
+      this.success_msg = "";
+      this.showDismissibleAlert = true;
+      this.errors.push(msg);
+    },
+    deleteItemModal(item) {
+      this.success_msg = ""
+      this.errors = []
+      this.deleteModalActive = true;
+      this.selectedRowDelete = JSON.parse(JSON.stringify(item));
     }
   },
   mounted() {
     if (this.isAdmin == true) {
-      this.fields[8].thClass = ''
-      this.fields[8].tdClass = ''
+      this.fields[8].thClass = "";
+      this.fields[8].tdClass = "";
     }
-    this.$nextTick(async function () {
+    this.$nextTick(async function() {
       try {
         let res = await this.getReq({
           url: `/api/event/${this.$route.params.id}/livetimings/`
         });
         if (res.success) {
           this.event = res.event;
-
         } else {
           this.event = {};
         }
@@ -289,8 +311,6 @@ export default {
   }
 };
 </script>
-
-</style>
 
 <style lang="scss">
 .editable-input {
