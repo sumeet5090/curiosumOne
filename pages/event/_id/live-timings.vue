@@ -310,10 +310,11 @@ export default {
       this.fields[8].tdClass = "";
     }
     let _this = this
-    this.$nextTick( () => {
+    this.$nextTick( async () => {
+      await _this.liveTiming()
       setInterval(async () => {
         await _this.liveTiming()
-      }, 7500)
+      }, 5000)
     });
   }
 };
