@@ -200,7 +200,7 @@ const getAllTechupdates = async (req, res) => {
     if (parseInt(id) == id) {
       $or.push({ _id: id })
     }
-    let event = await Event.findOne({ $or: $or }).populate('tech_updates').populate({ path: 'tech_updates', populate: { path: 'team' } }).exec()
+    let event = await Event.findOne({ $or: $or }).populate({ path: 'tech_updates', populate: { path: 'team', populate: { path: 'car', select: 'car_number' } } }).exec()
     if (event) {
       return Response.success(res, {
         event: event
@@ -209,7 +209,8 @@ const getAllTechupdates = async (req, res) => {
     return Response.failed(res, { message: "Not found" })
   } catch (error) {
     console.log(error)
-    return res.sendStatus(500)
+    return res.send
+    Status(500)
   }
 }
 
@@ -506,36 +507,52 @@ const createLivetiming = async (req, res) => {
 const createTechupdate = async (req, res) => {
   try {
     let event = await Event.findOne({ _id: req.params.id })
-    if (event) {
-      let team = await Team.findOne({ _id: req.params.team_id })
-      if (team) {
-        let techUpdate = await new TechUpdate({
-          team: team._id,
-          accumulator: req.body.accumulator,
-          scrutineering_elec: req.body.scrutineering_elec,
-          scrutineering_mech: req.body.scrutineering_mech,
-          driver_egress: req.body.driver_egress,
-          tilt: req.body.tilt,
-          noise_ready_to_drive_sound: req.body.noise_ready_to_drive_sound,
-          brakes: req.body.brakes,
-          rain: req.body.rain,
-          event: event._id
-        }).save()
-        if (techUpdate) {
-          let out = await event.updateOne({ $push: { tech_updates: techUpdate._id } })
-          if (out.nModified >= 1 && out.ok == 1) {
-            return Response.success(res, {
-              message: "Created team update & linked to event."
-            })
-          }
-          return Response.failed(res, {
-            message: "Created team update, but couldn't link it to event."
+    let team = await Team.findOne({ _id: req.params.team_id }).populate('car').exec()
+    if (event && team) {
+      let techUpdate = await TechUpdate.findOne({ team: team._id, event: event._id })
+      if (techUpdate) {
+        console.log(team.category)
+        techUpdate.accumulator = team.category === 'electric' ? req.body.accumulator : false
+        techUpdate.scrutineering_elec = team.category === 'electric' ? req.body.scrutineering_elec : false
+        techUpdate.scrutineering_mech = req.body.scrutineering_mech
+        techUpdate.driver_egress = req.body.driver_egress
+        techUpdate.tilt = req.body.tilt
+        techUpdate.noise_ready_to_drive_sound = req.body.noise_ready_to_drive_sound
+        techUpdate.brakes = req.body.brakes
+        techUpdate.rain = req.body.rain
+        let tu_saved = await techUpdate.save()
+        if (tu_saved) {
+          return Response.success(res, { message: "Successfully updated tech update." }, 200)
+        }
+        return Response.failed(res, { message: "This shouldn't have occured." })
+      }
+      techUpdate = await new TechUpdate({
+        team: team._id,
+        accumulator: team.category === 'electric' ? req.body.accumulator : false,
+        scrutineering_elec: team.category === 'electric' ? req.body.scrutineering_elec : false,
+        scrutineering_mech: req.body.scrutineering_mech,
+        driver_egress: req.body.driver_egress,
+        tilt: req.body.tilt,
+        noise_ready_to_drive_sound: req.body.noise_ready_to_drive_sound,
+        brakes: req.body.brakes,
+        rain: req.body.rain,
+        event: event._id
+      }).save()
+      if (techUpdate) {
+        let out1 = await event.updateOne({ $push: { tech_updates: techUpdate._id } })
+        let out2 = await team.updateOne({ $push: { tech_updates: techUpdate._id } })
+        if (out1.nModified >= 1 && out1.ok == 1 && out2.nModified >= 1 && out2.ok == 1) {
+          return Response.success(res, {
+            message: "Created team update & linked to event."
           })
         }
         return Response.failed(res, {
-          message: "Couldn't create team update."
+          message: "Created team update, but couldn't link it to event."
         })
       }
+      return Response.failed(res, {
+        message: "Couldn't create team update."
+      })
     }
     return Response.failed(res, {
       message: "Event not found."
@@ -785,24 +802,25 @@ const updateStaticSchedule = async (req, res) => {
 const updateTechUpdate = async (req, res) => {
   let tech_update, tu_id = req.params.tu_id, update_body
   try {
-    update_body = {
-      accumulator: req.body.accumulator,
-      scrutineering_elec: req.body.scrutineering_elec,
-      scrutineering_mech: req.body.scrutineering_mech,
-      driver_egress: req.body.driver_egress,
-      tilt: req.body.tilt,
-      noise_ready_to_drive_sound: req.body.noise_ready_to_drive_sound,
-      brakes: req.body.brakes,
-      rain: req.body.rain
-    }
-    tech_update = await TechUpdate.findOneAndUpdate({ _id: tu_id }, update_body, { new: true })
+    tech_update = await TechUpdate.findOne({ _id: tu_id }).populate('team').exec()
     if (tech_update) {
-      return Response.success(res, { tech_update: tech_update })
+      tech_update.accumulator = tech_update.team.category === 'electric' ? req.body.accumulator : false
+      tech_update.scrutineering_elec = tech_update.team.category === 'electric' ? req.body.scrutineering_elec : false
+      tech_update.scrutineering_mech = req.body.scrutineering_mech
+      tech_update.driver_egress = req.body.driver_egress
+      tech_update.tilt = req.body.tilt
+      tech_update.noise_ready_to_drive_sound = req.body.noise_ready_to_drive_sound
+      tech_update.brakes = req.body.brakes
+      tech_update.rain = req.body.rain
+      let saved = await tech_update.save()
+      if (saved) {
+        return Response.success(res, { message: "Updated tech update." })
+      }
     }
     return Response.failed(res, { message: "Couldn't update tech update." })
   } catch (error) {
     console.log(error)
-    return Response.success(res, { message: "Internal server error." })
+    return Response.failed(res, { message: "Internal server error." })
   }
 }
 
@@ -855,7 +873,7 @@ const deleteSchedule = async (req, res) => {
       if (schedule) {
         event.schedules.pull(schedule._id)
         let saved = await event.save()
-        if(saved){
+        if (saved) {
           return Response.success(res, { message: "Deleted schedule." })
         }
       }
@@ -875,7 +893,7 @@ const deleteTechUpdate = async (req, res) => {
       if (techupdt) {
         event.tech_updates.pull(techupdt._id)
         let saved = await event.save()
-        if(saved){
+        if (saved) {
           return Response.success(res, { message: "Deleted tech update." })
         }
       }
@@ -889,25 +907,25 @@ const deleteTechUpdate = async (req, res) => {
 const deleteStaticSchedule = async (req, res) => {
   let st_schedule, event, id = req.params.id, st_id = req.params.st_id
   try {
-    event = await Event.findOne({_id: id})
-    if(event){
-      st_schedule = await StaticSchedule.findOneAndDelete({_id: st_id})
-      if(st_schedule) {
-        let team = await team.findOne({_id: st_schedule.team})
-        if(team) {
+    event = await Event.findOne({ _id: id })
+    if (event) {
+      st_schedule = await StaticSchedule.findOneAndDelete({ _id: st_id })
+      if (st_schedule) {
+        let team = await team.findOne({ _id: st_schedule.team })
+        if (team) {
           await event.static_schedule.pull(st_id)
           await team.static_schedules.pull(st_id)
           let saved_e = await event.saved()
           let saved_t = await team.saved()
-          if(saved_e && saved_t) {
-            return Response.success(res, {message: "Removed static schedule."})
+          if (saved_e && saved_t) {
+            return Response.success(res, { message: "Removed static schedule." })
           }
         }
-        return Response.failed(res, {message: "Couldn't find team."})
+        return Response.failed(res, { message: "Couldn't find team." })
       }
-      return Response.failed(res, {message: "Couldn't delete static schedule."})
+      return Response.failed(res, { message: "Couldn't delete static schedule." })
     }
-    return Response.failed(res, {message: "Couldn't find event."})
+    return Response.failed(res, { message: "Couldn't find event." })
   } catch (error) {
     console.log(error)
     return Response.failed(res, { message: "Internal server error." })

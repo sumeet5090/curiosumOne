@@ -74,16 +74,20 @@ export default {
   },
   methods: {
     sortCompareAdvanced: function(a, b, key) {
-      if (typeof a[key] === "number" && typeof b[key] === "number") {
-        return a[key] < b[key] ? -1 : a[key] > b[key] ? 1 : 0;
-      } else if (typeof a[key] === "undefined") {
+      let e1 = a,
+        e2 = b;
+      key.split(".").forEach(k => {
+        e1 = e1[k];
+        e2 = e2[k];
+      });
+      if (typeof e1 === "number" && typeof e2 === "number") {
+        return e1 < e2 ? -1 : e1 > e2 ? 1 : 0;
+      } else if (typeof e1 === "undefined") {
         return 1;
       } else {
-        return flatten(a)
-          [key].toString()
-          .localeCompare(flatten(b)[key].toString(), undefined, {
-            numeric: true
-          });
+        return e1.toString().localeCompare(e2.toString(), undefined, {
+          numeric: true
+        });
       }
     }
   },

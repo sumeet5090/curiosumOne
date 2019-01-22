@@ -4,52 +4,52 @@
       <modal :show.sync="editModalActive" gradient="secondary" modal-classes="modal-secondary modal-dialog-centered" v-if="editModalActive">
         <h6 class="modal-title" id="modal-title-notification" slot="header">Edit</h6>
         <b-form @reset.prevent="onReset" @submit.prevent>
-          <b-form-group>
+          <b-form-group v-if="selectedRowEdit._id">
             <div class="container">
-              <span class="row align-items-center">
-                <base-switch class="mb-1" id="form-accumulator" v-model="form.accumulator"></base-switch>
+              <span class="row align-items-center" v-if="selectedRowEdit.team.category === 'electric'">
+                <base-switch class="mb-1" id="form-accumulator" v-model="selectedRowEdit.accumulator"></base-switch>
                 <label class="ml-2 h6" for="form-accumulator">Accumulator</label>
               </span>
             </div>
             <div class="container">
-              <span class="row align-items-center">
-                <base-switch class="mb-1" id="form-scrutineering_elec" v-model="form.scrutineering_elec"></base-switch>
+              <span class="row align-items-center" v-if="selectedRowEdit.team.category === 'electric'">
+                <base-switch class="mb-1" id="form-scrutineering_elec" v-model="selectedRowEdit.scrutineering_elec"></base-switch>
                 <label class="ml-2 h6" for="form-scrutineering_elec">Scrutineering Electric</label>
               </span>
             </div>
             <div class="container">
               <span class="row align-items-center">
-                <base-switch class="mb-1" id="form-scrutineering_mech" v-model="form.scrutineering_mech"></base-switch>
+                <base-switch class="mb-1" id="form-scrutineering_mech" v-model="selectedRowEdit.scrutineering_mech"></base-switch>
                 <label class="ml-2 h6" for="form-scrutineering_mech">Scrutineering Mechanical</label>
               </span>
             </div>
             <div class="container">
               <span class="row align-items-center">
-                <base-switch class="mb-1" id="form-driver_egress" v-model="form.driver_egress"></base-switch>
+                <base-switch class="mb-1" id="form-driver_egress" v-model="selectedRowEdit.driver_egress"></base-switch>
                 <label class="ml-2 h6" for="form-driver_egress">Driver Egress</label>
               </span>
             </div>
             <div class="container">
               <span class="row align-items-center">
-                <base-switch class="mb-1" id="form-tilt" v-model="form.tilt"></base-switch>
+                <base-switch class="mb-1" id="form-tilt" v-model="selectedRowEdit.tilt"></base-switch>
                 <label class="ml-2 h6" for="form-tilt">Tilt</label>
               </span>
             </div>
             <div class="container">
               <span class="row align-items-center">
-                <base-switch class="mb-1" id="form-noise_ready_to_drive_sound" v-model="form.noise_ready_to_drive_sound"></base-switch>
+                <base-switch class="mb-1" id="form-noise_ready_to_drive_sound" v-model="selectedRowEdit.noise_ready_to_drive_sound"></base-switch>
                 <label class="ml-2 h6" for="form-noise_ready_to_drive_sound">Noise ready to drive sound</label>
               </span>
             </div>
             <div class="container">
               <span class="row align-items-center">
-                <base-switch class="mb-1" id="form-brakes" v-model="form.brakes"></base-switch>
+                <base-switch class="mb-1" id="form-brakes" v-model="selectedRowEdit.brakes"></base-switch>
                 <label class="ml-2 h6" for="form-brakes">Brakes</label>
               </span>
             </div>
             <div class="container">
               <span class="row align-items-center">
-                <base-switch class="mb-1" id="form-rain" v-model="form.rain"></base-switch>
+                <base-switch class="mb-1" id="form-rain" v-model="selectedRowEdit.rain"></base-switch>
                 <label class="ml-2 h6" for="form-rain">Rain</label>
               </span>
             </div>
@@ -60,8 +60,6 @@
           <b-alert :show="!!success_msg" variant="success">
             <div>{{success_msg}}</div>
           </b-alert>
-          <b-button @click.prevent="onSubmit" type="submit" variant="primary">Update</b-button>
-          <b-button type="reset" variant="danger">Reset</b-button>
         </b-form>
         <template slot="footer">
           <base-button @click.prevent="cancelEdit" class="mr-auto" text-color="dark" type="link">Cancel</base-button>
@@ -88,20 +86,20 @@
         </div>
       </b-row>
       <b-row>
-        <b-table :fields="fields" :items="event.tech_updates" class="font-md-small" bordered hover outlined responsive>
+        <b-table :fields="fields" :items="event.tech_updates" :sort-by.sync="table.sortBy" :sort-compare="sortCompareAdvanced" :sort-desc="table.sortDesc" bordered class="font-md-small" hover outlined responsive small>
           <template slot="team.category" slot-scope="data">
             <div class="icon-container text-center">
               <img alt="Combustion" class="img-thumbnail icon-category" src="@/assets/images/icons/category/combustion.svg" title="Combustion" v-b-tooltip.hover.bottom v-if="data.item.team.category == 'combustion'">
               <img alt="Electric" class="img-thumbnail icon-category" src="@/assets/images/icons/category/electric.svg" title="Electric" v-b-tooltip.hover.bottom v-if="data.item.team.category == 'electric'">
             </div>
           </template>
+          <template slot="team.car.car_number" slot-scope="data">
+            <div class="text-center px-0">{{data.item.team.car.car_number}}</div>
+          </template>
           <template slot="team.team_name" slot-scope="data">
             <div class="text-center px-0">
               <router-link :to="{name: 'team-id', params: {id: data.item.team._id}}" class="btn btn-link text-capitalize" tag="a">{{data.item.team.team_name}}</router-link>
             </div>
-          </template>
-          <template slot="team.car" slot-scope="data">
-            <div class="text-center px-0">{{data.item.team.car}}</div>
           </template>
           <template slot="team.institution.short_name" slot-scope="data">
             <div class="text-center px-0">{{data.item.team.institution.short_name}}</div>
@@ -146,6 +144,12 @@
               <img :class="[{'gray-img': !data.item.rain}]" alt="Rain" class="icon-category" src="@/assets/images/icons/tech/rain.png" title="Rain" v-b-tooltip.hover.bottom>
             </div>
           </template>
+          <template slot="actions" slot-scope="data">
+            <div class="text-center" v-if="isAdmin">
+              <i @click="editItemModal(data.item)" class="fas fa-pen mr-2 cursor-pointer text-primary"></i>
+              <i @click="deleteItemModal(data.item)" class="fas fa-trash-alt cursor-pointer text-danger"></i>
+            </div>
+          </template>
         </b-table>
       </b-row>
     </div>
@@ -160,65 +164,222 @@ export default {
     return {
       event: {},
       teams: [{}],
+      editModalActive: false,
+      deleteModalActive: false,
+      selectedRowEdit: {
+        _id: null,
+        accumulator: false,
+        scrutineering_elec: false,
+        scrutineering_mech: false,
+        driver_egress: false,
+        tilt: false,
+        noise_ready_to_drive_sound: false,
+        brakes: false,
+        rain: false
+      },
+      selectedRowDelete: {
+        _id: null
+      },
+      table: {
+        sortBy: "team.car.car_number",
+        sortDesc: false,
+        sortDirection: "asc"
+      },
       fields: [
         {
           label: "",
-          key: "team.category"
+          key: "team.category",
+          sortable: true
         },
         {
           label: "",
-          key: "team.team_name"
+          key: "team.car.car_number",
+          sortable: true
+        },
+        {
+          label: "⠀",
+          key: "team.team_name",
+          sortable: true
         },
         {
           label: "",
-          key: "team.car"
+          key: "team.institution.short_name",
+          sortable: true
         },
         {
           label: "",
-          key: "team.institution.short_name"
+          key: "accumulator",
+          sortable: true
         },
         {
           label: "",
-          key: "accumulator"
+          key: "scrutineering_elec",
+          sortable: true
         },
         {
           label: "",
-          key: "scrutineering_elec"
+          key: "scrutineering_mech",
+          sortable: true
         },
         {
           label: "",
-          key: "scrutineering_mech"
+          key: "driver_egress",
+          sortable: true
         },
         {
           label: "",
-          key: "driver_egress"
+          key: "tilt",
+          sortable: true
         },
         {
           label: "",
-          key: "tilt"
+          key: "noise_ready_to_drive_sound",
+          sortable: true
         },
         {
           label: "",
-          key: "noise_ready_to_drive_sound"
+          key: "brakes",
+          sortable: true
         },
         {
           label: "",
-          key: "brakes"
+          key: "rain",
+          sortable: true
         },
         {
-          label: "",
-          key: "rain"
+          label: "Actions",
+          key: "actions",
+          thClass: "d-none",
+          tdClass: "d-none"
         }
       ],
       editModalActive: false,
       deleteModalActive: false,
-      selectedEditRow: {},
-      selectedDeleteRow: {}
+      errors: [],
+      success_msg: "",
+      showDismissableAlert: false
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters(["isAdmin", "currentUser"])
+  },
   methods: {
-    ...mapActions(["getReq", "putReq", "delReq"])
+    ...mapActions(["getReq", "putReq", "delReq"]),
+    sortCompareAdvanced: function(a, b, key) {
+      let e1 = a,
+        e2 = b;
+      key.split(".").forEach(k => {
+        e1 = e1[k];
+        e2 = e2[k];
+      });
+      if (typeof e1 === "number" && typeof e2 === "number") {
+        return e1 < e2 ? -1 : e1 > e2 ? 1 : 0;
+      } else if (typeof e1 === "undefined") {
+        return 1;
+      } else {
+        return e1.toString().localeCompare(e2.toString(), undefined, {
+          numeric: true
+        });
+      }
+    },
+    editItemModal(item) {
+      this.editModalActive = true;
+      this.selectedRowEdit = JSON.parse(JSON.stringify(item));
+    },
+    deleteItemModal(item) {
+      this.deleteModalActive = true;
+      this.selectedRowDelete = JSON.parse(JSON.stringify(item));
+    },
+    async confirmEdit() {
+      this.success_msg = "";
+      this.errors = [];
+      let updateEdit = this.selectedRowEdit;
+      if (this.event._id && updateEdit._id) {
+        let url = `/api/event/${this.event._id}/techupdate/${updateEdit._id}`,
+          body = {
+            accumulator: updateEdit.accumulator,
+            scrutineering_elec: updateEdit.scrutineering_elec,
+            scrutineering_mech: updateEdit.scrutineering_mech,
+            driver_egress: updateEdit.driver_egress,
+            tilt: updateEdit.tilt,
+            noise_ready_to_drive_sound: updateEdit.noise_ready_to_drive_sound,
+            brakes: updateEdit.brakes,
+            rain: updateEdit.rain
+          };
+        try {
+          let res = await this.putReq({
+            url,
+            body
+          });
+          if (res.success) {
+            this.success_msg = res.success_msg || "Updated tech update.";
+            this.event.tech_updates.find((sc, id) => {
+              if (sc._id === updateEdit._id) {
+                Object.keys(updateEdit).forEach(key => {
+                  this.event.tech_updates[id][key] = updateEdit[key];
+                });
+              }
+            });
+          } else {
+            this.success_msg = "";
+            this.showErr(res.message);
+          }
+        } catch (error) {
+          console.log(error);
+          this.success_msg = "";
+          this.showErr("Internal server error.");
+        }
+      } else {
+        this.success_msg = "";
+        this.showErr("Schedule not found.");
+      }
+    },
+    async confirmDelete() {
+      this.success_msg = "";
+      this.errors = [];
+      let updateEdit = this.selectedRowDelete;
+      if (this.event._id && updateEdit._id) {
+        let url = `/api/event/${this.event._id}/techupdate/${updateEdit._id}`;
+        try {
+          let res = await this.delReq({
+            url
+          });
+          if (res.success) {
+            this.success_msg = res.message || "Deleted tech update.";
+            for (let i = 0; i < this.event.tech_updates.length; i++) {
+              if (this.event.tech_updates[i]._id === updateEdit._id) {
+                var removedObject = this.event.tech_updates.splice(i, 1);
+                removedObject = null;
+                break;
+              }
+            }
+          } else {
+            this.success_msg = "";
+            this.showErr(res.message);
+          }
+        } catch (error) {
+          this.success_msg = "";
+          this.showErr("Internal server error.");
+        }
+      } else {
+        this.success_msg = "";
+        this.showErr("Schedule not found.");
+      }
+      this.deleteModalActive = false;
+    },
+    cancelEdit() {
+      this.editModalActive = false;
+      this.selectedRowEdit = {};
+    },
+    cancelDelete() {
+      this.deleteModalActive = false;
+      this.selectedRowDelete = {};
+    },
+    showErr(msg) {
+      this.success_msg = "";
+      this.showDismissibleAlert = true;
+      this.errors.push(msg);
+    }
   },
   mounted() {
     this.$nextTick(async function() {
@@ -235,6 +396,10 @@ export default {
         console.log(err);
       }
     });
+    if (this.isAdmin == true) {
+      this.fields[12].thClass = "";
+      this.fields[12].tdClass = "";
+    }
   }
 };
 </script>
@@ -254,6 +419,49 @@ export default {
   min-width: 24px;
 }
 
+.editable-input {
+  input {
+    border-width: 0;
+    height: auto;
+    width: auto;
+
+    text-align: center;
+    font-size: inherit;
+    color: inherit;
+
+    &.form-control {
+      width: auto !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+  }
+
+  &.focused {
+    input {
+      border-width: 1px;
+    }
+  }
+}
+
+.icon-container {
+  padding: 0;
+}
+
+th.sorting::before,
+th.sorting::after {
+  padding-bottom: 0 !important;
+}
+
+.icon-category {
+  width: auto;
+  height: 32px;
+  background: none !important;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  min-width: 24px;
+}
+
 .gray-img {
   -webkit-filter: grayscale(100%);
   filter: grayscale(100%);
@@ -261,5 +469,10 @@ export default {
 
 .table td {
   padding: 1rem 0;
+}
+
+th {
+  text-align: center !important;
+  padding: 0 !important;
 }
 </style>

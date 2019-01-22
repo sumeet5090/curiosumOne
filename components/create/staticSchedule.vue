@@ -76,9 +76,9 @@ export default {
       config: {
         altInput: true,
         enableTime: true,
-        noCalendar: true,
+        // noCalendar: true,
         dateFormat: "Z",
-        altFormat: "h:i K"
+        altFormat: "d M, Y h:i K"
       },
       tag: null,
       selectedEvent: null,

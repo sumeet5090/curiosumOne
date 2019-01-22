@@ -121,6 +121,75 @@
                   </card>
                 </b-col>
               </b-row>
+              <b-row class="justify-content-center" :key="st_sc._id" v-for="st_sc in team.static_schedules">
+                <div>
+                  <card no-body class="py-2">
+                    <!-- <div class="row justify-content-center">
+                      <div class="font-weight-bold">Business</div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4 text-dark">
+                        <span class="font-weight-bold">Queue</span>
+                        <span class="mx-2">{{st_sc.business.queue}}</span>
+                      </div>
+                    </div>
+                    <div class="row justify-content-center">
+                      <div class="col-md-4 text-dark">
+                        <span class="font-weight-bold">Start time</span>
+                        <span class="mx-2">{{st_sc.business.start_time}}</span>
+                      </div>
+                    </div>
+                    <div class="row justify-content-center">
+                      <div class="col-md-4 text-dark">
+                        <span class="font-weight-bold">End time</span>
+                        <span class="mx-2">{{st_sc.business.end_time}}</span>
+                      </div>
+                    </div>
+                    <div class="row justify-content-center">
+                      <div class="font-weight-bold">Cost</div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4 text-dark">
+                        <span class="font-weight-bold">Queue</span>
+                        <span class="mx-2">{{st_sc.cost.queue}}</span>
+                      </div>
+                    </div>
+                    <div class="row justify-content-center">
+                      <div class="col-md-4 text-dark">
+                        <span class="font-weight-bold">Start time</span>
+                        <span class="mx-2">{{st_sc.cost.start_time}}</span>
+                      </div>
+                    </div>
+                    <div class="row justify-content-center">
+                      <div class="col-md-4 text-dark">
+                        <span class="font-weight-bold">End time</span>
+                        <span class="mx-2">{{st_sc.cost.end_time}}</span>
+                      </div>
+                    </div>
+                    <div class="row justify-content-center">
+                      <div class="font-weight-bold">Design</div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4 text-dark">
+                        <span class="font-weight-bold">Queue</span>
+                        <span class="mx-2">{{st_sc.design.queue}}</span>
+                      </div>
+                    </div>
+                    <div class="row justify-content-center">
+                      <div class="col-md-4 text-dark">
+                        <span class="font-weight-bold">Start time</span>
+                        <span class="mx-2">{{st_sc.design.start_time}}</span>
+                      </div>
+                    </div>
+                    <div class="row justify-content-center">
+                      <div class="col-md-4 text-dark">
+                        <span class="font-weight-bold">End time</span>
+                        <span class="mx-2">{{st_sc.design.end_time}}</span>
+                      </div>
+                    </div> -->
+                  </card>
+                </div>
+              </b-row>
             </div>
             <div class="my-1 py-2 border-top" v-if="team.drive_folder" v-show="!!(team.drive_folder)">
               <div class="text-center">

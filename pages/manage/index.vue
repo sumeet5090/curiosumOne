@@ -73,12 +73,6 @@
             <router-link class="btn btn-outline-success" to="/manage/create/techupdate">
               <i class="fas fa-plus-square pr-2"></i>New
             </router-link>
-            <router-link class="btn btn-outline-info" to="/manage/update/techupdate">
-              <i class="fas fa-edit pr-2"></i>Edit
-            </router-link>
-            <router-link class="btn btn-outline-danger" to="/manage/delete/techupdate">
-              <i class="fas fa-trash-alt pr-1"></i>Remove
-            </router-link>
           </div>
         </card>
         <card class="col-12 mb-2">

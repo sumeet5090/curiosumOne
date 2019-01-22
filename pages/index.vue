@@ -74,7 +74,7 @@
                   <card body-classes="py-3" class="border-0" shadow>
                     <icon class="mb-3" name="fa fa-bell" rounded type="warning"></icon>
                     <h6 class="text-warning text-uppercase font-weight-bold">Live Announcements</h6>
-                    <p class="description mt-3">Live announcement feed duing {{event.name}}!</p>
+                    <p class="description mt-3">Live announcement feed during {{event.name}}!</p>
                     <router-link :to="{name: 'event-id-announcements', params: {id: event.event_short}}" class="btn btn-warning mt-2" tag="a">Live Feed</router-link>
                   </card>
                 </div>

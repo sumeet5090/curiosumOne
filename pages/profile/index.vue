@@ -69,11 +69,15 @@ export default {
     ...mapActions(["getUserTeam"]),
     saveTeam: async function() {
       if (this.currentUser) {
-        let res = await this.getUserTeam(this.currentUser.username);
-        if (res._id) {
-          this.team = res;
-        } else {
-          this.team = null;
+        try {
+          let res = await this.getUserTeam(this.currentUser.username);
+          if (res._id) {
+            this.team = res;
+          } else {
+            this.team = null;
+          }
+        } catch (err) {
+          console.log(err);
         }
       }
     }
@@ -82,10 +86,9 @@ export default {
     ...mapGetters(["currentUser", "isAuthenticated"])
   },
   created() {
-    this.saveTeam();
+    this.$nextTick( async () => {
+      this.saveTeam();
+    })
   }
 };
 </script>
-
-<style lang="scss">
-</style>

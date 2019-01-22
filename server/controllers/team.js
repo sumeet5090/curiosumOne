@@ -62,7 +62,7 @@ const getOneMini = async function (req, res) {
 const getOne = async function (req, res) {
   try {
     let id = req.params.id
-    let team = await Team.findOne({ _id: id }).populate(['users', 'events', 'alumnus']).exec()
+    let team = await Team.findOne({ _id: id }).populate(['users', 'events', 'alumnus', 'static_schedules']).exec()
     if (!team) {
       return Response.failed(res, { message: "No such team found." })
     }

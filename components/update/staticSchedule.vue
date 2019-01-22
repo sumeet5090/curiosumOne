@@ -151,22 +151,24 @@ export default {
           let res = await this.putReq({
             url: url,
             body: {
-              business_queue: form.business.queue,
-              business_start_time: form.business.start_time,
-              business_end_time: form.business.end_time,
-              cost_queue: form.cost.queue,
-              cost_start_time: form.cost.start_time,
-              cost_end_time: form.cost.end_time,
-              design_queue: form.design.queue,
-              design_start_time: form.design.start_time,
-              design_end_time: form.design.end_time
+              business_queue: this.form.business.queue,
+              business_start_time: this.form.business.start_time,
+              business_end_time: this.form.business.end_time,
+              cost_queue: this.form.cost.queue,
+              cost_start_time: this.form.cost.start_time,
+              cost_end_time: this.form.cost.end_time,
+              design_queue: this.form.design.queue,
+              design_start_time: this.form.design.start_time,
+              design_end_time: this.form.design.end_time
             }
           });
-          if (res.success) {
-            this.success_msg = res.message;
-          } else {
-            this.errors.push(res.message);
-          }
+         if(res) {
+            if (res.success) {
+              this.success_msg = res.message;
+            } else {
+              this.errors.push(res.message);
+            }
+         }
           this.onReset();
         } else {
           this.errors.push("Select an event and a team.");

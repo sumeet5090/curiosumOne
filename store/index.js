@@ -73,6 +73,7 @@ const actions = {
       if (response.data.success) {
         return response.data.team
       }
+      return {}
     } catch (error) {
       return {}
     }

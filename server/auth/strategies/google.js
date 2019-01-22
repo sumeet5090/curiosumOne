@@ -1,8 +1,6 @@
 let Strategy = require('passport-google-oauth').OAuth2Strategy;
 let helper = require('./../helper');
 let keys = require('./../../../config/keys')
-// Scopes
-// 'https://www.googleapis.com/auth/admin.directory.user', 'https://www.googleapis.com/auth/admin.directory.group', 'https://www.googleapis.com/auth/admin.directory.group.readonly', 'https://www.googleapis.com/auth/admin.directory.group.member', 'https://www.googleapis.com/auth/admin.directory.group.member.readonly'
 module.exports = (passport) => {
   let googleOAuth = new Strategy({
     clientID: keys.google.clientID,

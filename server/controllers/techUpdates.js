@@ -4,14 +4,14 @@ const Response = require('./../services/response')
 
 const getAll = async function (req, res) {
   try {
-    let techUpdates = await TechUpdates.find(), correctedTechUpdates;
+    let techUpdates = await TechUpdates.find(), correctedTechUpdates=[];
     if (!(techUpdates.length > 0)) {
       techUpdates.forEach(techUpdate => {
         correctedTechUpdates.push(techUpdate.toWeb())
       });
       return Response.success(res, { techUpdatess: correctedTechUpdates }, 302)
     }
-    return Response.success(res, { message: "No techUpdatess found." }, 204)
+    return Response.success(res, { message: "No tech updates found." }, 204)
   } catch (error) {
     return Response.failed(res, { message: "Internal Server Error" }, 500)
   }
