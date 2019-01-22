@@ -49,6 +49,21 @@ const getOneEvent = async (req, res) => {
   }
 }
 
+const getOneAnnouncement = async (req, res) => {
+  try {
+    let event_id = req.params.id,
+      annc_id = req.params.annc_id,
+      announcement = await Announcement.findOne({ _id: annc_id })
+    if (announcement) {
+      return Response.success(res, { message: "Announcement found.", announcement })
+    }
+    return Response.failed(res, { message: "Couldn't get announcement." })
+  } catch (error) {
+    console.log(error);
+    return Response.failed(res, { message: "Internal server error." })
+  }
+}
+
 const getOneEventByName = async (req, res) => {
   try {
     let event = await Event.findOne({ event_short: req.params.event_name })
@@ -412,7 +427,7 @@ const createAnnouncement = async (req, res) => {
       let extractTags = []
       let new_ancmt = await new Announcement({
         event: event._id,
-        dateTime: req.body.date_time || Date.now(),
+        dateTime: req.body.dateTime || Date.now(),
         author: req.body.author || req.user,
         title: req.body.title,
         description: req.body.description,
@@ -724,6 +739,28 @@ const updateCar = async (req, res) => {
   }
 }
 
+const updateAnnouncement = async (req, res) => {
+  let announcement, annc_id = req.params.annc_id, body = req.body, update_body
+  try {
+    update_body = {
+      dateTime: body.dateTime,
+      author: body.author,
+      title: body.title,
+      description: body.description,
+      author: body.author,
+      tags: body.tags
+    }
+    announcement = await Announcement.findOneAndUpdate({ _id: annc_id }, update_body, { new: true })
+    if (announcement) {
+      return Response.success(res, { message: "Updated announcement.", announcement })
+    }
+    return Response.failed(res, { message: "Couldn't update announcement." })
+  } catch (error) {
+    console.log(error)
+    return Response.failed(res, { message: "Internal server error." })
+  }
+}
+
 const updateLiveTiming = async (req, res) => {
   let live_timing, lt_id = req.params.lt_id, update_body
   try {
@@ -740,7 +777,7 @@ const updateLiveTiming = async (req, res) => {
     return Response.failed(res, { message: "Couldn't update live timing." })
   } catch (error) {
     console.log(error)
-    return Response.success(res, { message: "Internal server error." })
+    return Response.failed(res, { message: "Internal server error." })
   }
 }
 const updateSchedule = async (req, res) => {
@@ -838,9 +875,24 @@ const deleteEvent = async (req, res) => {
     })
   } catch (error) {
     console.log(error)
-    return res.sendStatus(500)
+    return Response.failed(res, { message: "Internal server error." })
   }
 }
+
+const deleteAnnouncement = async (req, res) => {
+  let annc_id = req.params.annc_id, announcement, event_id = req.params.id, event
+  try {
+    announcement = await Announcement.findOneAndDelete({ _id: annc_id })
+    if (announcement) {
+      return Response.success(res, { message: "Deleted announcement." })
+    }
+    return Response.failed(res, { message: "Couldn't delete announcement." })
+  } catch (error) {
+    console.log(error)
+    return Response.failed(res, { message: "Internal server error." })
+  }
+}
+
 const deleteLiveTiming = async (req, res) => {
   let id = req.params.id,
     lt_id = req.params.lt_id,
@@ -957,6 +1009,7 @@ module.exports = {
   getOneEventByName,
   getTeamForEvent,
   getAnnouncementsForEvent,
+  getOneAnnouncement,
   getOneTechupdate,
   getOneSchedule,
   getOneLivetiming,
@@ -977,12 +1030,14 @@ module.exports = {
   createStaticSchedule,
   addTeam,
   updateEvent,
+  updateAnnouncement,
   updateLiveTiming,
   updateTechUpdate,
   updateSchedule,
   updateStaticSchedule,
   updateCar,
   deleteEvent,
+  deleteAnnouncement,
   deleteLiveTiming,
   deleteSchedule,
   deleteTechUpdate,

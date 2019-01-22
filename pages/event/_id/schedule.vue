@@ -97,8 +97,8 @@
         <template slot="date" slot-scope="data">{{getDate(data.item.date)}}</template>
         <template slot="actions" slot-scope="data">
           <div class="text-center" v-if="isAdmin">
-            <i @click="editItemModal(data.item)" class="fas fa-pen mr-2 cursor-pointer"></i>
-            <i @click="deleteItemModal(data.item)" class="fas fa-trash-alt cursor-pointer"></i>
+            <i @click="editItemModal(data.item)" class="fas fa-pen mr-2 cursor-pointer text-primary"></i>
+            <i @click="deleteItemModal(data.item)" class="fas fa-trash-alt cursor-pointer text-danger"></i>
           </div>
         </template>
       </b-table>

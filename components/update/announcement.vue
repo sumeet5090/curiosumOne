@@ -28,7 +28,7 @@
     <b-alert :show="!!success_msg" variant="success">
       <div>{{success_msg}}</div>
     </b-alert>
-    <b-button @click.prevent="onSubmit" variant="success">Create  </b-button>
+    <b-button @click.prevent="onSubmit" variant="info">Update</b-button>
     <b-button type="reset" variant="danger">Reset</b-button>
   </b-form>
 </template>
@@ -61,6 +61,9 @@ export default {
         strikethrough: true,
         quote: true,
         preview: true,
+        alignleft: true,
+        aligncenter: true,
+        alignright: true,
         ul: true,
         ol: true,
         link: true,
