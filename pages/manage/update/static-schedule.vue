@@ -3,7 +3,7 @@
     <no-ssr>
       <section class="section">
         <b-container>
-          <b-row class="justify-content-center">
+          <b-row class="justify-content-center" v-if="isAdmin">
             <card class="col-md-8">
               <static-schedule />
             </card>
@@ -16,9 +16,13 @@
 
 <script>
 import StaticSchedule from './../../../components/update/staticSchedule.vue';
+import { mapGetters } from 'vuex';
 export default {
   components: {
     'static-schedule': StaticSchedule
+  },
+  computed: {
+    ...mapGetters(['isAdmin'])
   }
 }
 </script>

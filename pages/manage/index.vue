@@ -34,12 +34,6 @@
             <router-link class="btn btn-outline-success" to="/manage/create/announcement">
               <i class="fas fa-plus-square pr-2"></i>New
             </router-link>
-            <router-link class="btn btn-outline-info" to="/manage/update/announcement">
-              <i class="fas fa-edit pr-2"></i>Edit
-            </router-link>
-            <router-link class="btn btn-outline-danger" to="/manage/delete/announcement">
-              <i class="fas fa-trash-alt pr-1"></i>Remove
-            </router-link>
           </div>
         </card>
         <card class="col-12 mb-2">
@@ -60,9 +54,6 @@
             </router-link>
             <router-link class="btn btn-outline-info" to="/manage/update/schedule">
               <i class="fas fa-edit pr-2"></i>Edit
-            </router-link>
-            <router-link class="btn btn-outline-danger" to="/manage/delete/schedule">
-              <i class="fas fa-trash-alt pr-1"></i>Remove
             </router-link>
           </div>
         </card>
