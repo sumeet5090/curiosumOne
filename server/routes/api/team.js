@@ -8,7 +8,7 @@ router.get('/', TeamController.getAll)
 router.get('/:id', TeamController.getOne)
 router.get('/:id/user', TeamController.getTeamExpandUser)
 router.get('/:id/mini', TeamController.getOneMini)
-router.get('/s/d', helper.isCaptainOrAdmin(), (req, res) => {
+router.get('/s/d', helper.allowStaff, (req, res) => {
   return res.send({'x': 'XDDD', user: req.user.role})
 })
 router.get('/confirmation/:token', TeamController.confirmToken, (req, res) => {
@@ -25,8 +25,8 @@ router.post('/:id/remove/member/:user_id', helper.isCaptainOrAdmin(), TeamContro
 router.post('/:id/remove/alumni/:user_id', helper.isCaptainOrAdmin(), TeamController.removeAlumnus)
 router.post('/:id/register/event/:event_id', helper.isCaptainOrAdmin(), TeamController.linkTeamAndEvent)
 router.post('/:id/register/user/:username', helper.isCaptainOrAdmin(), TeamController.linkTeamAndUser)
-router.post('/:id/register/car/:car_id', helper.isAdmin(), TeamController.linkTeamAndCar)
-router.post('/:id/unlink/event/:event_id', helper.isAdmin(), TeamController.unlinkTeamAndEvent)
+router.post('/:id/register/car/:car_id', helper.allowStaff, TeamController.linkTeamAndCar)
+router.post('/:id/unlink/event/:event_id', helper.allowStaff, TeamController.unlinkTeamAndEvent)
 // PUT
 router.put('/:id', helper.isCaptainOrAdmin(), TeamController.updateTeam)
 router.put('/:id/captain', helper.isCaptainOrAdmin(), TeamController.changeCaptain)

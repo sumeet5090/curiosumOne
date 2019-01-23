@@ -171,6 +171,9 @@ const getters = {
     if (state.isAuthenticated) {
       if (state.user.role.indexOf('admin') > -1) {
         return true
+      } 
+      if(state.user.role.indexOf('staff') > -1) {
+        return true
       }
     }
     return false

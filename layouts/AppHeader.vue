@@ -27,7 +27,7 @@
             <nuxt-link class="nav-link" tag="a" to="/profile" v-if="!!isAuthenticated">Profile</nuxt-link>
           </li>
           <li class="nav-item" v-if="!!isAdmin">
-            <nuxt-link class="nav-link" tag="a" to="/manage" v-if="!!isAdmin">Dashboard (Admin)</nuxt-link>
+            <nuxt-link class="nav-link" tag="a" to="/manage" v-if="!!isAdmin">Dashboard</nuxt-link>
           </li>
           <li class="nav-item">
             <nuxt-link class="nav-link" tag="a" to="/faq">FAQ</nuxt-link>

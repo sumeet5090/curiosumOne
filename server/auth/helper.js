@@ -24,6 +24,19 @@ const hasRole = (role) => {
   }
 }
 
+const allowStaff = (req, res, next) => {
+  return isAuthenticated(req, res, () => {
+    if (req.user && req.user.role) {
+      let role = req.user.role
+      if (role.contains("admin") || role.contains("staff")) {
+        return next()
+      }
+      console.log(role);
+    }
+    return res.sendStatus(403)
+  })
+}
+
 const isAdmin = () => {
   return hasRole("admin")
 }
@@ -173,6 +186,7 @@ const linkSocialToAccount = async (opts) => {
 
 module.exports = {
   isAuthenticated,
+  allowStaff,
   hasRole,
   isParticipant,
   isVolunteer,
