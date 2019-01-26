@@ -228,6 +228,7 @@ export default {
               day_number: updateEdit.day_number,
               day: updateEdit.day,
               date: updateEdit.date,
+              activity: updateEdit.activity,
               start_time: updateEdit.start_time,
               location: updateEdit.location,
               comments: updateEdit.comments,
