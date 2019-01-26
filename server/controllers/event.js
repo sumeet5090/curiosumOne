@@ -791,7 +791,7 @@ const updateSchedule = async (req, res) => {
       date: req.body.date,
       activity: req.body.activity,
       start_time: req.body.start_time,
-      end_time: req.body.end_date,
+      end_time: req.body.end_time,
       location: req.body.location,
       comments: req.body.comments,
       volunteer_view: req.body.volunteer_view,
