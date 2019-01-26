@@ -230,6 +230,7 @@ export default {
               date: updateEdit.date,
               activity: updateEdit.activity,
               start_time: updateEdit.start_time,
+              end_time: updateEdit.end_time,
               location: updateEdit.location,
               comments: updateEdit.comments,
               volunteer_view: updateEdit.volunteer_view,
