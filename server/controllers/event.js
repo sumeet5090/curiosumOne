@@ -273,7 +273,9 @@ const getAllLivetimings = async (req, res) => {
     if (parseInt(id) == id) {
       $or.push({ _id: id })
     }
-    let event = await Event.findOne({ $or: $or }).populate('live_timings').populate({ path: 'live_timings', populate: { path: 'team_id' } }).exec()
+    // let event = await Event.findOne({ $or: $or }).populate({ path: 'tech_updates', populate: { path: 'team', populate: { path: 'car', select: 'car_number' } } }).exec()
+    // let event = await Event.findOne({ $or: $or }).populate('live_timings').populate({ path: 'live_timings', populate: { path: 'team_id' } }).exec()
+    let event = await Event.findOne({ $or: $or }).populate({ path: 'live_timings', populate: { path: 'team_id', populate: { path: 'car', select: 'car_number' } } }).exec()
     if (event) {
       return Response.success(res, {
         event: event

@@ -58,8 +58,8 @@
                 <img class="img-thumbnail icon-category" src="@/assets/images/icons/category/electric.svg" title="Electric" v-b-tooltip.hover.bottom v-if="data.item.team_id.category == 'electric'">
               </div>
             </template>
-            <template slot="team_id.car" slot-scope="data">
-              <div class="text-center px-0">{{data.item.team_id.car}}</div>
+            <template slot="team_id.car.car_number" slot-scope="data">
+              <div class="text-center px-0">{{data.item.team_id.car.car_number}}</div>
             </template>
             <template slot="team_id.team_name" slot-scope="data">
               <div class="text-center px-1">{{data.item.team_id.team_name}}</div>
@@ -99,7 +99,7 @@ export default {
   data() {
     return {
       pagination: {
-        sortBy: "name"
+        sortBy: "team_id.car.car_number"
       },
       editModalActive: false,
       deleteModalActive: false,
@@ -146,7 +146,7 @@ export default {
         },
         {
           label: " ",
-          key: "team_id.car",
+          key: "team_id.car.car_number",
           sortable: true
         },
         {
