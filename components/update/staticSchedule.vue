@@ -100,7 +100,7 @@ export default {
       events: [
         {
           value: null,
-          text : "Select an event"
+          text: "Select an event"
         }
       ],
       success_msg: "",
@@ -111,7 +111,13 @@ export default {
     ...mapGetters(["currentUser", "isAdmin", "teams"])
   },
   methods: {
-    ...mapActions(["getReq", "postReq", "getTeamsForEvent", "unsetTeams", "putReq"]),
+    ...mapActions([
+      "getReq",
+      "postReq",
+      "getTeamsForEvent",
+      "unsetTeams",
+      "putReq"
+    ]),
     async getEvents() {
       try {
         let url = "/api/event/";
@@ -145,10 +151,10 @@ export default {
         this.success_msg = null;
         this.errors = [];
         if (this.selectedEvent && this.selectedTeam) {
-          let url = `/api/event/${this.selectedEvent}/update/${
+          let url = `/api/event/${this.selectedEvent}/create/${
             this.selectedTeam
           }/static-schedule`;
-          let res = await this.putReq({
+          let res = await this.postReq({
             url: url,
             body: {
               business_queue: this.form.business.queue,
@@ -162,13 +168,11 @@ export default {
               design_end_time: this.form.design.end_time
             }
           });
-         if(res) {
-            if (res.success) {
-              this.success_msg = res.message;
-            } else {
-              this.errors.push(res.message);
-            }
-         }
+          if (res.success) {
+            this.success_msg = res.message;
+          } else {
+            this.errors.push(res.message);
+          }
           this.onReset();
         } else {
           this.errors.push("Select an event and a team.");
@@ -199,6 +203,41 @@ export default {
           end_time: "2018-12-25T05:30:00.000Z"
         }
       };
+    },
+    async getStaticSchedule(event_id, team_id) {
+      try {
+        if (event_id && team_id) {
+          let url = `/api/event/${event_id}/${team_id}/static-schedule`
+          console.log(url);
+          let res = await this.getReq({
+            url: url
+          })
+          if(res.success){
+            console.log(res.static_schedule);
+            this.form = res.static_schedule
+          } else {
+            this.form = {
+              business: {
+                queue: null,
+                start_time: "2018-12-25T04:30:00.000Z",
+                end_time: "2018-12-25T05:30:00.000Z"
+              },
+              cost: {
+                queue: null,
+                start_time: "2018-12-25T04:30:00.000Z",
+                end_time: "2018-12-25T05:30:00.000Z"
+              },
+              design: {
+                queue: null,
+                start_time: "2018-12-25T04:30:00.000Z",
+                end_time: "2018-12-25T05:30:00.000Z"
+              }
+            };
+          }
+        }
+      } catch (error) {
+        this.errors.push("Internal server error.");
+      }
     }
   },
   watch: {
@@ -212,6 +251,9 @@ export default {
       if (this.selectedEvent == null) {
         this.selectedTeam = null;
         this.unsetTeams();
+      } else {
+        console.log(this.selectedEvent, this.selectedTeam);
+        this.getStaticSchedule(this.selectedEvent, this.selectedTeam);
       }
     }
   },

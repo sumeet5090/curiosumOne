@@ -266,6 +266,24 @@ const getAllSchedules = async (req, res) => {
   }
 }
 
+const getOneStaticScheduleEventTeam = async (req, res) => {
+  try {
+    let event = await Event.findOne({_id: req.params.id})
+    let team = await Team.findOne({_id: req.params.team_id})
+    if(event && team) {
+      let static_schedule = await StaticSchedule.findOne({event: event._id, team: team._id})
+      if(static_schedule){
+        return Response.success(res, {static_schedule})
+      }
+    }
+    return Response.failed(res, {message: "Not found."})
+  } catch (error) {
+    console.log(error);
+    return Response.failed(res, {message: "Internal server error."})
+  }
+}
+
+
 const getAllLivetimings = async (req, res) => {
   try {
     let id = req.params.id,
@@ -623,49 +641,67 @@ const createSchedule = async (req, res) => {
 
 const createStaticSchedule = async (req, res) => {
   try {
-    let event = await Event.findOne({ _id: req.params.id }),
-      body = req.body,
-      team = await Team.findOne({ _id: req.params.team_id })
+    let event = await Event.findOne({ _id: req.params.id })
+    let team = await Team.findOne({ _id: req.params.team_id }).populate('car').exec()
     if (event && team) {
-      let staticSchedule = await new StaticSchedule({
+      let staticSchedule = await StaticSchedule.findOne({ team: team._id, event: event._id })
+      if (staticSchedule) {
+        staticSchedule.business.queue = req.body.business_queue
+        staticSchedule.business.start_time = req.body.business_start_time
+        staticSchedule.business.end_time = req.body.business_end_time
+        staticSchedule.cost.queue = req.body.cost_queue
+        staticSchedule.cost.start_time = req.body.cost_start_time
+        staticSchedule.cost.end_time = req.body.cost_end_time
+        staticSchedule.design.queue = req.body.design_queue
+        staticSchedule.design.start_time = req.body.design_start_time
+        staticSchedule.design.end_time = req.body.design_end_time
+        let st_saved = await staticSchedule.save()
+        if (st_saved) {
+          return Response.success(res, { message: "Successfully updated tech update." }, 200)
+        }
+        return Response.failed(res, { message: "This shouldn't have occured." })
+      }
+      staticSchedule = await new StaticSchedule({
         event: event._id,
         team: team._id,
         business: {
           queue: body.business_queue,
           start_time: body.business_start_time,
-          duration: body.business_end_time
+          end_time: body.business_end_time
         },
         cost: {
           queue: body.cost_queue,
           start_time: body.cost_start_time,
-          duration: body.cost_end_time
+          end_time: body.cost_end_time
         },
         design: {
           queue: body.design_queue,
           start_time: body.design_start_time,
-          duration: body.design_end_time
+          end_time: body.design_end_time
         }
       }).save()
       if (staticSchedule) {
-        let out1 = await event.updateOne({ $push: { static_schedule: staticSchedule } })
-        let out2 = await team.updateOne({ $push: { static_schedules: staticSchedule } })
+        let out1 = await event.updateOne({ $push: { static_schedule: staticSchedule._id } })
+        let out2 = await team.updateOne({ $push: { static_schedule: staticSchedule._id } })
         if (out1.nModified >= 1 && out1.ok == 1 && out2.nModified >= 1 && out2.ok == 1) {
-          return Response.success(res, { message: "Created static schedule!" }, 200)
+          return Response.success(res, {
+            message: "Created static schedule & linked to event."
+          })
         }
         return Response.failed(res, {
           message: "Created static schedule, but couldn't link it to event."
-        }, 200)
+        })
       }
       return Response.failed(res, {
-        message: "Couldn't create static schedule"
+        message: "Couldn't create static schedule."
       })
     }
     return Response.failed(res, {
-      message: "Not found."
+      message: "Event not found."
     })
   } catch (error) {
     console.log(error)
-    return Response.failed(res, { message: "Internal server error." }, 500)
+    res.sendStatus(500)
   }
 }
 
@@ -965,12 +1001,12 @@ const deleteStaticSchedule = async (req, res) => {
     if (event) {
       st_schedule = await StaticSchedule.findOneAndDelete({ _id: st_id })
       if (st_schedule) {
-        let team = await team.findOne({ _id: st_schedule.team })
+        let team = await Team.findOne({ _id: st_schedule.team })
         if (team) {
           await event.static_schedule.pull(st_id)
           await team.static_schedules.pull(st_id)
-          let saved_e = await event.saved()
-          let saved_t = await team.saved()
+          let saved_e = await event.save()
+          let saved_t = await team.save()
           if (saved_e && saved_t) {
             return Response.success(res, { message: "Removed static schedule." })
           }
@@ -1022,6 +1058,7 @@ module.exports = {
   getAllCars,
   getAllStaticSchedulesForEvent,
   getAllStaticSchedulesForTeam,
+  getOneStaticScheduleEventTeam,
   getTeamCar,
   createEvent,
   createAnnouncement,

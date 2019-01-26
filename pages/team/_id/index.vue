@@ -121,73 +121,42 @@
                   </card>
                 </b-col>
               </b-row>
-              <b-row class="justify-content-center" :key="st_sc._id" v-for="st_sc in team.static_schedules">
-                <div>
-                  <card no-body class="py-2">
-                    <!-- <div class="row justify-content-center">
-                      <div class="font-weight-bold">Business</div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-4 text-dark">
-                        <span class="font-weight-bold">Queue</span>
-                        <span class="mx-2">{{st_sc.business.queue}}</span>
-                      </div>
-                    </div>
-                    <div class="row justify-content-center">
-                      <div class="col-md-4 text-dark">
-                        <span class="font-weight-bold">Start time</span>
-                        <span class="mx-2">{{st_sc.business.start_time}}</span>
-                      </div>
-                    </div>
-                    <div class="row justify-content-center">
-                      <div class="col-md-4 text-dark">
-                        <span class="font-weight-bold">End time</span>
-                        <span class="mx-2">{{st_sc.business.end_time}}</span>
-                      </div>
-                    </div>
-                    <div class="row justify-content-center">
-                      <div class="font-weight-bold">Cost</div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-4 text-dark">
-                        <span class="font-weight-bold">Queue</span>
-                        <span class="mx-2">{{st_sc.cost.queue}}</span>
-                      </div>
-                    </div>
-                    <div class="row justify-content-center">
-                      <div class="col-md-4 text-dark">
-                        <span class="font-weight-bold">Start time</span>
-                        <span class="mx-2">{{st_sc.cost.start_time}}</span>
-                      </div>
-                    </div>
-                    <div class="row justify-content-center">
-                      <div class="col-md-4 text-dark">
-                        <span class="font-weight-bold">End time</span>
-                        <span class="mx-2">{{st_sc.cost.end_time}}</span>
-                      </div>
-                    </div>
-                    <div class="row justify-content-center">
-                      <div class="font-weight-bold">Design</div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-4 text-dark">
-                        <span class="font-weight-bold">Queue</span>
-                        <span class="mx-2">{{st_sc.design.queue}}</span>
-                      </div>
-                    </div>
-                    <div class="row justify-content-center">
-                      <div class="col-md-4 text-dark">
-                        <span class="font-weight-bold">Start time</span>
-                        <span class="mx-2">{{st_sc.design.start_time}}</span>
-                      </div>
-                    </div>
-                    <div class="row justify-content-center">
-                      <div class="col-md-4 text-dark">
-                        <span class="font-weight-bold">End time</span>
-                        <span class="mx-2">{{st_sc.design.end_time}}</span>
-                      </div>
-                    </div> -->
-                  </card>
+              <b-row class="justify-content-center">
+                <div class="col-12 text-center">
+                  <table class="table table-responsive-md table-sm table-hover table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Queue</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Start time</th>
+                        <th scope="col">End time</th>
+                      </tr>
+                    </thead>
+                    <tbody :key="st_sc._id" v-for="st_sc in team.static_schedules">
+                      <tr>
+                        <th scope="row">Business</th>
+                        <td>{{st_sc.business.queue}}</td>
+                        <td>{{formatDate(st_sc.business.start_time)}}</td>
+                        <td>{{getTime(st_sc.business.start_time)}}</td>
+                        <td>{{getTime(st_sc.business.end_time)}}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Cost</th>
+                        <td>{{st_sc.cost.queue}}</td>
+                        <td>{{formatDate(st_sc.cost.start_time)}}</td>
+                        <td>{{getTime(st_sc.cost.start_time)}}</td>
+                        <td>{{getTime(st_sc.cost.end_time)}}</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Design</th>
+                        <td>{{st_sc.design.queue}}</td>
+                        <td>{{formatDate(st_sc.design.start_time)}}</td>
+                        <td>{{getTime(st_sc.design.start_time)}}</td>
+                        <td>{{getTime(st_sc.design.end_time)}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
               </b-row>
             </div>
@@ -215,6 +184,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+const moment = require("moment");
 import _ from "lodash";
 export default {
   async asyncData({ $axios, params, error }) {
@@ -274,6 +244,12 @@ export default {
           return false;
           break;
       }
+    },
+    formatDate(date) {
+      return moment(date).format("LL");
+    },
+    getTime(date) {
+      return moment(date).format("hh:mm A");
     },
     sortByDate(events) {
       var a = events;

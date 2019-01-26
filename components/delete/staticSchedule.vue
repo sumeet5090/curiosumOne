@@ -137,7 +137,7 @@ export default {
     },
     showErr(msg) {
       this.showDismissibleAlert = true;
-      this.showErr(msg);
+      this.errors.push(msg);
     },
     async confirmedConf() {
       this.success_msg = null;

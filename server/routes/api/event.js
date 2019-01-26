@@ -18,6 +18,7 @@ router.get('/:id/cars', eventCont.getAllCars)
 router.get('/:id/:team_id/car', eventCont.getTeamCar)
 router.get('/:id/static-schedule', eventCont.getAllStaticSchedulesForEvent)
 router.get('/:id/static-schedule/:st_id', eventCont.getOneStaticSchedule)
+router.get('/:id/:team_id/static-schedule', eventCont.getOneStaticScheduleEventTeam)
 // router.get('/:event_name', eventCont.getOneEventByName)
 // POST
 router.post('/:id/create/announcement', helper.allowStaff, eventCont.createAnnouncement)
