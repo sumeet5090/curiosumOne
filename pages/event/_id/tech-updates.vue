@@ -1,5 +1,5 @@
 <template>
-  <section class="section section-hero">
+  <section class="section section-xl pt-0 mt-0">
     <modal :show.sync="editModalActive" gradient="secondary" modal-classes="modal-secondary modal-dialog-centered" v-if="editModalActive">
       <h6 class="modal-title" id="modal-title-notification" slot="header">Edit</h6>
       <b-form @reset.prevent="onReset" @submit.prevent>
@@ -79,9 +79,8 @@
       </template>
     </modal>
     <b-row class="justify-content-center">
-      <div class="h2 header-font">
-        Tech Updates for
-        <strong class="text-primary text-capitalize">{{event.name}}</strong>
+      <div class="col-12">
+        <p class="h3 header-font px-1 text-center"> Tech Updates for <strong class="text-primary text-capitalize">{{event.name}}</strong></p>
       </div>
     </b-row>
     <b-row class="justify-content-center">

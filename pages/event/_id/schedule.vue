@@ -89,7 +89,7 @@
     </template>
   </modal>
   <b-row class="justify-content-center">
-    <div class="display-4">Schedules</div>
+    <div class="display-4 header-font">Schedules</div>
   </b-row>
   <b-row class="justify-content-center">
     <div class="col-10">
