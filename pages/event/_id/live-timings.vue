@@ -51,7 +51,7 @@
       </b-row>
       <b-row class="justify-content-center">
         <div class="col-12">
-          <b-table :fields="fields" :items="event.live_timings" bordered hover outlined responsive small class="font-md-small">
+          <b-table :fields="fields" :items="event.live_timings" :sort-by.sync="table.sortBy" :sort-compare="sortCompareAdvanced" :sort-desc="table.sortDesc" bordered hover outlined responsive small class="font-md-small">
             <template slot="team_id.category" slot-scope="data">
               <div class="icon-container text-center">
                 <img class="img-thumbnail icon-category" src="@/assets/images/icons/category/combustion.svg" title="Combustion" v-b-tooltip.hover.bottom v-if="data.item.team_id.category == 'combustion'">
@@ -188,7 +188,12 @@ export default {
       ],
       errors: [],
       success_msg: "",
-      showDismissibleAlert: false
+      showDismissibleAlert: false,
+      table: {
+        sortBy: "team_id.car.car_number",
+        sortDesc: false,
+        sortDirection: "asc"
+      },
     };
   },
   computed: {
@@ -196,6 +201,23 @@ export default {
   },
   methods: {
     ...mapActions(["getReq", "putReq", "delReq"]),
+    sortCompareAdvanced: function(a, b, key) {
+      let e1 = a,
+        e2 = b;
+      key.split(".").forEach(k => {
+        e1 = e1[k];
+        e2 = e2[k];
+      });
+      if (typeof e1 === "number" && typeof e2 === "number") {
+        return e1 < e2 ? -1 : e1 > e2 ? 1 : 0;
+      } else if (typeof e1 === "undefined") {
+        return 1;
+      } else {
+        return e1.toString().localeCompare(e2.toString(), undefined, {
+          numeric: true
+        });
+      }
+    },
     editItemModal(item) {
       this.editModalActive = true;
       this.selectedRowEdit = JSON.parse(JSON.stringify(item));
