@@ -1,3 +1,4 @@
+
 module.exports = [
   {
     "car_number": 68,
@@ -5,7 +6,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 1,
-    lap_time: 134,
+    "Total Time in secs": 134,
     "driver_initial": "D1"
   },
   {
@@ -14,7 +15,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 2,
-    lap_time: 122,
+    "Total Time in secs": 122,
     "driver_initial": "D1"
   },
   {
@@ -23,7 +24,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 3,
-    lap_time: 123,
+    "Total Time in secs": 123,
     "driver_initial": "D1"
   },
   {
@@ -32,7 +33,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 4,
-    lap_time: 122,
+    "Total Time in secs": 122,
     "driver_initial": "D1"
   },
   {
@@ -41,7 +42,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 5,
-    lap_time: 118,
+    "Total Time in secs": 118,
     "driver_initial": "D1"
   },
   {
@@ -50,7 +51,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 6,
-    lap_time: 120,
+    "Total Time in secs": 120,
     "driver_initial": "D1"
   },
   {
@@ -59,7 +60,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 7,
-    lap_time: 140,
+    "Total Time in secs": 140,
     "driver_initial": "D1"
   },
   {
@@ -68,7 +69,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 8,
-    lap_time: 120,
+    "Total Time in secs": 120,
     "driver_initial": "D1"
   },
   {
@@ -77,7 +78,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 9,
-    lap_time: 121,
+    "Total Time in secs": 121,
     "driver_initial": "D1"
   },
   {
@@ -86,7 +87,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 10,
-    lap_time: 119,
+    "Total Time in secs": 119,
     "driver_initial": "D2"
   },
   {
@@ -95,7 +96,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 11,
-    lap_time: 123,
+    "Total Time in secs": 123,
     "driver_initial": "D2"
   },
   {
@@ -104,7 +105,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 12,
-    lap_time: 125,
+    "Total Time in secs": 125,
     "driver_initial": "D2"
   },
   {
@@ -113,7 +114,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 13,
-    lap_time: 130,
+    "Total Time in secs": 130,
     "driver_initial": "D2"
   },
   {
@@ -122,7 +123,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 14,
-    lap_time: 127,
+    "Total Time in secs": 127,
     "driver_initial": "D2"
   },
   {
@@ -131,7 +132,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 15,
-    lap_time: 131,
+    "Total Time in secs": 131,
     "driver_initial": "D2"
   },
   {
@@ -140,7 +141,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 17,
-    lap_time: 139,
+    "Total Time in secs": 139,
     "driver_initial": "D2"
   },
   {
@@ -149,7 +150,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 18,
-    lap_time: 134,
+    "Total Time in secs": 134,
     "driver_initial": "D2"
   },
   {
@@ -158,7 +159,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 19,
-    lap_time: 131,
+    "Total Time in secs": 131,
     "driver_initial": "D2"
   },
   {
@@ -167,7 +168,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 1,
-    lap_time: 130,
+    "Total Time in secs": 130,
     "driver_initial": "D1"
   },
   {
@@ -176,7 +177,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 2,
-    lap_time: 130,
+    "Total Time in secs": 130,
     "driver_initial": "D1"
   },
   {
@@ -185,7 +186,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 3,
-    lap_time: 126,
+    "Total Time in secs": 126,
     "driver_initial": "D1"
   },
   {
@@ -194,7 +195,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 4,
-    lap_time: 124,
+    "Total Time in secs": 124,
     "driver_initial": "D1"
   },
   {
@@ -203,7 +204,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 5,
-    lap_time: 130,
+    "Total Time in secs": 130,
     "driver_initial": "D1"
   },
   {
@@ -212,7 +213,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 6,
-    lap_time: 123,
+    "Total Time in secs": 123,
     "driver_initial": "D1"
   },
   {
@@ -221,7 +222,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 7,
-    lap_time: 125,
+    "Total Time in secs": 125,
     "driver_initial": "D1"
   },
   {
@@ -230,7 +231,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 8,
-    lap_time: 121,
+    "Total Time in secs": 121,
     "driver_initial": "D1"
   },
   {
@@ -239,7 +240,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 9,
-    lap_time: 120,
+    "Total Time in secs": 120,
     "driver_initial": "D1"
   },
   {
@@ -248,7 +249,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 11,
-    lap_time: 174,
+    "Total Time in secs": 174,
     "driver_initial": "D2"
   },
   {
@@ -257,7 +258,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 12,
-    lap_time: 142,
+    "Total Time in secs": 142,
     "driver_initial": "D2"
   },
   {
@@ -266,7 +267,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 13,
-    lap_time: 144,
+    "Total Time in secs": 144,
     "driver_initial": "D2"
   },
   {
@@ -275,7 +276,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 14,
-    lap_time: 147,
+    "Total Time in secs": 147,
     "driver_initial": "D2"
   },
   {
@@ -284,7 +285,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 1,
-    lap_time: 106,
+    "Total Time in secs": 106,
     "driver_initial": "D1"
   },
   {
@@ -293,7 +294,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 2,
-    lap_time: 105,
+    "Total Time in secs": 105,
     "driver_initial": "D1"
   },
   {
@@ -302,7 +303,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 3,
-    lap_time: 114,
+    "Total Time in secs": 114,
     "driver_initial": "D1"
   },
   {
@@ -311,7 +312,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 4,
-    lap_time: 108,
+    "Total Time in secs": 108,
     "driver_initial": "D1"
   },
   {
@@ -320,7 +321,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 5,
-    lap_time: 105,
+    "Total Time in secs": 105,
     "driver_initial": "D1"
   },
   {
@@ -329,7 +330,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 6,
-    lap_time: 101,
+    "Total Time in secs": 101,
     "driver_initial": "D1"
   },
   {
@@ -338,7 +339,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 7,
-    lap_time: 101,
+    "Total Time in secs": 101,
     "driver_initial": "D1"
   },
   {
@@ -347,7 +348,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 8,
-    lap_time: 108,
+    "Total Time in secs": 108,
     "driver_initial": "D1"
   },
   {
@@ -356,7 +357,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 9,
-    lap_time: 118,
+    "Total Time in secs": 118,
     "driver_initial": "D1"
   },
   {
@@ -365,7 +366,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 11,
-    lap_time: 122,
+    "Total Time in secs": 122,
     "driver_initial": "D2"
   },
   {
@@ -374,7 +375,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 12,
-    lap_time: 113,
+    "Total Time in secs": 113,
     "driver_initial": "D2"
   },
   {
@@ -383,7 +384,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 13,
-    lap_time: 107,
+    "Total Time in secs": 107,
     "driver_initial": "D2"
   },
   {
@@ -392,7 +393,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 14,
-    lap_time: 107,
+    "Total Time in secs": 107,
     "driver_initial": "D2"
   },
   {
@@ -401,7 +402,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 15,
-    lap_time: 129,
+    "Total Time in secs": 129,
     "driver_initial": "D2"
   },
   {
@@ -410,7 +411,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 16,
-    lap_time: 127,
+    "Total Time in secs": 127,
     "driver_initial": "D2"
   },
   {
@@ -419,7 +420,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 17,
-    lap_time: 104,
+    "Total Time in secs": 104,
     "driver_initial": "D2"
   },
   {
@@ -428,7 +429,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 18,
-    lap_time: 112,
+    "Total Time in secs": 112,
     "driver_initial": "D2"
   },
   {
@@ -437,161 +438,260 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 19,
-    lap_time: 121,
+    "Total Time in secs": 121,
     "driver_initial": "D2"
   },
   {
-    "car_number": "03",
+    "car_number": 3,
     "team_name": "Raftar Formula Racing",
     "institution_name": "IIT Madras",
     "event_name": "Endurance",
     "lap_number": 1,
-    lap_time: 124,
+    "Total Time in secs": 124,
     "driver_initial": "D1"
   },
   {
-    "car_number": "03",
+    "car_number": 3,
     "team_name": "Raftar Formula Racing",
     "institution_name": "IIT Madras",
     "event_name": "Endurance",
     "lap_number": 2,
-    lap_time: 107,
+    "Total Time in secs": 107,
     "driver_initial": "D1"
   },
   {
-    "car_number": "03",
+    "car_number": 3,
     "team_name": "Raftar Formula Racing",
     "institution_name": "IIT Madras",
     "event_name": "Endurance",
     "lap_number": 3,
-    lap_time: 107,
+    "Total Time in secs": 107,
     "driver_initial": "D1"
   },
   {
-    "car_number": "03",
+    "car_number": 3,
     "team_name": "Raftar Formula Racing",
     "institution_name": "IIT Madras",
     "event_name": "Endurance",
     "lap_number": 4,
-    lap_time: 106,
+    "Total Time in secs": 106,
     "driver_initial": "D1"
   },
   {
-    "car_number": "03",
+    "car_number": 3,
     "team_name": "Raftar Formula Racing",
     "institution_name": "IIT Madras",
     "event_name": "Endurance",
     "lap_number": 5,
-    lap_time: 107,
+    "Total Time in secs": 107,
     "driver_initial": "D1"
   },
   {
-    "car_number": "03",
+    "car_number": 3,
     "team_name": "Raftar Formula Racing",
     "institution_name": "IIT Madras",
     "event_name": "Endurance",
     "lap_number": 6,
-    lap_time: 103,
+    "Total Time in secs": 103,
     "driver_initial": "D1"
   },
   {
-    "car_number": "03",
+    "car_number": 3,
     "team_name": "Raftar Formula Racing",
     "institution_name": "IIT Madras",
     "event_name": "Endurance",
     "lap_number": 7,
-    lap_time: 104,
+    "Total Time in secs": 104,
     "driver_initial": "D1"
   },
   {
-    "car_number": "03",
+    "car_number": 3,
     "team_name": "Raftar Formula Racing",
     "institution_name": "IIT Madras",
     "event_name": "Endurance",
     "lap_number": 8,
-    lap_time: 104,
+    "Total Time in secs": 104,
     "driver_initial": "D1"
   },
   {
-    "car_number": "03",
+    "car_number": 3,
     "team_name": "Raftar Formula Racing",
     "institution_name": "IIT Madras",
     "event_name": "Endurance",
     "lap_number": 9,
-    lap_time: 104,
+    "Total Time in secs": 104,
     "driver_initial": "D1"
   },
   {
-    "car_number": "02",
+    "car_number": 2,
     "team_name": "Team Defianz Racing",
     "institution_name": "DTU",
     "event_name": "Endurance",
     "lap_number": 2,
-    lap_time: 130,
+    "Total Time in secs": 130,
     "driver_initial": "D1"
   },
   {
-    "car_number": "02",
+    "car_number": 2,
     "team_name": "Team Defianz Racing",
     "institution_name": "DTU",
     "event_name": "Endurance",
     "lap_number": 3,
-    lap_time: 130,
+    "Total Time in secs": 130,
     "driver_initial": "D1"
   },
   {
-    "car_number": "02",
+    "car_number": 2,
     "team_name": "Team Defianz Racing",
     "institution_name": "DTU",
     "event_name": "Endurance",
     "lap_number": 4,
-    lap_time: 143,
+    "Total Time in secs": 143,
     "driver_initial": "D1"
   },
   {
-    "car_number": "02",
+    "car_number": 2,
     "team_name": "Team Defianz Racing",
     "institution_name": "DTU",
     "event_name": "Endurance",
     "lap_number": 5,
-    lap_time: 124,
+    "Total Time in secs": 124,
     "driver_initial": "D1"
   },
   {
-    "car_number": "02",
+    "car_number": 2,
     "team_name": "Team Defianz Racing",
     "institution_name": "DTU",
     "event_name": "Endurance",
     "lap_number": 6,
-    lap_time: 111,
+    "Total Time in secs": 111,
     "driver_initial": "D1"
   },
   {
-    "car_number": "02",
+    "car_number": 2,
     "team_name": "Team Defianz Racing",
     "institution_name": "DTU",
     "event_name": "Endurance",
     "lap_number": 7,
-    lap_time: 108,
+    "Total Time in secs": 108,
     "driver_initial": "D1"
   },
   {
-    "car_number": "02",
+    "car_number": 2,
     "team_name": "Team Defianz Racing",
     "institution_name": "DTU",
     "event_name": "Endurance",
     "lap_number": 8,
-    lap_time: 152,
+    "Total Time in secs": 152,
     "driver_initial": "D1"
   },
   {
-    "car_number": "02",
+    "car_number": 2,
     "team_name": "Team Defianz Racing",
     "institution_name": "DTU",
     "event_name": "Endurance",
     "lap_number": 9,
-    lap_time: 135,
+    "Total Time in secs": 135,
     "driver_initial": "D1"
+  },
+  {
+    "car_number": 44,
+    "team_name": "Shaurya Racing",
+    "institution_name": "VIT Chennai",
+    "event_name": "Endurance",
+    "lap_number": 1,
+    "Total Time in secs": 121,
+    "driver_initial": "D1"
+  },
+  {
+    "car_number": 44,
+    "team_name": "Shaurya Racing",
+    "institution_name": "VIT Chennai",
+    "event_name": "Endurance",
+    "lap_number": 2,
+    "Total Time in secs": 142,
+    "driver_initial": "D1"
+  },
+  {
+    "car_number": 44,
+    "team_name": "Shaurya Racing",
+    "institution_name": "VIT Chennai",
+    "event_name": "Endurance",
+    "lap_number": 3,
+    "Total Time in secs": 114,
+    "driver_initial": "D1"
+  },
+  {
+    "car_number": 44,
+    "team_name": "Shaurya Racing",
+    "institution_name": "VIT Chennai",
+    "event_name": "Endurance",
+    "lap_number": 4,
+    "Total Time in secs": 166,
+    "driver_initial": "D1"
+  },
+  {
+    "car_number": 44,
+    "team_name": "Shaurya Racing",
+    "institution_name": "VIT Chennai",
+    "event_name": "Endurance",
+    "lap_number": 5,
+    "Total Time in secs": 133,
+    "driver_initial": "D1"
+  },
+  {
+    "car_number": 44,
+    "team_name": "Shaurya Racing",
+    "institution_name": "VIT Chennai",
+    "event_name": "Endurance",
+    "lap_number": 6,
+    "Total Time in secs": 134,
+    "driver_initial": "D1"
+  },
+  {
+    "car_number": 44,
+    "team_name": "Shaurya Racing",
+    "institution_name": "VIT Chennai",
+    "event_name": "Endurance",
+    "lap_number": 7,
+    "Total Time in secs": 123,
+    "driver_initial": "D1"
+  },
+  {
+    "car_number": 44,
+    "team_name": "Shaurya Racing",
+    "institution_name": "VIT Chennai",
+    "event_name": "Endurance",
+    "lap_number": 8,
+    "Total Time in secs": 147,
+    "driver_initial": "D1"
+  },
+  {
+    "car_number": 44,
+    "team_name": "Shaurya Racing",
+    "institution_name": "VIT Chennai",
+    "event_name": "Endurance",
+    "lap_number": 9,
+    "Total Time in secs": 119,
+    "driver_initial": "D1"
+  },
+  {
+    "car_number": 44,
+    "team_name": "Shaurya Racing",
+    "institution_name": "VIT Chennai",
+    "event_name": "Endurance",
+    "lap_number": 10,
+    "Total Time in secs": 135,
+    "driver_initial": "D2"
+  },
+  {
+    "car_number": 44,
+    "team_name": "Shaurya Racing",
+    "institution_name": "VIT Chennai",
+    "event_name": "Endurance",
+    "lap_number": 11,
+    "Total Time in secs": 145,
+    "driver_initial": "D2"
   },
   {
     "car_number": 44,
@@ -599,8 +699,8 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 12,
-    lap_time: 121,
-    "driver_initial": "D1"
+    "Total Time in secs": 144,
+    "driver_initial": "D2"
   },
   {
     "car_number": 44,
@@ -608,8 +708,8 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 13,
-    lap_time: 142,
-    "driver_initial": "D1"
+    "Total Time in secs": 136,
+    "driver_initial": "D2"
   },
   {
     "car_number": 44,
@@ -617,8 +717,8 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 14,
-    lap_time: 114,
-    "driver_initial": "D1"
+    "Total Time in secs": 133,
+    "driver_initial": "D2"
   },
   {
     "car_number": 44,
@@ -626,8 +726,8 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 15,
-    lap_time: 166,
-    "driver_initial": "D1"
+    "Total Time in secs": 135,
+    "driver_initial": "D2"
   },
   {
     "car_number": 44,
@@ -635,8 +735,8 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 16,
-    lap_time: 133,
-    "driver_initial": "D1"
+    "Total Time in secs": 135,
+    "driver_initial": "D2"
   },
   {
     "car_number": 44,
@@ -644,8 +744,8 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 17,
-    lap_time: 134,
-    "driver_initial": "D1"
+    "Total Time in secs": 136,
+    "driver_initial": "D2"
   },
   {
     "car_number": 44,
@@ -653,232 +753,133 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 18,
-    lap_time: 123,
-    "driver_initial": "D1"
-  },
-  {
-    "car_number": 44,
-    "team_name": "Shaurya Racing",
-    "institution_name": "VIT Chennai",
-    "event_name": "Endurance",
-    "lap_number": 19,
-    lap_time: 147,
-    "driver_initial": "D1"
-  },
-  {
-    "car_number": 44,
-    "team_name": "Shaurya Racing",
-    "institution_name": "VIT Chennai",
-    "event_name": "Endurance",
-    "lap_number": 20,
-    lap_time: 119,
-    "driver_initial": "D1"
-  },
-  {
-    "car_number": 44,
-    "team_name": "Shaurya Racing",
-    "institution_name": "VIT Chennai",
-    "event_name": "Endurance",
-    "lap_number": 22,
-    lap_time: 135,
+    "Total Time in secs": 235,
     "driver_initial": "D2"
   },
   {
-    "car_number": 44,
-    "team_name": "Shaurya Racing",
-    "institution_name": "VIT Chennai",
-    "event_name": "Endurance",
-    "lap_number": 23,
-    lap_time: 145,
-    "driver_initial": "D2"
-  },
-  {
-    "car_number": 44,
-    "team_name": "Shaurya Racing",
-    "institution_name": "VIT Chennai",
-    "event_name": "Endurance",
-    "lap_number": 24,
-    lap_time: 144,
-    "driver_initial": "D2"
-  },
-  {
-    "car_number": 44,
-    "team_name": "Shaurya Racing",
-    "institution_name": "VIT Chennai",
-    "event_name": "Endurance",
-    "lap_number": 25,
-    lap_time: 136,
-    "driver_initial": "D2"
-  },
-  {
-    "car_number": 44,
-    "team_name": "Shaurya Racing",
-    "institution_name": "VIT Chennai",
-    "event_name": "Endurance",
-    "lap_number": 26,
-    lap_time: 133,
-    "driver_initial": "D2"
-  },
-  {
-    "car_number": 44,
-    "team_name": "Shaurya Racing",
-    "institution_name": "VIT Chennai",
-    "event_name": "Endurance",
-    "lap_number": 27,
-    lap_time: 135,
-    "driver_initial": "D2"
-  },
-  {
-    "car_number": 44,
-    "team_name": "Shaurya Racing",
-    "institution_name": "VIT Chennai",
-    "event_name": "Endurance",
-    "lap_number": 28,
-    lap_time: 135,
-    "driver_initial": "D2"
-  },
-  {
-    "car_number": 44,
-    "team_name": "Shaurya Racing",
-    "institution_name": "VIT Chennai",
-    "event_name": "Endurance",
-    "lap_number": 29,
-    lap_time: 136,
-    "driver_initial": "D2"
-  },
-  {
-    "car_number": 44,
-    "team_name": "Shaurya Racing",
-    "institution_name": "VIT Chennai",
-    "event_name": "Endurance",
-    "lap_number": 30,
-    lap_time: 235,
-    "driver_initial": "D2"
-  },
-  {
-    "car_number": "07",
+    "car_number": 7,
     "team_name": "Camber Racing",
     "institution_name": "SRM IST",
     "event_name": "Endurance",
     "lap_number": 1,
-    lap_time: 154,
+    "Total Time in secs": 154,
     "driver_initial": "D1"
   },
   {
-    "car_number": "07",
+    "car_number": 7,
     "team_name": "Camber Racing",
     "institution_name": "SRM IST",
     "event_name": "Endurance",
     "lap_number": 2,
-    lap_time: 149,
+    "Total Time in secs": 149,
     "driver_initial": "D1"
   },
   {
-    "car_number": "07",
+    "car_number": 7,
     "team_name": "Camber Racing",
     "institution_name": "SRM IST",
     "event_name": "Endurance",
     "lap_number": 3,
-    lap_time: 126,
+    "Total Time in secs": 126,
     "driver_initial": "D1"
   },
   {
-    "car_number": "07",
+    "car_number": 7,
+    "team_name": "Camber Racing",
+    "institution_name": "SRM IST",
+    "event_name": "Endurance",
+    "lap_number": 4,
+    "Total Time in secs": 150,
+    "driver_initial": "D1"
+  },
+  {
+    "car_number": 7,
+    "team_name": "Camber Racing",
+    "institution_name": "SRM IST",
+    "event_name": "Endurance",
+    "lap_number": 5,
+    "Total Time in secs": 135,
+    "driver_initial": "D1"
+  },
+  {
+    "car_number": 7,
     "team_name": "Camber Racing",
     "institution_name": "SRM IST",
     "event_name": "Endurance",
     "lap_number": 6,
-    lap_time: 150,
+    "Total Time in secs": 145,
     "driver_initial": "D1"
   },
   {
-    "car_number": "07",
+    "car_number": 7,
     "team_name": "Camber Racing",
     "institution_name": "SRM IST",
     "event_name": "Endurance",
     "lap_number": 7,
-    lap_time: 135,
+    "Total Time in secs": 147,
     "driver_initial": "D1"
   },
   {
-    "car_number": "07",
+    "car_number": 7,
+    "team_name": "Camber Racing",
+    "institution_name": "SRM IST",
+    "event_name": "Endurance",
+    "lap_number": 8,
+    "Total Time in secs": 172,
+    "driver_initial": "D1"
+  },
+  {
+    "car_number": 7,
     "team_name": "Camber Racing",
     "institution_name": "SRM IST",
     "event_name": "Endurance",
     "lap_number": 9,
-    lap_time: 145,
+    "Total Time in secs": 182,
     "driver_initial": "D1"
   },
   {
-    "car_number": "07",
+    "car_number": 7,
     "team_name": "Camber Racing",
     "institution_name": "SRM IST",
     "event_name": "Endurance",
-    "lap_number": 11,
-    lap_time: 147,
-    "driver_initial": "D1"
+    "lap_number": 10,
+    "Total Time in secs": 146,
+    "driver_initial": "D2"
   },
   {
-    "car_number": "07",
+    "car_number": 7,
     "team_name": "Camber Racing",
     "institution_name": "SRM IST",
     "event_name": "Endurance",
     "lap_number": 12,
-    lap_time: 172,
-    "driver_initial": "D1"
+    "Total Time in secs": 140,
+    "driver_initial": "D2"
   },
   {
-    "car_number": "07",
+    "car_number": 7,
+    "team_name": "Camber Racing",
+    "institution_name": "SRM IST",
+    "event_name": "Endurance",
+    "lap_number": 13,
+    "Total Time in secs": 155,
+    "driver_initial": "D2"
+  },
+  {
+    "car_number": 7,
     "team_name": "Camber Racing",
     "institution_name": "SRM IST",
     "event_name": "Endurance",
     "lap_number": 14,
-    lap_time: 182,
-    "driver_initial": "D1"
-  },
-  {
-    "car_number": "07",
-    "team_name": "Camber Racing",
-    "institution_name": "SRM IST",
-    "event_name": "Endurance",
-    "lap_number": 20,
-    lap_time: 146,
+    "Total Time in secs": 155,
     "driver_initial": "D2"
   },
   {
-    "car_number": "07",
+    "car_number": 7,
     "team_name": "Camber Racing",
     "institution_name": "SRM IST",
     "event_name": "Endurance",
-    "lap_number": 21,
-    lap_time: 140,
-    "driver_initial": "D2"
-  },
-  {
-    "car_number": "07",
-    "team_name": "Camber Racing",
-    "institution_name": "SRM IST",
-    "event_name": "Endurance",
-    "lap_number": 25,
-    lap_time: 155,
-    "driver_initial": "D2"
-  },
-  {
-    "car_number": "07",
-    "team_name": "Camber Racing",
-    "institution_name": "SRM IST",
-    "event_name": "Endurance",
-    "lap_number": 26,
-    lap_time: 155,
-    "driver_initial": "D2"
-  },
-  {
-    "car_number": "07",
-    "team_name": "Camber Racing",
-    "institution_name": "SRM IST",
-    "event_name": "Endurance",
-    "lap_number": 28,
-    lap_time: 148,
+    "lap_number": 15,
+    "Total Time in secs": 148,
     "driver_initial": "D2"
   },
   {
@@ -887,7 +888,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 1,
-    lap_time: 155,
+    "Total Time in secs": 155,
     "driver_initial": "D1"
   },
   {
@@ -896,7 +897,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 2,
-    lap_time: 128,
+    "Total Time in secs": 128,
     "driver_initial": "D1"
   },
   {
@@ -905,7 +906,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 3,
-    lap_time: 127,
+    "Total Time in secs": 127,
     "driver_initial": "D1"
   },
   {
@@ -914,7 +915,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 4,
-    lap_time: 129,
+    "Total Time in secs": 129,
     "driver_initial": "D1"
   },
   {
@@ -923,7 +924,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 5,
-    lap_time: 126,
+    "Total Time in secs": 126,
     "driver_initial": "D1"
   },
   {
@@ -932,7 +933,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 6,
-    lap_time: 136,
+    "Total Time in secs": 136,
     "driver_initial": "D1"
   },
   {
@@ -941,7 +942,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 7,
-    lap_time: 131,
+    "Total Time in secs": 131,
     "driver_initial": "D1"
   },
   {
@@ -950,7 +951,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 8,
-    lap_time: 124,
+    "Total Time in secs": 124,
     "driver_initial": "D1"
   },
   {
@@ -959,7 +960,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 9,
-    lap_time: 134,
+    "Total Time in secs": 134,
     "driver_initial": "D1"
   },
   {
@@ -967,8 +968,17 @@ module.exports = [
     "team_name": "Pegasus Racing",
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
+    "lap_number": 10,
+    "Total Time in secs": 115,
+    "driver_initial": "D2"
+  },
+  {
+    "car_number": 71,
+    "team_name": "Pegasus Racing",
+    "institution_name": "PSG College of Technology",
+    "event_name": "Endurance",
     "lap_number": 11,
-    lap_time: 115,
+    "Total Time in secs": 119,
     "driver_initial": "D2"
   },
   {
@@ -977,7 +987,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 12,
-    lap_time: 119,
+    "Total Time in secs": 121,
     "driver_initial": "D2"
   },
   {
@@ -986,7 +996,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 13,
-    lap_time: 121,
+    "Total Time in secs": 125,
     "driver_initial": "D2"
   },
   {
@@ -995,7 +1005,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 14,
-    lap_time: 125,
+    "Total Time in secs": 126,
     "driver_initial": "D2"
   },
   {
@@ -1004,7 +1014,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 15,
-    lap_time: 126,
+    "Total Time in secs": 124,
     "driver_initial": "D2"
   },
   {
@@ -1013,7 +1023,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 16,
-    lap_time: 124,
+    "Total Time in secs": 130,
     "driver_initial": "D2"
   },
   {
@@ -1022,7 +1032,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 17,
-    lap_time: 130,
+    "Total Time in secs": 139,
     "driver_initial": "D2"
   },
   {
@@ -1031,16 +1041,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 18,
-    lap_time: 139,
-    "driver_initial": "D2"
-  },
-  {
-    "car_number": 71,
-    "team_name": "Pegasus Racing",
-    "institution_name": "PSG College of Technology",
-    "event_name": "Endurance",
-    "lap_number": 19,
-    lap_time: 128,
+    "Total Time in secs": 128,
     "driver_initial": "D2"
   },
   {
@@ -1049,7 +1050,7 @@ module.exports = [
     "institution_name": "SPCE Mumbai",
     "event_name": "Endurance",
     "lap_number": 1,
-    lap_time: 135,
+    "Total Time in secs": 135,
     "driver_initial": "D1"
   },
   {
@@ -1058,7 +1059,7 @@ module.exports = [
     "institution_name": "SPCE Mumbai",
     "event_name": "Endurance",
     "lap_number": 2,
-    lap_time: 136,
+    "Total Time in secs": 136,
     "driver_initial": "D1"
   },
   {
@@ -1067,7 +1068,7 @@ module.exports = [
     "institution_name": "SPCE Mumbai",
     "event_name": "Endurance",
     "lap_number": 3,
-    lap_time: 119,
+    "Total Time in secs": 119,
     "driver_initial": "D1"
   },
   {
@@ -1076,7 +1077,7 @@ module.exports = [
     "institution_name": "SPCE Mumbai",
     "event_name": "Endurance",
     "lap_number": 4,
-    lap_time: 117,
+    "Total Time in secs": 117,
     "driver_initial": "D1"
   },
   {
@@ -1085,7 +1086,7 @@ module.exports = [
     "institution_name": "SPCE Mumbai",
     "event_name": "Endurance",
     "lap_number": 5,
-    lap_time: 118,
+    "Total Time in secs": 118,
     "driver_initial": "D1"
   },
   {
@@ -1094,7 +1095,7 @@ module.exports = [
     "institution_name": "SPCE Mumbai",
     "event_name": "Endurance",
     "lap_number": 6,
-    lap_time: 117,
+    "Total Time in secs": 117,
     "driver_initial": "D1"
   },
   {
@@ -1103,7 +1104,7 @@ module.exports = [
     "institution_name": "SPCE Mumbai",
     "event_name": "Endurance",
     "lap_number": 7,
-    lap_time: 119,
+    "Total Time in secs": 119,
     "driver_initial": "D1"
   },
   {
@@ -1112,7 +1113,7 @@ module.exports = [
     "institution_name": "SPCE Mumbai",
     "event_name": "Endurance",
     "lap_number": 8,
-    lap_time: 116,
+    "Total Time in secs": 116,
     "driver_initial": "D1"
   },
   {
@@ -1121,277 +1122,277 @@ module.exports = [
     "institution_name": "SPCE Mumbai",
     "event_name": "Endurance",
     "lap_number": 9,
-    lap_time: 116,
+    "Total Time in secs": 116,
     "driver_initial": "D1"
   },
   {
-    "car_number": "05",
+    "car_number": 5,
     "team_name": "Stallion Motorsport",
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 1,
-    lap_time: 118,
+    "Total Time in secs": 118,
     "driver_initial": "D1"
   },
   {
-    "car_number": "05",
+    "car_number": 5,
     "team_name": "Stallion Motorsport",
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 2,
-    lap_time: 112,
+    "Total Time in secs": 112,
     "driver_initial": "D1"
   },
   {
-    "car_number": "05",
+    "car_number": 5,
     "team_name": "Stallion Motorsport",
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 3,
-    lap_time: 117,
+    "Total Time in secs": 117,
     "driver_initial": "D1"
   },
   {
-    "car_number": "05",
+    "car_number": 5,
     "team_name": "Stallion Motorsport",
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 4,
-    lap_time: 119,
+    "Total Time in secs": 119,
     "driver_initial": "D1"
   },
   {
-    "car_number": "05",
+    "car_number": 5,
     "team_name": "Stallion Motorsport",
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 5,
-    lap_time: 123,
+    "Total Time in secs": 123,
     "driver_initial": "D1"
   },
   {
-    "car_number": "05",
+    "car_number": 5,
     "team_name": "Stallion Motorsport",
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 6,
-    lap_time: 130,
+    "Total Time in secs": 130,
     "driver_initial": "D1"
   },
   {
-    "car_number": "05",
+    "car_number": 5,
     "team_name": "Stallion Motorsport",
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 7,
-    lap_time: 125,
+    "Total Time in secs": 125,
     "driver_initial": "D1"
   },
   {
-    "car_number": "05",
+    "car_number": 5,
     "team_name": "Stallion Motorsport",
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 8,
-    lap_time: 130,
+    "Total Time in secs": 130,
     "driver_initial": "D1"
   },
   {
-    "car_number": "05",
+    "car_number": 5,
     "team_name": "Stallion Motorsport",
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 9,
-    lap_time: 134,
+    "Total Time in secs": 134,
     "driver_initial": "D1"
   },
   {
-    "car_number": "05",
+    "car_number": 5,
+    "team_name": "Stallion Motorsport",
+    "institution_name": "SKNCOE",
+    "event_name": "Endurance",
+    "lap_number": 10,
+    "Total Time in secs": 129,
+    "driver_initial": "D2"
+  },
+  {
+    "car_number": 5,
     "team_name": "Stallion Motorsport",
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 11,
-    lap_time: 129,
+    "Total Time in secs": 119,
     "driver_initial": "D2"
   },
   {
-    "car_number": "05",
+    "car_number": 5,
     "team_name": "Stallion Motorsport",
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 12,
-    lap_time: 119,
+    "Total Time in secs": 129,
     "driver_initial": "D2"
   },
   {
-    "car_number": "05",
-    "team_name": "Stallion Motorsport",
-    "institution_name": "SKNCOE",
+    "car_number": 4,
+    "team_name": "DJS Racing",
+    "institution_name": "DJSCE",
     "event_name": "Endurance",
-    "lap_number": 13,
-    lap_time: 129,
-    "driver_initial": "D2"
+    "lap_number": 1,
+    "Total Time in secs": 146,
+    "driver_initial": "D1"
   },
   {
-    "car_number": "04",
+    "car_number": 4,
+    "team_name": "DJS Racing",
+    "institution_name": "DJSCE",
+    "event_name": "Endurance",
+    "lap_number": 2,
+    "Total Time in secs": 113,
+    "driver_initial": "D1"
+  },
+  {
+    "car_number": 4,
+    "team_name": "DJS Racing",
+    "institution_name": "DJSCE",
+    "event_name": "Endurance",
+    "lap_number": 3,
+    "Total Time in secs": 112,
+    "driver_initial": "D1"
+  },
+  {
+    "car_number": 4,
+    "team_name": "DJS Racing",
+    "institution_name": "DJSCE",
+    "event_name": "Endurance",
+    "lap_number": 4,
+    "Total Time in secs": 121,
+    "driver_initial": "D1"
+  },
+  {
+    "car_number": 4,
+    "team_name": "DJS Racing",
+    "institution_name": "DJSCE",
+    "event_name": "Endurance",
+    "lap_number": 5,
+    "Total Time in secs": 118,
+    "driver_initial": "D1"
+  },
+  {
+    "car_number": 4,
+    "team_name": "DJS Racing",
+    "institution_name": "DJSCE",
+    "event_name": "Endurance",
+    "lap_number": 6,
+    "Total Time in secs": 134,
+    "driver_initial": "D1"
+  },
+  {
+    "car_number": 4,
     "team_name": "DJS Racing",
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 7,
-    lap_time: 146,
+    "Total Time in secs": 137,
     "driver_initial": "D1"
   },
   {
-    "car_number": "04",
+    "car_number": 4,
     "team_name": "DJS Racing",
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 8,
-    lap_time: 113,
+    "Total Time in secs": 126,
     "driver_initial": "D1"
   },
   {
-    "car_number": "04",
+    "car_number": 4,
     "team_name": "DJS Racing",
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 9,
-    lap_time: 112,
+    "Total Time in secs": 132,
     "driver_initial": "D1"
   },
   {
-    "car_number": "04",
+    "car_number": 4,
     "team_name": "DJS Racing",
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 10,
-    lap_time: 121,
-    "driver_initial": "D1"
+    "Total Time in secs": 115,
+    "driver_initial": "D2"
   },
   {
-    "car_number": "04",
+    "car_number": 4,
     "team_name": "DJS Racing",
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 11,
-    lap_time: 118,
-    "driver_initial": "D1"
+    "Total Time in secs": 108,
+    "driver_initial": "D2"
   },
   {
-    "car_number": "04",
+    "car_number": 4,
     "team_name": "DJS Racing",
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 12,
-    lap_time: 134,
-    "driver_initial": "D1"
+    "Total Time in secs": 106,
+    "driver_initial": "D2"
   },
   {
-    "car_number": "04",
+    "car_number": 4,
     "team_name": "DJS Racing",
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 13,
-    lap_time: 137,
-    "driver_initial": "D1"
+    "Total Time in secs": 110,
+    "driver_initial": "D2"
   },
   {
-    "car_number": "04",
+    "car_number": 4,
     "team_name": "DJS Racing",
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 14,
-    lap_time: 126,
-    "driver_initial": "D1"
+    "Total Time in secs": 109,
+    "driver_initial": "D2"
   },
   {
-    "car_number": "04",
+    "car_number": 4,
     "team_name": "DJS Racing",
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 15,
-    lap_time: 132,
-    "driver_initial": "D1"
+    "Total Time in secs": 108,
+    "driver_initial": "D2"
   },
   {
-    "car_number": "04",
+    "car_number": 4,
+    "team_name": "DJS Racing",
+    "institution_name": "DJSCE",
+    "event_name": "Endurance",
+    "lap_number": 16,
+    "Total Time in secs": 108,
+    "driver_initial": "D2"
+  },
+  {
+    "car_number": 4,
     "team_name": "DJS Racing",
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 17,
-    lap_time: 115,
+    "Total Time in secs": 108,
     "driver_initial": "D2"
   },
   {
-    "car_number": "04",
+    "car_number": 4,
     "team_name": "DJS Racing",
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 18,
-    lap_time: 108,
-    "driver_initial": "D2"
-  },
-  {
-    "car_number": "04",
-    "team_name": "DJS Racing",
-    "institution_name": "DJSCE",
-    "event_name": "Endurance",
-    "lap_number": 19,
-    lap_time: 106,
-    "driver_initial": "D2"
-  },
-  {
-    "car_number": "04",
-    "team_name": "DJS Racing",
-    "institution_name": "DJSCE",
-    "event_name": "Endurance",
-    "lap_number": 20,
-    lap_time: 110,
-    "driver_initial": "D2"
-  },
-  {
-    "car_number": "04",
-    "team_name": "DJS Racing",
-    "institution_name": "DJSCE",
-    "event_name": "Endurance",
-    "lap_number": 21,
-    lap_time: 109,
-    "driver_initial": "D2"
-  },
-  {
-    "car_number": "04",
-    "team_name": "DJS Racing",
-    "institution_name": "DJSCE",
-    "event_name": "Endurance",
-    "lap_number": 22,
-    lap_time: 108,
-    "driver_initial": "D2"
-  },
-  {
-    "car_number": "04",
-    "team_name": "DJS Racing",
-    "institution_name": "DJSCE",
-    "event_name": "Endurance",
-    "lap_number": 23,
-    lap_time: 108,
-    "driver_initial": "D2"
-  },
-  {
-    "car_number": "04",
-    "team_name": "DJS Racing",
-    "institution_name": "DJSCE",
-    "event_name": "Endurance",
-    "lap_number": 24,
-    lap_time: 108,
-    "driver_initial": "D2"
-  },
-  {
-    "car_number": "04",
-    "team_name": "DJS Racing",
-    "institution_name": "DJSCE",
-    "event_name": "Endurance",
-    "lap_number": 25,
-    lap_time: 114,
+    "Total Time in secs": 114,
     "driver_initial": "D2"
   },
   {
@@ -1400,7 +1401,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 1,
-    lap_time: 124,
+    "Total Time in secs": 124,
     "driver_initial": "D1"
   },
   {
@@ -1409,7 +1410,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 2,
-    lap_time: 115,
+    "Total Time in secs": 115,
     "driver_initial": "D1"
   },
   {
@@ -1418,7 +1419,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 3,
-    lap_time: 120,
+    "Total Time in secs": 120,
     "driver_initial": "D1"
   },
   {
@@ -1427,7 +1428,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 4,
-    lap_time: 123,
+    "Total Time in secs": 123,
     "driver_initial": "D1"
   },
   {
@@ -1436,7 +1437,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 5,
-    lap_time: 126,
+    "Total Time in secs": 126,
     "driver_initial": "D1"
   },
   {
@@ -1445,7 +1446,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 6,
-    lap_time: 124,
+    "Total Time in secs": 124,
     "driver_initial": "D1"
   },
   {
@@ -1454,7 +1455,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 7,
-    lap_time: 137,
+    "Total Time in secs": 137,
     "driver_initial": "D1"
   },
   {
@@ -1463,7 +1464,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 8,
-    lap_time: 130,
+    "Total Time in secs": 130,
     "driver_initial": "D1"
   },
   {
@@ -1472,7 +1473,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 9,
-    lap_time: 116,
+    "Total Time in secs": 116,
     "driver_initial": "D1"
   },
   {
@@ -1480,8 +1481,17 @@ module.exports = [
     "team_name": "Team Octane Racing",
     "institution_name": "COEP",
     "event_name": "Endurance",
+    "lap_number": 10,
+    "Total Time in secs": 122,
+    "driver_initial": "D2"
+  },
+  {
+    "car_number": 27,
+    "team_name": "Team Octane Racing",
+    "institution_name": "COEP",
+    "event_name": "Endurance",
     "lap_number": 11,
-    lap_time: 122,
+    "Total Time in secs": 107,
     "driver_initial": "D2"
   },
   {
@@ -1490,7 +1500,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 12,
-    lap_time: 107,
+    "Total Time in secs": 109,
     "driver_initial": "D2"
   },
   {
@@ -1499,7 +1509,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 13,
-    lap_time: 109,
+    "Total Time in secs": 101,
     "driver_initial": "D2"
   },
   {
@@ -1508,7 +1518,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 14,
-    lap_time: 101,
+    "Total Time in secs": 106,
     "driver_initial": "D2"
   },
   {
@@ -1517,7 +1527,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 15,
-    lap_time: 106,
+    "Total Time in secs": 98,
     "driver_initial": "D2"
   },
   {
@@ -1526,7 +1536,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 16,
-    lap_time: 98,
+    "Total Time in secs": 104,
     "driver_initial": "D2"
   },
   {
@@ -1535,7 +1545,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 17,
-    lap_time: 104,
+    "Total Time in secs": 99,
     "driver_initial": "D2"
   },
   {
@@ -1544,16 +1554,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 18,
-    lap_time: 99,
-    "driver_initial": "D2"
-  },
-  {
-    "car_number": 27,
-    "team_name": "Team Octane Racing",
-    "institution_name": "COEP",
-    "event_name": "Endurance",
-    "lap_number": 19,
-    lap_time: 116,
+    "Total Time in secs": 116,
     "driver_initial": "D2"
   },
   {
@@ -1562,7 +1563,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 1,
-    lap_time: 124,
+    "Total Time in secs": 124,
     "driver_initial": "D1"
   },
   {
@@ -1571,7 +1572,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 2,
-    lap_time: 115,
+    "Total Time in secs": 115,
     "driver_initial": "D1"
   },
   {
@@ -1580,7 +1581,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 3,
-    lap_time: 112,
+    "Total Time in secs": 112,
     "driver_initial": "D1"
   },
   {
@@ -1589,7 +1590,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 4,
-    lap_time: 114,
+    "Total Time in secs": 114,
     "driver_initial": "D1"
   },
   {
@@ -1598,7 +1599,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 5,
-    lap_time: 115,
+    "Total Time in secs": 115,
     "driver_initial": "D1"
   },
   {
@@ -1607,7 +1608,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 6,
-    lap_time: 109,
+    "Total Time in secs": 109,
     "driver_initial": "D1"
   },
   {
@@ -1616,7 +1617,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 7,
-    lap_time: 109,
+    "Total Time in secs": 109,
     "driver_initial": "D1"
   },
   {
@@ -1625,7 +1626,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 8,
-    lap_time: 114,
+    "Total Time in secs": 114,
     "driver_initial": "D1"
   },
   {
@@ -1634,7 +1635,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 9,
-    lap_time: 107,
+    "Total Time in secs": 107,
     "driver_initial": "D1"
   },
   {
@@ -1642,8 +1643,17 @@ module.exports = [
     "team_name": "GTU Motorsports",
     "institution_name": "GTU",
     "event_name": "Endurance",
+    "lap_number": 10,
+    "Total Time in secs": 119,
+    "driver_initial": "D2"
+  },
+  {
+    "car_number": 16,
+    "team_name": "GTU Motorsports",
+    "institution_name": "GTU",
+    "event_name": "Endurance",
     "lap_number": 11,
-    lap_time: 119,
+    "Total Time in secs": 103,
     "driver_initial": "D2"
   },
   {
@@ -1652,7 +1662,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 12,
-    lap_time: 103,
+    "Total Time in secs": 101,
     "driver_initial": "D2"
   },
   {
@@ -1661,7 +1671,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 13,
-    lap_time: 101,
+    "Total Time in secs": 97,
     "driver_initial": "D2"
   },
   {
@@ -1670,7 +1680,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 14,
-    lap_time: 97,
+    "Total Time in secs": 99,
     "driver_initial": "D2"
   },
   {
@@ -1679,7 +1689,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 15,
-    lap_time: 99,
+    "Total Time in secs": 103,
     "driver_initial": "D2"
   },
   {
@@ -1688,7 +1698,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 16,
-    lap_time: 103,
+    "Total Time in secs": 109,
     "driver_initial": "D2"
   },
   {
@@ -1697,7 +1707,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 17,
-    lap_time: 109,
+    "Total Time in secs": 99,
     "driver_initial": "D2"
   },
   {
@@ -1706,16 +1716,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 18,
-    lap_time: 99,
-    "driver_initial": "D2"
-  },
-  {
-    "car_number": 16,
-    "team_name": "GTU Motorsports",
-    "institution_name": "GTU",
-    "event_name": "Endurance",
-    "lap_number": 19,
-    lap_time: 99,
+    "Total Time in secs": 99,
     "driver_initial": "D2"
   },
   {
@@ -1724,7 +1725,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 1,
-    lap_time: 139,
+    "Total Time in secs": 139,
     "driver_initial": "D1"
   },
   {
@@ -1733,7 +1734,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 2,
-    lap_time: 127,
+    "Total Time in secs": 127,
     "driver_initial": "D1"
   },
   {
@@ -1742,7 +1743,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 3,
-    lap_time: 122,
+    "Total Time in secs": 122,
     "driver_initial": "D1"
   },
   {
@@ -1751,7 +1752,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 4,
-    lap_time: 123,
+    "Total Time in secs": 123,
     "driver_initial": "D1"
   },
   {
@@ -1760,7 +1761,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 5,
-    lap_time: 122,
+    "Total Time in secs": 122,
     "driver_initial": "D1"
   },
   {
@@ -1769,7 +1770,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 6,
-    lap_time: 121,
+    "Total Time in secs": 121,
     "driver_initial": "D1"
   },
   {
@@ -1778,7 +1779,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 7,
-    lap_time: 118,
+    "Total Time in secs": 118,
     "driver_initial": "D1"
   },
   {
@@ -1787,7 +1788,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 8,
-    lap_time: 118,
+    "Total Time in secs": 118,
     "driver_initial": "D1"
   },
   {
@@ -1796,7 +1797,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 9,
-    lap_time: 125,
+    "Total Time in secs": 125,
     "driver_initial": "D1"
   },
   {
@@ -1805,7 +1806,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 10,
-    lap_time: 143,
+    "Total Time in secs": 143,
     "driver_initial": "D2"
   },
   {
@@ -1814,7 +1815,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 11,
-    lap_time: 120,
+    "Total Time in secs": 120,
     "driver_initial": "D2"
   },
   {
@@ -1823,7 +1824,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 12,
-    lap_time: 114,
+    "Total Time in secs": 114,
     "driver_initial": "D2"
   },
   {
@@ -1832,7 +1833,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 13,
-    lap_time: 114,
+    "Total Time in secs": 114,
     "driver_initial": "D2"
   },
   {
@@ -1841,7 +1842,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 14,
-    lap_time: 113,
+    "Total Time in secs": 113,
     "driver_initial": "D2"
   },
   {
@@ -1850,7 +1851,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 15,
-    lap_time: 113,
+    "Total Time in secs": 113,
     "driver_initial": "D2"
   },
   {
@@ -1859,7 +1860,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 16,
-    lap_time: 113,
+    "Total Time in secs": 113,
     "driver_initial": "D2"
   },
   {
@@ -1868,7 +1869,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 17,
-    lap_time: 118,
+    "Total Time in secs": 118,
     "driver_initial": "D2"
   },
   {
@@ -1877,7 +1878,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 18,
-    lap_time: 113,
+    "Total Time in secs": 113,
     "driver_initial": "D2"
   }
 ]
