@@ -1,4 +1,3 @@
-
 module.exports = [
   {
     "car_number": 68,
@@ -6,7 +5,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 1,
-    "Total Time in secs": 134,
+    "lap_time": 134,
     "driver_initial": "D1"
   },
   {
@@ -15,7 +14,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 2,
-    "Total Time in secs": 122,
+    "lap_time": 122,
     "driver_initial": "D1"
   },
   {
@@ -24,7 +23,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 3,
-    "Total Time in secs": 123,
+    "lap_time": 123,
     "driver_initial": "D1"
   },
   {
@@ -33,7 +32,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 4,
-    "Total Time in secs": 122,
+    "lap_time": 122,
     "driver_initial": "D1"
   },
   {
@@ -42,7 +41,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 5,
-    "Total Time in secs": 118,
+    "lap_time": 118,
     "driver_initial": "D1"
   },
   {
@@ -51,7 +50,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 6,
-    "Total Time in secs": 120,
+    "lap_time": 120,
     "driver_initial": "D1"
   },
   {
@@ -60,7 +59,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 7,
-    "Total Time in secs": 140,
+    "lap_time": 140,
     "driver_initial": "D1"
   },
   {
@@ -69,7 +68,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 8,
-    "Total Time in secs": 120,
+    "lap_time": 120,
     "driver_initial": "D1"
   },
   {
@@ -78,7 +77,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 9,
-    "Total Time in secs": 121,
+    "lap_time": 121,
     "driver_initial": "D1"
   },
   {
@@ -87,7 +86,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 10,
-    "Total Time in secs": 119,
+    "lap_time": 119,
     "driver_initial": "D2"
   },
   {
@@ -96,7 +95,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 11,
-    "Total Time in secs": 123,
+    "lap_time": 123,
     "driver_initial": "D2"
   },
   {
@@ -105,7 +104,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 12,
-    "Total Time in secs": 125,
+    "lap_time": 125,
     "driver_initial": "D2"
   },
   {
@@ -114,7 +113,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 13,
-    "Total Time in secs": 130,
+    "lap_time": 130,
     "driver_initial": "D2"
   },
   {
@@ -123,7 +122,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 14,
-    "Total Time in secs": 127,
+    "lap_time": 127,
     "driver_initial": "D2"
   },
   {
@@ -132,7 +131,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 15,
-    "Total Time in secs": 131,
+    "lap_time": 131,
     "driver_initial": "D2"
   },
   {
@@ -141,7 +140,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 17,
-    "Total Time in secs": 139,
+    "lap_time": 139,
     "driver_initial": "D2"
   },
   {
@@ -150,7 +149,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 18,
-    "Total Time in secs": 134,
+    "lap_time": 134,
     "driver_initial": "D2"
   },
   {
@@ -159,7 +158,7 @@ module.exports = [
     "institution_name": "MAHE",
     "event_name": "Endurance",
     "lap_number": 19,
-    "Total Time in secs": 131,
+    "lap_time": 131,
     "driver_initial": "D2"
   },
   {
@@ -168,7 +167,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 1,
-    "Total Time in secs": 130,
+    "lap_time": 130,
     "driver_initial": "D1"
   },
   {
@@ -177,7 +176,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 2,
-    "Total Time in secs": 130,
+    "lap_time": 130,
     "driver_initial": "D1"
   },
   {
@@ -186,7 +185,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 3,
-    "Total Time in secs": 126,
+    "lap_time": 126,
     "driver_initial": "D1"
   },
   {
@@ -195,7 +194,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 4,
-    "Total Time in secs": 124,
+    "lap_time": 124,
     "driver_initial": "D1"
   },
   {
@@ -204,7 +203,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 5,
-    "Total Time in secs": 130,
+    "lap_time": 130,
     "driver_initial": "D1"
   },
   {
@@ -213,7 +212,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 6,
-    "Total Time in secs": 123,
+    "lap_time": 123,
     "driver_initial": "D1"
   },
   {
@@ -222,7 +221,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 7,
-    "Total Time in secs": 125,
+    "lap_time": 125,
     "driver_initial": "D1"
   },
   {
@@ -231,7 +230,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 8,
-    "Total Time in secs": 121,
+    "lap_time": 121,
     "driver_initial": "D1"
   },
   {
@@ -240,7 +239,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 9,
-    "Total Time in secs": 120,
+    "lap_time": 120,
     "driver_initial": "D1"
   },
   {
@@ -249,7 +248,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 11,
-    "Total Time in secs": 174,
+    "lap_time": 174,
     "driver_initial": "D2"
   },
   {
@@ -258,7 +257,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 12,
-    "Total Time in secs": 142,
+    "lap_time": 142,
     "driver_initial": "D2"
   },
   {
@@ -267,7 +266,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 13,
-    "Total Time in secs": 144,
+    "lap_time": 144,
     "driver_initial": "D2"
   },
   {
@@ -276,7 +275,7 @@ module.exports = [
     "institution_name": "LPU",
     "event_name": "Endurance",
     "lap_number": 14,
-    "Total Time in secs": 147,
+    "lap_time": 147,
     "driver_initial": "D2"
   },
   {
@@ -285,7 +284,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 1,
-    "Total Time in secs": 106,
+    "lap_time": 106,
     "driver_initial": "D1"
   },
   {
@@ -294,7 +293,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 2,
-    "Total Time in secs": 105,
+    "lap_time": 105,
     "driver_initial": "D1"
   },
   {
@@ -303,7 +302,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 3,
-    "Total Time in secs": 114,
+    "lap_time": 114,
     "driver_initial": "D1"
   },
   {
@@ -312,7 +311,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 4,
-    "Total Time in secs": 108,
+    "lap_time": 108,
     "driver_initial": "D1"
   },
   {
@@ -321,7 +320,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 5,
-    "Total Time in secs": 105,
+    "lap_time": 105,
     "driver_initial": "D1"
   },
   {
@@ -330,7 +329,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 6,
-    "Total Time in secs": 101,
+    "lap_time": 101,
     "driver_initial": "D1"
   },
   {
@@ -339,7 +338,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 7,
-    "Total Time in secs": 101,
+    "lap_time": 101,
     "driver_initial": "D1"
   },
   {
@@ -348,7 +347,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 8,
-    "Total Time in secs": 108,
+    "lap_time": 108,
     "driver_initial": "D1"
   },
   {
@@ -357,7 +356,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 9,
-    "Total Time in secs": 118,
+    "lap_time": 118,
     "driver_initial": "D1"
   },
   {
@@ -366,7 +365,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 11,
-    "Total Time in secs": 122,
+    "lap_time": 122,
     "driver_initial": "D2"
   },
   {
@@ -375,7 +374,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 12,
-    "Total Time in secs": 113,
+    "lap_time": 113,
     "driver_initial": "D2"
   },
   {
@@ -384,7 +383,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 13,
-    "Total Time in secs": 107,
+    "lap_time": 107,
     "driver_initial": "D2"
   },
   {
@@ -393,7 +392,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 14,
-    "Total Time in secs": 107,
+    "lap_time": 107,
     "driver_initial": "D2"
   },
   {
@@ -402,7 +401,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 15,
-    "Total Time in secs": 129,
+    "lap_time": 129,
     "driver_initial": "D2"
   },
   {
@@ -411,7 +410,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 16,
-    "Total Time in secs": 127,
+    "lap_time": 127,
     "driver_initial": "D2"
   },
   {
@@ -420,7 +419,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 17,
-    "Total Time in secs": 104,
+    "lap_time": 104,
     "driver_initial": "D2"
   },
   {
@@ -429,7 +428,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 18,
-    "Total Time in secs": 112,
+    "lap_time": 112,
     "driver_initial": "D2"
   },
   {
@@ -438,7 +437,7 @@ module.exports = [
     "institution_name": "MIT-WPU",
     "event_name": "Endurance",
     "lap_number": 19,
-    "Total Time in secs": 121,
+    "lap_time": 121,
     "driver_initial": "D2"
   },
   {
@@ -447,7 +446,7 @@ module.exports = [
     "institution_name": "IIT Madras",
     "event_name": "Endurance",
     "lap_number": 1,
-    "Total Time in secs": 124,
+    "lap_time": 124,
     "driver_initial": "D1"
   },
   {
@@ -456,7 +455,7 @@ module.exports = [
     "institution_name": "IIT Madras",
     "event_name": "Endurance",
     "lap_number": 2,
-    "Total Time in secs": 107,
+    "lap_time": 107,
     "driver_initial": "D1"
   },
   {
@@ -465,7 +464,7 @@ module.exports = [
     "institution_name": "IIT Madras",
     "event_name": "Endurance",
     "lap_number": 3,
-    "Total Time in secs": 107,
+    "lap_time": 107,
     "driver_initial": "D1"
   },
   {
@@ -474,7 +473,7 @@ module.exports = [
     "institution_name": "IIT Madras",
     "event_name": "Endurance",
     "lap_number": 4,
-    "Total Time in secs": 106,
+    "lap_time": 106,
     "driver_initial": "D1"
   },
   {
@@ -483,7 +482,7 @@ module.exports = [
     "institution_name": "IIT Madras",
     "event_name": "Endurance",
     "lap_number": 5,
-    "Total Time in secs": 107,
+    "lap_time": 107,
     "driver_initial": "D1"
   },
   {
@@ -492,7 +491,7 @@ module.exports = [
     "institution_name": "IIT Madras",
     "event_name": "Endurance",
     "lap_number": 6,
-    "Total Time in secs": 103,
+    "lap_time": 103,
     "driver_initial": "D1"
   },
   {
@@ -501,7 +500,7 @@ module.exports = [
     "institution_name": "IIT Madras",
     "event_name": "Endurance",
     "lap_number": 7,
-    "Total Time in secs": 104,
+    "lap_time": 104,
     "driver_initial": "D1"
   },
   {
@@ -510,7 +509,7 @@ module.exports = [
     "institution_name": "IIT Madras",
     "event_name": "Endurance",
     "lap_number": 8,
-    "Total Time in secs": 104,
+    "lap_time": 104,
     "driver_initial": "D1"
   },
   {
@@ -519,7 +518,7 @@ module.exports = [
     "institution_name": "IIT Madras",
     "event_name": "Endurance",
     "lap_number": 9,
-    "Total Time in secs": 104,
+    "lap_time": 104,
     "driver_initial": "D1"
   },
   {
@@ -528,7 +527,7 @@ module.exports = [
     "institution_name": "DTU",
     "event_name": "Endurance",
     "lap_number": 2,
-    "Total Time in secs": 130,
+    "lap_time": 130,
     "driver_initial": "D1"
   },
   {
@@ -537,7 +536,7 @@ module.exports = [
     "institution_name": "DTU",
     "event_name": "Endurance",
     "lap_number": 3,
-    "Total Time in secs": 130,
+    "lap_time": 130,
     "driver_initial": "D1"
   },
   {
@@ -546,7 +545,7 @@ module.exports = [
     "institution_name": "DTU",
     "event_name": "Endurance",
     "lap_number": 4,
-    "Total Time in secs": 143,
+    "lap_time": 143,
     "driver_initial": "D1"
   },
   {
@@ -555,7 +554,7 @@ module.exports = [
     "institution_name": "DTU",
     "event_name": "Endurance",
     "lap_number": 5,
-    "Total Time in secs": 124,
+    "lap_time": 124,
     "driver_initial": "D1"
   },
   {
@@ -564,7 +563,7 @@ module.exports = [
     "institution_name": "DTU",
     "event_name": "Endurance",
     "lap_number": 6,
-    "Total Time in secs": 111,
+    "lap_time": 111,
     "driver_initial": "D1"
   },
   {
@@ -573,7 +572,7 @@ module.exports = [
     "institution_name": "DTU",
     "event_name": "Endurance",
     "lap_number": 7,
-    "Total Time in secs": 108,
+    "lap_time": 108,
     "driver_initial": "D1"
   },
   {
@@ -582,7 +581,7 @@ module.exports = [
     "institution_name": "DTU",
     "event_name": "Endurance",
     "lap_number": 8,
-    "Total Time in secs": 152,
+    "lap_time": 152,
     "driver_initial": "D1"
   },
   {
@@ -591,7 +590,7 @@ module.exports = [
     "institution_name": "DTU",
     "event_name": "Endurance",
     "lap_number": 9,
-    "Total Time in secs": 135,
+    "lap_time": 135,
     "driver_initial": "D1"
   },
   {
@@ -600,7 +599,7 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 1,
-    "Total Time in secs": 121,
+    "lap_time": 121,
     "driver_initial": "D1"
   },
   {
@@ -609,7 +608,7 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 2,
-    "Total Time in secs": 142,
+    "lap_time": 142,
     "driver_initial": "D1"
   },
   {
@@ -618,7 +617,7 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 3,
-    "Total Time in secs": 114,
+    "lap_time": 114,
     "driver_initial": "D1"
   },
   {
@@ -627,7 +626,7 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 4,
-    "Total Time in secs": 166,
+    "lap_time": 166,
     "driver_initial": "D1"
   },
   {
@@ -636,7 +635,7 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 5,
-    "Total Time in secs": 133,
+    "lap_time": 133,
     "driver_initial": "D1"
   },
   {
@@ -645,7 +644,7 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 6,
-    "Total Time in secs": 134,
+    "lap_time": 134,
     "driver_initial": "D1"
   },
   {
@@ -654,7 +653,7 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 7,
-    "Total Time in secs": 123,
+    "lap_time": 123,
     "driver_initial": "D1"
   },
   {
@@ -663,7 +662,7 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 8,
-    "Total Time in secs": 147,
+    "lap_time": 147,
     "driver_initial": "D1"
   },
   {
@@ -672,7 +671,7 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 9,
-    "Total Time in secs": 119,
+    "lap_time": 119,
     "driver_initial": "D1"
   },
   {
@@ -681,7 +680,7 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 10,
-    "Total Time in secs": 135,
+    "lap_time": 135,
     "driver_initial": "D2"
   },
   {
@@ -690,7 +689,7 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 11,
-    "Total Time in secs": 145,
+    "lap_time": 145,
     "driver_initial": "D2"
   },
   {
@@ -699,7 +698,7 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 12,
-    "Total Time in secs": 144,
+    "lap_time": 144,
     "driver_initial": "D2"
   },
   {
@@ -708,7 +707,7 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 13,
-    "Total Time in secs": 136,
+    "lap_time": 136,
     "driver_initial": "D2"
   },
   {
@@ -717,7 +716,7 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 14,
-    "Total Time in secs": 133,
+    "lap_time": 133,
     "driver_initial": "D2"
   },
   {
@@ -726,7 +725,7 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 15,
-    "Total Time in secs": 135,
+    "lap_time": 135,
     "driver_initial": "D2"
   },
   {
@@ -735,7 +734,7 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 16,
-    "Total Time in secs": 135,
+    "lap_time": 135,
     "driver_initial": "D2"
   },
   {
@@ -744,7 +743,7 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 17,
-    "Total Time in secs": 136,
+    "lap_time": 136,
     "driver_initial": "D2"
   },
   {
@@ -753,7 +752,7 @@ module.exports = [
     "institution_name": "VIT Chennai",
     "event_name": "Endurance",
     "lap_number": 18,
-    "Total Time in secs": 235,
+    "lap_time": 235,
     "driver_initial": "D2"
   },
   {
@@ -762,7 +761,7 @@ module.exports = [
     "institution_name": "SRM IST",
     "event_name": "Endurance",
     "lap_number": 1,
-    "Total Time in secs": 154,
+    "lap_time": 154,
     "driver_initial": "D1"
   },
   {
@@ -771,7 +770,7 @@ module.exports = [
     "institution_name": "SRM IST",
     "event_name": "Endurance",
     "lap_number": 2,
-    "Total Time in secs": 149,
+    "lap_time": 149,
     "driver_initial": "D1"
   },
   {
@@ -780,7 +779,7 @@ module.exports = [
     "institution_name": "SRM IST",
     "event_name": "Endurance",
     "lap_number": 3,
-    "Total Time in secs": 126,
+    "lap_time": 126,
     "driver_initial": "D1"
   },
   {
@@ -789,7 +788,7 @@ module.exports = [
     "institution_name": "SRM IST",
     "event_name": "Endurance",
     "lap_number": 4,
-    "Total Time in secs": 150,
+    "lap_time": 150,
     "driver_initial": "D1"
   },
   {
@@ -798,7 +797,7 @@ module.exports = [
     "institution_name": "SRM IST",
     "event_name": "Endurance",
     "lap_number": 5,
-    "Total Time in secs": 135,
+    "lap_time": 135,
     "driver_initial": "D1"
   },
   {
@@ -807,7 +806,7 @@ module.exports = [
     "institution_name": "SRM IST",
     "event_name": "Endurance",
     "lap_number": 6,
-    "Total Time in secs": 145,
+    "lap_time": 145,
     "driver_initial": "D1"
   },
   {
@@ -816,7 +815,7 @@ module.exports = [
     "institution_name": "SRM IST",
     "event_name": "Endurance",
     "lap_number": 7,
-    "Total Time in secs": 147,
+    "lap_time": 147,
     "driver_initial": "D1"
   },
   {
@@ -825,7 +824,7 @@ module.exports = [
     "institution_name": "SRM IST",
     "event_name": "Endurance",
     "lap_number": 8,
-    "Total Time in secs": 172,
+    "lap_time": 172,
     "driver_initial": "D1"
   },
   {
@@ -834,7 +833,7 @@ module.exports = [
     "institution_name": "SRM IST",
     "event_name": "Endurance",
     "lap_number": 9,
-    "Total Time in secs": 182,
+    "lap_time": 182,
     "driver_initial": "D1"
   },
   {
@@ -843,7 +842,7 @@ module.exports = [
     "institution_name": "SRM IST",
     "event_name": "Endurance",
     "lap_number": 10,
-    "Total Time in secs": 146,
+    "lap_time": 146,
     "driver_initial": "D2"
   },
   {
@@ -852,7 +851,7 @@ module.exports = [
     "institution_name": "SRM IST",
     "event_name": "Endurance",
     "lap_number": 12,
-    "Total Time in secs": 140,
+    "lap_time": 140,
     "driver_initial": "D2"
   },
   {
@@ -861,7 +860,7 @@ module.exports = [
     "institution_name": "SRM IST",
     "event_name": "Endurance",
     "lap_number": 13,
-    "Total Time in secs": 155,
+    "lap_time": 155,
     "driver_initial": "D2"
   },
   {
@@ -870,7 +869,7 @@ module.exports = [
     "institution_name": "SRM IST",
     "event_name": "Endurance",
     "lap_number": 14,
-    "Total Time in secs": 155,
+    "lap_time": 155,
     "driver_initial": "D2"
   },
   {
@@ -879,7 +878,7 @@ module.exports = [
     "institution_name": "SRM IST",
     "event_name": "Endurance",
     "lap_number": 15,
-    "Total Time in secs": 148,
+    "lap_time": 148,
     "driver_initial": "D2"
   },
   {
@@ -888,7 +887,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 1,
-    "Total Time in secs": 155,
+    "lap_time": 155,
     "driver_initial": "D1"
   },
   {
@@ -897,7 +896,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 2,
-    "Total Time in secs": 128,
+    "lap_time": 128,
     "driver_initial": "D1"
   },
   {
@@ -906,7 +905,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 3,
-    "Total Time in secs": 127,
+    "lap_time": 127,
     "driver_initial": "D1"
   },
   {
@@ -915,7 +914,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 4,
-    "Total Time in secs": 129,
+    "lap_time": 129,
     "driver_initial": "D1"
   },
   {
@@ -924,7 +923,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 5,
-    "Total Time in secs": 126,
+    "lap_time": 126,
     "driver_initial": "D1"
   },
   {
@@ -933,7 +932,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 6,
-    "Total Time in secs": 136,
+    "lap_time": 136,
     "driver_initial": "D1"
   },
   {
@@ -942,7 +941,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 7,
-    "Total Time in secs": 131,
+    "lap_time": 131,
     "driver_initial": "D1"
   },
   {
@@ -951,7 +950,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 8,
-    "Total Time in secs": 124,
+    "lap_time": 124,
     "driver_initial": "D1"
   },
   {
@@ -960,7 +959,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 9,
-    "Total Time in secs": 134,
+    "lap_time": 134,
     "driver_initial": "D1"
   },
   {
@@ -969,7 +968,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 10,
-    "Total Time in secs": 115,
+    "lap_time": 115,
     "driver_initial": "D2"
   },
   {
@@ -978,7 +977,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 11,
-    "Total Time in secs": 119,
+    "lap_time": 119,
     "driver_initial": "D2"
   },
   {
@@ -987,7 +986,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 12,
-    "Total Time in secs": 121,
+    "lap_time": 121,
     "driver_initial": "D2"
   },
   {
@@ -996,7 +995,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 13,
-    "Total Time in secs": 125,
+    "lap_time": 125,
     "driver_initial": "D2"
   },
   {
@@ -1005,7 +1004,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 14,
-    "Total Time in secs": 126,
+    "lap_time": 126,
     "driver_initial": "D2"
   },
   {
@@ -1014,7 +1013,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 15,
-    "Total Time in secs": 124,
+    "lap_time": 124,
     "driver_initial": "D2"
   },
   {
@@ -1023,7 +1022,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 16,
-    "Total Time in secs": 130,
+    "lap_time": 130,
     "driver_initial": "D2"
   },
   {
@@ -1032,7 +1031,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 17,
-    "Total Time in secs": 139,
+    "lap_time": 139,
     "driver_initial": "D2"
   },
   {
@@ -1041,7 +1040,7 @@ module.exports = [
     "institution_name": "PSG College of Technology",
     "event_name": "Endurance",
     "lap_number": 18,
-    "Total Time in secs": 128,
+    "lap_time": 128,
     "driver_initial": "D2"
   },
   {
@@ -1050,7 +1049,7 @@ module.exports = [
     "institution_name": "SPCE Mumbai",
     "event_name": "Endurance",
     "lap_number": 1,
-    "Total Time in secs": 135,
+    "lap_time": 135,
     "driver_initial": "D1"
   },
   {
@@ -1059,7 +1058,7 @@ module.exports = [
     "institution_name": "SPCE Mumbai",
     "event_name": "Endurance",
     "lap_number": 2,
-    "Total Time in secs": 136,
+    "lap_time": 136,
     "driver_initial": "D1"
   },
   {
@@ -1068,7 +1067,7 @@ module.exports = [
     "institution_name": "SPCE Mumbai",
     "event_name": "Endurance",
     "lap_number": 3,
-    "Total Time in secs": 119,
+    "lap_time": 119,
     "driver_initial": "D1"
   },
   {
@@ -1077,7 +1076,7 @@ module.exports = [
     "institution_name": "SPCE Mumbai",
     "event_name": "Endurance",
     "lap_number": 4,
-    "Total Time in secs": 117,
+    "lap_time": 117,
     "driver_initial": "D1"
   },
   {
@@ -1086,7 +1085,7 @@ module.exports = [
     "institution_name": "SPCE Mumbai",
     "event_name": "Endurance",
     "lap_number": 5,
-    "Total Time in secs": 118,
+    "lap_time": 118,
     "driver_initial": "D1"
   },
   {
@@ -1095,7 +1094,7 @@ module.exports = [
     "institution_name": "SPCE Mumbai",
     "event_name": "Endurance",
     "lap_number": 6,
-    "Total Time in secs": 117,
+    "lap_time": 117,
     "driver_initial": "D1"
   },
   {
@@ -1104,7 +1103,7 @@ module.exports = [
     "institution_name": "SPCE Mumbai",
     "event_name": "Endurance",
     "lap_number": 7,
-    "Total Time in secs": 119,
+    "lap_time": 119,
     "driver_initial": "D1"
   },
   {
@@ -1113,7 +1112,7 @@ module.exports = [
     "institution_name": "SPCE Mumbai",
     "event_name": "Endurance",
     "lap_number": 8,
-    "Total Time in secs": 116,
+    "lap_time": 116,
     "driver_initial": "D1"
   },
   {
@@ -1122,7 +1121,7 @@ module.exports = [
     "institution_name": "SPCE Mumbai",
     "event_name": "Endurance",
     "lap_number": 9,
-    "Total Time in secs": 116,
+    "lap_time": 116,
     "driver_initial": "D1"
   },
   {
@@ -1131,7 +1130,7 @@ module.exports = [
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 1,
-    "Total Time in secs": 118,
+    "lap_time": 118,
     "driver_initial": "D1"
   },
   {
@@ -1140,7 +1139,7 @@ module.exports = [
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 2,
-    "Total Time in secs": 112,
+    "lap_time": 112,
     "driver_initial": "D1"
   },
   {
@@ -1149,7 +1148,7 @@ module.exports = [
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 3,
-    "Total Time in secs": 117,
+    "lap_time": 117,
     "driver_initial": "D1"
   },
   {
@@ -1158,7 +1157,7 @@ module.exports = [
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 4,
-    "Total Time in secs": 119,
+    "lap_time": 119,
     "driver_initial": "D1"
   },
   {
@@ -1167,7 +1166,7 @@ module.exports = [
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 5,
-    "Total Time in secs": 123,
+    "lap_time": 123,
     "driver_initial": "D1"
   },
   {
@@ -1176,7 +1175,7 @@ module.exports = [
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 6,
-    "Total Time in secs": 130,
+    "lap_time": 130,
     "driver_initial": "D1"
   },
   {
@@ -1185,7 +1184,7 @@ module.exports = [
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 7,
-    "Total Time in secs": 125,
+    "lap_time": 125,
     "driver_initial": "D1"
   },
   {
@@ -1194,7 +1193,7 @@ module.exports = [
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 8,
-    "Total Time in secs": 130,
+    "lap_time": 130,
     "driver_initial": "D1"
   },
   {
@@ -1203,7 +1202,7 @@ module.exports = [
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 9,
-    "Total Time in secs": 134,
+    "lap_time": 134,
     "driver_initial": "D1"
   },
   {
@@ -1212,7 +1211,7 @@ module.exports = [
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 10,
-    "Total Time in secs": 129,
+    "lap_time": 129,
     "driver_initial": "D2"
   },
   {
@@ -1221,7 +1220,7 @@ module.exports = [
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 11,
-    "Total Time in secs": 119,
+    "lap_time": 119,
     "driver_initial": "D2"
   },
   {
@@ -1230,7 +1229,7 @@ module.exports = [
     "institution_name": "SKNCOE",
     "event_name": "Endurance",
     "lap_number": 12,
-    "Total Time in secs": 129,
+    "lap_time": 129,
     "driver_initial": "D2"
   },
   {
@@ -1239,7 +1238,7 @@ module.exports = [
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 1,
-    "Total Time in secs": 146,
+    "lap_time": 146,
     "driver_initial": "D1"
   },
   {
@@ -1248,7 +1247,7 @@ module.exports = [
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 2,
-    "Total Time in secs": 113,
+    "lap_time": 113,
     "driver_initial": "D1"
   },
   {
@@ -1257,7 +1256,7 @@ module.exports = [
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 3,
-    "Total Time in secs": 112,
+    "lap_time": 112,
     "driver_initial": "D1"
   },
   {
@@ -1266,7 +1265,7 @@ module.exports = [
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 4,
-    "Total Time in secs": 121,
+    "lap_time": 121,
     "driver_initial": "D1"
   },
   {
@@ -1275,7 +1274,7 @@ module.exports = [
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 5,
-    "Total Time in secs": 118,
+    "lap_time": 118,
     "driver_initial": "D1"
   },
   {
@@ -1284,7 +1283,7 @@ module.exports = [
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 6,
-    "Total Time in secs": 134,
+    "lap_time": 134,
     "driver_initial": "D1"
   },
   {
@@ -1293,7 +1292,7 @@ module.exports = [
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 7,
-    "Total Time in secs": 137,
+    "lap_time": 137,
     "driver_initial": "D1"
   },
   {
@@ -1302,7 +1301,7 @@ module.exports = [
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 8,
-    "Total Time in secs": 126,
+    "lap_time": 126,
     "driver_initial": "D1"
   },
   {
@@ -1311,7 +1310,7 @@ module.exports = [
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 9,
-    "Total Time in secs": 132,
+    "lap_time": 132,
     "driver_initial": "D1"
   },
   {
@@ -1320,7 +1319,7 @@ module.exports = [
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 10,
-    "Total Time in secs": 115,
+    "lap_time": 115,
     "driver_initial": "D2"
   },
   {
@@ -1329,7 +1328,7 @@ module.exports = [
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 11,
-    "Total Time in secs": 108,
+    "lap_time": 108,
     "driver_initial": "D2"
   },
   {
@@ -1338,7 +1337,7 @@ module.exports = [
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 12,
-    "Total Time in secs": 106,
+    "lap_time": 106,
     "driver_initial": "D2"
   },
   {
@@ -1347,7 +1346,7 @@ module.exports = [
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 13,
-    "Total Time in secs": 110,
+    "lap_time": 110,
     "driver_initial": "D2"
   },
   {
@@ -1356,7 +1355,7 @@ module.exports = [
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 14,
-    "Total Time in secs": 109,
+    "lap_time": 109,
     "driver_initial": "D2"
   },
   {
@@ -1365,7 +1364,7 @@ module.exports = [
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 15,
-    "Total Time in secs": 108,
+    "lap_time": 108,
     "driver_initial": "D2"
   },
   {
@@ -1374,7 +1373,7 @@ module.exports = [
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 16,
-    "Total Time in secs": 108,
+    "lap_time": 108,
     "driver_initial": "D2"
   },
   {
@@ -1383,7 +1382,7 @@ module.exports = [
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 17,
-    "Total Time in secs": 108,
+    "lap_time": 108,
     "driver_initial": "D2"
   },
   {
@@ -1392,7 +1391,7 @@ module.exports = [
     "institution_name": "DJSCE",
     "event_name": "Endurance",
     "lap_number": 18,
-    "Total Time in secs": 114,
+    "lap_time": 114,
     "driver_initial": "D2"
   },
   {
@@ -1401,7 +1400,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 1,
-    "Total Time in secs": 124,
+    "lap_time": 124,
     "driver_initial": "D1"
   },
   {
@@ -1410,7 +1409,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 2,
-    "Total Time in secs": 115,
+    "lap_time": 115,
     "driver_initial": "D1"
   },
   {
@@ -1419,7 +1418,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 3,
-    "Total Time in secs": 120,
+    "lap_time": 120,
     "driver_initial": "D1"
   },
   {
@@ -1428,7 +1427,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 4,
-    "Total Time in secs": 123,
+    "lap_time": 123,
     "driver_initial": "D1"
   },
   {
@@ -1437,7 +1436,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 5,
-    "Total Time in secs": 126,
+    "lap_time": 126,
     "driver_initial": "D1"
   },
   {
@@ -1446,7 +1445,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 6,
-    "Total Time in secs": 124,
+    "lap_time": 124,
     "driver_initial": "D1"
   },
   {
@@ -1455,7 +1454,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 7,
-    "Total Time in secs": 137,
+    "lap_time": 137,
     "driver_initial": "D1"
   },
   {
@@ -1464,7 +1463,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 8,
-    "Total Time in secs": 130,
+    "lap_time": 130,
     "driver_initial": "D1"
   },
   {
@@ -1473,7 +1472,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 9,
-    "Total Time in secs": 116,
+    "lap_time": 116,
     "driver_initial": "D1"
   },
   {
@@ -1482,7 +1481,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 10,
-    "Total Time in secs": 122,
+    "lap_time": 122,
     "driver_initial": "D2"
   },
   {
@@ -1491,7 +1490,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 11,
-    "Total Time in secs": 107,
+    "lap_time": 107,
     "driver_initial": "D2"
   },
   {
@@ -1500,7 +1499,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 12,
-    "Total Time in secs": 109,
+    "lap_time": 109,
     "driver_initial": "D2"
   },
   {
@@ -1509,7 +1508,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 13,
-    "Total Time in secs": 101,
+    "lap_time": 101,
     "driver_initial": "D2"
   },
   {
@@ -1518,7 +1517,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 14,
-    "Total Time in secs": 106,
+    "lap_time": 106,
     "driver_initial": "D2"
   },
   {
@@ -1527,7 +1526,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 15,
-    "Total Time in secs": 98,
+    "lap_time": 98,
     "driver_initial": "D2"
   },
   {
@@ -1536,7 +1535,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 16,
-    "Total Time in secs": 104,
+    "lap_time": 104,
     "driver_initial": "D2"
   },
   {
@@ -1545,7 +1544,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 17,
-    "Total Time in secs": 99,
+    "lap_time": 99,
     "driver_initial": "D2"
   },
   {
@@ -1554,7 +1553,7 @@ module.exports = [
     "institution_name": "COEP",
     "event_name": "Endurance",
     "lap_number": 18,
-    "Total Time in secs": 116,
+    "lap_time": 116,
     "driver_initial": "D2"
   },
   {
@@ -1563,7 +1562,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 1,
-    "Total Time in secs": 124,
+    "lap_time": 124,
     "driver_initial": "D1"
   },
   {
@@ -1572,7 +1571,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 2,
-    "Total Time in secs": 115,
+    "lap_time": 115,
     "driver_initial": "D1"
   },
   {
@@ -1581,7 +1580,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 3,
-    "Total Time in secs": 112,
+    "lap_time": 112,
     "driver_initial": "D1"
   },
   {
@@ -1590,7 +1589,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 4,
-    "Total Time in secs": 114,
+    "lap_time": 114,
     "driver_initial": "D1"
   },
   {
@@ -1599,7 +1598,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 5,
-    "Total Time in secs": 115,
+    "lap_time": 115,
     "driver_initial": "D1"
   },
   {
@@ -1608,7 +1607,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 6,
-    "Total Time in secs": 109,
+    "lap_time": 109,
     "driver_initial": "D1"
   },
   {
@@ -1617,7 +1616,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 7,
-    "Total Time in secs": 109,
+    "lap_time": 109,
     "driver_initial": "D1"
   },
   {
@@ -1626,7 +1625,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 8,
-    "Total Time in secs": 114,
+    "lap_time": 114,
     "driver_initial": "D1"
   },
   {
@@ -1635,7 +1634,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 9,
-    "Total Time in secs": 107,
+    "lap_time": 107,
     "driver_initial": "D1"
   },
   {
@@ -1644,7 +1643,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 10,
-    "Total Time in secs": 119,
+    "lap_time": 119,
     "driver_initial": "D2"
   },
   {
@@ -1653,7 +1652,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 11,
-    "Total Time in secs": 103,
+    "lap_time": 103,
     "driver_initial": "D2"
   },
   {
@@ -1662,7 +1661,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 12,
-    "Total Time in secs": 101,
+    "lap_time": 101,
     "driver_initial": "D2"
   },
   {
@@ -1671,7 +1670,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 13,
-    "Total Time in secs": 97,
+    "lap_time": 97,
     "driver_initial": "D2"
   },
   {
@@ -1680,7 +1679,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 14,
-    "Total Time in secs": 99,
+    "lap_time": 99,
     "driver_initial": "D2"
   },
   {
@@ -1689,7 +1688,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 15,
-    "Total Time in secs": 103,
+    "lap_time": 103,
     "driver_initial": "D2"
   },
   {
@@ -1698,7 +1697,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 16,
-    "Total Time in secs": 109,
+    "lap_time": 109,
     "driver_initial": "D2"
   },
   {
@@ -1707,7 +1706,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 17,
-    "Total Time in secs": 99,
+    "lap_time": 99,
     "driver_initial": "D2"
   },
   {
@@ -1716,7 +1715,7 @@ module.exports = [
     "institution_name": "GTU",
     "event_name": "Endurance",
     "lap_number": 18,
-    "Total Time in secs": 99,
+    "lap_time": 99,
     "driver_initial": "D2"
   },
   {
@@ -1725,7 +1724,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 1,
-    "Total Time in secs": 139,
+    "lap_time": 139,
     "driver_initial": "D1"
   },
   {
@@ -1734,7 +1733,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 2,
-    "Total Time in secs": 127,
+    "lap_time": 127,
     "driver_initial": "D1"
   },
   {
@@ -1743,7 +1742,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 3,
-    "Total Time in secs": 122,
+    "lap_time": 122,
     "driver_initial": "D1"
   },
   {
@@ -1752,7 +1751,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 4,
-    "Total Time in secs": 123,
+    "lap_time": 123,
     "driver_initial": "D1"
   },
   {
@@ -1761,7 +1760,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 5,
-    "Total Time in secs": 122,
+    "lap_time": 122,
     "driver_initial": "D1"
   },
   {
@@ -1770,7 +1769,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 6,
-    "Total Time in secs": 121,
+    "lap_time": 121,
     "driver_initial": "D1"
   },
   {
@@ -1779,7 +1778,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 7,
-    "Total Time in secs": 118,
+    "lap_time": 118,
     "driver_initial": "D1"
   },
   {
@@ -1788,7 +1787,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 8,
-    "Total Time in secs": 118,
+    "lap_time": 118,
     "driver_initial": "D1"
   },
   {
@@ -1797,7 +1796,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 9,
-    "Total Time in secs": 125,
+    "lap_time": 125,
     "driver_initial": "D1"
   },
   {
@@ -1806,7 +1805,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 10,
-    "Total Time in secs": 143,
+    "lap_time": 143,
     "driver_initial": "D2"
   },
   {
@@ -1815,7 +1814,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 11,
-    "Total Time in secs": 120,
+    "lap_time": 120,
     "driver_initial": "D2"
   },
   {
@@ -1824,7 +1823,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 12,
-    "Total Time in secs": 114,
+    "lap_time": 114,
     "driver_initial": "D2"
   },
   {
@@ -1833,7 +1832,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 13,
-    "Total Time in secs": 114,
+    "lap_time": 114,
     "driver_initial": "D2"
   },
   {
@@ -1842,7 +1841,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 14,
-    "Total Time in secs": 113,
+    "lap_time": 113,
     "driver_initial": "D2"
   },
   {
@@ -1851,7 +1850,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 15,
-    "Total Time in secs": 113,
+    "lap_time": 113,
     "driver_initial": "D2"
   },
   {
@@ -1860,7 +1859,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 16,
-    "Total Time in secs": 113,
+    "lap_time": 113,
     "driver_initial": "D2"
   },
   {
@@ -1869,7 +1868,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 17,
-    "Total Time in secs": 118,
+    "lap_time": 118,
     "driver_initial": "D2"
   },
   {
@@ -1878,7 +1877,7 @@ module.exports = [
     "institution_name": "PCCOE",
     "event_name": "Endurance",
     "lap_number": 18,
-    "Total Time in secs": 113,
+    "lap_time": 113,
     "driver_initial": "D2"
   }
 ]
