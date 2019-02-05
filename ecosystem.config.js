@@ -21,7 +21,7 @@ module.exports = {
   deploy : {
     production : {
       key: '~/.ssh/id_rsa',
-      user : 'frozen',
+      user : 'root',
       host : '159.89.174.161',
       ref  : 'origin/master',
       repo : 'git@github.com:frozen4code/mec_website.git',
