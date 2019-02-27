@@ -16,6 +16,7 @@ let UserSchema = Schema({
     type: String,
     lowercase: true,
     trim: true,
+    select: false,
   },
   first_name: {
     type: String,
@@ -38,15 +39,6 @@ let UserSchema = Schema({
       }
     }
   }],
-  // title: {
-  //   type: String,
-  //   default: function () {
-  //     if (role == 'volunteer') {
-  //       titles = ['design-judge', 'cost-judge', 'business-judge', 'inspector-mech', 'inspector-elec', 'ground-vol', 'track']
-        
-  //     }
-  //   }
-  // },
   google_id: String,
   profile: {
     picture: String,
@@ -55,7 +47,6 @@ let UserSchema = Schema({
     gender: String
   },
   provider: String,
-  passwordLess: Boolean,
   verified: Boolean,
   display_name: {
     type: String,
@@ -171,7 +162,6 @@ UserSchema.methods.getJWT = function () {
 }
 UserSchema.methods.toWeb = function () {
   let json = this.toJSON()
-  json.password = 'HIDDEN'
   json.id = this._id
   return json
 }

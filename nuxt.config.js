@@ -59,9 +59,7 @@ module.exports = {
   css: [
 
   ],
-  env: {
-    ...result
-  },
+  env: {...result},
   /*
    ** Plugins to load before mounting the App
    */

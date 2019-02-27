@@ -1,93 +1,117 @@
 const Announcement = require('./../models/announcement.model')
-
+const Event = require('./../models/event.model')
 const Response = require('./../services/response')
 
-const getAll = async function (req, res) {
+const getOne = async (req, res) => {
   try {
-    let announcements = await Announcement.find(), correctedAnnouncements;
-    if (!(announcements.length > 0)) {
-      announcements.forEach(announcement => {
-        correctedAnnouncements.push(announcement
-          // .toWeb()
-        )
-      });
-      return Response.success(res, { announcements: correctedAnnouncements }, 302)
+    let event_id = req.params.id,
+      annc_id = req.params.annc_id,
+      announcement = await Announcement.findOne({ _id: annc_id })
+    if (announcement) {
+      return Response.success(res, { message: "Announcement found.", announcement })
     }
-    return Response.success(res, { message: "No announcements found." }, 204)
+    return Response.failed(res, { message: "Couldn't get announcement." })
   } catch (error) {
-    return Response.failed(res, { message: "Internal Server Error" }, 500)
+    console.log(error);
+    return Response.failed(res, { message: "Internal server error." })
   }
 }
-
-const getOne = async function (req, res) {
+const getAll = async (req, res) => {
   try {
-    let id = req.params.id
-    let announcement = await Announcement.findOne({ _id: id })
-    if (!announcement) {
-      return Response.success(res, { message: "No such announcement found." }, 204)
+    let id = req.params.id,
+      $or = [{ event_short: id }]
+    if (parseInt(id) == id) {
+      $or.push({ _id: id })
     }
-    return Response.success(res, { announcement }, 302)
-  } catch (error) {
-    return Response.failed(res, { message: "Internal Server Error" }, 500)
-  }
-}
-
-const create = async function (req, res) {
-  let body = req.body
-  try {
-    let announcement = await new Announcement({
-      dateTime: body.date_time,
-      author: body.author,
-      title: body.title,
-      body: body.description,
-      tags: body.tags
-    }).save()
-    if (!announcement) {
-      return Response.success(res, { message: "Couldn't create announcement" }, 204)
-    }
-    return Response.success(res, { message: "Created new announcement" }, 203)
-  } catch (error) {
-    console.log(error)
-    return Response.failed(res, { message: "Internal Server Error" }, 500)
-  }
-}
-
-const updateAnnouncement = async function (req, res) {
-  // Put request
-  let id = req.params.id
-  try {
-    let announcement = await Announcement.findOneAndUpdate({ _id: id }, req.body, { new: true })
-    if (!announcement) {
-      return Response.success(res, { message: "Couldn't update announcement." }, 204)
-    }
-    return Response.success(res, { message: "Updated announcement.", announcement }, 204)
-  } catch (error) {
-    return Response.failed(res, { message: "Internal Server Error" }, 204)
-  }
-}
-
-const deleteAnnouncement = async function (req, res) {
-  let id = req.params.id
-  try {
-    let deletedAnnouncement = await Announcement.findOneAndRemove({ _id: id })
-    if (!deletedAnnouncement) {
-      return res.send({
-        message: "Couldn't Delete Announcement."
+    let event = await Event.findOne({ $or: $or })
+    if (event) {
+      let announcements = await Announcement.find({ event: event._id }, null, { sort: { dateTime: 'desc' } }).populate('author').exec()
+      if (announcements.length > 0) {
+        return Response.success(res, {
+          announcements: announcements
+        })
+      }
+      return Response.failed(res, {
+        message: "Event has no announcements."
       })
     }
-    return res.send({
-      message: "Deleted Announcement",
-      deletedAnnouncement
+    return Response.failed(res, {
+      message: "No event found."
     })
   } catch (error) {
-    return Response.failed(res, { message: "Internal Server Error" }, 204)
+    console.log(error)
+    return res.sendStatus(500)
   }
 }
-
+const create = async (req, res) => {
+  try {
+    let event_id = req.params.id,
+      event = await Event.findOne({ _id: event_id })
+    if (event) {
+      let extractTags = []
+      let new_ancmt = await new Announcement({
+        event: event._id,
+        dateTime: req.body.dateTime || Date.now(),
+        author: req.body.author || req.user,
+        title: req.body.title,
+        description: req.body.description,
+        tags: req.body.tags
+      }).save()
+      if (new_ancmt) {
+        return Response.success(res, {
+          message: "Created new announcement."
+        })
+      }
+      return Response.failed(res, {
+        message: "Couldn't create announcement."
+      })
+    }
+    return Response.failed(res, {
+      message: "No event found."
+    })
+  } catch (error) {
+    console.log(error)
+    return res.sendStatus(500)
+  }
+}
+const update = async (req, res) => {
+  let announcement, annc_id = req.params.annc_id, body = req.body, update_body
+  try {
+    update_body = {
+      dateTime: body.dateTime,
+      author: body.author,
+      title: body.title,
+      description: body.description,
+      author: body.author,
+      tags: body.tags
+    }
+    announcement = await Announcement.findOneAndUpdate({ _id: annc_id }, update_body, { new: true })
+    if (announcement) {
+      return Response.success(res, { message: "Updated announcement.", announcement })
+    }
+    return Response.failed(res, { message: "Couldn't update announcement." })
+  } catch (error) {
+    console.log(error)
+    return Response.failed(res, { message: "Internal server error." })
+  }
+}
+const remove = async (req, res) => {
+  let annc_id = req.params.annc_id, announcement, event_id = req.params.id, event
+  try {
+    announcement = await Announcement.findOneAndDelete({ _id: annc_id })
+    if (announcement) {
+      return Response.success(res, { message: "Deleted announcement." })
+    }
+    return Response.failed(res, { message: "Couldn't delete announcement." })
+  } catch (error) {
+    console.log(error)
+    return Response.failed(res, { message: "Internal server error." })
+  }
+}
 module.exports = {
-  getAll,
   getOne,
+  getAll,
   create,
-  updateAnnouncement,
-  deleteAnnouncement
+  update,
+  remove
 }

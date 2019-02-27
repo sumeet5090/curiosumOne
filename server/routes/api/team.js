@@ -32,5 +32,6 @@ router.put('/:id', helper.isCaptainOrAdmin(), TeamController.updateTeam)
 router.put('/:id/captain', helper.isCaptainOrAdmin(), TeamController.changeCaptain)
 // DELETE
 router.delete('/:id', helper.isCaptainOrAdmin(), TeamController.deleteTeam)
+router.delete('/:id/leave/:event_id', helper.allowStaff, TeamController.unlinkTeamFromEvent)
 
 module.exports = router;

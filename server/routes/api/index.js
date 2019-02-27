@@ -1,5 +1,4 @@
-const { Router } = require('express')
-const router = Router()
+const router = require('express').Router()
 const userRouter = require('./user')
 const eventRouter = require('./event')
 const teamRouter = require('./team')
@@ -10,7 +9,7 @@ router.get('/', (req, res) => {
         version: '1.0.0'
     })
 })
-router.use('/user', userRouter);
-router.use('/event', eventRouter);
+router.use('/user', userRouter)
+router.use('/event', eventRouter)
 router.use('/team', teamRouter)
-module.exports = router;
+module.exports = router

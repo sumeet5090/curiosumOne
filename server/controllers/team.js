@@ -536,6 +536,25 @@ const linkTeamAndCar = async (req, res) => {
   }
 }
 
+const unlinkTeamFromEvent = async (req, res) => {
+  let team, event, team_id, event_id, deleted = false
+  try {
+    team = await Team.findOne({ _id: team_id })
+    event = await Event.findOne({ _id: event_id })
+    if (team && event) {
+      let out1 = await team.updateOne({ $pull: { events: event._id } })
+      let out2 = await event.updateOne({ $pull: { teams: team._id } })
+      if (out1.nModified >= 1 && out1.ok == 1 && out2.nModified >= 1 && out2.ok == 1) {
+        return Response.success(res, { message: "Unlinked team and event." })
+      }
+      return Response.failed(res, { message: "Couldn't unlink team and event." })
+    }
+    return Response.failed(res, { message: "Not found." })
+  } catch (error) {
+    console.log(error)
+    return Response.failed(res, { message: "Internal server error." })
+  }
+}
 const unlinkTeamAndEvent = async (req, res) => {
   try {
     let team, team_id = req.params.id, event, event_id = req.params.event_id
@@ -574,6 +593,7 @@ module.exports = {
   removeAlumnus,
   linkTeamAndEvent,
   linkTeamAndCar,
+  unlinkTeamFromEvent,
   unlinkTeamAndEvent,
   updateTeam,
   changeCaptain,
