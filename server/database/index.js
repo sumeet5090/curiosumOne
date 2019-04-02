@@ -2,15 +2,16 @@ const mongoose = require('./mongoose')
 const keys = require('./../../config/keys')
 function connect() {
     let db;
-
     mongoose.Promise = global.Promise;
-
     if (mongoose.connection.readyState !== 1) {
         db = mongoose.connect(keys.db.uri, keys.db.options, function (err) {
             if (err) {
                 console.error(err)
             }
             mongoose.set("debug", false)
+        })
+        mongoose.connection.once('open', function () {
+            console.log("MongoDB Connection established.")
         })
         mongoose.connection.on('error', function (err) {
             if (err.message.code === "ETIMEDOUT") {
@@ -20,10 +21,7 @@ function connect() {
                 }, 1000);
                 return;
             }
-            console.error("Couldn't connect to MongoDB\n",err)
-        })
-        mongoose.connection.once('open', function () {
-            console.log("MongoDB Connection established.")
+            console.error("Couldn't connect to MongoDB\n", err)
         })
     } else {
         db = mongoose

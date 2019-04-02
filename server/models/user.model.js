@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const validate = require('mongoose-validator')
+const randomColor = require('randomcolor')
 const CONFIG = require('./../../config/keys')
 let Schema = mongoose.Schema;
 let UserSchema = Schema({
@@ -11,6 +12,10 @@ let UserSchema = Schema({
     index: true,
     sparse: true,
     lowercase: true
+  },
+  color: {
+    type: String,
+    default: randomColor()
   },
   phone_number: {
     type: String,
@@ -92,7 +97,6 @@ let UserSchema = Schema({
       default: false
     },
   }]
-  // TODO: Social Media links
 }, {
     timestamps: true
   })
