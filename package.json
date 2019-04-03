@@ -12,7 +12,7 @@
     "start": "cross-env NODE_ENV=production node server/index.js",
     "generate": "nuxt generate",
     "deploy": "pm2 deploy production",
-    "server": "yarn build && cross-env NODE_ENV=production HOST=0.0.0.0 nodemon server/index.js --watch server",
+    "server": "yarn build && yarn server:b",
     "server:b": "cross-env NODE_ENV=production HOST=0.0.0.0 nodemon server/index.js --exec babel-node --presets env --watch server"
   },
   "dependencies": {

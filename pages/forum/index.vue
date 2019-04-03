@@ -6,6 +6,9 @@
       </b-col>
     </b-row>
     <b-row>
+      <b-col></b-col>
+    </b-row>
+    <b-row>
       <post class="col-12" :post-id="1" subject="Can we all just take a moment." author="FrozeN" :replyCount="42" :upvotes="22" :downvotes="2" queryStatus="open" :last-post="Date.now()" rule-number="1234" :date-posted="Date.now()"/>
     </b-row>
   </b-container>

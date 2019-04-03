@@ -7,7 +7,7 @@ const getOne = async function(req, res){
     let params = req.params
     if(typeof params.id == 'number'){
       let id = params.id
-
+      
     }
   } catch (error) {
     
@@ -16,7 +16,7 @@ const getOne = async function(req, res){
 
 const getAll = async function(req, res) {
   try {
-    let sections = await Section.find().populate({path: ''})
+    let sections = await Section.find().populate({path: 'rules', populate: {path: 'sub_rules'}}).exec()
     if(sections && sections.length > 0){
       res.send(sections)
     } else {
