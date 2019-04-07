@@ -49,7 +49,7 @@
 
 <script>
 import Posts from "@/components/forum/Posts";
-import PostsMobile from '../../components/forum/Posts-mobile.vue';
+import PostsMobile from '@/components/forum/Posts-mobile.vue';
 export default {
   components: {
     posts: Posts,

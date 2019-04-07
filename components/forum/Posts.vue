@@ -1,30 +1,43 @@
-<template>
-  <b-card no-body class="px-0 p-1">
-    <b-row no-gutters class="px-0">
-      <b-col sm="12" md="" lg="2">
-        <b-card-img src="https://picsum.photos/400/400/?image=20" class="rounded-0"></b-card-img>
-      </b-col>
-      <b-col md="10">
-        <b-card-body>
-          <h3 class="font-weight-bold card-title my-0">{{subject}}</h3>
-          <h6 class=""><span>Posted by </span><a href="#">{{author}}</a></h6>
-          <p class="text-right">{{}}</p>
-        </b-card-body>
-      </b-col>
-    </b-row>
-  </b-card>
+<template >
+  <b-row class="px-0 border">
+    <b-col sm="1" md="2" lg="2">
+      <div class="text-center">{{formatDate(datePosted)}}</div>
+    </b-col>
+    <b-col sm="1" md="1" lg="1">
+      <div class="text-center">{{ruleNumber}}</div>
+    </b-col>
+    <b-col md="9" lg="5">
+      <div class="text-center">{{subject}}</div>
+    </b-col>
+    <b-col md="1" lg="1">
+      <div class="text-center">{{replyCount}}</div>
+    </b-col>
+    <b-col md="2" lg="2">
+      <div class="text-center">{{formatDate(lastPost)}}</div>
+    </b-col>
+    <b-col md="" lg="1">
+      <div class="text-right">{{queryStatus}}</div>
+    </b-col>
+  </b-row>
 </template>
 
 <script>
 import moment from "moment";
 export default {
   data() {
-    return {};
+    return {
+      posts: []
+    };
   },
-  computed: {},
+  computed: {
+    
+  },
   methods: {
     formatDate(d) {
-      return moment(d).format("LLL");
+      return moment(d).format("DD/mm/YY");
+    },
+    getPosts(){
+      
     }
   },
   props: {
