@@ -34,7 +34,13 @@
               <b-form-group id="form-eventlink" label="Event link:" label-for="form-eventlink--input" description="Link to official webpage for event" v-if="!!selectedEvent._id">
                 <b-form-input id="form-eventlink--input" type="text" v-model="form.event_link" class="text-dark" required placeholder="Enter link"></b-form-input>
               </b-form-group>
-              <b-form-group id="form-eventorganizers-list">
+              <b-form-group id="form-past" label="Event past: " label-for="form-past--input" description="Remove event from frontpage." v-if="!!selectedEvent._id">
+                <div class="container">
+                <span class="row align-items-center">
+                    <base-switch class="mb-1" v-model="form.event_past"></base-switch>
+                    <span class="ml-2"></span>
+                </span>
+              </div>
               </b-form-group>
               <b-alert variant="danger" dismissible :show="errors.length > 0" @dismissed="showDismissibleAlert=false">
                 <div v-for="error in errors" :key="error">{{error}}</div>
@@ -76,7 +82,8 @@ export default {
         event_end_date: null,
         event_venue: null,
         event_link: null,
-        event_short: null
+        event_short: null,
+        event_past: false
       },
       success_msg: "",
       errors: []
@@ -99,7 +106,8 @@ export default {
             end_date: this.form.event_end_date,
             venue: this.form.event_venue,
             link: this.form.event_link,
-            event_short: this.form.event_short
+            event_short: this.form.event_short,
+            past: this.form.event_past
           }
         });
         if (res.success) {
@@ -123,6 +131,7 @@ export default {
       this.form.event_short = null
       this.form.event_start_date = null
       this.form.event_end_date = null
+      this.form.event_past = false
       this.errors = []
       this.success_msg = ""
     },
@@ -148,6 +157,7 @@ export default {
         this.form.event_link = this.selectedEvent.link
         this.form.event_venue = this.selectedEvent.venue
         this.form.event_short = this.selectedEvent.event_short
+        this.form.event_past = this.selectedEvent.past
       } else {
         this.onReset()
       }
