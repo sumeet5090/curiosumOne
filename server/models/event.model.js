@@ -86,12 +86,21 @@ const EventSchema = Schema({
   past: {
     type: Boolean,
     default: false
+  },
+  show_block: {
+    official_website: { type: Boolean, default: true },
+    teams: { type: Boolean, default: true },
+    live_announcements: { type: Boolean, default: true },
+    rules: { type: Boolean, default: true },
+    schedule: { type: Boolean, default: false },
+    tech_inspection: { type: Boolean, default: false },
+    live_timings: { type: Boolean, default: false },
   }
 }, { timestamps: true })
 
 EventSchema.pre('save', async function (next) {
   let doc = this;
-  if(doc.isNew){
+  if (doc.isNew) {
     try {
       let incCounter = await counter.findOneAndUpdate({ _id: 'event_Counter' }, { $inc: { seq: 1 } }, { new: true });
       if (incCounter) {

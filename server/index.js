@@ -1,5 +1,6 @@
 
 const express = require('express')
+const fileUpload = require('express-fileupload')
 const consola = require('consola')
 require('./prototypes')
 const { Nuxt, Builder } = require('nuxt')
@@ -28,14 +29,14 @@ function print (path, layer) {
   }
 }
 
-function split (thing) {
+function split(thing) {
   if (typeof thing === 'string') {
     return thing.split('/')
   } else if (thing.fast_slash) {
     return ''
   } else {
-    var match = thing.toString().replace('\\/?', '').replace('(?=\\/|$)', '$')      .match(/^\/\^((?:\\[.*+?^${}()|[\]\\\/]|[^.*+?^${}()|[\]\\\/])*)\$\//)
-    return match ? match[1].replace(/\\(.)/g, '$1').split('/')      : '<complex:' + thing.toString() + '>' 
+    var match = thing.toString().replace('\\/?', '').replace('(?=\\/|$)', '$').match(/^\/\^((?:\\[.*+?^${}()|[\]\\\/]|[^.*+?^${}()|[\]\\\/])*)\$\//);
+    return match ? match[1].replace(/\\(.)/g, '$1').split('/') : '<complex:' + thing.toString() + '>';
   }
 }
 
@@ -52,10 +53,12 @@ async function start() {
   // Database
   let dbConn = database()
   // Session
+  
   session(app, dbConn)
   // Passport
   passportInitialize(app)
   // Auth middlewares
+  // File upload
   app.use('/', indexRouter)
   app.use('/api', apiRouter)
   app._router.stack.forEach(print.bind(null, []))

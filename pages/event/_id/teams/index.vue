@@ -10,7 +10,11 @@
       <b-row class="justify-content-center">
         <base-input addon-left-icon="fas fa-search text-success" class="col-sm-12 col-md-6 px-0 mx-0" placeholder="Search" type="text" v-model="filter"></base-input>
       </b-row>
-      <b-row class="justify-content-center">
+      <b-row class="justify-content-center" v-if="isAdmin" v-show="isAdmin">
+        <base-button @click.prevent="sendDownloadRequest" outline type="success" v-if="isAdmin">Download</base-button>
+        <base-button @click.prevent="uploadModal.show = true" outline type="primary" v-if="isAdmin">Upload</base-button>
+      </b-row>
+      <b-row class="mt-2 justify-content-center">
         <no-ssr>
           <b-table :fields="fields" :filter="filter" :items="teams" :sort-by.sync="table.sortBy" :sort-compare="sortCompareAdvanced" bordered class="font-md-small" hover outlined responsive>
             <template slot="category" slot-scope="data">
@@ -49,6 +53,23 @@
         </no-ssr>
       </b-row>
     </div>
+    <modal :show.sync="uploadModal.show" body-classes="p-0" modal-classes="modal-dialog-centered modal-sm" v-if="uploadModal.show">
+      <card body-classes="px-lg-5 py-lg-5" class="border-0" header-classes="bg-white pb-5" shadow type="secondary">
+        <template>
+          <div class="text-muted text-center mb-3">
+            <small>Upload file</small>
+          </div>
+          <div class="btn-wrapper text-center">
+            <b-form-file class="text-left" v-model="uploadModal.file" @change="handleUpload"></b-form-file>
+          </div>
+        </template>
+        <template>
+          <div class="text-center pt-2">
+            <base-button type="primary" @click.prevent="uploadFile">Upload</base-button>
+          </div>
+        </template>
+      </card>
+    </modal>
   </section>
 </template>
 
@@ -73,6 +94,9 @@ export default {
     }
   },
   methods: {
+    handleUpload(v){
+      this.uploadModal.file = v
+    },
     sortCompareAdvanced: function(a, b, key) {
       let e1 = a,
         e2 = b;
@@ -89,6 +113,28 @@ export default {
           numeric: true
         });
       }
+    },
+    sendDownloadRequest() {
+      this.$axios.get('/api/io/event-team-csv').then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `teams-event-${Date.now()}.csv`); //or any other extension
+        document.body.appendChild(link);
+        link.click();
+      }).catch((err)=>{console.log(err);})
+    },
+    uploadFile() {
+      let formData = new FormData()
+      formData.append('file', this.uploadModal.file)
+      console.log('formData :', formData);
+      this.$axios.post('/api/io/event-team-csv', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }).then(({data}) => {
+        console.log("Success");
+      }).catch((err)=>{console.log(err);})
     }
   },
   data() {
@@ -138,7 +184,11 @@ export default {
           label: " ",
           key: "social"
         }
-      ]
+      ],
+      uploadModal: {
+        show: true,
+        file: null
+      }
     };
   },
   async asyncData({ $axios, params, error }) {
