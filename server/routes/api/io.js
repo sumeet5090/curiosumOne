@@ -1,6 +1,7 @@
 const router = require('express').Router()
 const csv = require('csv-parser')
 const Team = require('./../../models/team.model')
+const path = require('path')
 const fs = require('fs')
 router.use(require('express-fileupload')())
 const { Parser } = require('json2csv');
@@ -19,11 +20,11 @@ router.get('/event-team-csv', (req, res) => {
       res.setHeader('Content-Disposition', 'attachment; filename=\"' + 'download-' + Date.now() + '.csv\"');
       res.setHeader('Cache-Control', 'no-cache');
       res.setHeader('Pragma', 'no-cache');
-      const fields = ['team_name', 'category', 'country', 'drive_folder', 'institution.address', 'institution.name', 'institution.short_name', 'logo', 'social.facebook', 'social.instagram', 'social.twitter', 'website_url', 'former_name']
+      const fields = ['_id', 'team_name', 'category', 'country', 'drive_folder', 'institution.address', 'institution.name', 'institution.short_name', 'logo', 'social.facebook', 'social.instagram', 'social.twitter', 'website_url', 'former_name']
       const parser = new Parser({ fields })
       const _csv =  parser.parse(teams)
-      let filename = `team-${Date.now()}.csv`
-      console.log(_csv)
+      let filename = path.resolve(`downloads/team-${Date.now()}.csv`)
+      console.log(filename);
       fs.writeFileSync(filename, _csv)
       return res.download(filename)
     }
