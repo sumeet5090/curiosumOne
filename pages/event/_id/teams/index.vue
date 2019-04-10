@@ -7,12 +7,18 @@
           <strong class="text-primary">{{event.name}}</strong>
         </div>
       </b-row>
-      <b-row class="justify-content-center">
-        <base-input addon-left-icon="fas fa-search text-success" class="col-sm-12 col-md-6 px-0 mx-0" placeholder="Search" type="text" v-model="filter"></base-input>
-      </b-row>
-      <b-row class="justify-content-center" v-if="isAdmin" v-show="isAdmin">
+      <b-row class="justify-content-center my-2" v-if="isAdmin" v-show="isAdmin">
+        <base-alert v-if="isAdmin && error" type="danger" icon="far fa-times-circle" class="col-12" :dismissible="true">
+          <template slot="text">{{error}}</template>
+        </base-alert>
+        <base-alert v-if="isAdmin && success" type="success" icon="far fa-check-circle" class="col-12" :dismissible="true">
+          <template slot="text">{{success}}</template>
+        </base-alert>
         <base-button @click.prevent="sendDownloadRequest" outline type="success" v-if="isAdmin">Download</base-button>
         <base-button @click.prevent="uploadModal.show = true" outline type="primary" v-if="isAdmin">Upload</base-button>
+      </b-row>
+      <b-row class="justify-content-center">
+        <base-input addon-left-icon="fas fa-search text-success" class="col-sm-12 col-md-6 px-0 mx-0" placeholder="Search" type="text" v-model="filter"></base-input>
       </b-row>
       <b-row class="mt-2 justify-content-center">
         <no-ssr>
@@ -115,16 +121,30 @@ export default {
       }
     },
     sendDownloadRequest() {
-      this.$axios.get('/api/io/event-team-csv').then((response) => {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `teams-event-${Date.now()}.csv`); //or any other extension
-        document.body.appendChild(link);
-        link.click();
-      }).catch((err)=>{console.log(err);})
+      this.success = null
+      this.error = null
+      this.$axios.get('/api/io/event-team-csv').then(({data}) => {
+        console.log(data);
+        if(data && data.success == false){
+          this.error = data.message
+        } else {
+          const url = window.URL.createObjectURL(new Blob([data])),
+            link = document.createElement('a'),
+            fileName = `teams-event-${Date.now()}.csv`
+          link.href = url;
+          link.setAttribute('download', fileName);
+          document.body.appendChild(link);
+          link.click();
+          this.success = 'File downloaded.'
+          document.body.removeChild(link)
+        }
+      }).catch((err)=>{
+          this.error = "Internal server error."
+      })
     },
     uploadFile() {
+      this.success = null
+      this.error = null
       let formData = new FormData()
       formData.append('file', this.uploadModal.file)
       console.log('formData :', formData);
@@ -134,7 +154,10 @@ export default {
         }
       }).then(({data}) => {
         console.log("Success");
-      }).catch((err)=>{console.log(err);})
+        this.success = 'Upload successful.'
+      }).catch((err)=>{
+        this.error = 'Upload failed.'
+      })
     }
   },
   data() {
@@ -188,7 +211,9 @@ export default {
       uploadModal: {
         show: true,
         file: null
-      }
+      },
+      error: null,
+      success: null
     };
   },
   async asyncData({ $axios, params, error }) {

@@ -1,12 +1,41 @@
 const router = require('express').Router()
-const csv = require('csv-parser')
 const Team = require('./../../models/team.model')
 const path = require('path')
+const crypto = require('crypto')
 const fs = require('fs')
-router.use(require('express-fileupload')())
-const { Parser } = require('json2csv');
+const rimraf = require('rimraf')
+const { Parser } = require('json2csv')
+const JSON2CSV = require('json-2-csv');
 
-router.get('/event-team-csv', (req, res) => {
+router.use(require('express-fileupload')())
+let DOWNLOADS_DIR = path.resolve('downloads/')
+fs.readdir(DOWNLOADS_DIR, function(err, files){
+  if(err){
+    return console.log(err)
+  }
+  files.forEach((file, index) => {
+    if(file !== '.gitignore'){
+      fs.stat(path.join(DOWNLOADS_DIR, file), (erStat, stat) => {
+        let endTime, now
+        if(erStat){
+          return console.log(erStat);
+        }
+        now = new Date().getTime()
+        endTime = new Date(stat.ctime).getTime() + 3600000
+        if(now > endTime){
+          return rimraf(path.join(DOWNLOADS_DIR, file), (errRimRaf) => {
+            if(errRimRaf){
+              return console.log(errRimRaf);
+            }
+            console.log("Deleted files older than 1 hour.");
+          })
+        }
+      })
+    }
+  })
+})
+
+router.get('/event-team-csv', (req, res, next) => {
   let teams = Team.find({}, (err, teams) => {
     if (err) {
       console.log(err);
@@ -15,23 +44,47 @@ router.get('/event-team-csv', (req, res) => {
       })
     }
     if (teams) {
-      console.log(teams.length)
-      res.setHeader('Content-Type', 'text/csv');
-      res.setHeader('Content-Disposition', 'attachment; filename=\"' + 'download-' + Date.now() + '.csv\"');
-      res.setHeader('Cache-Control', 'no-cache');
-      res.setHeader('Pragma', 'no-cache');
       const fields = ['_id', 'team_name', 'category', 'country', 'drive_folder', 'institution.address', 'institution.name', 'institution.short_name', 'logo', 'social.facebook', 'social.instagram', 'social.twitter', 'website_url', 'former_name']
-      const parser = new Parser({ fields })
-      const _csv =  parser.parse(teams)
-      let filename = path.resolve(`downloads/team-${Date.now()}.csv`)
-      console.log(filename);
-      fs.writeFileSync(filename, _csv)
-      return res.download(filename)
+      JSON2CSV.json2csv(teams, (err, csv) => {
+        if (err) {
+          console.log(err);
+          return res.send({
+            success: false,
+            message: "Internal server error."
+          })
+        }
+        if (csv) {
+          let fname = 'downloads/team-' + crypto.randomBytes(8).toString('hex') + '.csv'
+          let filename = path.resolve(fname)
+          console.log(filename);
+          fs.writeFileSync(fname, csv)
+          res.locals.filename = fname
+          res.sendFile(filename, {}, (err) => {
+            if (err) {
+              next(err);
+            } else {
+              console.log('Sent:', filename);
+            }
+          })
+        }
+      },
+        {
+          // delimiter: {
+          //   field: ',',
+          //   wrap: '"',
+          //   eol: '\n'
+          // },
+          keys: fields,
+          emptyFieldValue: '',
+          expandArrayObjects: true
+        })
     }
-    return res.send({
-      message: "No teams found"
-    })
   })
+}, (req, res) => {
+  return res.send({
+    success: false,
+    message: "Some error occured."
+  })  
 })
 
 router.post('/event-team-csv', function (req, res) {
@@ -39,10 +92,15 @@ router.post('/event-team-csv', function (req, res) {
   if (file && file.data) {
     let csv = file.data.toString('utf8')
     let x = csv.split('\n')
-    x.forEach(c => {
-      console.log(c)
+    return res.send({
+      success: true,
+      message: "File uploaded"
     })
   }
+  return res.send({
+    success: false,
+    message: "File didn't reach the server."
+  })
 
   // Team.find().then((teams) => {
   //   if(teams) {
