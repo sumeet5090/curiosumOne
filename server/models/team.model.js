@@ -110,4 +110,7 @@ let TeamSchema = Schema({
     timestamps: true
   }
 );
+
+// TeamSchema.prototype;
+
 module.exports = mongoose.model("Team", TeamSchema)
