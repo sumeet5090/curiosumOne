@@ -4,7 +4,6 @@ const path = require('path')
 const crypto = require('crypto')
 const fs = require('fs')
 const rimraf = require('rimraf')
-const { Parser } = require('json2csv')
 const JSON2CSV = require('json-2-csv')
 const Response = require('./../../services/response')
 const Types = require('mongoose').Types

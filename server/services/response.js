@@ -1,5 +1,5 @@
-import consola from 'consola'
-import moment from "moment"
+const consola = require('consola')
+const moment = require("moment")
 module.exports = {
   success: function (res, data, code) {
     let send_data = { success: true }
