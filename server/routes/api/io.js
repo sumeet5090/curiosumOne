@@ -21,13 +21,13 @@ fs.readdir(DOWNLOADS_DIR, function(err, files){
           return console.log(erStat);
         }
         now = new Date().getTime()
-        endTime = new Date(stat.ctime).getTime() + 3600000
+        endTime = new Date(stat.ctime).getTime() + 86400000
         if(now > endTime){
           return rimraf(path.join(DOWNLOADS_DIR, file), (errRimRaf) => {
             if(errRimRaf){
               return console.log(errRimRaf);
             }
-            console.log("Deleted files older than 1 hour.");
+            console.log("Deleted files older than 1 day.");
           })
         }
       })
