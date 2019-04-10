@@ -123,7 +123,7 @@ export default {
     sendDownloadRequest() {
       this.success = null
       this.error = null
-      this.$axios.get('/api/io/event-team-csv').then(({data}) => {
+      this.$axios.get('/api/io/csv/event/1/teams').then(({data}) => {
         console.log(data);
         if(data && data.success == false){
           this.error = data.message
