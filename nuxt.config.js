@@ -12,7 +12,7 @@ module.exports = {
     htmlAttrs: {
       lang: 'en',
     },
-    title: "MEC Portal",
+    title: "CURIOSUM TECH",
     meta: [{
       charset: 'utf-8'
     },

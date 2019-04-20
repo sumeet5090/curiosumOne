@@ -1,5 +1,33 @@
 @import "argon";
 
+/* Curiosum Colors */
+.btn-curiosum {
+  background-color: #ff3c00;
+  color: #fff;
+  &:hover {
+    color: #4b2722;
+  }
+}
+.btn-curiosum-dark {
+  background-color: #4b2722;
+  color: #fff;
+  &:hover {
+    color:#ffd800;
+  }
+}
+.i-curiosum {
+  background: rgba(245, 151, 44, 0.548);
+  i {
+    color: #ff3c00;
+  }
+}
+.text-curiosum {
+  color: #4b2722;
+}
+.text-curiosum-light {
+  color: #ff3c00;
+}
+
 .header-font {
   font-family: $font-family-header;
 }

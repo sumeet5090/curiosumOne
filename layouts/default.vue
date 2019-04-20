@@ -17,7 +17,7 @@
           <card class="py-4 px-2 border-0 bg-none my-5 noselect" no-body>
             <div class="row justify-content-center">
               <div class="col-md-12 text-center">
-                <i class="fas fa-exclamation-triangle fa-6x" style="color: #ff9900;"></i>
+                <i class="fas fa-exclamation-triangle fa-6x" style="color: #ff3c00;"></i>
               </div>
               <div class="col-md-12 text-white text-center">
                 <div class="display-2 font-weight-300">We are currently under maintenance.</div>
@@ -215,7 +215,7 @@ function onLoad() {
             );
           }
         }
-        polygon.setAttribute("fill", "rgba(0,0,0," + Math.random() / 3 + ")");
+        polygon.setAttribute("fill", "rgba(225,225,225," + Math.random() / 3 + ")");
         var animate = document.createElementNS(
           "http://www.w3.org/2000/svg",
           "animate"
@@ -272,15 +272,15 @@ html {
 #low-poly-background {
   background: linear-gradient(
     145deg,
-    #ff9900 0%,
-    #3ccccc 30%,
-    #3ccccc 70%,
-    #ff9900 100%
+    #ff3c00 0%,
+    #4b2722 30%,
+    #4b2722 70%,
+    #ff3c00 100%
   );
   z-index: -999;
   background-position: cover;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   position: fixed;
   top: 0;
   left: 0;

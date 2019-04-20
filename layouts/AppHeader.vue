@@ -3,16 +3,18 @@
     <no-ssr>
       <base-nav effect="light" expand type="none">
         <nuxt-link class="navbar-brand mr-lg-5" slot="brand" to="/">
-          <div class="navbar-brand">
-            <img alt="MEC" src="@/assets/images/brand/logo.png">
+          <div class="navbar-brand only-desktop">
+            <img style="height: 70px" alt="CURIOSUM TECH" src="@/assets/images/brand/logo.png">
           </div>
         </nuxt-link>
         <div class="row" slot="content-header" slot-scope="{closeMenu}">
           <div class="col-6 collapse-brand">
-            <nuxt-link class="navbar-brand mr-lg-5" slot="brand" to="/">
-              <div class="navbar-brand">
-                <img alt="MEC" src="@/assets/images/brand/logo.png">
-              </div>
+            <nuxt-link class="navbar-brand mr-0" slot="brand" to="/">
+              <span class="header-font">
+                <img alt="CURIOSUM TECH" src="@/assets/images/brand/logo.png">
+                <span class="text-curiosum">CURIOSUM</span>
+                <span class="text-curiosum-light">TECH</span>
+              </span>
             </nuxt-link>
           </div>
           <div class="col-6 collapse-close">
@@ -106,5 +108,13 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+.navbar-brand img {
+  height: 70px !important;
+}
+@media (max-width: 992px) { 
+  .only-desktop img {
+    height: 0 !important;
+  }
+}
 </style>
