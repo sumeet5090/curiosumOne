@@ -1,12 +1,15 @@
 <template>
+<section class="section pt-0">
   <b-container>
     <b-row class="justify-content-center">
       <b-col md="8" sm="12">
         <div class="text-center fa-2x header-font text-uppercase">Rules Forum</div>
       </b-col>
     </b-row>
-    <b-row class="justify-content-between align-items-baseline">
-      <div class="col-md-2 text-center text-md-left">Filter</div>
+    <b-row class="justify-content-center align-items-center">
+      <div class="col px-0">
+        <router-link :to="{name: 'forum-post-new'}" class="btn btn-sm btn-curiosum w-100">New</router-link>
+      </div>
       <b-select class="col-md-3" size="sm" v-model="select.section">
         <option :value="null">Select section</option>
         <option :key="key" :value="key" v-for="(sect, key) in sections">{{sect.name}} ({{sect.notation}})</option>
@@ -20,40 +23,20 @@
         <option :key="key" :value="key" v-for="(subRule, key) in subRules">{{subRule.name}} ({{subRule.notation}})</option>
       </b-select>
     </b-row>
-    <b-container class="px-0" fluid>
-      <b-row class="px-0" v-if="!isMobile">
-        <b-col lg="2" md>
-          <div class="text-center">Date posted</div>
-        </b-col>
-        <b-col lg="1">
-          <div class="text-center">Rule Number</div>
-        </b-col>
-        <b-col lg="5">
-          <div class="text-center">Query Subject</div>
-        </b-col>
-        <b-col lg="1">
-          <div class="text-center">Responses</div>
-        </b-col>
-        <b-col lg="2">
-          <div class="text-center">Last posted</div>
-        </b-col>
-        <b-col lg="1">
-          <div class="text-center">Status</div>
-        </b-col>
-      </b-row>
-      <posts v-if="!isMobile" />
-      <posts-mobile v-else />
+    <b-container class="px-0 mt-5" fluid>
+      <posts :filters="filters"/>
     </b-container>
   </b-container>
+</section>
 </template>
 
 <script>
 import Posts from "@/components/forum/Posts";
-import PostsMobile from '../../components/forum/Posts-mobile.vue';
+import PostsMobile from "../../components/forum/Posts-mobile.vue";
 export default {
   components: {
     posts: Posts,
-    'posts-mobile': PostsMobile
+    "posts-mobile": PostsMobile
   },
   data() {
     return {
@@ -65,8 +48,7 @@ export default {
       selected: {
         section: null
       },
-      fields: [
-        {
+      fields: [{
           key: "date_posted",
           sortable: true,
           label: "Date posted"
@@ -100,6 +82,23 @@ export default {
     };
   },
   computed: {
+    filters() {
+      let filter = {
+        section: null,
+        rule: null,
+        sub_rule: null
+      };
+      if (this.select.section != null) {
+        filter.section = this.sections[this.select.section].notation;
+      }
+      if (this.select.rule != null) {
+        filter.rule = this.rules[this.select.rule].notation;
+      }
+      if (this.select.sub_rule != null) {
+        filter.sub_rule = this.subRules[this.select.sub_rule].notation;
+      }
+      return filter;
+    },
     rules() {
       if (this.select.section != null) {
         let key = this.select.section;
@@ -119,34 +118,42 @@ export default {
       }
       return [];
     },
-    isMobile(){
-      if(process.browser){
-        if(/Android|webOs|iPhone|iPad|iPod|Blackberry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-          return true
+    isMobile() {
+      if (process.browser) {
+        if (
+          /Android|webOs|iPhone|iPad|iPod|Blackberry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent
+          )
+        ) {
+          return true;
         }
-        return false
+        return false;
       }
-    },
+    }
   },
-  methods: {
-    
-  },
+  methods: {},
   watch: {
     "select.section": {
-      handler: function(val) {
+      handler: function (val) {
         this.select.rule = null;
         this.select.sub_rule = null;
       }
     },
     "select.rule": {
-      handler: function(val) {
+      handler: function (val) {
         this.select.sub_rule = null;
       }
     }
   },
-  async asyncData({ $axios, params, error }) {
+  async asyncData({
+    $axios,
+    params,
+    error
+  }) {
     try {
-      let { data } = await $axios.get("/api/forum/sections");
+      let {
+        data
+      } = await $axios.get("/api/forum/sections");
       if (data && data.success) {
         return {
           sections: data.sections

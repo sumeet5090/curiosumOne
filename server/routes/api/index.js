@@ -12,6 +12,6 @@ router.get('/', (req, res) => {
 router.use('/user', userRouter)
 router.use('/event', eventRouter)
 router.use('/team', teamRouter)
-router.use('/forum', require('./forum/rules'))
+router.use('/forum', require('./forum'))
 router.use('/io', require('./io'))
 module.exports = router

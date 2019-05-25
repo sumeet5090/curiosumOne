@@ -3,16 +3,22 @@
 /* Curiosum Colors */
 .btn-curiosum {
   background-color: #ff3c00;
+  border-color: #ff3c00;
   color: #fff;
   &:hover {
+    background-color: #ff3c00;
+    border-color: #ff3c00;
     color: #4b2722;
   }
 }
 .btn-curiosum-dark {
   background-color: #4b2722;
+  border-color: #4b2722;
   color: #fff;
   &:hover {
-    color:#ffd800;
+    background-color: #4b2722;
+    border-color: #4b2722;
+    color: #ffd800;
   }
 }
 .i-curiosum {
@@ -22,7 +28,10 @@
   }
 }
 .text-curiosum {
-  color: #4b2722;
+  &:focus,
+  * {
+    color: #4b2722;
+  }
 }
 .text-curiosum-light {
   color: #ff3c00;

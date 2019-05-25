@@ -12,9 +12,11 @@
             <div class="text-dark font-md-small">
               <div class="text-center">
                 <span>
-                  Welcome to the <strong>curiosumportal.in</strong>
+                  Welcome to the
+                  <strong>curiosumportal.in</strong>
                 </span>
-              This site is meant for team and user registration to events organized by the company. You can also view additional data such as event live schedules, inspection updates, lap times etc.</div>
+                This site is meant for team and user registration to events organized by the company. You can also view additional data such as event live schedules, inspection updates, lap times etc.
+              </div>
             </div>
           </b-col>
         </b-row>
@@ -56,7 +58,7 @@
                     <icon class="mb-3 i-curiosum" name="fas fa-trophy" rounded type="primary"></icon>
                     <h6 class="text-curiosum text-uppercase font-weight-bold">Teams</h6>
                     <p class="description mt-3 text-curiosum">Check out all team for {{event.name}}!</p>
-                    <router-link :to="{name: 'event-id-teams', params: {id: event.event_short}}" class="btn btn-curiosum mt-2" tag="a">2019 Teams</router-link>
+                    <router-link :to="{name: 'event-id-teams', params: {id: event.event_short}}" class="btn btn-curiosum mt-2" tag="a">{{event.event_short}} Teams</router-link>
                     <router-link :to="{name: 'teams-all'}" class="btn btn-curiosum-dark mt-2" tag="a">All</router-link>
                   </card>
                 </div>
@@ -97,7 +99,7 @@
                     <icon class="mb-3 i-curiosum" name="fas fa-book" rounded type="default"></icon>
                     <h6 class="text-curiosum text-uppercase font-weight-bold">Rules</h6>
                     <p class="description mt-3 text-curiosum">Rule forum for {{event.name}}!</p>
-                    <router-link :to="{name: 'event-id-rule', params: {id: event.event_short}}" class="btn btn-curiosum mt-2" tag="a">Live Timings</router-link>
+                    <router-link :to="{name: 'forum'}" class="btn btn-curiosum mt-2" tag="a">Forum</router-link>
                   </card>
                 </div>
               </div>
@@ -125,7 +127,7 @@ export default {
       imageHeader2: {
         src: require("@/assets/images/brand/CT-Portal-site-header.png"),
         loading: ""
-      },
+      }
     };
   },
   async asyncData({ $axios, error }) {
@@ -179,10 +181,11 @@ export default {
   }
 };
 </script>
+
 <style lang="scss">
-  @media screen and (max-width: 767px) {
-    .font-md-small {
-      font-size: 0.8rem;
-    }
+@media screen and (max-width: 767px) {
+  .font-md-small {
+    font-size: 0.8rem;
   }
+}
 </style>

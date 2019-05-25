@@ -1,5 +1,5 @@
 {
-  "name": "mec_nuxt",
+  "name": "curiosum-portal",
   "version": "1.0.0",
   "description": "CURIOSUM TECH TEAMS PORTAL",
   "author": "frozen4code",
@@ -14,7 +14,7 @@
     "generate": "nuxt generate",
     "deploy": "pm2 deploy production",
     "server": "yarn build && yarn server:b",
-    "server:b": "cross-env NODE_ENV=production HOST=0.0.0.0 nodemon server/index.js --exec babel-node --presets env --watch server"
+    "server:b": "cross-env NODE_ENV=production HOST=0.0.0.0 POST=8080 nodemon server/index.js --exec babel-node --presets env --watch server"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.5.0",
@@ -40,7 +40,7 @@
     "json-2-csv": "^3.5.0",
     "jsonwebtoken": "^8.3.0",
     "marked": "^0.6.1",
-    "mavon-editor": "^2.6.17",
+    "mavon-editor": "^2.7.4",
     "moment": "^2.22.2",
     "mongoose": "^5.3.11",
     "mongoose-to-csv": "^0.1.1",
@@ -70,11 +70,11 @@
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {
+    "babel-cli": "6.26.0",
     "babel-loader": "^8.0.4",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.7.0",
-    "babel-cli": "6.26.0",
     "css-loader": "^1.0.1",
     "file-loader": "^2.0.0",
     "node-sass": "^4.9.3",

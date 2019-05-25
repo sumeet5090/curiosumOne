@@ -12,7 +12,7 @@ module.exports = {
     htmlAttrs: {
       lang: 'en',
     },
-    title: "CURIOSUM TECH",
+    title: "Curiosum Tech Portal",  
     meta: [{
       charset: 'utf-8'
     },
@@ -27,15 +27,15 @@ module.exports = {
     },
     {
       name: 'theme-color',
-      content: '#33CCCC'
+      content: '#FF3C00'
     },
     {
       name: 'msapplication-navbutton-color',
-      content: '#33CCCC'
+      content: '#FF3C00'
     },
     {
       name: 'apple-mobile-web-app-status-bar-style',
-      content: '#33CCCC'
+      content: '#FF3C00'
     },
     // More Meta pls
     ],
@@ -104,6 +104,11 @@ module.exports = {
     vendor: ['bootstrap-vue', 'vue-flatpickr-component', 'vue2-transition', 'vue-lazyload',],
     plugins: [
     ],
-    extend(config, ctx) { }
+    uglify: {
+      uglifyOptions: {
+        compress: false
+      },
+      cache: '/etc/tmp/cache'
+    },
   }
 }

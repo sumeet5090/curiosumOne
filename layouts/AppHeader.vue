@@ -23,28 +23,24 @@
         </div>
         <ul class="navbar-nav navbar-nav-hover align-items md-center">
           <li class="nav-item">
-            <nuxt-link class="nav-link" tag="a" to="/">Home</nuxt-link>
-          </li>
-          <li class="nav-item">
-            <nuxt-link class="nav-link" tag="a" to="/profile" v-if="!!isAuthenticated">Profile</nuxt-link>
-          </li>
-          <li class="nav-item" v-if="!!isAdmin">
-            <nuxt-link class="nav-link" tag="a" to="/manage" v-if="!!isAdmin">Dashboard</nuxt-link>
+            <nuxt-link class="nav-link" tag="a" to="/forum">Forum</nuxt-link>
           </li>
           <li class="nav-item">
             <nuxt-link class="nav-link" tag="a" to="/faq">FAQ</nuxt-link>
           </li>
         </ul>
         <ul class="navbar-nav navbar-nav-hover align-items-lg-center ml-lg-auto">
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a @click.prevent="modalShowNotification" class="nav-link nav-link-icon text-center" data-toggle="tooltip" href title="Notifications">
               <i aria-label="Notifications" class="fa fa-bell"></i>
               <span class="nav-link-inner--text d-lg-none">Notifications</span>
             </a>
-          </li>
+          </li> -->
           <li class="nav-item text-center">
             <base-dropdown class="w-100 nav-item nav-link-icon" icon="fa fa-user" tag="div" v-if="!!isAuthenticated">
               <nuxt-link class="dropdown-item text-center" tag="a" to="/profile">{{getName}}</nuxt-link>
+              <div class="dropdown-divider"></div>
+              <nuxt-link class="dropdown-item text-center" tag="a" to="/manage" v-if="!!isAdmin">Dashboard</nuxt-link>
               <div class="dropdown-divider"></div>
               <a @click.prevent="logout" class="dropdown-item text-center" href>Logout</a>
             </base-dropdown>
