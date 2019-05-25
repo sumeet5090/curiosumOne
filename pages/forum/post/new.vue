@@ -1,7 +1,7 @@
 <template>
   <div>
     <no-ssr>
-      <section class="section pt-0">
+      <section class="section pt-0" v-if="!!isAuthenticated">
         <b-container>
           <b-row class="justify-content-center">
             <b-col md="8" sm="12">
@@ -208,7 +208,17 @@ export default {
       this.post.sub_rule = -1;
     }
   },
+  beforeMount(){
+    if(!isAuthenticated){
+      console.log("Not authenticated.");
+      this.router.push('/login')
+    }
+  },
   mounted() {
+    if(!isAuthenticated){
+      console.log("Not authenticated.");
+      this.router.push('/login')
+    }
     this.post.user = this.currentUser;
   },
   watch: {

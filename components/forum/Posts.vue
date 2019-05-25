@@ -13,7 +13,12 @@
           </router-link>
           <div class="container">
             <div class="row">
-              <div class="col-md-3 px-0" v-if="post.user">
+              <div class="col-md-6 px-0" v-if="post.sub_rule">
+                <small>
+                  Rule {{post.sub_rule.notation}}
+                </small>
+              </div>
+              <div class="col-md-6 px-0" v-if="post.user">
                 <small>
                   Posted by
                   <router-link :to="{name: 'profile-id', params: {id: post.user.username}}">{{post.user.display_name}}</router-link>
@@ -35,18 +40,6 @@
           </div>
         </div>
         <div>
-          <b-dropdown no-caret right size="sm" toggle-class="text-decoration-none" v-if="post.user" variant="link">
-            <template slot="button-content">
-              <i class="fas fa-ellipsis-v m-0 text-black-50"></i>
-              <span class="sr-only">Search</span>
-            </template>
-            <b-dropdown-item href="#" v-if="post.user._id === currentUser._id">Edit</b-dropdown-item>
-            <b-dropdown-item href="#" v-if="isAdmin">Mark as duplicate</b-dropdown-item>
-            <b-dropdown-item href="#" v-if="isAdmin">Mark as spam</b-dropdown-item>
-            <b-dropdown-item href="#" v-if="isAdmin">Mark as resolved</b-dropdown-item>
-            <b-dropdown-item href="#" v-if="isAdmin">Close query</b-dropdown-item>
-            <b-dropdown-item href="#" v-if="isAdmin">Re-open query</b-dropdown-item>
-          </b-dropdown>
         </div>
       </div>
     </div>
@@ -75,7 +68,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["currentUser", "isAdmin"]),
+    ...mapGetters(["currentUser", "isAdmin", "isAuthenticated"]),
     filteredPosts() {
       let section, rule, sub_rule;
       if (this.filters) {
