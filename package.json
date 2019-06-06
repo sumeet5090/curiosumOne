@@ -14,7 +14,7 @@
     "generate": "nuxt generate",
     "deploy": "pm2 deploy production",
     "server": "yarn build && yarn server:b",
-    "server:b": "cross-env NODE_ENV=production HOST=0.0.0.0 POST=8080 nodemon server/index.js --exec babel-node --presets env --watch server"
+    "server:b": "cross-env NODE_ENV=production HOST=0.0.0.0 PORT=3000 nodemon server/index.js --exec babel-node --presets env --watch server"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.5.0",

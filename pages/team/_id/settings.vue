@@ -200,7 +200,7 @@
                   <b-col :key="user.id" lg="3" md="4" v-bind:class="{'team-captain order-first': !!isCaptain(team.captain, user._id), 'order-2': !isCaptain(team.captain, user._id)}" v-for="user in team.users">
                     <card class="team-user-profiles mt-3" no-body tag="article">
                       <div class="text-center">
-                        <img class="rounded-circle" v-lazy="user.profile.picture">
+                        <img class="rounded-circle" style="height: 64px; width: 64px; object-fit: cover;" v-lazy="user.profile.picture">
                         <div class="my-2">
                           <router-link :to="'/profile/'+user.username" class="text-primary font-weight-300">{{user.display_name}}</router-link>
                           <div v-if="isCaptain(team.captain, user._id)">

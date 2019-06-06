@@ -8,6 +8,53 @@ const Team = require('./../models/team.model')
 const StaticSchedule = require('./../models/static_schedule.model')
 const mongoose = require('mongoose')
 const Response = require('./../services/response')
+const JSON2CSV = require('json-2-csv')
+const crypto = require('crypto')
+const path = require('path')
+const fs = require('fs')
+
+const readFilesAsync = (path, opts = 'utf8') => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(path, opts, (err, data) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(data)
+      }
+    })
+  })
+}
+
+const writeFilesAsync = (path, data, opts = 'utf8') => {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(path, data, opts, (err) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(true)
+      }
+    })
+  })
+}
+
+const toArray = (num) => {
+  if (Array.isArray(num)) {
+    return num
+  }
+  if (typeof num === 'number') {
+    return [num]
+  }
+  if (typeof num === 'string' && num !== '') {
+    return [num]
+  }
+}
+
+const toBoolean = (val) => {
+  if (val === "TRUE" || val === "true" || val === true || val === 1) {
+    return true
+  }
+  return false
+}
 
 const getAllEvents = async (req, res) => {
   try {
@@ -88,6 +135,159 @@ const getTeamForEvent = async (req, res) => {
     return res.sendStatus(500)
   }
 }
+
+const getTeamsCSVForEvent = async (req, res) => {
+  const fields = [
+    '_id',
+    'name',
+    'venue',
+    'link',
+    'start_date',
+    'end_date',
+    'event_short',
+    'past',
+    'show_block.official_website',
+    'show_block.teams',
+    'show_block.live_announcements',
+    'show_block.rules',
+    'show_block.schedule',
+    'show_block.tech_inspection',
+    'show_block.live_timings',
+    'organizers',
+    'teams',
+    'schedules',
+    'live_timings',
+    'tech_updates',
+    'static_schedule',
+  ]
+  let id = req.params.id,
+    $or = [{ event_short: id }]
+  if (parseInt(id) == id) {
+    $or.push({ _id: id })
+  }
+  try {
+    let event = await Event.findOne({ $or: $or })
+    if (event) {
+      console.log("Event found");
+      let csv = await JSON2CSV.json2csvAsync(JSON.parse(JSON.stringify([event])), {
+        keys: fields,
+        emptyFieldValue: '',
+        expandArrayObjects: true
+      })
+      if (csv) {
+        console.log("CSV");
+        let fname = `downloads/event-${id}-${crypto.randomBytes(8).toString('hex')}.csv`
+        console.log(fname);
+        let filename = path.resolve(fname)
+        let file = await writeFilesAsync(fname, csv)
+        if (file) {
+          res.locals.filename = fname
+          return res.sendFile(filename)
+        }
+        return Response.failed(res, { message: "No file." })
+      }
+      return Response.failed(res, { message: "No csv." })
+    }
+    return Response.failed(res, { message: "Not found." })
+  } catch (error) {
+    console.log(error);
+    return Response.failed(res, { message: "Some internal error." })
+  }
+}
+
+const updateEventFromCSV = async (req, res) => {
+  const fields = [
+    '_id',
+    'name',
+    'venue',
+    'link',
+    'start_date',
+    'end_date',
+    'event_short',
+    'past',
+    'show_block.official_website',
+    'show_block.teams',
+    'show_block.live_announcements',
+    'show_block.rules',
+    'show_block.schedule',
+    'show_block.tech_inspection',
+    'show_block.live_timings',
+    'organizers',
+    'teams',
+    'schedules',
+    'live_timings',
+    'tech_updates',
+    'static_schedule',
+  ]
+  let id = req.params.id,
+    $or = [{ event_short: id }]
+  if (parseInt(id) == id) {
+    $or.push({ _id: id })
+  }
+  try {
+    if (req.files && req.files.file) {
+      let file = req.files.file
+      if (file && file.data) {
+        let csv = file.data.toString('utf8')
+        let data = await JSON2CSV.csv2jsonAsync(csv, {
+          keys: fields,
+          emptyFieldValue: '',
+          expandArrayObjects: true
+        })
+        if (data) {
+          let dataArr = toArray(data)
+          let inEvent = JSON.parse(JSON.stringify(dataArr[0]))
+          let teams = toArray(inEvent.teams),
+            schedules = toArray(inEvent.schedules),
+            live_timings = toArray(inEvent.live_timings),
+            tech_updates = toArray(inEvent.tech_updates),
+            static_schedule = toArray(inEvent.static_schedule),
+            show_block = inEvent.show_block
+          let updateEvent = {
+            name: inEvent.name,
+            venue: inEvent.venue,
+            link: inEvent.link,
+            start_date: inEvent.start_date,
+            end_date: inEvent.end_date,
+            event_short: inEvent.event_short,
+            past: toBoolean(inEvent.past),
+            show_block: {
+              official_website: toBoolean(show_block.official_website),
+              teams: toBoolean(show_block.teams),
+              live_announcements: toBoolean(show_block.live_announcements),
+              rules: toBoolean(show_block.rules),
+              schedule: toBoolean(show_block.schedule),
+              tech_inspection: toBoolean(show_block.tech_inspection),
+              live_timings: toBoolean(show_block.live_timings)
+            },
+            teams,
+            schedules,
+            live_timings,
+            tech_updates,
+            static_schedule,
+          }
+          let updatedEvent = await Event.findOneAndUpdate({ _id: inEvent._id }, updateEvent, { new: true })
+          if (updatedEvent) {
+            console.log("Updated event");
+            let dbTeams = await Team.updateMany({ _id: { $in: teams } }, { $addToSet: { events: [updatedEvent._id] } })
+            if (dbTeams) {
+              return Response.success(res, { message: "Updated event.", event: updatedEvent })
+            }
+            return Response.failed(res, { message: "Not updated teams." })
+          }
+          return Response.failed(res, { message: "Not updated event." })
+        }
+        return Response.failed(res, { message: "No data." })
+      }
+      return Response.failed(res, { message: "No data." })
+    }
+    return Response.failed(res, { message: "Not found." })
+  } catch (error) {
+    console.log(error);
+    return Response.failed(res, { message: "Some internal error." })
+  }
+}
+
 const getOneSchedule = async (req, res) => {
   try {
     let id = req.params.id,
@@ -172,18 +372,18 @@ const getAllSchedules = async (req, res) => {
 }
 const getOneStaticScheduleEventTeam = async (req, res) => {
   try {
-    let event = await Event.findOne({_id: req.params.id})
-    let team = await Team.findOne({_id: req.params.team_id})
-    if(event && team) {
-      let static_schedule = await StaticSchedule.findOne({event: event._id, team: team._id})
-      if(static_schedule){
-        return Response.success(res, {static_schedule})
+    let event = await Event.findOne({ _id: req.params.id })
+    let team = await Team.findOne({ _id: req.params.team_id })
+    if (event && team) {
+      let static_schedule = await StaticSchedule.findOne({ event: event._id, team: team._id })
+      if (static_schedule) {
+        return Response.success(res, { static_schedule })
       }
     }
-    return Response.failed(res, {message: "Not found."})
+    return Response.failed(res, { message: "Not found." })
   } catch (error) {
     console.log(error);
-    return Response.failed(res, {message: "Internal server error."})
+    return Response.failed(res, { message: "Internal server error." })
   }
 }
 const getAllStaticSchedulesForEvent = async (req, res) => {
@@ -492,24 +692,24 @@ const unlinkTeamFromEvent = async (req, res) => {
 const unlinkTeamAndEvent = async (req, res) => {
   try {
     let team, team_id = req.params.id, event, event_id = req.params.event_id
-    team = await Team.findOne({_id: team_id})
-    event = await Event.findOne({_id: event_id})
+    team = await Team.findOne({ _id: team_id })
+    event = await Event.findOne({ _id: event_id })
     if (team && event) {
       // Check if they are linked
-      if(team.events.contains(event._id)){
-        let out1 = await team.updateOne({$pull: { "events": event._id }})
-      } 
-      if(event.teams.contains(team._id)){
-        let out2 = await event.updateOne({$pull: { "teams": team._id }})
+      if (team.events.contains(event._id)) {
+        let out1 = await team.updateOne({ $pull: { "events": event._id } })
       }
-      if(out1.ok && out2.ok && (out1.nModified >= 0 || out2.nModified >= 0)) {
-        return Response.success(res, {message: "Team and event unlinked."})
+      if (event.teams.contains(team._id)) {
+        let out2 = await event.updateOne({ $pull: { "teams": team._id } })
+      }
+      if (out1.ok && out2.ok && (out1.nModified >= 0 || out2.nModified >= 0)) {
+        return Response.success(res, { message: "Team and event unlinked." })
       }
     }
-    return Response.failed(res, {message: "Couldn't remove."}, 404)
+    return Response.failed(res, { message: "Couldn't remove." }, 404)
   } catch (err) {
     console.log(err)
-    return res.sendStatus(500) 
+    return res.sendStatus(500)
   }
 }
 
@@ -518,6 +718,7 @@ module.exports = {
   getOneEvent,
   getOneEventByName,
   getTeamForEvent,
+  getTeamsCSVForEvent,
   // getAnnouncementsForEvent,
   // getOneAnnouncement,
   // getOneTechupdate,
@@ -533,6 +734,7 @@ module.exports = {
   // getOneStaticScheduleEventTeam,
   // getTeamCar,
   createEvent,
+  updateEventFromCSV,
   // createAnnouncement,
   // createCar,
   // createLivetiming,

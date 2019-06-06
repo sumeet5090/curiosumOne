@@ -1,8 +1,9 @@
 import axios from 'axios'
-import store from '@/store/'
 
+let host = process.env.HOST || 'localhost'
+let port = process.env.PORT || 3000
 export default () => {
   return axios.create({
-    baseURL: `http://localhost:3000`
+    baseURL: `http://${host}:${port}`
   })
 }

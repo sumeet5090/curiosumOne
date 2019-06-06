@@ -17,12 +17,16 @@
               <div class="col-lg-4 order-3 order-lg-1">
                 <div class="card-profile-stats d-flex justify-content-center">
                   <div>
-                    <span class="heading" v-if="!!team.events">{{team.events.length}}</span>
+                    <span class="heading" v-if="team.events">{{team.events.length}}</span>
+                    <span class="heading" v-else>0</span>
                     <span class="description" v-if="!!team.events">Event{{team.events.length == 1? '' : 's'}}</span>
+                    <span class="description" v-else>Events</span>
                   </div>
                   <div>
-                    <span class="heading" v-if="!!team.users">{{team.users.length}}</span>
-                    <span class="description">Members</span>
+                    <span class="heading" v-if="team.users">{{team.users.length }}</span>
+                    <span class="heading" v-else>0</span>
+                    <span class="description" v-if="team.users && team.users.length === 1">Member</span>
+                    <span class="description" v-else>Members</span>
                   </div>
                 </div>
               </div>
@@ -55,15 +59,15 @@
                 </router-link>
               </div>
               <div class="h6 font-weight-300 text-muted">{{team.location}}{{team.country && team.location ? ", ": ""}}{{team.country}}</div>
-              <div class="h6 mt-2">
+              <div class="float-left">
                 <i class="mr-2 fa fa-university"></i>
               </div>
               <div>
-                <div class="display-4">{{team.institution.name}}</div>
+                <div class="h6">{{team.institution.name}}</div>
                 <small class="text-muted">{{team.institution.address}}</small>
               </div>
             </div>
-            <div class="mt-2 py-2 border-top text-center">
+            <div class="mt-2 py-2 border-top text-center" v-if="team.bio">
               <div class="row justify-content-center">
                 <div class="col-lg-9">
                   <i class="fas fa-scroll"></i>
@@ -71,7 +75,7 @@
                 </div>
               </div>
             </div>
-            <div class="my-1 py-2 border-top" v-if="!!(team.events.length>0)">
+            <div class="my-1 py-2 border-top" v-if="team.events && team.events.length > 0">
               <b-row class="justify-content-center">
                 <h4 class="font-weight-bold text-dark">Events</h4>
               </b-row>
@@ -83,7 +87,7 @@
                 </b-col>
               </b-row>
             </div>
-            <div class="my-1 py-2 border-top" v-if="!!(team.users.length > 0)">
+            <div class="my-1 py-2 border-top" v-if="!!(team.users && team.users.length > 0)">
               <div class="text-center">
                 <i class="fas fa-users"></i>
                 <router-link :to="{name: 'team-id-members', params: team._id}" class="h4 font-weight-bold text-dark cursor-pointer" tag="div">Team Members</router-link>
@@ -92,7 +96,7 @@
                 <b-col :key="user.id" lg="2" md="3" sm="4" v-bind:class="{'team-captain order-first': !!isCaptain(team.captain, user._id), 'order-2': !isCaptain(team.captain, user._id)}" v-for="user in team.users">
                   <card class="team-user-profiles my-1" no-body tag="article">
                     <div class="text-center">
-                      <img alt="User profile" class="rounded-circle" v-lazy="user.profile.picture">
+                      <img alt="User profile" class="rounded-circle" style="height: 64px; width: 64px; object-fit: cover;" v-lazy="user.profile.picture">
                       <div class="my-2">
                         <router-link :to="'/profile/'+user.username" class="text-primary font-weight-300">{{user.display_name}}</router-link>
                         <div v-if="isCaptain(team.captain, user._id)">
@@ -104,7 +108,7 @@
                 </b-col>
               </b-row>
             </div>
-            <div class="my-1 py-2 border-top" v-if="!!(team.alumnus.length > 0)">
+            <div class="my-1 py-2 border-top" v-if="!!(team.alumnus && team.alumnus.length > 0)">
               <div class="text-center">
                 <i class="fas fa-user-graduate"></i>
                 <router-link :to="{name: 'team-id-members', params: team._id}" class="h4 font-weight-bold text-dark cursor-pointer" tag="div">Alumni</router-link>

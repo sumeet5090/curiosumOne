@@ -8,10 +8,10 @@
         </div>
       </b-row>
       <b-row class="justify-content-center my-2" v-if="isAdmin" v-show="isAdmin">
-        <base-alert v-if="isAdmin && error" type="danger" icon="far fa-times-circle" class="col-12" :dismissible="true">
+        <base-alert :dismissible="true" class="col-12" icon="far fa-times-circle" type="danger" v-if="isAdmin && error">
           <template slot="text">{{error}}</template>
         </base-alert>
-        <base-alert v-if="isAdmin && success" type="success" icon="far fa-check-circle" class="col-12" :dismissible="true">
+        <base-alert :dismissible="true" class="col-12" icon="far fa-check-circle" type="success" v-if="isAdmin && success">
           <template slot="text">{{success}}</template>
         </base-alert>
         <base-button @click.prevent="sendDownloadRequest" outline type="success" v-if="isAdmin">Download</base-button>
@@ -65,13 +65,11 @@
           <div class="text-muted text-center mb-3">
             <small>Upload file</small>
           </div>
-          <div class="btn-wrapper text-center">
-            <b-form-file class="text-left" v-model="uploadModal.file" @change="handleUpload"></b-form-file>
-          </div>
+          <b-form-file accept=".csv" drop-placeholder="Drop file here..." placeholder="Choose a file..." v-model="uploadModal.file"></b-form-file>
         </template>
         <template>
           <div class="text-center pt-2">
-            <base-button type="primary" @click.prevent="uploadFile">Upload</base-button>
+            <base-button @click.prevent="uploadFile" type="primary">Upload</base-button>
           </div>
         </template>
       </card>
@@ -81,6 +79,7 @@
 
 <script>
 import truncate from "vue-truncate-collapsed";
+import moment from "moment"
 import { mapGetters } from "vuex";
 import flatten from "flat";
 export default {
@@ -97,11 +96,11 @@ export default {
       } else {
         return 1;
       }
-    }
+    },
   },
   methods: {
-    handleUpload(v){
-      this.uploadModal.file = v
+    handleUpload(v) {
+      this.uploadModal.file = this.$refs.upload_file.files[0];
     },
     sortCompareAdvanced: function(a, b, key) {
       let e1 = a,
@@ -120,44 +119,59 @@ export default {
         });
       }
     },
+    formatDate(date){
+      return moment(date).format('YYYYMMDD-HHmmss')
+    },
     sendDownloadRequest() {
-      this.success = null
-      this.error = null
-      this.$axios.get('/api/io/csv/event/1/teams').then(({data}) => {
-        console.log(data);
-        if(data && data.success == false){
-          this.error = data.message
-        } else {
-          const url = window.URL.createObjectURL(new Blob([data])),
-            link = document.createElement('a'),
-            fileName = `teams-event-${Date.now()}.csv`
-          link.href = url;
-          link.setAttribute('download', fileName);
-          document.body.appendChild(link);
-          link.click();
-          this.success = 'File downloaded.'
-          document.body.removeChild(link)
-        }
-      }).catch((err)=>{
-          this.error = "Internal server error."
-      })
+      this.success = null;
+      this.error = null;
+      let params = this.$route.params;
+      this.$axios
+        .get(`/api/event/${params.id}/teams/csv`)
+        .then(({ data }) => {
+          console.log(data);
+          if (data && data.success == false) {
+            this.error = data.message;
+          } else {
+            const url = window.URL.createObjectURL(new Blob([data])),
+              link = document.createElement("a"),
+              fileName = `event-${params.id}-${this.formatDate(Date.now())}.csv`;
+            link.href = url;
+            link.setAttribute("download", fileName);
+            document.body.appendChild(link);
+            link.click();
+            this.success = "File downloaded.";
+            document.body.removeChild(link);
+          }
+        })
+        .catch(err => {
+          this.error = "Internal server error.";
+          console.log(err);
+        });
     },
     uploadFile() {
-      this.success = null
-      this.error = null
-      let formData = new FormData()
-      formData.append('file', this.uploadModal.file)
-      console.log('formData :', formData);
-      this.$axios.post('/api/io/event-team-csv', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }).then(({data}) => {
-        console.log("Success");
-        this.success = 'Upload successful.'
-      }).catch((err)=>{
-        this.error = 'Upload failed.'
-      })
+      this.success = null;
+      this.error = null;
+      let formData = new FormData();
+      let params = this.$route.params;
+      if(this.uploadModal.file){
+        console.log(this.uploadModal.file.name);
+      }
+      formData.append("file", this.uploadModal.file);
+      this.$axios
+        .post(`/api/event/${params.id}/teams/csv`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        })
+        .then(({ data }) => {
+          console.log("Success");
+          console.log(data);
+          this.success = "Upload successful.";
+        })
+        .catch(err => {
+          this.error = "Upload failed.";
+        });
     }
   },
   data() {
@@ -209,7 +223,7 @@ export default {
         }
       ],
       uploadModal: {
-        show: true,
+        show: false,
         file: null
       },
       error: null,
