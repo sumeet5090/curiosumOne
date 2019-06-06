@@ -8,7 +8,6 @@ module.exports = {
     instances: 1,
     autorestart: true,
     watch: false,
-    max_memory_restart: '770M',
     env: {
       NODE_ENV: 'production'
     },
@@ -27,7 +26,7 @@ module.exports = {
       repo : 'git@github.com:frozen4code/curiosum-tech-portal.git',
       path : '~/prod/mec_website',
       "forward-agent": true,
-      'post-deploy' : 'pm2 stop all && yarn && yarn build && pm2 startOrRestart ecosystem.config.js --env production --update-env'
+      'post-deploy' : 'yarn && yarn build && pm2 startOrRestart ecosystem.config.js --env production --update-env'
     }
   }
 };
