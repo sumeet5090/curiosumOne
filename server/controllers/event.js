@@ -136,6 +136,7 @@ const getTeamForEvent = async (req, res) => {
   }
 }
 
+
 const getTeamsCSVForEvent = async (req, res) => {
   const fields = [
     '_id',

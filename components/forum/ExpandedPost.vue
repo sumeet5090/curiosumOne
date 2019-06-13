@@ -235,15 +235,23 @@ export default {
       reOpenQuery: {
         modal: false,
         post_id: null
-      }
+      },
+      previousTime: null
     };
   },
 
   computed: {
-    ...mapGetters(["currentUser", "isAdmin"]),
+    ...mapGetters(["currentUser", "isAdmin", "isAuthenticated"]),
     isEditable() {
       let post = moment(this.post.date_posted);
       return this.currentTime - post <= 600000; // 10 minutes
+    },
+    replyHold(){
+      let time = this.currentTime
+      if(time - this.previousTime >= 10000){
+        return false
+      }
+      return true
     }
   },
   created() {
@@ -262,7 +270,8 @@ export default {
     },
     Reply() {
       let url = `/api/forum/posts/${this.post._id}/reply`;
-      if (this.newReply.text.length > 0) {
+      if (this.newReply.text.length > 0 && !this.replyHold) {
+        this.previousTime = parseInt(this.currentTime)
         this.$axios
           .put(url, { text: this.newReply.text })
           .then(res => {

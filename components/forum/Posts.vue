@@ -28,7 +28,7 @@
                 <small>{{formatDate(post.date_posted)}}</small>
               </div>
               <div class="col-3 px-0">
-                <small>{{post.replies.length % 2 == 0 ? `${post.replies.length} replies` : `${post.replies.length} reply` }}</small>
+                <small>{{post.replies.length != 1 ? `${post.replies.length} replies` : `${post.replies.length} reply` }}</small>
               </div>
               <div class="col-md-3 px-0" v-if="post.replies.length > 0">
                 <small>

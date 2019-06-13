@@ -8,8 +8,9 @@ router.get('/', TeamController.getAll)
 router.get('/:id', TeamController.getOne)
 router.get('/:id/user', TeamController.getTeamExpandUser)
 router.get('/:id/mini', TeamController.getOneMini)
+router.get('/teams/csv', helper.allowStaff, TeamController.getTeamsCSV)
 router.get('/s/d', helper.allowStaff, (req, res) => {
-  return res.send({'x': 'XDDD', user: req.user.role})
+  return res.send({ 'x': 'XDDD', user: req.user.role })
 })
 router.get('/confirmation/:token', TeamController.confirmToken, (req, res) => {
   return res.redirect(url.format({
@@ -27,6 +28,7 @@ router.post('/:id/register/event/:event_id', helper.isCaptainOrAdmin(), TeamCont
 router.post('/:id/register/user/:username', helper.isCaptainOrAdmin(), TeamController.linkTeamAndUser)
 router.post('/:id/register/car/:car_id', helper.allowStaff, TeamController.linkTeamAndCar)
 router.post('/:id/unlink/event/:event_id', helper.allowStaff, TeamController.unlinkTeamAndEvent)
+router.post('/update/csv', helper.allowStaff, TeamController.updateTeamsFromCSV)
 // PUT
 router.put('/:id', helper.isCaptainOrAdmin(), TeamController.updateTeam)
 router.put('/:id/captain', helper.isCaptainOrAdmin(), TeamController.changeCaptain)

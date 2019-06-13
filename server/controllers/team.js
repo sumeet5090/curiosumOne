@@ -6,7 +6,9 @@ const Token = require('./../models/token.model')
 const Response = require('./../services/response')
 const nodemailer = require('nodemailer')
 const crypto = require('crypto')
-
+const JSON2CSV = require('json-2-csv')
+const path = require('path')
+const fs = require('fs')
 const smtpTransport = nodemailer.createTransport({
   service: "gmail",
   host: "smtp.gmail.com",
@@ -19,6 +21,49 @@ const smtpTransport = nodemailer.createTransport({
     refreshToken: process.env.GMAIL_REFRESH_TOKEN
   }
 })
+
+const readFilesAsync = (path, opts = 'utf8') => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(path, opts, (err, data) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(data)
+      }
+    })
+  })
+}
+
+const writeFilesAsync = (path, data, opts = 'utf8') => {
+  return new Promise((resolve, reject) => {
+    fs.writeFile(path, data, opts, (err) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(true)
+      }
+    })
+  })
+}
+
+const toArray = (num) => {
+  if (Array.isArray(num)) {
+    return num
+  }
+  if (typeof num === 'number') {
+    return [num]
+  }
+  if (typeof num === 'string' && num !== '') {
+    return [num]
+  }
+}
+
+const toBoolean = (val) => {
+  if (val === "TRUE" || val === "true" || val === true || val === 1) {
+    return true
+  }
+  return false
+}
 
 const getAll = async function (req, res) {
   try {
@@ -110,7 +155,7 @@ const create = async function (req, res) {
                 let genLink = req.protocol + '://' + req.headers.host + '\/api\/team\/confirmation\/' + token.token + '\n'
                 let teamLink = req.protocol + '://' + req.headers.host + '\/team\/' + team._id;
                 let mailOptions = {
-                  from: 'MEC Support',
+                  from: 'Curiosum Tech Portal',
                   to: emails[i],
                   subject: `Team Invitiation for ${team.team_name}`,
                   generateTextFromHTML: true,
@@ -133,6 +178,169 @@ const create = async function (req, res) {
 
 const addCaptain = async (req, res) => {
   let id = req.params.id, body = req.body
+}
+
+const getTeamsCSV = async (req, res) => {
+  const fields = [
+    '_id',
+    'alumnus',
+    'bio',
+    'captain',
+    'car',
+    'category',
+    'country',
+    'drive_folder',
+    'events',
+    'institution.address',
+    'institution.name',
+    'institution.short_name',
+    'live_timings',
+    'location',
+    'logo',
+    'old_events',
+    'past_event',
+    'social.facebook',
+    'social.instagram',
+    'social.twitter',
+    'static_schedules',
+    'team_captain_email',
+    'team_captain_full_name',
+    'team_name',
+    'tech_updates',
+    'users',
+    'website_url',
+    'former_name',
+  ]
+  try {
+    let teams = await Team.find()
+    if (teams) {
+      console.log("Team found");
+      let csv = await JSON2CSV.json2csvAsync(JSON.parse(JSON.stringify(teams)), {
+        keys: fields,
+        emptyFieldValue: null,
+        expandArrayObjects: true
+      })
+      if (csv) {
+        console.log("CSV");
+        let fname = `downloads/teams-${crypto.randomBytes(8).toString('hex')}.csv`
+        console.log(fname);
+        let filename = path.resolve(fname)
+        let file = await writeFilesAsync(fname, csv)
+        if (file) {
+          res.locals.filename = fname
+          return res.sendFile(filename)
+        }
+        return Response.failed(res, { message: "No file." })
+      }
+      return Response.failed(res, { message: "No csv." })
+    }
+    return Response.failed(res, { message: "Not found." })
+  } catch (error) {
+    console.log(error);
+    return Response.failed(res, { message: "Some internal error." })
+  }
+}
+
+const updateTeamsFromCSV = async (req, res) => {
+  const fields = [
+    '_id',
+    'alumnus',
+    'bio',
+    'captain',
+    'car',
+    'category',
+    'country',
+    'drive_folder',
+    'events',
+    'institution.address',
+    'institution.name',
+    'institution.short_name',
+    'live_timings',
+    'location',
+    'logo',
+    'old_events',
+    'past_event',
+    'social.facebook',
+    'social.instagram',
+    'social.twitter',
+    'static_schedules',
+    'team_captain_email',
+    'team_captain_full_name',
+    'team_name',
+    'tech_updates',
+    'users',
+    'website_url',
+    'former_name',
+  ]
+  try {
+    if (req.files && req.files.file) {
+      let file = req.files.file
+      if (file && file.data) {
+        let csv = file.data.toString('utf8')
+        let data = await JSON2CSV.csv2jsonAsync(csv, {
+          keys: fields,
+          emptyFieldValue: null,
+          expandArrayObjects: true
+        })
+        if (data) {
+          let dataArr = toArray(data)
+          let teams = []
+          for(let x=0; x<dataArr.length; x++){
+            let d = dataArr[x]
+            let team = {
+              alumnus: toArray(d.alumnus),
+              bio: d.bio,
+              car: d.car,
+              category: d.category,
+              country: d.country,
+              drive_folder: d.drive_folder,
+              events: d.events,
+              institution: {
+                address: d.institution.address,
+                name: d.institution.name,
+                short_name: d.institution.short_name
+              },
+              live_timings: toArray(d.live_timings),
+              location: d.location,
+              logo: d.logo,
+              old_events: toArray(d.old_events),
+              past_event: toArray(d.past_event),
+              social: {
+                facebook: d.social.facebook,
+                instagram: d.social.instagram,
+                twitter: d.social.twitter
+              },
+              static_schedules: toArray(d.static_schedules),
+              team_captain_email: d.team_captain_email,
+              team_captain_full_name: d.team_captain_full_name,
+              team_name: d.team_name,
+              tech_updates: toArray(d.tech_updates),
+              users: toArray(d.users),
+              website_url: d.website_url,
+              former_name: d.former_name,
+            }
+            if(d.captain !== "" || d.captain != undefined) {
+              team.captain = d.captain
+            } else {
+              team.captain = null
+            }
+            if(d._id){
+              let updated = await Team.findOneAndUpdate({_id: d._id}, team, {new: true})
+            } else {
+              let updated = await new Team(team).save()
+            }
+          }
+          return Response.success(res, { message: "Updated teams." })
+        }
+        return Response.failed(res, { message: "No data." })
+      }
+      return Response.failed(res, { message: "No data." })
+    }
+    return Response.failed(res, { message: "Not found." })
+  } catch (error) {
+    console.log(error);
+    return Response.failed(res, { message: "Some internal error." })
+  }
 }
 
 const changeCaptain = async (req, res) => {
@@ -179,7 +387,7 @@ const addMembers = async function (req, res) {
               let genLink = req.protocol + '://' + req.headers.host + '\/api\/team\/confirmation\/' + token.token + '\n'
               let teamLink = req.protocol + '://' + req.headers.host + '\/team\/' + team._id;
               let mailOptions = {
-                from: 'Curiosum Tech Support',
+                from: 'Curiosum Tech Portal',
                 to: emails[i],
                 subject: `Curiosum Tech | Team invitiation for ${team.team_name}`,
                 generateTextFromHTML: true,
@@ -303,7 +511,7 @@ const addAlumnus = async function (req, res) {
             let genLink = req.protocol + '://' + req.headers.host + '\/api\/team\/confirmation\/' + token.token + '\n'
             let teamLink = req.protocol + '://' + req.headers.host + '\/team\/' + team._id;
             let mailOptions = {
-              from: 'Curiosum Portal',
+              from: 'Curiosum Tech Portal',
               to: emails[i],
               subject: `Team Invitiation for ${team.team_name}`,
               generateTextFromHTML: true,
@@ -328,7 +536,7 @@ const removeMembers = async function (req, res) {
   try {
     team = await Team.findOne({ _id: team_id })
     if (team) {
-      user = await User.findOneAndUpdate({ _id: user_id }, {team: null})
+      user = await User.findOneAndUpdate({ _id: user_id }, { team: null })
       if (user) {
         // Pull role if alumni
         team.users.pull(user._id)
@@ -554,24 +762,24 @@ const unlinkTeamFromEvent = async (req, res) => {
 const unlinkTeamAndEvent = async (req, res) => {
   try {
     let team, team_id = req.params.id, event, event_id = req.params.event_id
-    team = await Team.findOne({_id: team_id})
-    event = await Event.findOne({_id: event_id})
+    team = await Team.findOne({ _id: team_id })
+    event = await Event.findOne({ _id: event_id })
     if (team && event) {
       // Check if they are linked
-      if(team.events.contains(event._id)){
-        let out1 = await team.updateOne({$pull: { "events": event._id }})
-      } 
-      if(event.teams.contains(team._id)){
-        let out2 = await event.updateOne({$pull: { "teams": team._id }})
+      if (team.events.contains(event._id)) {
+        let out1 = await team.updateOne({ $pull: { "events": event._id } })
       }
-      if(out1.ok && out2.ok && (out1.nModified >= 0 || out2.nModified >= 0)) {
-        return Response.success(res, {message: "Team and event unlinked."})
+      if (event.teams.contains(team._id)) {
+        let out2 = await event.updateOne({ $pull: { "teams": team._id } })
+      }
+      if (out1.ok && out2.ok && (out1.nModified >= 0 || out2.nModified >= 0)) {
+        return Response.success(res, { message: "Team and event unlinked." })
       }
     }
-    return Response.failed(res, {message: "Couldn't remove."}, 404)
+    return Response.failed(res, { message: "Couldn't remove." }, 404)
   } catch (err) {
     console.log(err)
-    return res.sendStatus(500) 
+    return res.sendStatus(500)
   }
 }
 
@@ -580,6 +788,7 @@ module.exports = {
   getOneMini,
   getTeamExpandUser,
   getOne,
+  getTeamsCSV,
   create,
   linkTeamAndUser,
   confirmToken,
@@ -592,6 +801,7 @@ module.exports = {
   unlinkTeamFromEvent,
   unlinkTeamAndEvent,
   updateTeam,
+  updateTeamsFromCSV,
   changeCaptain,
   deleteTeam
 }
