@@ -8,7 +8,7 @@
     </b-row>
     <b-row class="justify-content-center align-items-center">
       <div class="col px-0">
-        <router-link :to="{name: 'forum-post-new'}" class="btn btn-sm btn-curiosum w-100">New</router-link>
+        <router-link :to="{name: 'forum-post-new'}" class="btn btn-sm btn-curiosum w-100">New Post</router-link>
       </div>
       <b-select class="col-md-3" size="sm" v-model="select.section">
         <option :value="null">Select section</option>

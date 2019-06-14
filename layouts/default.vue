@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div >
+    <div v-if="!!currentUser && isAdmin">
       <header class="header-global">
         <app-header></app-header>
       </header>
@@ -10,7 +10,7 @@
         <app-footer></app-footer>
       </footer>
     </div>
-    <!-- <div v-else>
+    <div v-else>
       <div id="low-poly-background"></div>
       <section class="section section-hero">
         <div class="container align-content-center">
@@ -27,7 +27,7 @@
           </card>
         </div>
       </section>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -242,7 +242,7 @@ export default {
     "notification-modal": notifications
   },
   computed: {
-    // ...mapGetters(["currentUser", "isAdmin"])
+    ...mapGetters(["currentUser", "isAdmin"])
   },
   mounted() {
     

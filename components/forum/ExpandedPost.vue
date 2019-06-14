@@ -10,7 +10,7 @@
               <div class="float-right">
                 <b-dropdown no-caret right size="sm" toggle-class="text-decoration-none mt-3" v-if="post.user && currentUser" variant="link">
                   <template slot="button-content">
-                    <i class="fas fa-cog m-0 text-black-50" style="font-size: 20px;"></i>
+                    <i class="fas fa-ellipsis-h fa-2x m-0 text-black-50" style="font-size: 20px;"></i>
                     <span class="sr-only">Settings</span>
                   </template>
                   <b-dropdown-item :href="'/forum/post/'+post._id+'/edit'" v-if="post.user && (post.user._id === currentUser._id) && isEditable">Edit</b-dropdown-item>
@@ -57,17 +57,6 @@
               <vue-markdown>{{post.description}}</vue-markdown>
             </div>
           </div>
-          <div class="mt-3">
-            <h6>Responses</h6>
-          </div>
-          <b-container class="px-0 mb-2" fluid v-if="post.status == 'open'">
-            <b-row class="mx-0 justify-content-around" v-if="isAuthenticated">
-              <div class="col-9 col-md-10 px-0">
-                <base-input @keyup.enter.native="Reply" addon-left-icon="fas fa-comment-alt text-curiosum-light mr-2" class="m-0 h-100" input-classes="text-curiosum" placeholder="Reply" v-model="newReply.text"></base-input>
-              </div>
-              <b-btn @click.prevent="Reply" class="m-0 h-100 btn-curiosum">Submit</b-btn>
-            </b-row>
-          </b-container>
           <div :key="key" class="card mb-2" v-for="(reply, key) in post.replies">
             <div class="px-1 py-2">
               <div class="card-header py-0 px-0">
@@ -79,6 +68,18 @@
               </div>
             </div>
           </div>
+          
+          <div class="mt-3">
+            <h6>Comment</h6>
+          </div>
+          <b-container class="px-0 mb-2" fluid v-if="post.status == 'open'">
+            <b-row class="mx-0 justify-content-around" v-if="isAuthenticated">
+              <div class="col-9 col-md-10 px-0">
+                <base-input @keyup.enter.native="Reply" addon-left-icon="fas fa-comment-alt text-curiosum-light mr-2" class="m-0 h-100" input-classes="text-curiosum" placeholder="Reply" v-model="newReply.text"></base-input>
+              </div>
+              <b-btn @click.prevent="Reply" class="m-0 h-100 btn-curiosum">Submit</b-btn>
+            </b-row>
+          </b-container>
         </div>
       </div>
       <modal :show.sync="makeDuplicate.modal" gradient="danger" modal-classes="modal-danger modal-dialog-centered modal-sm" v-if="makeDuplicate.modal">

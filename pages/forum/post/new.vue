@@ -209,13 +209,13 @@ export default {
     }
   },
   beforeMount(){
-    if(!isAuthenticated){
+    if(!this.isAuthenticated){
       console.log("Not authenticated.");
       this.router.push('/login')
     }
   },
   mounted() {
-    if(!isAuthenticated){
+    if(!this.isAuthenticated){
       console.log("Not authenticated.");
       this.router.push('/login')
     }
