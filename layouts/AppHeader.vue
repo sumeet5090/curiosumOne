@@ -23,9 +23,6 @@
         </div>
         <ul class="navbar-nav navbar-nav-hover align-items md-center">
           <li class="nav-item">
-            <nuxt-link class="nav-link" tag="a" to="/forum">Forum</nuxt-link>
-          </li>
-          <li class="nav-item">
             <nuxt-link class="nav-link" tag="a" to="/faq">FAQ</nuxt-link>
           </li>
         </ul>
@@ -44,9 +41,9 @@
               <div class="dropdown-divider"></div>
               <a @click.prevent="logout" class="dropdown-item text-center" href>Logout</a>
             </base-dropdown>
-            <a class="nav-link nav-link-icon" data-toggle="tooltip" href="/login" title="Notifications" v-else>
+            <a class="btn btn-outline-curiosum" data-toggle="tooltip" href="/login" title="Login" v-else>
               <span slot="icon">
-                <img alt="GOOGLE" aria-label="Google" class="nav-brand-logo" src="@/assets/images/icons/common/google.svg">
+                <img alt="GOOGLE" aria-label="Google" class="nav-brand-logo mx-lg-3" src="@/assets/images/icons/common/google.svg">
               </span>
               <span class="nav-link-inner--text d-lg-none text-uppercase font-weight-bold text-warning">Google</span>
             </a>

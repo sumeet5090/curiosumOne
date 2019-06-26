@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div :class="post.status === 'open' ? 'status-open' : post.status === 'closed' ? 'status-closed' : post.status === 'resolved' ? 'status-resolved' : ''" :key="post._id" class="px-0 post-container mb-2 " v-for="post in filteredPosts">
+  <div class="row">
+    <div :class="classForPost(post.status)" :key="post._id" class="px-0 post-container mb-2 col-12" v-for="post in filteredPosts">
       <div class="media">
         <div class="mr-3 status-icon">
           <i class="fas fa-lock-open text-primary" title="Open" v-b-tooltip.hover.left v-if="post.status === 'open'"></i>
@@ -8,15 +8,13 @@
           <i class="fas fa-check text-success" title="Resolved" v-b-tooltip.hover.left v-if="post.status === 'resolved'"></i>
         </div>
         <div class="media-body">
-          <router-link :to="{name: 'forum-post-id', params: {id: post._id}}">
+          <router-link :to="{name: 'event-id-forum-post-postId', params: {id: $route.params.id, postId: post._id}}" class="font-weight-bold" style="font-size: 1.1rem;">
             <truncate :length="100" :text="(post.subject || '').toString()" action-class="truncated-less-sign" clamp="..." less="[hide]"></truncate>
           </router-link>
           <div class="container">
             <div class="row">
               <div class="col-md-6 px-0" v-if="post.sub_rule">
-                <small>
-                  Rule {{post.sub_rule.notation}}
-                </small>
+                <small>Rule {{post.sub_rule.notation}}</small>
               </div>
               <div class="col-md-6 px-0" v-if="post.user">
                 <small>
@@ -39,8 +37,7 @@
             </div>
           </div>
         </div>
-        <div>
-        </div>
+        <div></div>
       </div>
     </div>
   </div>
@@ -49,6 +46,7 @@
 <script>
 import moment from "moment";
 import truncate from "vue-truncate-collapsed";
+import _ from "lodash";
 import { mapGetters } from "vuex";
 export default {
   components: {
@@ -70,44 +68,68 @@ export default {
   computed: {
     ...mapGetters(["currentUser", "isAdmin", "isAuthenticated"]),
     filteredPosts() {
-      let section, rule, sub_rule;
       if (this.filters) {
-        console.log("This filters");
-        section = this.filters.section;
-        rule = this.filters.rule;
-        sub_rule = this.filters.sub_rule;
-        console.log(section, rule, sub_rule);
+        let { section, rule, sub_rule, subject } = this.filters;
         let filtered = this.posts.filter(post => {
-          console.log(post);
-          if (section == null) {
-            return true;
-          }
-          if (rule == null) {
-            console.log("rule = null ", section, post.section.notation);
-            if (section === post.section.notation) {
-              return true;
+          if (subject !== "") {
+            if (section == null) {
+              return post.subject.toLowerCase().includes(subject.toLowerCase());
             }
-          }
-          if (sub_rule == null) {
-            console.log("rule = null ", section, post.section.notation);
-            if (
-              section === post.section.notation &&
-              rule == post.rule.notation
-            ) {
-              return true;
+            if (rule == null) {
+              if (section === post.section.notation) {
+                return post.subject
+                  .toLowerCase()
+                  .includes(subject.toLowerCase());
+              }
+            }
+            if (sub_rule == null) {
+              if (
+                section === post.section.notation &&
+                rule == post.rule.notation
+              ) {
+                return post.subject
+                  .toLowerCase()
+                  .includes(subject.toLowerCase());
+              }
+            } else {
+              if (
+                section === post.section.notation &&
+                rule == post.rule.notation &&
+                sub_rule === post.sub_rule.notation
+              ) {
+                return post.subject
+                  .toLowerCase()
+                  .includes(subject.toLowerCase());
+              }
             }
           } else {
-            if (
-              section === post.section.notation &&
-              rule == post.rule.notation &&
-              sub_rule === post.sub_rule.notation
-            ) {
+            if (section == null) {
               return true;
+            }
+            if (rule == null) {
+              if (section === post.section.notation) {
+                return true;
+              }
+            }
+            if (sub_rule == null) {
+              if (
+                section === post.section.notation &&
+                rule == post.rule.notation
+              ) {
+                return true;
+              }
+            } else {
+              if (
+                section === post.section.notation &&
+                rule == post.rule.notation &&
+                sub_rule === post.sub_rule.notation
+              ) {
+                return true;
+              }
             }
           }
           return false;
         });
-        console.log(filtered);
         return filtered;
       }
       return [];
@@ -117,19 +139,30 @@ export default {
     formatDate(d) {
       return moment(d).fromNow();
     },
-    getLastReply(replies) {
-      let length = replies.length;
-      if (length > 0) {
-        let user = replies[length - 1].user;
-        if (user) {
-          return user;
-        }
+    classForPost(status) {
+      let classList = [];
+      if (status === "open") {
+        classList.push("status-open");
       }
-      return false;
+      if (status === "closed") {
+        classList.push("status-closed");
+      }
+      if (status === "resolved") {
+        classList.push("status-resolved");
+      }
+      return classList.join(" ");
+    },
+    getLastReply(replies) {
+      let x = _.orderBy(replies, "date", "desc");
+      if (x && x[0]) {
+        return x[0].user;
+      }
+      return {};
     },
     getPosts() {
+      let params = this.$route.params;
       this.$axios
-        .get("/api/forum/posts")
+        .get(`/api/event/${params.id}/forum/posts`)
         .then(res => {
           if (res.data && res.data.success) {
             return (this.posts = res.data.posts);

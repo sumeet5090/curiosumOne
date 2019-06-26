@@ -10,8 +10,8 @@ const getOne = async (req, res) => {
     if (parseInt(id) == id) {
       $or.push({ _id: id })
     }
-    let event = await Event.findOne({ $or: $or }).exec()
-    if (event.length > 0) {
+    let event = await Event.findOne({ $or: $or })
+    if (event && event.length > 0) {
       let find_id = event.live_timings.indexOf(req.params.id)
       let out = await event.populate('tech_updates').exec()
       if (find_id > -1) {

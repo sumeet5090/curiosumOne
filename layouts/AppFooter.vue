@@ -3,7 +3,7 @@
   <div class="row row-grid align-items-center mx-1 pt-2">
     <div class="col-md-6 px-0">
       <div class="text-center text-md-left mb-2">
-        <a href="mailto:business@mobilityeng.in?subject=MEC Portal | Feedback" target="_blank" rel="noreferrer" class="text-curiosum font-weight-bold h5">Leave us some feedback!</a>
+        <a href="mailto:info@curiosumtech.in?subject=Feedback" target="_blank" rel="noreferrer" class="text-curiosum font-weight-bold h5">Leave us some feedback!</a>
       </div>
       <div class="text-center text-md-left font-weight-light text-curiosum "><small>We would love to hear from you!</small></div>
     </div>

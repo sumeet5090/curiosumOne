@@ -9,7 +9,7 @@ const getOneSchedule = async (req, res) => {
     if (parseInt(id) == id) {
       $or.push({ _id: id })
     }
-    let event = await Event.findOne({ $or: $or }).exec()
+    let event = await Event.findOne({ $or: $or })
     if (event.length > 0) {
       let find_id = event.schedules.indexOf(req.params.id)
       if (find_id > -1) {

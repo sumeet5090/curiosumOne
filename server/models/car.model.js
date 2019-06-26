@@ -24,35 +24,63 @@ async function createCounter() {
 }
 createCounter()
 
-const CarSchema = Schema({
+// const CarSchema = Schema({
+//     _id: Number,
+//     team_id: {
+//         type: Schema.Types.ObjectId,
+//         ref: 'Team'
+//     },
+//     event_id: {
+//         type: Number,
+//         ref: "Event"
+//     },
+//     car_number: {
+//         type: String,
+//         required: true,
+//         trim: true
+//     },
+//     category: {
+//         type: String,
+//         trim: true,
+//         enum: ["electric", "combustion"],
+//         default: function() {
+//             if(this.car_number[0] == "E"){
+//                 return "electric"
+//             }
+//             return "combustion"
+//         }
+//     }
+// }, { timestamps: true })
+
+const newCarSchema = Schema({
     _id: Number,
-    team_id: {
+    team: {
         type: Schema.Types.ObjectId,
         ref: 'Team'
     },
-    event_id: {
+    event: {
         type: Number,
-        ref: "Event"
-    },
-    car_number: {
-        type: String,
-        required: true,
-        trim: true
+        ref: 'Event'
     },
     category: {
         type: String,
         trim: true,
         enum: ["electric", "combustion"],
-        default: function() {
+        default: function(){
             if(this.car_number[0] == "E"){
                 return "electric"
             }
             return "combustion"
         }
+    },
+    car_number: {
+        type: String,
+        required: true,
+        trim: true
     }
-}, { timestamps: true })
+})
 
-CarSchema.pre('save', async function (next) {
+newCarSchema.pre('save', async function (next) {
     let doc = this
     if (doc.isNew) {
         try {
@@ -68,4 +96,4 @@ CarSchema.pre('save', async function (next) {
     }
 })
 
-module.exports = mongoose.model('Car', CarSchema)
+module.exports = mongoose.model('Car', newCarSchema)

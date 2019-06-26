@@ -193,8 +193,9 @@ export default {
       }
     },
     loadSections() {
+      let params = this.$route.params
       this.$axios
-        .get("/api/forum/sections")
+        .get(`/api/event/{params.id}/forum/sections`)
         .then(({ data }) => {
           if (data && data.success) {
             return (this.sections = data.sections);

@@ -22,19 +22,18 @@ export default {
   },
   async asyncData({ $axios, params, error }) {
     try {
-      const { data } = await $axios.get(`/api/forum/posts/${params.id}`, {
+      const { data } = await $axios.get(`/api/event/${params.id}/forum/posts/${params.postId}`, {
         validateStatus: status => {
           return status < 400;
         }
       });
       return {
-        isLoaded: data.success,
+        isLoaded: true,
         post: data.post
       };
     } catch (err) {
-      console.log(err);
       error({
-        message: "Not found",
+        message: "Post not found",
         statusCode: 404
       });
     }

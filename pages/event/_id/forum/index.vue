@@ -1,72 +1,61 @@
 <template>
+<section class="section pt-0" style="min-height: 90vh">
   <b-container>
     <b-row class="justify-content-center">
       <b-col md="8" sm="12">
-        <div class="text-center fa-2x header-font text-uppercase">Rules Forum</div>
+        <div class="text-center mb-3 fa-2x header-font text-capitalize">
+          <span class="text-curiosum-light"> {{event.name}}</span>
+          <span class="text-curiosum">Rules Forum</span>
+        </div>
       </b-col>
     </b-row>
-    <b-row class="justify-content-between align-items-baseline">
-      <div class="col-md-2 text-center text-md-left">Filter</div>
-      <b-select class="col-md-3" size="sm" v-model="select.section">
+    <b-row class="justify-content-between align-items-center">
+      <b-select class="col-md-3"  v-model="select.section">
         <option :value="null">Select section</option>
         <option :key="key" :value="key" v-for="(sect, key) in sections">{{sect.name}} ({{sect.notation}})</option>
       </b-select>
-      <b-select class="col-md-3" size="sm" v-model="select.rule">
+      <b-select class="col-md-4"  v-model="select.rule">
         <option :value="null">Select rule</option>
         <option :key="key" :value="key" v-for="(rule, key) in rules">{{rule.name}} ({{rule.notation}})</option>
       </b-select>
-      <b-select class="col-md-3" size="sm" v-model="select.sub_rule">
+      <b-select class="col-md-3"  v-model="select.sub_rule">
         <option :value="null">Select sub rule</option>
         <option :key="key" :value="key" v-for="(subRule, key) in subRules">{{subRule.name}} ({{subRule.notation}})</option>
       </b-select>
     </b-row>
-    <b-container class="px-0" fluid>
-      <b-row class="px-0" v-if="!isMobile">
-        <b-col lg="2" md>
-          <div class="text-center">Date posted</div>
-        </b-col>
-        <b-col lg="1">
-          <div class="text-center">Rule Number</div>
-        </b-col>
-        <b-col lg="5">
-          <div class="text-center">Query Subject</div>
-        </b-col>
-        <b-col lg="1">
-          <div class="text-center">Responses</div>
-        </b-col>
-        <b-col lg="2">
-          <div class="text-center">Last posted</div>
-        </b-col>
-        <b-col lg="1">
-          <div class="text-center">Status</div>
-        </b-col>
-      </b-row>
-      <posts v-if="!isMobile" />
-      <posts-mobile v-else />
+    <b-row class="justify-content-between py-2">
+      <div class="col-3 px-0">
+        <router-link :to="{name: 'event-id-forum-create-post', params: { id: params.id }}" class="btn btn-curiosum w-100">New Post</router-link>
+      </div>
+      <base-input v-model="select.subject" addon-left-icon="fas fa-search" class="col-8 px-0"></base-input>
+    </b-row>
+    <b-container class="px-0 mt-5" fluid>
+      <posts :filters="filters"/>
     </b-container>
   </b-container>
+</section>
 </template>
 
 <script>
 import Posts from "@/components/forum/Posts";
-import PostsMobile from '@/components/forum/Posts-mobile.vue';
+import PostsMobile from "@/components/forum/Posts-mobile.vue";
 export default {
   components: {
     posts: Posts,
-    'posts-mobile': PostsMobile
+    "posts-mobile": PostsMobile
   },
   data() {
     return {
       select: {
         section: null,
         rule: null,
-        sub_rule: null
+        sub_rule: null,
+        subject: ""
       },
       selected: {
         section: null
       },
-      fields: [
-        {
+      fields: [{
           key: "date_posted",
           sortable: true,
           label: "Date posted"
@@ -100,6 +89,27 @@ export default {
     };
   },
   computed: {
+    filters() {
+      let filter = {
+        section: null,
+        rule: null,
+        sub_rule: null,
+        subject: ""
+      };
+      if (this.select.section != null) {
+        filter.section = this.sections[this.select.section].notation;
+      }
+      if (this.select.rule != null) {
+        filter.rule = this.rules[this.select.rule].notation;
+      }
+      if (this.select.sub_rule != null) {
+        filter.sub_rule = this.subRules[this.select.sub_rule].notation;
+      }
+      if(this.select.subject != null){
+        filter.subject = this.select.subject
+      }
+      return filter;
+    },
     rules() {
       if (this.select.section != null) {
         let key = this.select.section;
@@ -119,41 +129,52 @@ export default {
       }
       return [];
     },
-    isMobile(){
-      if(process.browser){
-        if(/Android|webOs|iPhone|iPad|iPod|Blackberry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-          return true
+    isMobile() {
+      if (process.browser) {
+        if (
+          /Android|webOs|iPhone|iPad|iPod|Blackberry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent
+          )
+        ) {
+          return true;
         }
-        return false
+        return false;
       }
-    },
+    }
   },
-  methods: {
-    
-  },
+  methods: {},
   watch: {
     "select.section": {
-      handler: function(val) {
+      handler: function (val) {
         this.select.rule = null;
         this.select.sub_rule = null;
       }
     },
     "select.rule": {
-      handler: function(val) {
+      handler: function (val) {
         this.select.sub_rule = null;
       }
     }
   },
-  async asyncData({ $axios, params, error }) {
+  async asyncData({
+    $axios,
+    params,
+    error
+  }) {
     try {
-      let { data } = await $axios.get("/api/forum/sections");
-      if (data && data.success) {
+      let event_id = params.id
+      let res1 = await $axios.get(`/api/event/${event_id}/forum/sections`);
+      let res2 = await $axios.get(`/api/event/${event_id}`);
+      if (res1.data && res1.data.success && res2.data && res2.data.success) {
         return {
-          sections: data.sections
+          sections: res1.data.sections,
+          event: res2.data.event,
+          params: params
         };
       }
       return {
-        sections: []
+        sections: [],
+        params: params
       };
     } catch (error) {}
   }

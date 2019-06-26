@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const SchemaTypes = mongoose.SchemaTypes
 const counter = require('./counter.model')
 async function createCounter() {
   try {
@@ -45,6 +46,17 @@ const EventSchema = Schema({
       return (short_name).toLowerCase()
     }
   },
+  forum: {
+    name: String,
+    posts: [{
+      type: SchemaTypes.ObjectId,
+      ref: 'Post'
+    }],
+  },
+  cars: [{
+    type: Number,
+    ref: 'Car'
+  }],
   start_date: {
     type: Date,
     default: Date.now

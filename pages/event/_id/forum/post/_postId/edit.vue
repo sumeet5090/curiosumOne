@@ -1,24 +1,20 @@
 <template>
   <div>
     <no-ssr>
-      <section class="section pt-0" v-if="!!isAuthenticated">
+      <section class="section pt-0">
         <b-container>
           <b-row class="justify-content-center">
             <b-col md="8" sm="12">
-              <div class="text-center fa-2x header-font text-uppercase">Create new post</div>
+              <div class="text-center fa-2x header-font text-uppercase">Edit post</div>
             </b-col>
           </b-row>
           <b-row class="justify-content-between align-items-baseline">
             <b-col>
               <b-alert dismissible v-model="showSuccessAlert" variant="success">
-                <div class="text-center" v-if="successMsg">
-                  {{success_msg}}
-                </div>
+                <div class="text-center" v-if="successMsg">{{success_msg}}</div>
               </b-alert>
               <b-alert dismissible v-model="showErrorAlert" variant="danger">
-                <div class="text-center" v-if="successMsg">
-                  {{error_msg}}
-                </div>
+                <div class="text-center" v-if="successMsg">{{error_msg}}</div>
               </b-alert>
               <b-form>
                 <b-form-group id="form-subject" label-for="form-subject--input">
@@ -118,19 +114,17 @@ export default {
   computed: {
     ...mapGetters(["currentUser", "isAuthenticated"]),
     rules() {
-      if (this.post.section >= 0) {
-        let key = this.post.section;
-        if (this.sections && this.sections.length > 0 && key > -1) {
-          return this.sections[key].rules;
-        }
+      let key = this.post.section;
+      if (this.sections && this.sections.length > 0 && key > -1) {
+        return this.sections[key].rules;
       }
       return [];
     },
     subRules() {
-      if (this.post.section >= 0 && this.post.rule >= 0) {
-        let key = this.post.rule;
+      let key = this.post.rule;
+      if (this.post.section > -1 && key > -1) {
         let rules = this.rules;
-        if (rules.length > 0 && key > -1) {
+        if (rules.length > 0) {
           return rules[key].sub_rules;
         }
       }
@@ -139,7 +133,7 @@ export default {
   },
   async asyncData({ $axios, params, error }) {
     try {
-      let { data } = await $axios.get("/api/forum/sections");
+      let { data } = await $axios.get(`/api/event/${params.id}/forum/sections`);
       if (data && data.success) {
         return {
           sections: data.sections
@@ -154,40 +148,42 @@ export default {
     submitPost() {
       let subject = this.post.subject;
       let description = this.post.description;
-      let type = this.post.type;
+      let post_type = this.post.type;
+      let params = this.$route.params;
       if (
         this.post.section > -1 &&
         this.post.rule > -1 &&
-        this.post.sub_rule > -1
+        this.post.sub_rule > -1 &&
+        params.id != null
       ) {
-        console.log("Here?");
         let section = this.sections[this.post.section]._id;
         let rule = this.rules[this.post.rule]._id;
         let sub_rule = this.subRules[this.post.sub_rule]._id;
         let user = this.currentUser;
         this.$axios
-          .post("/api/forum/posts/create", {
-            subject,
-            description,
-            type,
-            section,
-            rule,
-            sub_rule
+          .put(`/api/event/${params.id}/forum/posts/${params.postId}`, {
+            post: {
+              subject,
+              description,
+              post_type,
+              section,
+              rule,
+              sub_rule
+            }
           })
           .then(res => {
-            console.log(res.data);
             if (res.data && res.data.success) {
-              console.log("F");
-              this.successMsg("Query posted.");
-              this.resetPost();
+              this.successMsg("Query updated.");
+              this.$router.push({
+                name: "event-id-forum-post-postId",
+                params: { id: params.id, postId: params.postId }
+              });
             } else {
-              console.log("F");
               this.errorMsg("Error posting query.");
             }
           })
           .catch(err => {
             this.errorMsg("An error occured.");
-            console.log(err);
           });
       }
     },
@@ -206,31 +202,80 @@ export default {
       this.post.section = -1;
       this.post.rule = -1;
       this.post.sub_rule = -1;
+    },
+    getPost() {
+      let params = this.$route.params;
+      if (params) {
+        this.$axios
+          .get(`/api/event/${params.id}/forum/posts/${params.postId}`)
+          .then(res => {
+            if (res.data && res.data.success) {
+              let post = res.data.post;
+              this.post = {
+                subject: post.subject,
+                description: post.description,
+                type: post.post_type,
+                team: post.team
+              };
+              if(this.currentUser.team != post.team){
+                this.$router.replace("/")
+              }
+              let sectionIndex = this.sections.findIndex(
+                obj => (obj._id = post.section)
+              );
+              if (sectionIndex > -1) {
+                this.post.section = sectionIndex;
+                let ruleIndex = this.rules.findIndex(
+                  obj => (obj._id = post.rule)
+                );
+                if (ruleIndex > -1) {
+                  this.post.rule = ruleIndex;
+                  let sub_ruleIndex = this.subRules.findIndex(
+                    obj => (obj._id = post.sub_rule)
+                  );
+                  if (sub_ruleIndex > -1) {
+                    this.post.sub_rule = sub_ruleIndex;
+                    this.post.user = this.currentUser;
+                  }
+                }
+              }
+            } else {
+              this.post = null;
+              this.errorMsg("Couldn't GET forum post.");
+            }
+          })
+          .catch(err => {
+            console.log(err);
+            this.errorMsg("Error loading post.");
+          });
+      }
     }
   },
-  beforeMount(){
-    if(!this.isAuthenticated){
-      console.log("Not authenticated.");
-      this.router.push('/login')
+  beforeMount() {
+    if(!this.isAuthenticated || !this.currentUser){
+      location.href = "/login"
+    }
+    if(!this.currentUser.team){
+      this.$router.replace({name: "event-id-forum-post-postId", params: this.$route.params })
     }
   },
   mounted() {
-    if(!this.isAuthenticated){
-      console.log("Not authenticated.");
-      this.router.push('/login')
-    }
-    this.post.user = this.currentUser;
+    this.getPost();
   },
   watch: {
     "post.section": {
       handler: function(val) {
-        this.post.rule = -1;
-        this.post.sub_rule = -1;
+        if (val < 0) {
+          this.post.rule = -1;
+          this.post.sub_rule = -1;
+        }
       }
     },
     "post.rule": {
       handler: function(val) {
-        this.post.sub_rule = -1;
+        if (val < 0) {
+          this.post.sub_rule = -1;
+        }
       }
     }
   }
@@ -239,6 +284,6 @@ export default {
 
 <style lang="scss">
 .v-show-content {
-  font-family: 'Open Sans', sans-serif !important;
+  font-family: "Open Sans", sans-serif !important;
 }
 </style>

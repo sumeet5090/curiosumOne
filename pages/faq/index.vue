@@ -38,7 +38,7 @@ export default {
           name: "FAQ #1",
           question: "How do I report a bug / issue on the website?",
           answer:
-            "1. Shoot us an email at **business@mobilityeng.in**\n2. Describe the issue best you can, also try to include the screenshot of the issue.\n3. We will look into it and resolve it as soon as possible.",
+            "1. Shoot us an email at **info@curiosumtech.in**\n2. Describe the issue best you can, also try to include the screenshot of the issue.\n3. We will look into it and resolve it as soon as possible.",
           admin: false,
           captain: false,
           open: true
@@ -48,7 +48,7 @@ export default {
           name: "FAQ #2",
           question: "Where do I check registered teams?",
           answer:
-            "Here's a direct link. [**All teams**](https://mobilityeng.online/teams/all)\nYou could also find <span><button class='btn btn-sm btn-danger'>All</button></span> on the [**Dashboard**](https://mobilityeng.online)",
+            "Here's a direct link. <a class='text-curiosum cursor-pointer font-weight-bold' href='/teams/all'>All teams</a> \nYou could also find <span><button class='btn btn-sm btn-curiosum'>All</button></span> on the <a href='/' class='text-curiosum cursor-pointer font-weight-bold'>Dashboard</a>",
           admin: false,
           captain: false
         },
@@ -57,14 +57,14 @@ export default {
           name: "FAQ #3",
           question: "What are the steps for creating a team?",
           answer:
-            "1. <a href=\"/login\" class='btn-link' target='_blank'>Login</a> with your <i class='fab fa-google'></i> account.\n2. Go to <a href='/team/create' target='_blank'>/team/create</a>\n3. Fill in relavant information, invite members with their registered email. (They must have a registered account.)\n4. Click <a class='btn btn-sm btn-primary text-white'>CREATE</a> to finalize.\n\n\nYou will be the default team captain, you can change that in team settings."
+            "1. <a href=\"/login\" class='btn-link' target='_blank'>Login</a> with your <i class='fab fa-google'></i> account.\n2. Go to <a href='/team/create' target='_blank'>/team/create</a>\n3. Fill in relavant information, invite members with their registered email. (They must have a registered account.)\n4. Click <a class='btn btn-sm btn-curiosum text-white'>CREATE</a> to finalize.\n\n\nYou will be the default team captain, you can change that in team settings."
         },
         {
           id: 4,
           name: "FAQ #4",
           question: "How to join a team?",
           answer:
-            "You need to ask the team captain to send a team invite. You'll receive an email from our team. Click the join button."
+            "You need to ask the team captain to send a team invite. You'll receive an email from the team. Click the join button."
         },
         {
           id: 5,
@@ -72,7 +72,7 @@ export default {
           question:
             "I am the team captain, how do I update the team information or add members?",
           answer:
-            "The team profile has a \"<i class=\"fas fa-pen text-primary font-weight-bold\"></i> \" link. That's the place to update your team information.\nStill can't find it? Just add a **'/settings'** at the end of the team url.\nIt may look like this <span class='text-primary'>https://mobilityeng.online/team/5bf7efca44277a3cee2eeec2<strong class='font-weight-bold'>/settings</strong></span>",
+            "The team profile has a \"<i class=\"fas fa-pen text-curiosum font-weight-bold\"></i> \" link. That's the place to update your team information.\nStill can't find it? Just add a **'/settings'** at the end of the team url.\nIt may look like this <span class='text-curiosum'>https://curiosumportal.in/team/5bf7efca44277a3cee2eeec2<strong class='font-weight-bold'>/settings</strong></span>",
           admin: false,
           captain: false
         }

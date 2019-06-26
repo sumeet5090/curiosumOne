@@ -6,12 +6,12 @@ const teamRouter = require('./team')
 router.get('/', (req, res) => {
     return res.send({
         status: 'Live',
-        version: '1.0.0'
+        version: '2.0.0'
     })
 })
-router.use('/user', userRouter)
 router.use('/event', eventRouter)
-router.use('/team', teamRouter)
-router.use('/forum', require('./forum'))
 router.use('/io', require('./io'))
+router.use('/user', userRouter)
+router.use('/team', teamRouter)
+
 module.exports = router

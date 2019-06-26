@@ -1,10 +1,13 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const SchemaTypes = mongoose.SchemaTypes
-
 const postSchema = Schema({
   name: {
     type: String,
+  },
+  event: {
+    type: Number,
+    ref: 'Event'
   },
   section: {
     type: SchemaTypes.ObjectId,
@@ -63,19 +66,8 @@ const postSchema = Schema({
     }
   },
   replies: [{
-    user: {
-      type: SchemaTypes.ObjectId,
-      ref: 'User'
-    },
-    text: String,
-    date: {
-      type: Date,
-      default: Date.now
-    },
-    highlight: {
-      type: Boolean,
-      default: false
-    }
+    type: Number,
+    ref: 'Reply'
   }],
   user: {
     type: SchemaTypes.ObjectId,
@@ -84,7 +76,27 @@ const postSchema = Schema({
   team: {
     type: SchemaTypes.ObjectId,
     ref: 'Team'
+  },
+  deleted: {
+    type: Boolean,
+    default: false
+  },
+  deletedBy: {
+    type: SchemaTypes.ObjectId,
+    ref: 'User'
+  },
+  deletedAt: {
+    type: Date
+  },
+  restoredBy: {
+    type: SchemaTypes.ObjectId,
+    ref: 'User'
+  },
+  restoredAt: {
+    type: Date
   }
 })
+const Post = mongoose.model('Post', postSchema)
 
-module.exports = mongoose.model('Post', postSchema)
+
+module.exports = Post

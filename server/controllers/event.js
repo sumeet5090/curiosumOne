@@ -8,45 +8,16 @@ const Team = require('./../models/team.model')
 const StaticSchedule = require('./../models/static_schedule.model')
 const mongoose = require('mongoose')
 const Response = require('./../services/response')
+const {readFilesAsync, writeFilesAsync} = require('./../services/file')
 const JSON2CSV = require('json-2-csv')
 const crypto = require('crypto')
 const path = require('path')
-const fs = require('fs')
-
-const readFilesAsync = (path, opts = 'utf8') => {
-  return new Promise((resolve, reject) => {
-    fs.readFile(path, opts, (err, data) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve(data)
-      }
-    })
-  })
-}
-
-const writeFilesAsync = (path, data, opts = 'utf8') => {
-  return new Promise((resolve, reject) => {
-    fs.writeFile(path, data, opts, (err) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve(true)
-      }
-    })
-  })
-}
 
 const toArray = (num) => {
   if (Array.isArray(num)) {
     return num
   }
-  if (typeof num === 'number') {
-    return [num]
-  }
-  if (typeof num === 'string' && num !== '') {
-    return [num]
-  }
+  return [num]
 }
 
 const toBoolean = (val) => {
@@ -136,6 +107,99 @@ const getTeamForEvent = async (req, res) => {
   }
 }
 
+const getCarsCSV = async (req, res) => {
+  const fields = [
+    '_id',
+    'car_number',
+    'team',
+    'event',
+    'category'
+  ]
+  try {
+    let id = req.params.id,
+      $or = [{ event_short: id }]
+    if (parseInt(id) == id) {
+      $or.push({ _id: id })
+    }
+    let event = await Event.findOne({ $or: $or })
+    if (event) {
+      let cars = await Car.find({ event: event._id }).populate('team').exec()
+      if (cars) {
+        let csv = await JSON2CSV.json2csvAsync(JSON.parse(JSON.stringify(cars)), {
+          keys: fields,
+          emptyFieldValue: '',
+          expandArrayObjects: true
+        })
+        if (csv) {
+          let fname = `downloads/event-${event.event_short}-cars-${crypto.randomBytes(8).toString('hex')}.csv`
+          console.log(fname);
+          let filename = path.resolve(fname)
+          let file = await writeFilesAsync(fname, csv)
+          if (file) {
+            res.locals.filename = fname
+            return res.sendFile(filename)
+          }
+          return Response.failed(res, { message: "No file." })
+        }
+      }
+    }
+    return Response.failed(res, { message: "Not found." })
+  } catch (error) {
+    console.log(error);
+    return Response.failed(res, { message: "Some internal error." })
+  }
+}
+
+const getAllEventsByCSV = async (req, res) => {
+  const fields = [
+    '_id',
+    'name',
+    'venue',
+    'link',
+    'start_date',
+    'end_date',
+    'event_short',
+    'past',
+    'show_block.official_website',
+    'show_block.teams',
+    'show_block.live_announcements',
+    'show_block.rules',
+    'show_block.schedule',
+    'show_block.tech_inspection',
+    'show_block.live_timings',
+    'organizers',
+    'teams',
+    'schedules',
+    'live_timings',
+    'tech_updates',
+    'static_schedule',
+  ]
+  try {
+    let events = await Event.find()
+    if (events) {
+      let csv = await JSON2CSV.json2csvAsync(JSON.parse(JSON.stringify(events)), {
+        keys: fields,
+        emptyFieldValue: '',
+        expandArrayObjects: true
+      })
+      if (csv) {
+        let fname = `downloads/all-events-${crypto.randomBytes(8).toString('hex')}.csv`
+        console.log(fname);
+        let filename = path.resolve(fname)
+        let file = await writeFilesAsync(fname, csv)
+        if (file) {
+          res.locals.filename = fname
+          return res.sendFile(filename)
+        }
+        return Response.failed(res, { message: "No file." })
+      }
+    }
+    return Response.failed(res, { message: "Not found." })
+  } catch (error) {
+    console.log(error);
+    return Response.failed(res, { message: "Some internal error." })
+  }
+}
 
 const getTeamsCSVForEvent = async (req, res) => {
   const fields = [
@@ -281,6 +345,90 @@ const updateEventFromCSV = async (req, res) => {
         return Response.failed(res, { message: "No data." })
       }
       return Response.failed(res, { message: "No data." })
+    }
+    return Response.failed(res, { message: "Not found." })
+  } catch (error) {
+    console.log(error);
+    return Response.failed(res, { message: "Some internal error." })
+  }
+}
+
+const updateEventsFromCSV = async (req, res) => {
+  const fields = [
+    '_id',
+    'name',
+    'venue',
+    'link',
+    'start_date',
+    'end_date',
+    'event_short',
+    'past',
+    'show_block.official_website',
+    'show_block.teams',
+    'show_block.live_announcements',
+    'show_block.rules',
+    'show_block.schedule',
+    'show_block.tech_inspection',
+    'show_block.live_timings',
+    'organizers',
+    'teams',
+    'schedules',
+    'live_timings',
+    'tech_updates',
+    'static_schedule',
+  ]
+  try {
+    if (req.files && req.files.file) {
+      let file = req.files.file
+      if (file && file.data) {
+        let csv = file.data.toString('utf8')
+        let data = await JSON2CSV.csv2jsonAsync(csv, {
+          keys: fields,
+          emptyFieldValue: '',
+          expandArrayObjects: true
+        })
+        if (data) {
+          let dataArr = toArray(data)
+          for (let i = 0; i < dataArr.length; i++) {
+            let inEvent = JSON.parse(JSON.stringify(dataArr[i]))
+            let teams = toArray(inEvent.teams),
+              schedules = toArray(inEvent.schedules),
+              live_timings = toArray(inEvent.live_timings),
+              tech_updates = toArray(inEvent.tech_updates),
+              static_schedule = toArray(inEvent.static_schedule),
+              show_block = inEvent.show_block
+            let updateEvent = {
+              name: inEvent.name,
+              venue: inEvent.venue,
+              link: inEvent.link,
+              start_date: inEvent.start_date,
+              end_date: inEvent.end_date,
+              event_short: inEvent.event_short,
+              past: toBoolean(inEvent.past),
+              show_block: {
+                official_website: toBoolean(show_block.official_website),
+                teams: toBoolean(show_block.teams),
+                live_announcements: toBoolean(show_block.live_announcements),
+                rules: toBoolean(show_block.rules),
+                schedule: toBoolean(show_block.schedule),
+                tech_inspection: toBoolean(show_block.tech_inspection),
+                live_timings: toBoolean(show_block.live_timings)
+              },
+              teams,
+              schedules,
+              live_timings,
+              tech_updates,
+              static_schedule,
+            }
+            let updatedEvent = await Event.findOneAndUpdate({ _id: inEvent._id }, updateEvent, { new: true })
+            if (updatedEvent) {
+              console.log("Updated event");
+              await Team.updateMany({ _id: { $in: teams } }, { $addToSet: { events: [updatedEvent._id] } })
+            }
+          }
+          return Response.success(res, { message: "Updated event.", event: updatedEvent })
+        }
+      }
     }
     return Response.failed(res, { message: "Not found." })
   } catch (error) {
@@ -720,6 +868,8 @@ module.exports = {
   getOneEventByName,
   getTeamForEvent,
   getTeamsCSVForEvent,
+  getAllEventsByCSV,
+  getCarsCSV,
   // getAnnouncementsForEvent,
   // getOneAnnouncement,
   // getOneTechupdate,
@@ -736,6 +886,7 @@ module.exports = {
   // getTeamCar,
   createEvent,
   updateEventFromCSV,
+  updateEventsFromCSV,
   // createAnnouncement,
   // createCar,
   // createLivetiming,

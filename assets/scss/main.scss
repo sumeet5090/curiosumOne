@@ -1,6 +1,12 @@
 @import "argon";
 
 /* Curiosum Colors */
+.btn-outline-curiosum {
+  color: #ff3c00;
+  background-color: transparent;
+  background-image: none;
+  border-color: #ff3c00;
+}
 .btn-curiosum {
   background-color: #ff3c00;
   border-color: #ff3c00;
@@ -28,8 +34,8 @@
   }
 }
 .text-curiosum {
-  &:focus,
-  * {
+  color: #4b2722;
+  &:focus, * {
     color: #4b2722;
   }
 }

@@ -9,6 +9,10 @@ const sectionSchema = Schema({
     type: SchemaTypes.ObjectId,
     ref: 'Rule'
   }],
+  event: {
+    type: Number,
+    ref: 'Event'
+  }
 })
 
 module.exports = mongoose.model('Section', sectionSchema)

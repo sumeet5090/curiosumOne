@@ -4,13 +4,20 @@ const Response = require('./../services/response')
 
 const getOne = async (req, res) => {
   try {
-    let event_id = req.params.id,
-      annc_id = req.params.annc_id,
-      announcement = await Announcement.findOne({ _id: annc_id })
-    if (announcement) {
-      return Response.success(res, { message: "Announcement found.", announcement })
+    let id = req.params.id,
+      $or = [{ event_short: id }]
+    if (parseInt(id) == id) {
+      $or.push({ _id: id })
     }
-    return Response.failed(res, { message: "Couldn't get announcement." })
+    let annc_id = req.params.annc_id
+    let event = await Event.findOne({ $or: $or })
+    if(event){
+      let announcement = await Announcement.findOne({ _id: annc_id, event: event._id })
+      if (announcement) {
+        return Response.success(res, { message: "Announcement found.", announcement })
+      }
+    }
+    return Response.failed(res, { message: "Announcement not found." })
   } catch (error) {
     console.log(error);
     return Response.failed(res, { message: "Internal server error." })
@@ -31,12 +38,9 @@ const getAll = async (req, res) => {
           announcements: announcements
         })
       }
-      return Response.failed(res, {
-        message: "Event has no announcements."
-      })
     }
     return Response.failed(res, {
-      message: "No event found."
+      message: "Announcements not found."
     })
   } catch (error) {
     console.log(error)
@@ -45,8 +49,12 @@ const getAll = async (req, res) => {
 }
 const create = async (req, res) => {
   try {
-    let event_id = req.params.id,
-      event = await Event.findOne({ _id: event_id })
+    let id = req.params.id,
+      $or = [{ event_short: id }]
+    if (parseInt(id) == id) {
+      $or.push({ _id: id })
+    }
+    let event = await Event.findOne({ $or: $or })
     if (event) {
       let extractTags = []
       let new_ancmt = await new Announcement({
@@ -96,7 +104,7 @@ const update = async (req, res) => {
   }
 }
 const remove = async (req, res) => {
-  let annc_id = req.params.annc_id, announcement, event_id = req.params.id, event
+  let annc_id = req.params.annc_id, announcement
   try {
     announcement = await Announcement.findOneAndDelete({ _id: annc_id })
     if (announcement) {

@@ -13,7 +13,7 @@
                     <i class="fas fa-ellipsis-h fa-2x m-0 text-black-50" style="font-size: 20px;"></i>
                     <span class="sr-only">Settings</span>
                   </template>
-                  <b-dropdown-item :href="'/forum/post/'+post._id+'/edit'" v-if="post.user && (post.user._id === currentUser._id) && isEditable">Edit</b-dropdown-item>
+                  <b-dropdown-item v-if="post.user && (post.user._id === currentUser._id) && isEditable" @click="navigateToEdit(post._id)">Edit</b-dropdown-item>
                   <b-dropdown-item @click.prevent="makeDuplicateModal(post._id)" v-if="isAdmin && !post.duplicate.value">Mark as duplicate</b-dropdown-item>
                   <b-dropdown-item @click.prevent="makeNotDuplicateModal(post._id)" v-if="isAdmin && post.duplicate.value">Mark as not duplicate</b-dropdown-item>
                   <b-dropdown-item @click.prevent="makeSpamModal(post._id)" v-if="isAdmin && !post.spam.value">Mark as spam</b-dropdown-item>
@@ -21,10 +21,11 @@
                   <b-dropdown-item @click.prevent="makeResolvedModal(post._id)" v-if="isAdmin && post.status !== 'resolved'">Mark as resolved</b-dropdown-item>
                   <b-dropdown-item @click.prevent="closeQueryModal(post._id)" v-if="isAdmin && post.status == 'open'">Close query</b-dropdown-item>
                   <b-dropdown-item @click.prevent="reOpenQueryModal(post._id)" v-if="isAdmin && (post.status == 'closed' || post.status == 'resolved')">Re-open query</b-dropdown-item>
+                  <b-dropdown-item v-if="isAdmin && !post.deleted" @click="deleteQueryModal(post._id)"><div class="text-danger">Delete</div></b-dropdown-item>
                 </b-dropdown>
                 <b-dropdown no-caret right size="sm" toggle-class="text-decoration-none mt-3" v-else variant="link">
                   <template slot="button-content">
-                    <i class="fas fa-cog m-0 text-black-50" style="font-size: 20px;"></i>
+                    <i class="fas fa-ellipsis-h m-0 text-black-50" style="font-size: 20px;"></i>
                     <span class="sr-only">Settings</span>
                   </template>
                   <b-dropdown-item href="/login">Respond</b-dropdown-item>
@@ -47,9 +48,9 @@
               <span class="date">{{formatDate(post.date_posted)}}</span>
             </div>
             <div v-if="post.status">
-              <hr class="m-0 border-success rounded-circle" style="border-width: 0.25rem;" v-if="post.status == 'resolved'">
-              <hr class="m-0 border-danger rounded-circle" style="border-width: 0.25rem;" v-if="post.status == 'closed'">
-              <hr class="m-0 border-primary rounded-circle" style="border-width: 0.25rem;" v-if="post.status == 'open'">
+              <hr class="m-0 border-success rounded" style="border-width: 0.25rem;" v-if="post.status == 'resolved'">
+              <hr class="m-0 border-danger rounded" style="border-width: 0.25rem;" v-if="post.status == 'closed'">
+              <hr class="m-0 border-primary rounded" style="border-width: 0.25rem;" v-if="post.status == 'open'">
             </div>
           </div>
           <div class="card">
@@ -57,31 +58,78 @@
               <vue-markdown>{{post.description}}</vue-markdown>
             </div>
           </div>
-          <div :key="key" class="card mb-2" v-for="(reply, key) in post.replies">
-            <div class="px-1 py-2">
-              <div class="card-header py-0 px-0">
-                <router-link :to="{name: 'profile-id', params: {id: reply.user.username}}" class="text-curiosum cursor-pointer" tag="small">{{reply.user.display_name}}</router-link>
-                <small class="float-right">{{formatDate(reply.date)}}</small>
+          <div class="mt-3">
+            <h6>Comments</h6>
+          </div>
+          <div class="row">
+          <div :key="key" class="card col-12 mb-2" :class="reply.highlight ? 'order-1' : 'order-2'"  v-for="(reply, key) in post.replies">
+            <div class="py-1">
+              <div class="card-header py-0 px-2" :class="reply.highlight ? 'reply-pinned' : ''">
+                <i class="fas fa-certificate" v-b-popover.left.hover="'Staff'" style="color: goldenrod;" v-if="hasStar(reply.user)"></i>
+                <span v-if="reply.highlight">
+                  <i class="fas fa-thumbtack" v-b-popover.left.hover="'Pinned'" style="transform: rotate(50deg);"></i>
+                </span>
+                <span>
+                  <router-link :to="{name: 'profile-id', params: {id: reply.user.username}}" class="ml-2 reply-username cursor-pointer" tag="small">{{reply.user.display_name}}</router-link>
+                </span>
+                <div class="float-right">
+                  <b-dropdown class="reply-dropdown" no-caret toggle-class="text-decoration-none" v-if="currentUser._id === reply.user._id || isAdmin" variant="link">
+                  <template slot="button-content">
+                    <i class="fas fa-ellipsis-h" style="font-size: 1rem; margin-top: .25rem"></i>
+                    <span class="sr-only">Settings</span>
+                  </template>
+                  <b-dropdown-item v-if="currentUser._id == reply.user._id" @click="editResponseModal(key, reply._id)">Edit</b-dropdown-item>
+                  <b-dropdown-item v-if="isAdmin" @click="editResponseAdminModal(key, reply._id)">
+                    <div v-if="!reply.highlight">Pin reply</div>
+                    <div v-else>Remove pin</div>
+                  </b-dropdown-item>
+                </b-dropdown>
+                </div>
+                <div class="mr-2 float-right reply-date">
+                  <small>{{formatDate(reply.date)}}</small>
+                </div>
               </div>
-              <div>
+              <div class="px-2 py-1">
                 <vue-markdown>{{reply.text}}</vue-markdown>
               </div>
             </div>
           </div>
-          
-          <div class="mt-3">
-            <h6>Comment</h6>
           </div>
           <b-container class="px-0 mb-2" fluid v-if="post.status == 'open'">
-            <b-row class="mx-0 justify-content-around" v-if="isAuthenticated">
-              <div class="col-9 col-md-10 px-0">
-                <base-input @keyup.enter.native="Reply" addon-left-icon="fas fa-comment-alt text-curiosum-light mr-2" class="m-0 h-100" input-classes="text-curiosum" placeholder="Reply" v-model="newReply.text"></base-input>
+            <b-row class="mx-0 justify-content-between" v-if="isAuthenticated">
+              <div class="col-8 col-md-9 px-0">
+                <base-input @keyup.enter.native="Reply" addon-left-icon="fas fa-comment-alt text-curiosum-light mr-2" class="m-0 h-100" input-classes="text-curiosum" placeholder="Write a response" v-model="newReply.text"></base-input>
               </div>
-              <b-btn @click.prevent="Reply" class="m-0 h-100 btn-curiosum">Submit</b-btn>
+              <b-btn @click.prevent="Reply" class="col col-md-3 m-0 h-100 btn-curiosum">Send</b-btn>
             </b-row>
           </b-container>
         </div>
       </div>
+      <modal :show.sync="adminEditResponse.modal" footer-classes="py-2" modal-classes="modal-dialog-centered modal-sm" v-if="isAdmin && adminEditResponse.modal">
+        <h6 class="modal-title" id="modal-title-notification" slot="header">Edit response</h6>
+        <div class="row text-dark">
+          <div class="col-12 text-center">
+            <div v-if="adminEditResponse.highlight === true">Are you sure you want to pin this reply?</div>
+            <div v-else>Are you sure you want to remove this reply from pinned?</div>
+          </div>
+        </div>
+        <template slot="footer">
+          <base-button @click.prevent="cancelEditResponseAdmin" text-color="dark" type="link">Cancel</base-button>
+          <base-button @click.prevent="confirmEditResponseAdmin" class="ml-auto" type="success">Confirm</base-button>
+        </template>
+      </modal>
+      <modal :show.sync="editResponse.modal" footer-classes="py-2" modal-classes="modal-dialog-centered modal-sm" v-if="editResponse.modal">
+        <h6 class="modal-title" id="modal-title-notification" slot="header">Edit response</h6>
+        <div class="row text-dark">
+          <div class="col-12 text-center">
+            <b-textarea max-rows="3" rows="2" v-model="editResponse.reply"></b-textarea>
+          </div>
+        </div>
+        <template slot="footer">
+          <base-button @click.prevent="cancelEditResponse" text-color="dark" type="link">Cancel</base-button>
+          <base-button @click.prevent="confirmEditResponse" class="ml-auto" type="success">Edit</base-button>
+        </template>
+      </modal>
       <modal :show.sync="makeDuplicate.modal" gradient="danger" modal-classes="modal-danger modal-dialog-centered modal-sm" v-if="makeDuplicate.modal">
         <h6 class="modal-title" id="modal-title-notification" slot="header">Mark as duplicate</h6>
         <div class="row">
@@ -173,6 +221,20 @@
           <base-button @click.prevent="confirmReOpenQuery" type="success">Confirm</base-button>
         </template>
       </modal>
+      <modal :show.sync="deleteQuery.modal" modal-classes="modal-dialog-centered modal-sm" v-if="deleteQuery.modal">
+        <h6 class="modal-title" id="modal-title-notification" slot="header">Delete</h6>
+        <div class="row">
+          <div class="col-12 text-center">
+            <div class="text-dark">By confirming, this post will be deleted.</div>
+            <div class="text-danger font-weight-bold">This action cannot be reversed.</div>
+            <div class="text-dark">Are you sure?</div>
+          </div>
+        </div>
+        <template slot="footer">
+          <base-button @click.prevent="cancelDeleteQuery" class="mr-auto" text-color="dark" type="link">Cancel</base-button>
+          <base-button @click.prevent="confirmDeleteQuery" type="success">Confirm</base-button>
+        </template>
+      </modal>
     </div>
     <error-page message="Could not find the post you are looking for." v-else></error-page>
   </div>
@@ -209,6 +271,18 @@ export default {
         show: false,
         message: ""
       },
+      editResponse: {
+        modal: false,
+        postId: null,
+        replyId: null,
+        reply: ""
+      },
+      adminEditResponse: {
+        modal: false,
+        postId: null,
+        replyId: null,
+        highlight: null
+      },
       makeDuplicate: {
         modal: false,
         post_id: null
@@ -237,6 +311,14 @@ export default {
         modal: false,
         post_id: null
       },
+      deleteQuery: {
+        modal: false,
+        post_id: null
+      },
+      restoreQuery: {
+        modal: false,
+        post_id: null
+      },
       previousTime: null
     };
   },
@@ -247,12 +329,15 @@ export default {
       let post = moment(this.post.date_posted);
       return this.currentTime - post <= 600000; // 10 minutes
     },
-    replyHold(){
-      let time = this.currentTime
-      if(time - this.previousTime >= 10000){
-        return false
+    replyHold() {
+      let time = this.currentTime;
+      if (time - this.previousTime >= 10000) {
+        return false;
       }
-      return true
+      return true;
+    },
+    event_id() {
+      return this.$route.params.id;
     }
   },
   created() {
@@ -266,13 +351,28 @@ export default {
         clearInterval(this.timer);
       }
     },
+    navigateToEdit(post_id){
+      if(this.event_id != null && post_id != null) {
+        let route = {name: 'event-id-forum-post-postId-edit', params: {id: this.event_id, postId: post_id}}
+        this.$router.replace(route)
+      }
+    },
+    hasStar(user){
+      if(user && user.role && user.role.length){
+        if(user.role.indexOf('admin') > -1 || user.role.indexOf('staff') > -1){
+          return true
+        }
+      }
+      return false
+    },
     formatDate(d) {
       return moment(d).fromNow();
     },
     Reply() {
-      let url = `/api/forum/posts/${this.post._id}/reply`;
+      let params = this.$route.params;
+      let url = `/api/event/${params.id}/forum/posts/${this.post._id}/reply`;
       if (this.newReply.text.length > 0 && !this.replyHold) {
-        this.previousTime = parseInt(this.currentTime)
+        this.previousTime = parseInt(this.currentTime);
         this.$axios
           .put(url, { text: this.newReply.text })
           .then(res => {
@@ -282,6 +382,67 @@ export default {
               return this.$router.go(cr);
             }
             console.log("Failed");
+          })
+          .catch(err => console.log);
+      }
+    },
+    cancelEditResponse() {
+      this.editResponse = {
+        modal: false,
+        postId: null,
+        replyId: null,
+        reply: ""
+      };
+    },
+    editResponseModal(key, replyId) {
+      this.editResponse.postId = this.post._id;
+      this.editResponse.replyId = replyId;
+      this.editResponse.reply = "" + this.post.replies[key].text;
+      this.editResponse.modal = true;
+    },
+    confirmEditResponse() {
+      let { replyId, postId, reply } = this.editResponse;
+      let eventId = this.$route.params.id;
+      this.$axios
+        .put(`/api/event/${eventId}/forum/posts/${postId}/reply/${replyId}`, {
+          text: reply
+        })
+        .then(res => {
+          if (res.data && res.data.success) {
+            let cr = this.$router.currentRoute;
+            return this.$router.go(cr);
+          }
+        })
+        .catch(err => console.log);
+    },
+    cancelEditResponseAdmin() {
+      this.adminEditResponse = {
+        modal: false,
+        postId: null,
+        replyId: null,
+        highlight: null
+      };
+    },
+    editResponseAdminModal(key, replyId) {
+      this.adminEditResponse.postId = this.post._id;
+      this.adminEditResponse.replyId = replyId;
+      console.log(this.post.replies[key].highlight);
+      this.adminEditResponse.highlight = !this.post.replies[key].highlight;
+      this.adminEditResponse.modal = true;
+    },
+    confirmEditResponseAdmin() {
+      let { replyId, postId, highlight } = this.adminEditResponse;
+      let eventId = this.$route.params.id;
+      if (this.adminEditResponse.highlight != null) {
+        this.$axios
+          .put(`/api/event/${eventId}/forum/posts/${postId}/reply/${replyId}/admin`, {
+            highlight: highlight
+          })
+          .then(res => {
+            if (res.data && res.data.success) {
+              let cr = this.$router.currentRoute;
+              return this.$router.go(cr);
+            }
           })
           .catch(err => console.log);
       }
@@ -304,7 +465,10 @@ export default {
     },
     confirmDuplicate() {
       if (this.makeDuplicate.post_id != null) {
-        let url = `/api/forum/posts/${this.makeDuplicate.post_id}`;
+        let params = this.$route.params;
+        let url = `/api/event/${params.id}/forum/posts/${
+          this.makeDuplicate.post_id
+        }`;
         this.$axios
           .put(url, {
             post: {
@@ -340,7 +504,10 @@ export default {
     },
     confirmNotDuplicate() {
       if (this.makeNotDuplicate.post_id != null) {
-        let url = `/api/forum/posts/${this.makeNotDuplicate.post_id}`;
+        let params = this.$route.params;
+        let url = `/api/event/${params.id}forum/posts/${
+          this.makeNotDuplicate.post_id
+        }`;
         this.$axios
           .put(url, {
             post: {
@@ -377,7 +544,8 @@ export default {
     },
     confirmSpam() {
       if (this.makeSpam.post_id != null) {
-        let url = `/api/forum/posts/${this.makeSpam.post_id}`;
+        let params = this.$route.params;
+        let url = `/api/event/${params.id}forum/posts/${this.makeSpam.post_id}`;
         this.$axios
           .put(url, {
             post: {
@@ -414,7 +582,10 @@ export default {
     },
     confirmNotSpam() {
       if (this.makeNotSpam.post_id != null) {
-        let url = `/api/forum/posts/${this.makeNotSpam.post_id}`;
+        let params = this.$route.params;
+        let url = `/api/event/${params.id}/forum/posts/${
+          this.makeNotSpam.post_id
+        }`;
         this.$axios
           .put(url, {
             post: {
@@ -450,7 +621,10 @@ export default {
     },
     confirmResolved() {
       if (this.makeResolved.post_id != null) {
-        let url = `/api/forum/posts/${this.makeResolved.post_id}`;
+        let params = this.$route.params;
+        let url = `/api/event/${params.id}/forum/posts/${
+          this.makeResolved.post_id
+        }`;
         this.$axios
           .put(url, {
             post: {
@@ -483,7 +657,10 @@ export default {
     },
     confirmCloseQuery() {
       if (this.closeQuery.post_id != null) {
-        let url = `/api/forum/posts/${this.closeQuery.post_id}`;
+        let params = this.$route.params;
+        let url = `/api/event/${params.id}/forum/posts/${
+          this.closeQuery.post_id
+        }`;
         this.$axios
           .put(url, {
             post: {
@@ -516,7 +693,10 @@ export default {
     },
     confirmReOpenQuery() {
       if (this.reOpenQuery.post_id != null) {
-        let url = `/api/forum/posts/${this.reOpenQuery.post_id}`;
+        let params = this.$route.params;
+        let url = `/api/event/${params.id}/forum/posts/${
+          this.reOpenQuery.post_id
+        }`;
         this.$axios
           .put(url, {
             post: {
@@ -538,7 +718,42 @@ export default {
             console.log(err);
           });
       }
-    }
+    },
+    deleteQueryModal(id){
+      this.deleteQuery.post_id = id
+      this.deleteQuery.modal = true
+    },
+    cancelDeleteQuery(){
+      this.deleteQuery.post_id = null
+      this.deleteQuery.modal = false
+    },
+    confirmDeleteQuery(){
+      if (this.deleteQuery.post_id != null) {
+        let params = this.$route.params;
+        let url = `/api/event/${params.id}/forum/posts/${
+          this.deleteQuery.post_id
+        }`;
+        this.$axios
+          .delete(url, {})
+          .then(res => {
+            if (res.data && res.data.success) {
+              this.successMsg("Successfully deleted query.");
+            } else {
+              this.errorMsg(res.data.message);
+            }
+            this.cancelDeleteQuery()
+            let id = this.$route.params.id;
+            if(id != null){
+              return this.$router.replace({name: "event-id-forum", params: { id }});
+            }
+            return this.$router.replace("/")
+          })
+          .catch(err => {
+            this.errorMsg("Some error occured, try again.");
+            console.log(err);
+          });
+      }
+    },
   }
 };
 </script>
@@ -552,6 +767,19 @@ export default {
     padding: 0 1rem;
     color: #6a737d;
     border-left: 0.25em solid #dfe2e5;
+  }
+}
+.reply-dropdown {
+  button {
+    padding: 0;
+    margin-top: -.5rem;
+  }
+}
+
+.reply-pinned {
+  background:  #56ab2f;
+  .reply-username, i.fas, .reply-date {
+    color: white;
   }
 }
 </style>

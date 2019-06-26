@@ -53,6 +53,14 @@
                     <a :href="event.link" class="btn btn-curiosum mt-2" rel="noreferrer" target="_blank">Website</a>
                   </card>
                 </div>
+                <div class="col-md-6 col-lg-4 mt-1 mt-lg-3" v-if="event.show_block.rules">
+                  <card body-classes="py-3" class="border-0" shadow>
+                    <icon class="mb-3 i-curiosum" name="fas fa-book" rounded type="default"></icon>
+                    <h6 class="text-curiosum text-uppercase font-weight-bold">Rules</h6>
+                    <p class="description mt-3 text-curiosum">Rule forum for {{event.name}}!</p>
+                    <router-link :to="{name: 'event-id-forum', params: {id: event.event_short}}" class="btn btn-curiosum mt-2" tag="a">Forum</router-link>
+                  </card>
+                </div>
                 <div class="col-md-6 col-lg-4 mt-1 mt-lg-3" v-if="event.show_block.teams">
                   <card body-classes="py-3" class="border-0" shadow>
                     <icon class="mb-3 i-curiosum" name="fas fa-trophy" rounded type="primary"></icon>
@@ -92,14 +100,6 @@
                     <h6 class="text-curiosum text-uppercase font-weight-bold">Live Timing</h6>
                     <p class="description mt-3 text-curiosum">Un-official time display of {{event.name}}!</p>
                     <router-link :to="{name: 'event-id-live-timings', params: {id: event.event_short}}" class="btn btn-curiosum mt-2" tag="a">Live Timings</router-link>
-                  </card>
-                </div>
-                <div class="col-md-6 col-lg-4 mt-1 mt-lg-3" v-if="event.show_block.rules">
-                  <card body-classes="py-3" class="border-0" shadow>
-                    <icon class="mb-3 i-curiosum" name="fas fa-book" rounded type="default"></icon>
-                    <h6 class="text-curiosum text-uppercase font-weight-bold">Rules</h6>
-                    <p class="description mt-3 text-curiosum">Rule forum for {{event.name}}!</p>
-                    <router-link :to="{name: 'forum'}" class="btn btn-curiosum mt-2" tag="a">Forum</router-link>
                   </card>
                 </div>
               </div>
