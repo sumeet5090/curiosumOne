@@ -65,6 +65,7 @@
     "vue-kindergarten": "^0.3.3",
     "vue-lazyload": "^1.2.6",
     "vue-markdown": "^2.2.4",
+    "vue-multiselect": "^2.1.6",
     "vue-router": "^3.0.1",
     "vue-truncate-collapsed": "^2.1.0",
     "vue2-transitions": "^0.2.3",

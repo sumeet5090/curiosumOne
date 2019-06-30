@@ -25,7 +25,6 @@ let TeamSchema = Schema({
   category: {
     type: String,
     enum: ["combustion", "electric"],
-    required: true,
   },
   country: {
     type: String
@@ -134,7 +133,6 @@ let newTeamSchema = Schema({
   category: {
     type: String,
     enum: ["combustion", "electric"],
-    required: true,
   },
   country: {
     type: String

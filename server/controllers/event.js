@@ -1,14 +1,11 @@
 const Event = require('./../models/event.model')
 const Car = require('./../models/car.model')
-const Announcement = require('./../models/announcement.model')
 const Schedule = require('./../models/schedule.model')
-const LiveTiming = require('./../models/livetiming.model')
-const TechUpdate = require('./../models/tech-update.model')
 const Team = require('./../models/team.model')
 const StaticSchedule = require('./../models/static_schedule.model')
 const mongoose = require('mongoose')
 const Response = require('./../services/response')
-const {readFilesAsync, writeFilesAsync} = require('./../services/file')
+const { readFilesAsync, writeFilesAsync } = require('./../services/file')
 const JSON2CSV = require('json-2-csv')
 const crypto = require('crypto')
 const path = require('path')
@@ -107,13 +104,32 @@ const getTeamForEvent = async (req, res) => {
   }
 }
 
+const getAllCars = async (req, res) => {
+  try {
+    let cars = await Car.find()
+    if (cars) {
+      if (cars.length > 0) {
+        return Response.success(res, {
+          cars: cars
+        })
+      }
+    }
+    return Response.failed(res, {
+      message: "No cars"
+    })
+  } catch (error) {
+    console.log(error)
+    return res.sendStatus(500)
+  }
+}
+
 const getCarsCSV = async (req, res) => {
   const fields = [
     '_id',
-    'car_number',
     'team',
     'event',
-    'category'
+    'category',
+    'car_number',
   ]
   try {
     let id = req.params.id,
@@ -123,11 +139,12 @@ const getCarsCSV = async (req, res) => {
     }
     let event = await Event.findOne({ $or: $or })
     if (event) {
-      let cars = await Car.find({ event: event._id }).populate('team').exec()
+      let cars = await Car.find({ event: event._id })
       if (cars) {
         let csv = await JSON2CSV.json2csvAsync(JSON.parse(JSON.stringify(cars)), {
           keys: fields,
           emptyFieldValue: '',
+          eol: '\\r\\n',
           expandArrayObjects: true
         })
         if (csv) {
@@ -147,6 +164,103 @@ const getCarsCSV = async (req, res) => {
   } catch (error) {
     console.log(error);
     return Response.failed(res, { message: "Some internal error." })
+  }
+}
+
+const updateCarsFromCSV = async (req, res) => {
+  const fields = [
+    '_id',
+    'car_number',
+    'team',
+    'event',
+    'category'
+  ]
+  try {
+    let id = req.params.id,
+      $or = [{ event_short: id }]
+    if (parseInt(id) == id) {
+      $or.push({ _id: id })
+    }
+    if (req.files && req.files.file) {
+      let file = req.files.file
+      if (file && file.data) {
+        let csv = file.data.toString('utf8')
+        let data = await JSON2CSV.csv2jsonAsync(csv, {
+          keys: fields,
+          emptyFieldValue: '',
+          eol: '\\r\\n',
+          expandArrayObjects: true
+        })
+        if (data) {
+          let dataArr = toArray(data)
+          for (let i = 0; i < data.length; i++) {
+            let inCar = JSON.parse(JSON.stringify((data[i])))
+            let {_id, team, event, car_number, category} = inCar
+            let dbTeam = await Team.findOne({ _id: team })
+            let dbEvent = await Event.findOne({ _id: event })
+            if (dbTeam && dbEvent) {
+              if (_id !== null) {
+                console.log("Updating exisitng car, ", _id);
+                let car = await Car.findOne({ _id: _id })
+                if (car) {
+                  let carTeam = await Team.findOneAndUpdate({ _id: car.team }, { $pull: { cars: car._id } })
+                  let carEvent = await Event.findOneAndUpdate({ _id: car.event }, { $pull: { cars: car._id } })
+                  if (carTeam && carEvent) {
+                    console.log("Updated car event and car team (pulled old entries)");
+                    car.team = dbTeam._id
+                    car.event = dbEvent._id
+                    car.car_number = car_number
+                    car.category = category
+                    let saved = await car.save()
+                    if (saved) {
+                      console.log("SAved exisiting car with updated teams!");
+                      dbTeam.cars.push(car._id)
+                      dbEvent.cars.push(car._id)
+                      let updatedT = await dbTeam.save()
+                      let updatedE = await dbEvent.save()
+                      if (updatedT) {
+                        console.log("Linked team to existing car.");
+                      }
+                      if (updatedE) {
+                        console.log("Linked event to existing car.");
+                      }
+                    }
+                  }
+                }
+              } else {
+                console.log("Creating new car");
+                let new_car = await new Car({
+                  car_number,
+                  category,
+                  team: dbTeam._id,
+                  event: dbEvent._id,
+                }).save()
+                if (new_car) {
+                  console.log("Created new car: ", new_car._id);
+                  console.log("Linking team and event");
+                  dbTeam.cars.push(new_car._id)
+                  dbEvent.cars.push(new_car._id)
+                  let updatedT = await dbTeam.save()
+                  let updatedE = await dbEvent.save()
+                  if (updatedT) {
+                    console.log("Linked team");
+                  }
+                  if (updatedE) {
+                    console.log("Linked event");
+                  }
+                }
+              }
+            }
+          }
+          return Response.success(res, { message: "Success? Check and confirm." })
+        }
+      }
+      return Response.failed(res, { message: "No file data" })
+    }
+    return Response.failed(res, { message: "No file" })
+  } catch (err) {
+    console.log(err);
+    return Response.failed(res, { message: "Internal server error" })
   }
 }
 
@@ -870,6 +984,7 @@ module.exports = {
   getTeamsCSVForEvent,
   getAllEventsByCSV,
   getCarsCSV,
+  getAllCars,
   // getAnnouncementsForEvent,
   // getOneAnnouncement,
   // getOneTechupdate,
@@ -887,6 +1002,7 @@ module.exports = {
   createEvent,
   updateEventFromCSV,
   updateEventsFromCSV,
+  updateCarsFromCSV,
   // createAnnouncement,
   // createCar,
   // createLivetiming,

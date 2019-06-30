@@ -11,6 +11,26 @@ const sectionController = require('./../../controllers/section')
 const staticScheduleCont = require('./../../controllers/static-schedule')
 const techUpdatesCont = require('./../../controllers/tech-update')
 
+
+// GET
+router.get('/', eventCont.getAllEvents)
+router.get('/csv', eventCont.getAllEventsByCSV)
+router.get('/all/cars', eventCont.getAllCars)
+router.get('/:id', eventCont.getOneEvent)
+router.get('/:id/csv/cars', helper.allowStaff, eventCont.getCarsCSV)
+router.get('/:id/teams', eventCont.getTeamForEvent)
+router.get('/:id/teams/csv', helper.allowStaff, eventCont.getTeamsCSVForEvent)
+// POST
+router.post('/create', helper.allowStaff, eventCont.createEvent)
+router.post('/csv', helper.allowStaff, eventCont.updateEventsFromCSV)
+router.post('/:id/teams/csv', helper.allowStaff, eventCont.updateEventFromCSV)
+router.post('/:id/csv/cars', helper.allowStaff, eventCont.updateCarsFromCSV)
+// PUT
+router.put('/:id', helper.allowStaff, eventCont.updateEvent)
+
+// DELETE
+router.delete('/:id', helper.allowStaff, eventCont.deleteEvent)
+
 // Announcements
 router.get('/:id/announcements/:annc_id', anncmtsCont.getOne)
 router.get('/:id/announcements', anncmtsCont.getAll)
@@ -23,7 +43,7 @@ router.get('/:id/cars', carCont.getAll)
 router.get('/:id/cars/:team_id/car', carCont.getForTeam)
 router.post('/:id/cars/:team_id/car', helper.allowStaff, carCont.create)
 router.put('/:id/cars/:team_id/car', helper.allowStaff, carCont.update)
-// router.delete('/:id/cars/:team_id/car', helper.allowStaff, carCont.remove)
+router.delete('/:id/cars/:team_id/car', helper.allowStaff, carCont.remove)
 
 // Forum
 router.get('/:id/forum/posts', postCont.getAll)
@@ -64,23 +84,5 @@ router.get('/:id/tech-updates', techUpdatesCont.getAll)
 router.post('/:id/tech-updates/:team_id', helper.allowStaff, techUpdatesCont.create)
 router.put('/:id/tech-updates/:tu_id', helper.allowStaff, techUpdatesCont.update)
 router.delete('/:id/tech-updates/:tu_id', helper.allowStaff, techUpdatesCont.remove)
-
-// GET
-router.get('/', eventCont.getAllEvents)
-router.get('/csv', eventCont.getAllEventsByCSV)
-router.get('/:id', eventCont.getOneEvent)
-router.get('/:id/csv/cars', helper.allowStaff, eventCont.getCarsCSV)
-router.get('/:id/teams', eventCont.getTeamForEvent)
-router.get('/:id/teams/csv', helper.allowStaff, eventCont.getTeamsCSVForEvent)
-// POST
-router.post('/create', helper.allowStaff, eventCont.createEvent)
-router.post('/csv', helper.allowStaff, eventCont.updateEventsFromCSV)
-router.post('/:id/teams/csv', helper.allowStaff, eventCont.updateEventFromCSV)
-
-// PUT
-router.put('/:id', helper.allowStaff, eventCont.updateEvent)
-
-// DELETE
-router.delete('/:id', helper.allowStaff, eventCont.deleteEvent)
 
 module.exports = router;

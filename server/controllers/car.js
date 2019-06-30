@@ -24,7 +24,16 @@ module.exports = {
       }
       let event = await Event.findOne({ $or: $or })
       if (event) {
-        let cars = await Car.find({ event: event._id }).populate('team').exec()
+        let cars = await Car.find({ event: event._id }).sort({
+          car_number: 1,
+        }).populate({
+          path: 'team',
+          populate: [{
+            path: 'captain'
+          }, {
+            path: 'users'
+          }]
+        }).exec()
         if (cars) {
           if (cars.length > 0) {
             return Response.success(res, { cars: cars })
@@ -61,25 +70,32 @@ module.exports = {
   },
   batchDownload: async (req, res) => {
     const fields = [
-      '_id', // Event ID
+      '_id',
+      'event',
+      'team',
       'car_number',
       'category',
-      'team.name',
-      'team.institution.name',
-      'team.institution.address',
-      'team.institution.short',
-      'team_captain_email',
-      'team_captain_full_name',
-      'country',
-      'social.facebook',
-      'social.instagram',
-      'social.twitter',
-      'website_url',
     ]
     let id = req.params.id
     let $or = [{ event_short: id }]
     if (parseInt(id) == id) {
       $or.push({ _id: id })
+    }
+    let event = await Event.findOne({$or})
+    if(event){
+      console.log("Event found");
+      let cars = Car.find({event: event._id})
+      if(cars && cars.length > 0){
+        let csv = await JSON2CSV.json2csvAsync(cars, {
+          keys: fields,
+          emptyFieldValue: '',
+          expandArrayObjects: true
+        })
+        if(csv){
+          console.log("CSV");
+          
+        }
+      }
     }
   },
   batchCreateFromCSV: async (req, res) => {
@@ -161,14 +177,14 @@ module.exports = {
               }
             }
             if (dataArr.length == doneCars.length) {
-              let updateEvent = await event.update({ cars: doneCars}).exec()
-              if(updateEvent) {
-                console.log("Event updated with cars "+doneCars.length);
-                return Response.success(res, {message: "Event updated"})
+              let updateEvent = await event.update({ cars: doneCars }).exec()
+              if (updateEvent) {
+                console.log("Event updated with cars " + doneCars.length);
+                return Response.success(res, { message: "Event updated" })
               }
             }
           }
-          return Response.failed(res, {message: "Couldn't update event"})
+          return Response.failed(res, { message: "Couldn't update event" })
         }
       }
       return Response.failed(res, { message: "No data." })
@@ -197,12 +213,13 @@ module.exports = {
       if (team && event) {
         let car = await new Car({
           car_number: req.body.car_number,
+          category: req.body.category,
           event: event._id,
           team: team._id,
         }).save()
         if (car) {
           let updateEvent = await event.updateOne({ $push: { cars: car._id } })
-          let updateTeam = await team.updateOne({ $push: { car: car._id } })
+          let updateTeam = await team.updateOne({ $push: { cars: car._id } })
           if (updateEvent.nModified >= 1 && updateEvent.ok == 1 && updateTeam.nModified >= 1 && updateTeam.ok) {
             return Response.success(res, { message: "Created car" })
           }
@@ -225,7 +242,7 @@ module.exports = {
       }
       let event = await Event.findOne({ $or: $or })
       if (event) {
-        let car = await Car.findOneAndUpdate({ team: team_id, event: event._id }, { car_number: req.body.car_number }, { upsert: true, new: true })
+        let car = await Car.findOneAndUpdate({ team: team_id, event: event._id }, { car_number: req.body.car_number, category: req.body.category }, { upsert: true, new: true })
         if (car) {
           return Response.success(res, { message: "Car updated" })
         }
@@ -237,6 +254,28 @@ module.exports = {
     }
   },
   remove: async (req, res) => {
-    try { } catch (err) { console.log(err); }
+    try {
+      let id = req.params.id,
+        $or = [{ event_short: id }],
+        team_id = req.params.team_id
+      if (parseInt(id) == id) {
+        $or.push({ _id: id })
+      }
+      let event = await Event.findOne({ $or: $or })
+      if (event) {
+        let car = await Car.findOneAndDelete({ team: team_id, event: event._id })
+        if(car){
+          let team = await Team.findOneAndUpdate({_id: team_id}, { $pull: { cars: car._id }})
+          let eventUpdate = await Event.findOneAndUpdate({_id: event._id}, { $pull: { cars: car._id }})
+          if (team && eventUpdate) {
+            return Response.success(res, { message: "car updated" })
+          }
+        }
+      }
+      return Response.failed(res, { message: "not found" })
+    } catch (err) {
+      console.log(err);
+      return Response.failed(res, { message: "Internal server error" })
+    }
   },
 }
