@@ -1,158 +1,161 @@
 <template>
   <div>
-    <no-ssr>
-      <div class="card shadow">
-        <div class="card-header bg-transparent border-0">
-          <h3 class="text-center mb-0 header-font" v-if="event">{{event.name}} Cars</h3>
-        </div>
-        <section class="px-5">
-          <div class="row">
-            <div class="col-8 pl-0">
-              <base-input addon-left-icon="fas fa-search text-success" placeholder="Search" v-model="searchText"></base-input>
-            </div>
-            <div class="col">
-              <b-btn @click="addTeamModal" variant="success">Add team</b-btn>
-            </div>
-            <div class="col">
-              <base-button @click.prevent="uploadModal.show = true" outline type="primary">Upload</base-button>
-            </div>
-            <div class="col pr-0">
-              <b-btn @click="sendDownloadRequest" variant="success">Download?</b-btn>
-            </div>
+    <div v-if="isAdmin">
+      <no-ssr>
+        <div class="card shadow">
+          <div class="card-header bg-transparent border-0">
+            <h3 class="text-center mb-0 header-font" v-if="event">{{event.name}} Cars</h3>
           </div>
-          <div class="table-responsive">
-            <table class="table align-items-center table-flush">
-              <thead class>
-                <tr>
-                  <th scope="col">
-                    <div class="border-right">Car #</div>
-                  </th>
-                  <th scope="col">Team Name</th>
-                  <th scope="col">Institution</th>
-                  <th scope="col">Captain</th>
-                  <th scope="col">Members</th>
-                  <th scope="col">Country</th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr :key="car._id" v-for="car in filteredCars">
-                  <th scope="row">
-                    <div class="media align-items-center">
-                      <div class="media-body">
-                        <span class="mb-0 text-sm">{{car.car_number}}</span>
+          <section class="px-5">
+            <div class="row">
+              <div class="col-8 pl-0">
+                <base-input addon-left-icon="fas fa-search text-success" placeholder="Search" v-model="searchText"></base-input>
+              </div>
+              <div class="col">
+                <b-btn @click="addTeamModal" variant="success">Add team</b-btn>
+              </div>
+              <div class="col">
+                <base-button @click.prevent="uploadModal.show = true" outline type="primary">Upload</base-button>
+              </div>
+              <div class="col pr-0">
+                <b-btn @click="sendDownloadRequest" variant="success">Download?</b-btn>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-items-center table-flush">
+                <thead class>
+                  <tr>
+                    <th scope="col">
+                      <div class="border-right">Car #</div>
+                    </th>
+                    <th scope="col">Team Name</th>
+                    <th scope="col">Institution</th>
+                    <th scope="col">Captain</th>
+                    <th scope="col">Members</th>
+                    <th scope="col">Country</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr :key="car._id" v-for="car in filteredCars">
+                    <th scope="row">
+                      <div class="media align-items-center">
+                        <div class="media-body">
+                          <span class="mb-0 text-sm">{{car.car_number}}</span>
+                        </div>
                       </div>
-                    </div>
-                  </th>
-                  <td>{{car.team.team_name}}</td>
-                  <td>
-                    <div v-if="car.team.institution">{{car.team.institution.name}}</div>
-                  </td>
-                  <td>
-                    <div v-if="car.team.captain">
-                      <a :href="`/profile/${getAlt(car.team.captain)}`" target="_blank">{{getName(car.team.captain)}}</a>
-                    </div>
-                  </td>
-                  <td>
-                    <div v-if="car.team.users && car.team.users.length > 0">{{car.team.users.length}}</div>
-                  </td>
-                  <td>
-                    <div v-if="car.team.country">{{car.team.country}}</div>
-                  </td>
-                  <td>
-                    <b-dropdown no-caret size="sm" toggle-class="text-decoration-none" variant="link">
-                      <template slot="button-content">
-                        <i class="fas fa-ellipsis-h"></i>
-                      </template>
-                      <b-dropdown-item @click.prevent="editTeamModal(car._id)">Edit</b-dropdown-item>
-                      <b-dropdown-item @click.prevent="deleteTeamModal(car._id)">Remove</b-dropdown-item>
-                    </b-dropdown>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-      </div>
-      <modal :show.sync="addTeam.modal" modal-classes="modal-dark modal-dialog-centered modal-lg" modal-gradient="dark" v-if="addTeam.modal">
-        <h6 class="modal-title" id="modal-title-notification" slot="header">Add team to event</h6>
-        <b-container>
-          <b-form @reset.prevent="onReset" @submit.prevent>
-            <b-form-group>
-              <label class="typo__label">Search and select team</label>
-              <multiselect :options="teams" label="team_name" placeholder="Pick a team" track-by="team_name" v-model="addTeam.team"></multiselect>
-            </b-form-group>
-            <b-form-group label="Category">
-              <multiselect :close-on-select="true" :custom-label="camelCaseText" :options="['electric', 'combustion']" :searchable="false" :show-labels="true" placeholder="Pick a category" v-model="addTeam.category"></multiselect>
-            </b-form-group>
-            <b-form-group label="Car number">
-              <b-input placeholder="Enter number" v-model="addTeam.car_number"></b-input>
-            </b-form-group>
-          </b-form>
-        </b-container>
-        <template slot="footer">
-          <base-button @click.prevent class="mr-auto" text-color="white" type="link">Cancel</base-button>
-          <base-button @click.prevent="addTeamSubmit" type="secondary">Confirm</base-button>
-        </template>
-      </modal>
-      <modal :show.sync="editTeam.modal" modal-classes="modal-dark modal-dialog-centered modal-lg" modal-gradient="dark" v-if="editTeam.modal">
-        <h6 class="modal-title" id="modal-title-notification" slot="header">Edit car information</h6>
-        <b-container>
-          <b-form @reset.prevent="onReset" @submit.prevent>
-            <b-form-group>
-              <b-input :value="editTeam.team.team_name" class="text-dark" disabled></b-input>
-            </b-form-group>
-            <b-form-group label="Category">
-              <multiselect :close-on-select="true" :custom-label="camelCaseText" :options="['electric', 'combustion']" :searchable="false" :show-labels="true" placeholder="Pick a category" v-model="editTeam.category"></multiselect>
-            </b-form-group>
-            <b-form-group label="Car number">
-              <b-input class="text-dark" placeholder="Enter number" v-model="editTeam.car_number"></b-input>
-            </b-form-group>
-          </b-form>
-        </b-container>
-        <template slot="footer">
-          <base-button @click.prevent class="mr-auto" text-color="white" type="link">Cancel</base-button>
-          <base-button @click.prevent="editTeamSubmit" type="secondary">Confirm</base-button>
-        </template>
-      </modal>
-      <modal :show.sync="deleteTeam.modal" modal-classes="modal-danger modal-dialog-centered " modal-gradient="danger" v-if="deleteTeam.modal">
-        <h6 class="modal-title" id="modal-title-notification" slot="header">Remove car</h6>
-        <b-container>
-          <b-row>
-            <b-col>
-              <div class="text-center">Car # {{deleteTeam.car_number}} - {{deleteTeam.team.team_name}}</div>
-              <div class="text-center">Are you sure you want to remove this car?</div>
-            </b-col>
-          </b-row>
-        </b-container>
-        <template slot="footer">
-          <base-button @click.prevent class="mr-auto" text-color="white" type="link">Cancel</base-button>
-          <base-button @click.prevent="deleteTeamSubmit" type="secondary">Confirm</base-button>
-        </template>
-      </modal>
-      <modal :show.sync="uploadModal.show" body-classes="p-0" modal-classes="modal-dialog-centered modal-sm" v-if="uploadModal.show">
-      <card body-classes="px-lg-5 py-lg-5" class="border-0" header-classes="bg-white pb-5" shadow type="secondary">
-        <template>
-          <div class="text-muted text-center mb-3">
-            <small>Upload file</small>
-          </div>
-          <b-form-file accept=".csv" drop-placeholder="Drop file here..." placeholder="Choose a file..." v-model="uploadModal.file"></b-form-file>
-        </template>
-        <template>
-          <div class="text-center pt-2">
-            <base-button @click.prevent="uploadFile" type="primary">Upload</base-button>
-          </div>
-        </template>
-      </card>
-    </modal>
-    </no-ssr>
+                    </th>
+                    <td>{{car.team.team_name}}</td>
+                    <td>
+                      <div v-if="car.team.institution">{{car.team.institution.name}}</div>
+                    </td>
+                    <td>
+                      <div v-if="car.team.captain">
+                        <a :href="`/profile/${getAlt(car.team.captain)}`" target="_blank">{{getName(car.team.captain)}}</a>
+                      </div>
+                    </td>
+                    <td>
+                      <div v-if="car.team.users && car.team.users.length > 0">{{car.team.users.length}}</div>
+                    </td>
+                    <td>
+                      <div v-if="car.team.country">{{car.team.country}}</div>
+                    </td>
+                    <td>
+                      <b-dropdown no-caret size="sm" toggle-class="text-decoration-none" variant="link">
+                        <template slot="button-content">
+                          <i class="fas fa-ellipsis-h"></i>
+                        </template>
+                        <b-dropdown-item @click.prevent="editTeamModal(car._id)">Edit</b-dropdown-item>
+                        <b-dropdown-item @click.prevent="deleteTeamModal(car._id)">Remove</b-dropdown-item>
+                      </b-dropdown>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+        <modal :show.sync="addTeam.modal" modal-classes="modal-dark modal-dialog-centered modal-lg" modal-gradient="dark" v-if="addTeam.modal">
+          <h6 class="modal-title" id="modal-title-notification" slot="header">Add team to event</h6>
+          <b-container>
+            <b-form @reset.prevent="onReset" @submit.prevent>
+              <b-form-group>
+                <label class="typo__label">Search and select team</label>
+                <multiselect :options="teams" label="team_name" placeholder="Pick a team" track-by="team_name" v-model="addTeam.team"></multiselect>
+              </b-form-group>
+              <b-form-group label="Category">
+                <multiselect :close-on-select="true" :custom-label="camelCaseText" :options="['electric', 'combustion']" :searchable="false" :show-labels="true" placeholder="Pick a category" v-model="addTeam.category"></multiselect>
+              </b-form-group>
+              <b-form-group label="Car number">
+                <b-input placeholder="Enter number" v-model="addTeam.car_number"></b-input>
+              </b-form-group>
+            </b-form>
+          </b-container>
+          <template slot="footer">
+            <base-button @click.prevent class="mr-auto" text-color="white" type="link">Cancel</base-button>
+            <base-button @click.prevent="addTeamSubmit" type="secondary">Confirm</base-button>
+          </template>
+        </modal>
+        <modal :show.sync="editTeam.modal" modal-classes="modal-dark modal-dialog-centered modal-lg" modal-gradient="dark" v-if="editTeam.modal">
+          <h6 class="modal-title" id="modal-title-notification" slot="header">Edit car information</h6>
+          <b-container>
+            <b-form @reset.prevent="onReset" @submit.prevent>
+              <b-form-group>
+                <b-input :value="editTeam.team.team_name" class="text-dark" disabled></b-input>
+              </b-form-group>
+              <b-form-group label="Category">
+                <multiselect :close-on-select="true" :custom-label="camelCaseText" :options="['electric', 'combustion']" :searchable="false" :show-labels="true" placeholder="Pick a category" v-model="editTeam.category"></multiselect>
+              </b-form-group>
+              <b-form-group label="Car number">
+                <b-input class="text-dark" placeholder="Enter number" v-model="editTeam.car_number"></b-input>
+              </b-form-group>
+            </b-form>
+          </b-container>
+          <template slot="footer">
+            <base-button @click.prevent class="mr-auto" text-color="white" type="link">Cancel</base-button>
+            <base-button @click.prevent="editTeamSubmit" type="secondary">Confirm</base-button>
+          </template>
+        </modal>
+        <modal :show.sync="deleteTeam.modal" modal-classes="modal-danger modal-dialog-centered " modal-gradient="danger" v-if="deleteTeam.modal">
+          <h6 class="modal-title" id="modal-title-notification" slot="header">Remove car</h6>
+          <b-container>
+            <b-row>
+              <b-col>
+                <div class="text-center">Car # {{deleteTeam.car_number}} - {{deleteTeam.team.team_name}}</div>
+                <div class="text-center">Are you sure you want to remove this car?</div>
+              </b-col>
+            </b-row>
+          </b-container>
+          <template slot="footer">
+            <base-button @click.prevent class="mr-auto" text-color="white" type="link">Cancel</base-button>
+            <base-button @click.prevent="deleteTeamSubmit" type="secondary">Confirm</base-button>
+          </template>
+        </modal>
+        <modal :show.sync="uploadModal.show" body-classes="p-0" modal-classes="modal-dialog-centered modal-sm" v-if="uploadModal.show">
+          <card body-classes="px-lg-5 py-lg-5" class="border-0" header-classes="bg-white pb-5" shadow type="secondary">
+            <template>
+              <div class="text-muted text-center mb-3">
+                <small>Upload file</small>
+              </div>
+              <b-form-file accept=".csv" drop-placeholder="Drop file here..." placeholder="Choose a file..." v-model="uploadModal.file"></b-form-file>
+            </template>
+            <template>
+              <div class="text-center pt-2">
+                <base-button @click.prevent="uploadFile" type="primary">Upload</base-button>
+              </div>
+            </template>
+          </card>
+        </modal>
+      </no-ssr>
+    </div>
   </div>
 </template>
 <script>
-import moment from "moment"
+import moment from "moment";
 import Multiselect from "vue-multiselect";
 const noProfilePic = require("@/assets/images/noprofilepic.png");
 import "vue-multiselect/dist/vue-multiselect.min.css";
+import { mapGetters } from "vuex";
 export default {
   components: {
     multiselect: Multiselect
@@ -196,6 +199,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(["isAdmin"]),
     filteredCars() {
       if (this.searchText !== "") {
         return this.cars.filter(car => {
@@ -235,8 +239,8 @@ export default {
         category: null
       };
     },
-    formatDate(date){
-      return moment(date).format('YYYYMMDD-HHmmss')
+    formatDate(date) {
+      return moment(date).format("YYYYMMDD-HHmmss");
     },
     sendDownloadRequest() {
       this.success = null;
@@ -248,9 +252,13 @@ export default {
           if (data && data.success == false) {
             this.error = data.message;
           } else {
-            const url = window.URL.createObjectURL(new Blob([data], { type: 'text/csv;charset=UTF-8' })),
+            const url = window.URL.createObjectURL(
+                new Blob([data], { type: "text/csv;charset=UTF-8" })
+              ),
               link = document.createElement("a"),
-              fileName = `event-${params.id}-cars-${this.formatDate(Date.now())}.csv`;
+              fileName = `event-${params.id}-cars-${this.formatDate(
+                Date.now()
+              )}.csv`;
             link.href = url;
             link.setAttribute("download", fileName);
             document.body.appendChild(link);
@@ -269,7 +277,7 @@ export default {
       this.error = null;
       let formData = new FormData();
       let params = this.$route.params;
-      if(this.uploadModal.file){
+      if (this.uploadModal.file) {
         console.log(this.uploadModal.file.name);
       }
       formData.append("file", this.uploadModal.file);

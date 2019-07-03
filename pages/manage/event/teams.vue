@@ -1,6 +1,6 @@
 <template>
   <section class="section min-vh-100">
-    <div>
+    <div v-if="isAdmin">
       <div class="card bg-default shadow">
         <div class="card-header bg-transparent border-0">
           <h3 class="text-white mb-0">Events</h3>

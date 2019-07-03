@@ -1,4 +1,4 @@
-const {google} = require('googleapis')
+const { google } = require('googleapis')
 const User = require('./../models/user.model')
 const helper = require('./../auth/helper')
 const Response = require('./../services/response')
@@ -12,6 +12,45 @@ const admin = google.admin({
   version: "directory_v1",
   auth
 })
+
+const getAllAdmins = async function (req, res) {
+  try {
+    let users = await User.find({ role: { $in: ['admin', 'staff'] } })
+    if (users) {
+      return Response.success(res, { users: users })
+    }
+    return Response.failed(res, { message: "No users found", users: [] })
+  } catch (error) {
+    console.log(error)
+    return Response.failed(res, { message: "Internal Server Error" })
+  }
+}
+
+const getAllVolunteers = async (req, res) => {
+  try {
+    let users = await User.find({ role: { $all: ['participant', 'volunteer'], $size: 2} })
+    if (users) {
+      return Response.success(res, { users: users })
+    }
+    return Response.failed(res, { message: "No users found", users: [] })
+  } catch (error) {
+    console.log(error)
+    return Response.failed(res, { message: "Internal Server Error" })
+  }
+}
+
+const getOnlyParticipants = async (req, res) => {
+  try {
+    let users = await User.find({ role: { $elemMatch: {$all:  ['participant']}, $size: 1 } })
+    if (users) {
+      return Response.success(res, { users: users })
+    }
+    return Response.failed(res, { message: "No users found", users: [] })
+  } catch (error) {
+    console.log(error)
+    return Response.failed(res, { message: "Internal Server Error" })
+  }
+}
 
 const getAll = async function (req, res) {
   try {
@@ -58,8 +97,8 @@ const getByUsername = async function (req, res) {
 const getOneByEmail = async function (req, res) {
   try {
     let user_email = req.params.email, user
-    user = await User.findOne({email: user_email})
-    if(!user){
+    user = await User.findOne({ email: user_email })
+    if (!user) {
       return res.send({
         success: false,
         user: {}
@@ -110,8 +149,8 @@ const getTeamByUsername = async function (req, res) {
 const getNotifications = async function (req, res) {
   try {
     let user_id = req.params.id, user, notifications
-    user = await User.findOne({_id: user_id})
-    if(user){
+    user = await User.findOne({ _id: user_id })
+    if (user) {
       return res.send({
         success: true,
         notifications: user.notifications
@@ -130,60 +169,60 @@ const getNotifications = async function (req, res) {
   }
 }
 
-const inviteTeam = async function (req, res)  {
-  try{
+const inviteTeam = async function (req, res) {
+  try {
     let user, notification, body = req.body, user_email = req.params.email
-    user = await User.findOne({email: user_email})
-    if(user){
+    user = await User.findOne({ email: user_email })
+    if (user) {
       notification = {
         text: req.body.notification_text,
         team_invite: req.body.notification_link,
       }
-      await user.updateOne({$push: {notifications: notification}})
+      await user.updateOne({ $push: { notifications: notification } })
     }
-  } catch(error){
+  } catch (error) {
 
   }
 }
 
-const createBatchNotifications = async function (req, res)  {
-  
+const createBatchNotifications = async function (req, res) {
+
 }
 
 const addRole = async (req, res) => {
   try {
     let body = req.body, user, role = body.role, out
-    user = await User.findOne({email: body.user_email})
-    if(user){
-      if(user.role.contains(role)) {
-        return Response.failed(res, {message: "Role already set."}, 200)
+    user = await User.findOne({ email: body.user_email })
+    if (user) {
+      if (user.role.contains(role)) {
+        return Response.failed(res, { message: "Role already set." }, 200)
       }
-      out = await user.updateOne({$push: {role: role}})
-      if(out.nModified >= 1 && out.ok == 1) {
-        return Response.success(res, {message: "Role "+role+" set"}, 200)
+      out = await user.updateOne({ $push: { role: role } })
+      if (out.nModified >= 1 && out.ok == 1) {
+        return Response.success(res, { message: "Role " + role + " set" }, 200)
       }
     }
-    return Response.failed(res, {message: "Role couldn't be set."}, 304)
+    return Response.failed(res, { message: "Role couldn't be set." }, 304)
   } catch (error) {
     console.log(error)
-    return Response.failed(res, {message: "Internal Server Error"}, 500)
+    return Response.failed(res, { message: "Internal Server Error" }, 500)
   }
 }
 
 const removeRole = async (req, res) => {
   try {
-    let body = req.body, user, role=body.role, out
-    user = await User.findOne({email: body.user_email})
-    if(user){
-      out = await user.updateOne({$pull: {role: role}})
-      if(out.nModified >= 1 && out.ok == 1) {
-        return Response.success(res, {message: "Role "+role+" removed"}, 200)
+    let body = req.body, user, role = body.role, out
+    user = await User.findOne({ email: body.user_email })
+    if (user) {
+      out = await user.updateOne({ $pull: { role: role } })
+      if (out.nModified >= 1 && out.ok == 1) {
+        return Response.success(res, { message: "Role " + role + " removed" }, 200)
       }
     }
-    return Response.failed(res, {message: "User not found"}, 304)
+    return Response.failed(res, { message: "User not found" }, 304)
   } catch (error) {
     console.log(error)
-    return Response.failed(res, {message: "Internal server error."}, 500)
+    return Response.failed(res, { message: "Internal server error." }, 500)
   }
 }
 
@@ -221,6 +260,9 @@ const remove = async function (req, res) {
 
 module.exports = {
   getAll,
+  getAllAdmins,
+  getOnlyParticipants,
+  getAllVolunteers,
   getOne,
   getOneByEmail,
   getByUsername,
