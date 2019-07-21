@@ -23,6 +23,7 @@ router.post('/removerole', helper.isAdmin(), UserCont.removeRole)
 // router.post('/:id/:team_id/resend', UserCont.resendToken)
 
 // PUT
+router.put('/:id/update', helper.isAuthenticated, UserCont.updateId)
 router.put('/update', helper.isAuthenticated, UserCont.update)
 //DELETE
 module.exports = router;

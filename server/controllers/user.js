@@ -240,6 +240,19 @@ const update = async function (req, res) {
   }
 }
 
+const updateId = async function(req, res) {
+  let id = req.params.id
+  try {
+    let user = await User.findOneAndUpdate({ _id: id }, req.body, { new: true })
+    if (!user) {
+      return Response.failed(res, { message: "Couldn't update user." })
+    }
+    return Response.success(res, { message: "Updated profile.", user })
+  } catch (error) {
+    return Response.failed(res, { message: "Internal Server Error" }, 500)
+  }
+}
+
 const remove = async function (req, res) {
   let id = req.user._id
   try {
@@ -274,5 +287,6 @@ module.exports = {
   addRole,
   removeRole,
   update,
+  updateId,
   remove,
 }

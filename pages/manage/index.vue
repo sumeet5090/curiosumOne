@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="isAdmin">
-      <div>
+      <div class="container">
         <div class="row">
           <div class="col-12 bg-danger">
             <div class="text-center h3">
@@ -10,20 +10,20 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-sm-12 col-md-3">
+          <div class="col-sm-12 col-md-2 px-0">
             <b-list-group>
               <b-list-group-item :active="show == 'event' ? true : false" @click="showEvent" class="shadow cursor-pointer">Event</b-list-group-item>
               <b-list-group-item :active="show == 'users' ? true : false" @click="showUsers" class="shadow cursor-pointer">Users</b-list-group-item>
-              <b-list-group-item :active="show == 'team' ? true : false" @click="show = 'team'" class="shadow cursor-pointer">Team</b-list-group-item>
+              <!-- <b-list-group-item :active="show == 'team' ? true : false" @click="show = 'team'" class="shadow cursor-pointer">Team</b-list-group-item>
               <b-list-group-item :active="show == 'cars' ? true : false" @click="show = 'cars'" class="shadow cursor-pointer">Cars</b-list-group-item>
               <b-list-group-item :active="show == 'announcements' ? true : false" @click="show = 'announcements'" class="shadow cursor-pointer">Announcements</b-list-group-item>
               <b-list-group-item :active="show == 'livetimings' ? true : false" @click="show = 'livetimings'" class="shadow cursor-pointer">Live Timings</b-list-group-item>
               <b-list-group-item :active="show == 'schedule' ? true : false" @click="show = 'schedule'" class="shadow cursor-pointer">Schedule</b-list-group-item>
               <b-list-group-item :active="show == 'techupdates' ? true : false" @click="show = 'techupdates'" class="shadow cursor-pointer">Tech Updates</b-list-group-item>
-              <b-list-group-item :active="show == 'staticschedule' ? true : false" @click="show = 'staticschedule'" class="shadow cursor-pointer">Static Schedules</b-list-group-item>
+              <b-list-group-item :active="show == 'staticschedule' ? true : false" @click="show = 'staticschedule'" class="shadow cursor-pointer">Static Schedules</b-list-group-item>-->
             </b-list-group>
           </div>
-          <div class="col-sm-12 col-md-9">
+          <div class="col-sm-12 col-md-10 px-0">
             <div v-if="show == 'event'">
               <div class="table-responsive">
                 <table class="table align-items-center table-flush">
@@ -49,7 +49,7 @@
                         <router-link :to="{name: 'event-id-forum', params: { id: eve.event_short}}" class="btn btn-sm btn-curiosum" tag="a">Forum</router-link>
                       </td>
                       <td>
-                        <b-dropdown size="sm">
+                        <b-dropdown dropright size="sm">
                           <b-dropdown-item @click="() => { $router.push({name: 'manage-event-id-teams', params: {id: eve.event_short}})}">Teams</b-dropdown-item>
                         </b-dropdown>
                       </td>
@@ -82,26 +82,20 @@
               <div class="h4 text-center">Coming Soon!</div>
             </div>
             <div v-if="show == 'users'">
-              <div class="h4 text-center">Coming Soon!</div>
-              <!-- <b-btn variant="success">Add Admin / Staff</b-btn> -->
-
               <div class="text-center mt-3">
                 <div class="font-weight-bold text-uppercase">Admin / Staff Members</div>
               </div>
-              <b-table :current-page="adminUsersPage" :fields="userFields" :items="adminUsers" :per-page="5" id="admin-users-table" show-empty>
+              <b-table :current-page="adminUsersPage" :fields="userFields" :items="adminUsers" :per-page="5" id="admin-users-table" responsive show-empty>
                 <template slot="display_name" slot-scope="data">
                   <a :href="'/profile/'+data.item.username" class="mb-0 text-sm" target="_blank">{{data.item.display_name}}</a>
                 </template>
                 <template slot="email" slot-scope="data">{{data.item.email}}</template>
-                <template slot="role" slot-scope="data">
-                  <div>
-                    <span :key="j" class="py-1 px-3 bg-primary text-white text-uppercase font-weight-bold mr-2" v-for="(role, j) in data.item.role">{{role}}</span>
-                  </div>
-                </template>
                 <template slot="empty" slot-scope="data">
-                  <b-dropdown size="sm" v-if="data">
-                    <b-dropdown-item>...</b-dropdown-item>
-                  </b-dropdown>
+                  <div>
+                    <b-dropdown size="sm" v-if="data">
+                      <b-dropdown-item @click="editRolesActive(data.item)">Change roles</b-dropdown-item>
+                    </b-dropdown>
+                  </div>
                 </template>
               </b-table>
               <div class="text-center">
@@ -110,24 +104,19 @@
               <div class="text-center mt-3">
                 <div class="font-weight-bold text-uppercase">Volunteers</div>
               </div>
-              <b-table :current-page="volunteerUsersPage" :fields="userFields" :items="volunteerUsers" :per-page="5" id="volunteer-users-table" show-empty>
+              <b-table :current-page="volunteerUsersPage" :fields="userFields" :items="volunteerUsers" :per-page="5" id="volunteer-users-table" responsive show-empty>
                 <template slot="display_name" slot-scope="data">
                   <a :href="'/profile/'+data.item.username" class="mb-0 text-sm" target="_blank">{{data.item.display_name}}</a>
                 </template>
                 <template slot="email" slot-scope="data">{{data.item.email}}</template>
-                <template slot="role" slot-scope="data">
-                  <div>
-                    <span :key="j" class="py-1 px-3 bg-primary text-white text-uppercase font-weight-bold mr-2" v-for="(role, j) in data.item.role">{{role}}</span>
-                  </div>
-                </template>
                 <template slot="empty" slot-scope="data">
                   <b-dropdown size="sm" v-if="data">
-                    <b-dropdown-item>...</b-dropdown-item>
+                    <b-dropdown-item @click="editRolesActive(data.item)">Change roles</b-dropdown-item>
                   </b-dropdown>
                 </template>
               </b-table>
               <div class="text-center">
-                <b-pagination :per-page="5" :total-rows="volunteerUsersLength" align="center" aria-controls="volunteer-users-table" v-model="volunteerUsersPage"></b-pagination>
+                <b-pagination :per-page="5" :total-rows="volunteerUsersLength" align="center" aria-controls="volunteer-users-table" responsive v-model="volunteerUsersPage"></b-pagination>
               </div>
               <div class="text-center mt-3">
                 <div class="font-weight-bold text-uppercase">Participants</div>
@@ -137,14 +126,9 @@
                   <a :href="'/profile/'+data.item.username" class="mb-0 text-sm" target="_blank">{{data.item.display_name}}</a>
                 </template>
                 <template slot="email" slot-scope="data">{{data.item.email}}</template>
-                <template slot="role" slot-scope="data">
-                  <div>
-                    <span :key="j" class="py-1 px-3 bg-primary text-white text-uppercase font-weight-bold mr-2" v-for="(role, j) in data.item.role">{{role}}</span>
-                  </div>
-                </template>
                 <template slot="empty" slot-scope="data">
                   <b-dropdown size="sm" v-if="data">
-                    <b-dropdown-item>...</b-dropdown-item>
+                    <b-dropdown-item @click="editRolesActive(data.item)">Change roles</b-dropdown-item>
                   </b-dropdown>
                 </template>
               </b-table>
@@ -183,6 +167,29 @@
                   </tbody>
                 </table>
               </div>-->
+              <modal :show.sync="editRoles.modal" modal-classes="modal-dark modal-dialog-centered " modal-gradient="dark" v-if="editRoles.modal">
+                <h6 class="modal-title" id="modal-title-notification" slot="header">Edit roles</h6>
+                <b-container>
+                  <div class="text-center">Edit roles of user</div>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <b-form-group label="Roles:">
+                        <b-form-checkbox-group name="roles" v-model="editRoles.roles">
+                          <b-form-checkbox value="volunteer">Volunteer</b-form-checkbox>
+                          <br />
+                          <b-form-checkbox value="admin">Admin</b-form-checkbox>
+                          <br />
+                          <b-form-checkbox value="staff">Staff</b-form-checkbox>
+                        </b-form-checkbox-group>
+                      </b-form-group>
+                    </div>
+                  </div>
+                </b-container>
+                <template slot="footer">
+                  <base-button @click.prevent="editRolesCancel" class="mr-auto" text-color="white" type="link">Cancel</base-button>
+                  <base-button @click.prevent="editRolesSubmit" type="secondary">Confirm</base-button>
+                </template>
+              </modal>
             </div>
           </div>
         </div>
@@ -315,17 +322,18 @@ export default {
           label: "Email"
         },
         {
-          key: "role",
-          label: "Roles"
-        },
-        {
           key: "empty",
           label: " "
         }
       ],
       adminUsersPage: 1,
       volunteerUsersPage: 1,
-      participantUsersPage: 1
+      participantUsersPage: 1,
+      editRoles: {
+        modal: false,
+        user: null,
+        roles: []
+      }
     };
   },
   computed: {
@@ -418,6 +426,28 @@ export default {
           this.volunteerUsers = [];
         });
     },
+    editRolesActive(user) {
+      this.editRoles.modal = true;
+      this.editRoles.user = user;
+      this.editRoles.roles = user.role;
+    },
+    editRolesSubmit() {
+      this.editRoles.modal = false;
+      let user = this.editRoles.user;
+      let roles = this.editRoles.roles;
+      console.log(user._id);
+      this.$axios
+        .put(`/api/user/${user._id}/update`, {
+          role: roles
+        })
+        .then(({ data }) => {
+          this.$router.go(this.$route.name)
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    editRolesCancel() {},
     showEvent() {
       this.show = "event";
       if (this.events.length === 0) {

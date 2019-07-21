@@ -4,7 +4,7 @@
       <no-ssr>
         <div class="card shadow">
           <div class="card-header bg-transparent border-0">
-            <h3 class="text-center mb-0 header-font" v-if="event">{{event.name}} Cars</h3>
+            <h3 class="text-center mb-0 header-font" v-if="event">{{event.name}} Teams</h3>
           </div>
           <section class="px-5">
             <div class="row">
