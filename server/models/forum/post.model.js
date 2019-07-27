@@ -9,6 +9,10 @@ const postSchema = Schema({
     type: Number,
     ref: 'Event'
   },
+  pinned: {
+    type: Boolean,
+    default: false
+  },
   section: {
     type: SchemaTypes.ObjectId,
     ref: 'Section'

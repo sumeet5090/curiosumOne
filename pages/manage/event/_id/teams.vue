@@ -1,28 +1,32 @@
 <template>
-  <div>
+<section class="section">
+  <div class="container px-0">
+    <div class="row justify-content-center mx-0">
+      <div class="col-sm-12 col-md-12 px-0">
+        
     <div v-if="isAdmin">
       <no-ssr>
         <div class="card shadow">
           <div class="card-header bg-transparent border-0">
             <h3 class="text-center mb-0 header-font" v-if="event">{{event.name}} Teams</h3>
           </div>
-          <section class="px-5">
-            <div class="row">
-              <div class="col-8 pl-0">
+          <b-container class="px-0">
+            <div class="row mx-0 justify-content-center">
+              <div class="col-sm-12 col-md-8 pl-0">
                 <base-input addon-left-icon="fas fa-search text-success" placeholder="Search" v-model="searchText"></base-input>
               </div>
               <div class="col">
                 <b-btn @click="addTeamModal" variant="success">Add team</b-btn>
               </div>
-              <div class="col">
+              <!-- <div class="col">
                 <base-button @click.prevent="uploadModal.show = true" outline type="primary">Upload</base-button>
               </div>
               <div class="col pr-0">
                 <b-btn @click="sendDownloadRequest" variant="success">Download?</b-btn>
-              </div>
+              </div> -->
             </div>
-            <div class="table-responsive">
-              <table class="table align-items-center table-flush">
+            <div class="table-responsive-sm">
+              <table class="table">
                 <thead class>
                   <tr>
                     <th scope="col">
@@ -45,7 +49,9 @@
                         </div>
                       </div>
                     </th>
-                    <td>{{car.team.team_name}}</td>
+                    <td>
+                      <a :href="'/team/'+car.team._id" target="_blank">{{car.team.team_name}}</a>
+                    </td>
                     <td>
                       <div v-if="car.team.institution">{{car.team.institution.name}}</div>
                     </td>
@@ -73,7 +79,7 @@
                 </tbody>
               </table>
             </div>
-          </section>
+          </b-container>
         </div>
         <modal :show.sync="addTeam.modal" modal-classes="modal-dark modal-dialog-centered modal-lg" modal-gradient="dark" v-if="addTeam.modal">
           <h6 class="modal-title" id="modal-title-notification" slot="header">Add team to event</h6>
@@ -148,7 +154,10 @@
         </modal>
       </no-ssr>
     </div>
+      </div>
+    </div>
   </div>
+</section>
 </template>
 <script>
 import moment from "moment";

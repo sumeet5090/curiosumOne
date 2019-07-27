@@ -76,7 +76,8 @@ const getAll = async (req, res) => {
     let event = await Event.findOne({ $or })
     if (event) {
       posts = await Post.where({ event: event._id, deleted: false }).sort({
-        date_posted: -1
+        pinned: -1,
+        date_posted: -1,
       }).populate(['section', 'rule', 'sub_rule', 'user', {
         path: 'replies',
         populate: {

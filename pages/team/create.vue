@@ -138,8 +138,11 @@ export default {
       });
       // Add tea, to database
       // Send out team invites to each email
+      this.$router.go(this.$route.name)
     },
-    onReset() {},
+    onReset() {
+      this.$router.go(this.$route.name)
+    },
     async searchUser() {
       let email = this.user_email.trim();
       let url = `/api/user/email/${email}/`,

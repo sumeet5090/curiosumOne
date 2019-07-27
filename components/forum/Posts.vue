@@ -8,9 +8,14 @@
           <i class="fas fa-check text-success" title="Resolved" v-b-tooltip.hover.left v-if="post.status === 'resolved'"></i>
         </div>
         <div class="media-body">
-          <router-link :to="{name: 'event-id-forum-post-postId', params: {id: $route.params.id, postId: post._id}}" class="font-weight-bold" style="font-size: 1.1rem;">
-            <truncate :length="100" :text="(post.subject || '').toString()" action-class="truncated-less-sign" clamp="..." less="[hide]"></truncate>
-          </router-link>
+          <div>
+            <router-link :to="{name: 'event-id-forum-post-postId', params: {id: $route.params.id, postId: post._id}}" class="font-weight-bold" style="font-size: 1.1rem;">
+              <truncate :length="100" :text="(post.subject || '').toString()" action-class="truncated-less-sign" clamp="..." less="[hide]"></truncate>
+            </router-link>
+            <div class="float-right" v-if="isAdmin">
+              <base-button size='sm' icon="fas fa-thumbtack" @click="pinPost($route.params.id, post._id)"></base-button>
+            </div>
+          </div>
           <div class="container">
             <div class="row">
               <div class="col-md-6 px-0" v-if="post.sub_rule">
@@ -136,6 +141,16 @@ export default {
     }
   },
   methods: {
+    pinPost(event_id, post_id){
+      this.$axios.put(`/api/event/${event_id}/forum/posts/${post_id}/admin`, {
+        pinned: true
+      }).then(res => {
+        if(res.data && res.data.success){
+          console.log("Pinned");
+        }
+        this.$router.go(this.$route.name)
+      })
+    },
     formatDate(d) {
       return moment(d).fromNow();
     },

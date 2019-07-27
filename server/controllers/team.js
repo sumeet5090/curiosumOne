@@ -67,7 +67,7 @@ const toBoolean = (val) => {
 
 const getAll = async function (req, res) {
   try {
-    let teams = await Team.find();
+    let teams = await Team.find().sort({team_name: 1, category: 1}).exec();
     if (teams.length > 0) {
       return Response.success(res, { teams: teams })
     }
@@ -145,7 +145,8 @@ const create = async function (req, res) {
         await car.updateOne({ team_id: team._id })
         if (output) {
           if (body.user_emails) {
-            for (let i = 0; i < (body.user_emails).length; i++) {
+            let emails = body.user_emails
+            for (let i = 0; i < emails.length; i++) {
               let token = await new Token({
                 user_id: users[i],
                 team_id: team._id,
@@ -154,14 +155,17 @@ const create = async function (req, res) {
               if (token) {
                 let genLink = req.protocol + '://' + req.headers.host + '\/api\/team\/confirmation\/' + token.token + '\n'
                 let teamLink = req.protocol + '://' + req.headers.host + '\/team\/' + team._id;
-                let mailOptions = {
-                  from: 'Curiosum Tech Portal',
-                  to: emails[i],
-                  subject: `Team Invitiation for ${team.team_name}`,
-                  generateTextFromHTML: true,
-                  html: `<p>Hey <strong>${user.display_name},</strong></p><p>You have been invited to join the team <a href="${teamLink}" target="_blank">${team.team_name}</a></p><p>Click on the <a href="${genLink}">link</a> to join.</p>.`
+                let user = await User.findOne({email: emails[i]})
+                if(user){
+                  let mailOptions = {
+                    from: 'Curiosum Tech Portal',
+                    to: emails[i],
+                    subject: `Team Invitiation for ${team.team_name}`,
+                    generateTextFromHTML: true,
+                    html: `<p>Hey <strong>${user.display_name},</strong></p><p>You have been invited to join the team <a href="${teamLink}" target="_blank">${team.team_name}</a></p><p>Click on the <a href="${genLink}">link</a> to join.</p>.`
+                  }
+                  let success = await smtpTransport.sendMail(mailOptions)
                 }
-                let success = await smtpTransport.sendMail(mailOptions)
               }
             }
           }
@@ -532,11 +536,11 @@ const addAlumnus = async function (req, res) {
 }
 
 const removeMembers = async function (req, res) {
-  let team_id = req.params.id, user_id = req.params.user_id, user = {}, team = {}, updatedTeam, updatedUser
+  let team_id = req.params.id, user_id = req.params.user_id, user, team, updatedTeam, updatedUser
   try {
     team = await Team.findOne({ _id: team_id })
     if (team) {
-      user = await User.findOneAndUpdate({ _id: user_id }, { team: null })
+      user = await User.findOneAndUpdate({ _id: user_id }, { team: undefined }, {new: true})
       if (user) {
         // Pull role if alumni
         team.users.pull(user._id)
@@ -559,7 +563,7 @@ const removeAlumnus = async function (req, res) {
   try {
     team = await Team.findOne({ _id: team_id })
     if (team) {
-      user = await User.findOne({ _id: user_id })
+      user = await User.findOneAndUpdate({ _id: user_id }, {team: undefined}, {new: true})
       if (user) {
         if (String(team._id) == String(user.team)) {
           user.team = null

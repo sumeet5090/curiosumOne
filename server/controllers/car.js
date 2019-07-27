@@ -24,15 +24,16 @@ module.exports = {
       }
       let event = await Event.findOne({ $or: $or })
       if (event) {
-        let cars = await Car.find({ event: event._id }).sort({
-          car_number: 1,
-        }).populate({
+        let cars = await Car.find({ event: event._id }).populate({
           path: 'team',
           populate: [{
             path: 'captain'
           }, {
             path: 'users'
           }]
+        }).sort({
+          car_number: 1,
+          category: 1
         }).exec()
         if (cars) {
           if (cars.length > 0) {

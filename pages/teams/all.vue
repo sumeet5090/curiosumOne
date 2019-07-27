@@ -11,8 +11,8 @@
         <base-alert :dismissible="true" class="col-12" icon="far fa-check-circle" type="success" v-if="isAdmin && success">
           <template slot="text">{{success}}</template>
         </base-alert>
-        <base-button @click.prevent="sendDownloadRequest" outline type="success" v-if="isAdmin">Download</base-button>
-        <base-button @click.prevent="uploadModal.show = true" outline type="primary" v-if="isAdmin">Upload</base-button>
+        <!-- <base-button @click.prevent="sendDownloadRequest" outline type="success" v-if="isAdmin">Download</base-button>
+        <base-button @click.prevent="uploadModal.show = true" outline type="primary" v-if="isAdmin">Upload</base-button> -->
       </b-row>
       <b-row class="justify-content-center">
         <base-input addon-left-icon="fas fa-search text-success" class="col-sm-12 col-md-6 px-0 mx-0" placeholder="Search" type="text" v-model="filter"></base-input>
@@ -88,6 +88,8 @@ export default {
       if (typeof a[key] === "number" && typeof b[key] === "number") {
         return a[key] < b[key] ? -1 : a[key] > b[key] ? 1 : 0;
       } else if (typeof a[key] === "undefined") {
+        return 1;
+      } else if (typeof b[key] === "undefined") {
         return 1;
       } else {
         return flatten(a)
