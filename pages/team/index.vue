@@ -1,62 +1,120 @@
 <template>
-<section class="section section-">
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-10">
-        <div v-if="team">
-          <error-page :message="redirect_show_link?'If not redirected automatically, <a href=\'/team/'+team+'\'>Click here</a>':''" color="info" heading="Redirecting . . ." icon="fas fa-exclamation-circle" />
+  <section class="section custom-gradient">
+    <no-ssr>
+      <div class="container">
+        {{getTeam()}}
+        <div class="row justify-content-center">
+          <card class="col-md-4 px-0 curiosum-gradient">
+            <b-form @reset.prevent="onReset" @submit.prevent="onSubmit" class="form-join-team">
+              <b-form-row class="mb-3">
+                <div class="col-12 text-center">
+                  <i class="fas fa-users text-dark" style="font-size: 85px;"></i>
+                </div>
+              </b-form-row>
+              <b-form-row class="mb-3" style="min-height: 64px;">
+                <div class="col-12 text-center">
+                  <span>Create a new team and invite team members.</span>
+                </div>
+              </b-form-row>
+              <b-form-group class="mb-3" id="form-join" label-for="form-join--input">
+                <base-button class="col-12" id="form-join--input" type="curiosum">Create new team</base-button>
+              </b-form-group>
+            </b-form>
+          </card>
+          <card class="col-md-4 px-0 curiosum-gradient">
+            <b-form @reset.prevent="onReset" @submit.prevent="onSubmit" class="form-join-team">
+              <b-form-row class="mb-3">
+                <div class="col-12 text-center">
+                  <i class="fas fa-user-plus text-dark" style="font-size: 85px;"></i>
+                </div>
+              </b-form-row>
+              <b-form-row class="mb-3" style="min-height: 64px;">
+                <div class="col-12 text-center">
+                  <span>Enter an invite link and join a team.</span>
+                </div>
+              </b-form-row>
+              <b-form-group class="mb-3" id="form-join" label-for="form-join--input">
+                <base-button @click="modalShow = true" class="col-12" id="form-join--input" type="curiosum-dark">Join</base-button>
+              </b-form-group>
+            </b-form>
+          </card>
+          <b-modal centered hide-footer title="Join a team" v-model="modalShow">
+            <div class="container">
+              <div class="row mx-0 justify-content-center">
+                <div class="col-md-12">
+                  <b-form-group class="mb-3" description="Paste an invite link here." id="form-invite" label-for="form-invite--input">
+                    <base-input addon-left-icon id="form-invite--input" required type="text" v-model="inviteLink"></base-input>
+                  </b-form-group>
+                  <b-form-group class="mb-3" id="form-join" label-for="form-join--input">
+                    <base-button class="col-12" id="form-join--input" type="curiosum">Join</base-button>
+                  </b-form-group>
+                </div>
+              </div>
+            </div>
+          </b-modal>
         </div>
-        <error-page color="info" heading="NOT IN A TEAM" icon="fas fa-exclamation-circle" message="You need to be in a team first <a href='/team/create'> Click here</a>" v-else />
       </div>
-    </div>
-  </div>
-</section>
+    </no-ssr>
+  </section>
 </template>
 
 <script>
-import {
-  mapGetters,
-  mapActions
-} from "vuex";
-import {
-  setTimeout
-} from "timers";
+import { mapGetters } from 'vuex';
 export default {
   data() {
     return {
-      redirect_show_link: false
+      inviteLink: "",
+      modalShow: false
     };
   },
   computed: {
-    ...mapGetters(["currentUser"]),
-    team() {
-      if (this.currentUser != null) {
-        if (this.currentUser.team) {
-          return this.currentUser.team;
-        }
+    ...mapGetters(['currentUser', 'isAuthenticated']),
+    isJoin() {
+      return this.inviteLink !== "";
+    },
+  },
+  methods: { 
+    async getTeam(){
+      let user = this.currentUser
+      console.log(user);
+      let team = await this.$axios.get(`/api/team/${user.team}`)
+      if(team) {
+        console.log(team);
       }
-      return null;
+      return user.team
     }
-  },
-  methods: {
-    ...mapActions(["getReq"]),
-    redirect() {
-      console.log('/team/' + this.team);
-      this.$router.push('/team/' + this.team)
-    }
-  },
-  mounted() {
+   },
+  mounted(){
     this.$nextTick(() => {
-      if(this.team){
-        setTimeout(() => {
-        this.redirect();
-        this.redirect_show_link = true;
-      }, 1200);
+      if(!this.isAuthenticated) {
+        window.location.href = "/login"
       }
-    });
-  }
+    })
+  },
 };
 </script>
 
 <style lang="scss">
+.input-group {
+  input {
+    &,
+    &:focus {
+      &::placeholder {
+        color: #4b2722aa;
+      }
+      background: none;
+      border: 2px solid #4b2722;
+      color: #4b2722;
+    }
+  }
+}
+.b-form-group {
+  .form-group.input-group {
+    margin-bottom: 0;
+  }
+  .form-text {
+    color: #4b2722 !important;
+  }
+  margin-bottom: 1rem;
+}
 </style>
