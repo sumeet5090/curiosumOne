@@ -56,6 +56,9 @@
                   <router-link :to="{name: 'team-id', params: {id: userTeam._id}}">
                     <span class="display-3">{{userTeam.team_name}}</span>
                   </router-link>
+                  <router-link :to="{name: 'team-id-settings', params: {id: userTeam._id}}" class="btn btn-sm btn-link cursor-pointer mb-3" tag="a" v-if="accessControl('adminOrTeamCaptain')">
+                    <i class="fas fa-pen fa-2x"></i>
+                  </router-link>
                 </div>
               </div>
               <div class="mt-0 mt-md-2 pt-lg-2">
@@ -80,12 +83,17 @@
                 <b-form-row class="b-form-group-curiosum mb-0">
                   <base-input :value="userTeam.invite_link" @click.native="click2copyLink" class="col-md-9" id="invite-link"></base-input>
                   <div class="col-md-3">
-                    <base-button @click="genInviteLink" type="success">Generate New</base-button>
+                    <base-button @click="genInviteLink" type="success">Generate Link</base-button>
                   </div>
                 </b-form-row>
                 <div class="text-danger">
-                  <span>Invite link expires </span>
-                  <span>{{expiresIn(userTeam.invite_link_expiry)}}</span>
+                  <div v-if="expiresIn(userTeam.invite_link_expiry) !== 'a few seconds ago'">
+                    <span>Invite link expires in</span>
+                    <span>{{expiresIn(userTeam.invite_link_expiry)}}</span>
+                  </div>
+                  <div v-else>
+                    <span>Generate a link which can be used to join this team</span>
+                  </div>
                 </div>
               </div>
               <div class="my-1 py-2 border-top px-3" v-if="userTeam.events && userTeam.events.length > 0">
@@ -246,10 +254,10 @@ export default {
       }
     },
     expiresIn(time) {
-      let nowD = moment()
-      let timeD = moment(time)
-      let diff = timeD.diff(nowD, 'D')
-      return moment.duration(diff).humanize({precision: 3})
+      let nowD = moment();
+      let timeD = moment(time);
+      let diff = timeD.diff(nowD, "D");
+      return moment.duration(diff).humanize({ precision: 3 });
     },
     joinTeam() {
       this.joinTeamModalError = "";

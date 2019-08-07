@@ -5,13 +5,11 @@ const TeamController = require('./../../controllers/team')
 const helper = require('./../../auth/helper')
 // GET
 router.get('/', TeamController.getAll)
+router.get('/csv', helper.allowStaff, TeamController.getTeamsCSV)
 router.get('/:id', TeamController.getOne)
 router.get('/:id/user', TeamController.getTeamExpandUser)
 router.get('/:id/mini', TeamController.getOneMini)
-router.get('/teams/csv', helper.allowStaff, TeamController.getTeamsCSV)
-router.get('/s/d', helper.allowStaff, (req, res) => {
-  return res.send({ 'x': 'XDDD', user: req.user.role })
-})
+router.get('/available/:name', TeamController.isAvailableByName)
 router.get('/confirmation/:token', TeamController.confirmToken, (req, res) => {
   return res.redirect(url.format({
     pathname: '/info',
@@ -21,7 +19,7 @@ router.get('/confirmation/:token', TeamController.confirmToken, (req, res) => {
 router.get('/:id/generate', helper.isCaptainOrAdmin(), TeamController.generateInviteLink)
 router.get('/verify/:nnid', helper.isAuthenticated, TeamController.verifyInviteLink)
 // POST
-router.post('/create', TeamController.create)
+router.post('/create', helper.isAuthenticated, TeamController.create)
 router.post('/:id/add/members', helper.isCaptainOrAdmin(), TeamController.addMembers)
 router.post('/:id/add/alumnus', helper.isCaptainOrAdmin(), TeamController.addAlumnus)
 router.post('/:id/remove/member/:user_id', helper.isCaptainOrAdmin(), TeamController.removeMembers)

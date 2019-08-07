@@ -1,77 +1,72 @@
 <template>
-<section class="section custom-gradient">
-  <no-ssr>
-    <div v-if="showPage">
-      <error-page icon="fas fa-exclamation-triangle" color="danger" heading="Error" :size="5" message="Already in team" v-if="!!currentUser.team" />
-      <div v-else class="container">
-        <div class="row justify-content-center">
-          <card class="col-sm-10 col-md-8 col-lg-6" v-if="!currentUser.team">
-            <b-form @submit.prevent="onSubmit" @reset.prevent="onReset">
-              <b-form-group id="form-teamname" label="Team name:" label-for="form-teamname--input" description="Choose an unique name which describes your team.">
-                <base-input addon-left-icon id="form-teamname--input" type="text" v-model="teamForm.team_name" required placeholder="Enter team name"></base-input>
-              </b-form-group>
-              <b-form-group id="form-category" label="Category:" label-for="form-category--input" description="Select a category">
-                <b-form-select required v-model="teamForm.category" :options="options" class="mb-3"></b-form-select>
-              </b-form-group>
-              <b-form-group id="form-institutionname" label="Institution Details:" label-for="form-institutionname--input" description="Enter your institution details.">
-                <base-input id="form-institutionname--input" type="text" v-model="teamForm.institution.name" required placeholder="Enter institution name."></base-input>
-                <base-input id="form-institutionname--input" type="text" v-model="teamForm.institution.address" required placeholder="Enter institution address."></base-input>
-                <base-input id="form-institutionname--input" type="text" v-model="teamForm.institution.short_name" required placeholder="Enter institution short name."></base-input>
-              </b-form-group>
-              <b-form-group id="form-phonenumber" label="Location:" label-for="form-location--input" description="Where are you from?">
-                <base-input id="form-location--input" type="text" v-model="teamForm.location" required placeholder="State"></base-input>
-                <base-input id="form-country--input" type="text" v-model="teamForm.country" required placeholder="Country"></base-input>
-              </b-form-group>
-              <b-form-group id="form-picture-url" label="Team logo:" label-for="form-picture-url--input" description="Link to the team profile picture.">
-                <base-input id="form-picture-url--input" type="link" v-model="teamForm.logo_url" required placeholder="https://example.website.com/images/demo.jpg"></base-input>
-              </b-form-group>
-              <b-form-group id="form-social-links" label="Social Media" label-for="form-social-links--input" description="Links to your teams social media">
-                <base-input addon-left-icon="fa fa-link text-dark" placeholder="https://examplewebsite.com" v-model="teamForm.website_url"></base-input>
-                <base-input addon-left-icon="fab fa-facebook-f" placeholder="https://facebook.com/example" v-model="teamForm.social.facebook"></base-input>
-                <base-input addon-left-icon="fab fa-instagram text-danger" placeholder="https://instagram.com/example" v-model="teamForm.social.instagram"></base-input>
-                <base-input addon-left-icon="fab fa-twitter" placeholder="https://twitter.com/example" v-model="teamForm.social.twitter"></base-input>
-              </b-form-group>
-              <b-form-group id="form-bio" label="Bio:" label-for="form-bio--input" description="Talk about yourself.">
-                <b-form-textarea id="form-bio--input" type="text" v-model="teamForm.bio" required placeholder="Bio" :rows="4" :max-rows="6" :min-rows="3"></b-form-textarea>
-              </b-form-group>
-              <b-form-group id="form-members" label="Members:" label-for="form-members--input" description="Search email and press enter.">
-                <b-row class="justify-content-center align-items-center">
-                  <b-col md="10" sm="12">
-                    <b-input type="text" v-model="user_email"></b-input>
-                  </b-col>
-                  <b-col md="2" sm="12" class="text-center">
-                    <b-button size class="my-1" variant="success" @click="searchUser">
-                      <i class="fa fa-search"></i>
-                    </b-button>
-                  </b-col>
-                </b-row>
-                <card no-body>
-                  <b-row class="justify-content-start p-3">
-                    <b-col md="4" sm="6" lg="4" v-for="user in users" :key="user._id">
-                      <badge type="secondary">{{user.display_name}}</badge>
+  <section class="section custom-gradient">
+    <no-ssr>
+      <div v-if="showPage">
+        <error-page :size="5" color="danger" heading="Error" icon="fas fa-exclamation-triangle" message="Already in team" v-if="!!currentUser.team" />
+        <div class="container" v-else>
+          <div class="row justify-content-center">
+            <card class="col-sm-10 col-md-8 col-lg-6" v-if="!currentUser.team">
+              <b-form @reset.prevent="onReset" @submit.prevent="onSubmit">
+                <b-form-group description="Choose an unique team name." id="form-teamname" label="Team name:" label-for="form-teamname--input">
+                  <base-input :addon-left-icon="availabilityStatus" id="form-teamname--input" placeholder="Enter team name" @keydown="_clearTimeout" @keyup="_setTimeout" required type="text" v-model="teamForm.team_name"></base-input>
+                </b-form-group>
+                <b-form-group description="Select a category" id="form-category" label="Category:" label-for="form-category--input">
+                  <b-form-select :options="options" class="mb-3" required v-model="teamForm.category"></b-form-select>
+                </b-form-group>
+                <b-form-group description="Enter your institution details." label="Institution Details:">
+                  <base-input :addon-left-icon="validateIcon(teamForm.institution.name)" placeholder="Enter institution name." required type="text" v-model="teamForm.institution.name"></base-input>
+                  <base-input :addon-left-icon="validateIcon(teamForm.institution.address)" placeholder="Enter institution address." required type="text" v-model="teamForm.institution.address"></base-input>
+                  <base-input :addon-left-icon="validateIcon(teamForm.institution.short_name)" placeholder="Enter institution short name." required type="text" v-model="teamForm.institution.short_name"></base-input>
+                </b-form-group>
+                <b-form-group description="Where are you from?" id="form-phonenumber" label="Location:" label-for="form-location--input">
+                  <base-input id="form-location--input" :addon-left-icon="validateIcon(teamForm.location)" placeholder="State" required type="text" v-model="teamForm.location"></base-input>
+                  <base-input id="form-country--input" :addon-left-icon="validateIcon(teamForm.country)" placeholder="Country" required type="text" v-model="teamForm.country"></base-input>
+                </b-form-group>
+                <b-form-group description="Link to the team profile picture." id="form-picture-url" label="Team logo:" label-for="form-picture-url--input">
+                  <base-input id="form-picture-url--input" placeholder="https://example.website.com/images/demo.jpg" type="link" v-model="teamForm.logo_url"></base-input>
+                </b-form-group>
+                <b-form-group description="Links to your teams social media" id="form-social-links" label="Social Media" label-for="form-social-links--input">
+                  <base-input addon-left-icon="fa fa-link text-dark" placeholder="https://examplewebsite.com" v-model="teamForm.website_url"></base-input>
+                  <base-input addon-left-icon="fab fa-facebook-f" placeholder="https://facebook.com/example" v-model="teamForm.social.facebook"></base-input>
+                  <base-input addon-left-icon="fab fa-instagram text-danger" placeholder="https://instagram.com/example" v-model="teamForm.social.instagram"></base-input>
+                  <base-input addon-left-icon="fab fa-twitter" placeholder="https://twitter.com/example" v-model="teamForm.social.twitter"></base-input>
+                </b-form-group>
+                <b-form-group description="Talk about your team." id="form-bio" label="Bio:" label-for="form-bio--input">
+                  <b-form-textarea :max-rows="6" :min-rows="3" :rows="4" id="form-bio--input" placeholder="Bio" required type="text" v-model="teamForm.bio"></b-form-textarea>
+                </b-form-group>
+                <b-form-group description="Search email and press enter." id="form-members" label="Members:" label-for="form-members--input">
+                  <b-row class="justify-content-center align-items-center">
+                    <b-col md="10" sm="12">
+                      <b-input type="text" v-model="user_email"></b-input>
+                    </b-col>
+                    <b-col class="text-center" md="2" sm="12">
+                      <b-button @click="searchUser" class="my-1" size variant="success">
+                        <i class="fa fa-search"></i>
+                      </b-button>
                     </b-col>
                   </b-row>
-                </card>
-              </b-form-group>
-              <b-button type="submit" variant="primary">Create</b-button>
-              <b-button type="reset" variant="danger">Reset</b-button>
-            </b-form>
-          </card>
+                  <card no-body>
+                    <b-row class="justify-content-start p-3">
+                      <b-col :key="user._id" lg="4" md="4" sm="6" v-for="user in users">
+                        <badge type="secondary">{{user.display_name}}</badge>
+                      </b-col>
+                    </b-row>
+                  </card>
+                </b-form-group>
+                <b-button type="submit" variant="primary">Create</b-button>
+                <b-button type="reset" variant="danger">Reset</b-button>
+              </b-form>
+            </card>
+          </div>
         </div>
       </div>
-    </div>
-    <div v-else>
-      
-    </div>
-  </no-ssr>
-</section>
+      <div v-else></div>
+    </no-ssr>
+  </section>
 </template>
 
 <script>
-import {
-  mapActions,
-  mapGetters
-} from "vuex";
+import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -80,7 +75,8 @@ export default {
       user: "",
       users: [],
       user_email: "",
-      options: [{
+      options: [
+        {
           value: "combustion",
           text: "Combustion"
         },
@@ -114,13 +110,56 @@ export default {
         },
         website_url: null
       },
-      user_ids: []
+      user_ids: [],
+      checkAvail: {
+        checking: false,
+        checked: false,
+        available: false,
+        team_name: "",
+        empty: true
+      }
     };
   },
   methods: {
     ...mapActions(["getReq", "postReq"]),
-    onSubmit() {
-      this.postReq({
+    validateIcon(v){
+      return v ? 'fas fa-check text-success': 'fas fa-times text-danger'
+    },
+    searchTeam() {
+      let teamName = (this.checkAvail.username = this.teamForm.team_name);
+      this.checkAvail.checking = true;
+      this.checkAvail.checked = false;
+      if(teamName){
+        this.$axios.get(`/api/team/available/${teamName}`).then(res => {
+          if (res.data) {
+            this.checkAvail.checking = false;
+            this.checkAvail.empty = false
+            this.checkAvail.checked = true;
+            if (res.data.success) {
+              this.checkAvail.available = true;
+              this.disableSubmit = false;
+            } else {
+              this.checkAvail.available = false;
+              this.disableSubmit = true;
+            }
+          }
+        }).catch(err => console.log);
+      } else {
+        this.checkAvail.checking = false
+        this.checkAvail.checked = false
+        this.checkAvail.available = false
+        this.checkAvail.empty = true
+      }
+    },
+    _setTimeout() {
+      this.timer = setTimeout(this.searchTeam, 1000);
+    },
+    _clearTimeout() {
+      clearTimeout(this.timer);
+    },
+    async onSubmit() {
+      if(this.checkAvail.available){
+        await this.postReq({
         url: "/api/team/create",
         body: {
           category: this.teamForm.category,
@@ -136,37 +175,30 @@ export default {
           logo_url: this.logo_url
         }
       });
-      // Add tea, to database
-      // Send out team invites to each email
-      this.$router.go(this.$route.name)
+      }
+      this.$router.replace({ name: "team" }, (_) => {
+        window.location.href = window.location.href 
+      });
     },
     onReset() {
-      this.$router.go(this.$route.name)
+      this.$router.go(this.$route.name);
     },
     async searchUser() {
       let email = this.user_email.trim();
       let url = `/api/user/email/${email}/`,
         res,
         unique = true;
-      this.users.forEach(user => {
-        if (user.email == email) {
-          unique = false;
-        }
-      });
-      if (unique) {
-        res = await this.getReq({
-          url
-        });
-        if (res.success == true) {
-          if (typeof res.user.team == "undefined") {
-            this.users.push(res.user);
-            this.teamForm.user_emails.push(res.user.email);
-            this.user_ids.push(res.user._id);
+      let found = this.users.findIndex(user => user.email === email)
+      if(found < 0){
+        let { data } = await this.$axios.get(url)
+        if (data.success == true) {
+          if (!data.user.team) {
+            this.users.push(data.user);
+            this.teamForm.user_emails.push(data.user.email);
+            this.user_ids.push(data.user._id);
           } else {
-            // Flash error (User already in a team)
           }
         } else {
-          // Flash error user not found bhpndrsingh306@gmail.com
         }
       }
       this.user_email = "";
@@ -176,17 +208,29 @@ export default {
     ...mapGetters(["currentUser"]),
     showPage() {
       return !!this.currentUser ? true : false;
+    },
+    availabilityStatus(){
+      if(this.checkAvail.empty){
+        return 'fas fa-times text-danger'
+      } 
+      if(this.checkAvail.checked && this.checkAvail.available){
+        return 'fas fa-check text-success'
+      }
+      if(this.checkAvail.checked && !this.checkAvail.available){
+        return 'fas fa-times text-danger'
+      }
+      return 'fas fa-spinner spin-360'
     }
   },
   beforeMount() {
-    if(this.currentUser){
-      if(!this.currentUser.team){
+    if (this.currentUser) {
+      if (!this.currentUser.team) {
         console.log("me has no team");
       } else {
-        this.$router.replace({name: "team"})
+        this.$router.replace({ name: "team" });
       }
     } else {
-      window.location.href = "/login"
+      window.location.href = "/login";
     }
   },
   watch: {}
@@ -194,4 +238,18 @@ export default {
 </script>
 
 <style lang="scss">
+.spin-360 {
+  animation: spin 1s infinite linear;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg)
+  }
+  50% {
+    transform: rotate(180deg)
+  }
+  100% {
+    transform: rotate(360deg)
+  }
+}
 </style>

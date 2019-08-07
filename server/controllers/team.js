@@ -85,6 +85,19 @@ const getAll = async function (req, res) {
   }
 }
 
+const isAvailableByName = async function (req, res) {
+  try {
+    let team = await Team.findOne({ team_name: req.params.name })
+    if (!team) {
+      return Response.success(res, { message: "Team name available" })
+    }
+    return Response.failed(res, { message: "Name already taken."})
+  } catch (error) {
+    console.log(error);
+    return Response.failed(res, { message: "Internal server error" }, 500)
+  }
+}
+
 const getOneByName = async function (req, res) {
   try {
     let team = await Team.findOne({ team_name: req.params.name })
@@ -891,6 +904,7 @@ module.exports = {
   getOne,
   getOneByName,
   getTeamsCSV,
+  isAvailableByName,
   create,
   generateInviteLink,
   verifyInviteLink,

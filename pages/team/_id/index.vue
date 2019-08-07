@@ -76,18 +76,20 @@
                 </div>
               </div>
             </div>
-              <div class="mt-md-2 pt-lg-2 text-center" v-if="accessControl('adminOrTeamCaptain')">
-                <b-form-row class="b-form-group-curiosum mb-0">
-                  <base-input :value="team.invite_link" @click.native="click2copyLink" class="col-md-9" id="invite-link"></base-input>
-                  <div class="col-md-3">
-                    <base-button @click="genInviteLink" type="success">Generate New</base-button>
-                  </div>
-                </b-form-row>
-                <div class="text-danger">
-                  <span>Invite link expires </span>
+            <div class="mt-md-2 pt-lg-2 text-center" v-if="accessControl('adminOrTeamCaptain')">
+              <b-form-row class="b-form-group-curiosum mb-0">
+                <base-input :value="team.invite_link" @click.native="click2copyLink" class="col-md-9" id="invite-link"></base-input>
+                <div class="col-md-3">
+                  <base-button @click="genInviteLink" type="success">Generate Link</base-button>
+                </div>
+              </b-form-row>
+              <div class="text-danger">
+                <div v-if="expiresIn(team.invite_link_expiry) !== 'a few seconds'">
+                  <span>Invite link expires in</span>
                   <span>{{expiresIn(team.invite_link_expiry)}}</span>
                 </div>
               </div>
+            </div>
             <div class="my-1 py-2 border-top" v-if="team.events && team.events.length > 0">
               <b-row class="justify-content-center">
                 <h4 class="font-weight-bold text-dark">Events</h4>
@@ -101,7 +103,7 @@
               </b-row>
             </div>
             <div class="my-1 px-3 py-2 border-top" v-if="!!(team.users && team.users.length > 0)">
-              <div class="">
+              <div class>
                 <router-link :to="{name: 'team-id-members', params: team._id}" class="font-weight-bold text-dark cursor-pointer" tag="div">Members</router-link>
               </div>
               <b-row class="justify-content-start">
@@ -256,11 +258,27 @@ export default {
         }
       }
     },
+
+    genInviteLink() {
+      if (this.team) {
+        this.$axios
+          .get(`/api/team/${this.team._id}/generate`)
+          .then(res => {
+            if (res.data && res.data.success) {
+              console.log("Success");
+              this.$router.go(this.$route.name);
+            } else {
+              this.$router.go(this.$route.name);
+            }
+          })
+          .catch(err => console.log);
+      }
+    },
     expiresIn(time) {
-      let nowD = moment()
-      let timeD = moment(time)
-      let diff = timeD.diff(nowD, 'D')
-      return moment.duration(diff).humanize()
+      let nowD = moment();
+      let timeD = moment(time);
+      let diff = timeD.diff(nowD, "D");
+      return moment.duration(diff).humanize();
     },
     accessControl(perm) {
       switch (perm) {
