@@ -175,7 +175,7 @@
                   </div>
                 </b-form-group>
                 <b-form-group id="form-bio" label="Bio: " label-for="form-bio--input">
-                  <b-form-textarea :max-rows="4" :rows="2" id="form-bio--input" no-resize placeholder="Enter bio" required type="text" v-model="team.bio"></b-form-textarea>
+                  <b-form-textarea max-rows="4" rows="3" id="form-bio--input" no-resize placeholder="Enter bio" required type="text" v-model="team.bio"></b-form-textarea>
                 </b-form-group>
                 <div class="row">
                   <div class="col-sm-12 col-lg-6">

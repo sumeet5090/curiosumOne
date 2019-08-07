@@ -58,18 +58,6 @@
                   </router-link>
                 </div>
               </div>
-              <div class="mt-md-2 pt-lg-2 text-center">
-                <b-form-row class="b-form-group-curiosum">
-                  <base-input :value="userTeam.invite_link" @click.native="click2copyLink" class="col-md-9" id="invite-link"></base-input>
-                  <div class="col-md-3">
-                    <base-button @click="genInviteLink" type="success">Generate New</base-button>
-                  </div>
-                </b-form-row>
-                <div class="text-danger">
-                  <span>Invite link expires on: </span>
-                  <span>{{expiresIn(userTeam.invite_link_expiry)}}</span>
-                </div>
-              </div>
               <div class="mt-0 mt-md-2 pt-lg-2">
                 <div class="row mx-0 justify-content-center justify-content-md-between">
                   <div class="card col-md-4 mt-1">
@@ -86,6 +74,18 @@
                       <p class="small">{{userTeam.bio}}</p>
                     </div>
                   </div>
+                </div>
+              </div>
+              <div class="mt-md-2 pt-lg-2 text-center" v-if="accessControl('adminOrTeamCaptain')">
+                <b-form-row class="b-form-group-curiosum mb-0">
+                  <base-input :value="userTeam.invite_link" @click.native="click2copyLink" class="col-md-9" id="invite-link"></base-input>
+                  <div class="col-md-3">
+                    <base-button @click="genInviteLink" type="success">Generate New</base-button>
+                  </div>
+                </b-form-row>
+                <div class="text-danger">
+                  <span>Invite link expires </span>
+                  <span>{{expiresIn(userTeam.invite_link_expiry)}}</span>
                 </div>
               </div>
               <div class="my-1 py-2 border-top px-3" v-if="userTeam.events && userTeam.events.length > 0">
@@ -141,7 +141,7 @@
         <div class="container">
           <div class="row justify-content-center">
             <card class="col-md-4 px-0 mx-1 curiosum-gradient">
-              <b-form @reset.prevent="onReset" @submit.prevent="onSubmit" class="form-create-team">
+              <b-form @reset.prevent @submit.prevent class="form-create-team">
                 <b-form-row class="mb-3">
                   <div class="col-12 text-center">
                     <i class="fas fa-users text-dark" style="font-size: 85px;"></i>
@@ -153,12 +153,12 @@
                   </div>
                 </b-form-row>
                 <b-form-group class="mb-3 b-form-group-curiosum" id="form-create" label-for="form-create--input">
-                  <base-button class="col-12" id="form-create--input" type="curiosum">Create new team</base-button>
+                  <base-button @click="$router.push('/team/create')" class="col-12" id="form-create--input" type="curiosum">Create new team</base-button>
                 </b-form-group>
               </b-form>
             </card>
             <card class="col-md-4 px-0 mx-1 curiosum-gradient">
-              <b-form @reset.prevent="onReset" @submit.prevent="onSubmit" class="form-join-team">
+              <b-form @reset.prevent @submit.prevent class="form-join-team">
                 <b-form-row class="mb-3">
                   <div class="col-12 text-center">
                     <i class="fas fa-user-plus text-dark" style="font-size: 85px;"></i>
@@ -198,7 +198,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import moment, { months } from 'moment';
+import moment, { months } from "moment";
 export default {
   data() {
     return {
@@ -207,7 +207,7 @@ export default {
       userTeam: null,
       joinTeamModalError: "",
       alertMsg: "",
-      showAlert: false,
+      showAlert: false
     };
   },
   computed: {
@@ -245,8 +245,11 @@ export default {
           .catch(err => console.log);
       }
     },
-    expiresIn(time){
-      return moment.utc(time).format('HH:mm:ss DD/MM/YYYY')
+    expiresIn(time) {
+      let nowD = moment()
+      let timeD = moment(time)
+      let diff = timeD.diff(nowD, 'D')
+      return moment.duration(diff).humanize({precision: 3})
     },
     joinTeam() {
       this.joinTeamModalError = "";

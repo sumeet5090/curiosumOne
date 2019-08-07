@@ -2,8 +2,8 @@
 <section class="section custom-gradient">
   <no-ssr>
     <div v-if="showPage">
-      <error-page icon="fas fa-exclamation-triangle" color="danger" heading="Error" size="5" message="Already in team" v-if="!!currentUser.team" />
-      <div class="container">
+      <error-page icon="fas fa-exclamation-triangle" color="danger" heading="Error" :size="5" message="Already in team" v-if="!!currentUser.team" />
+      <div v-else class="container">
         <div class="row justify-content-center">
           <card class="col-sm-10 col-md-8 col-lg-6" v-if="!currentUser.team">
             <b-form @submit.prevent="onSubmit" @reset.prevent="onReset">
@@ -178,7 +178,17 @@ export default {
       return !!this.currentUser ? true : false;
     }
   },
-  mounted() {},
+  beforeMount() {
+    if(this.currentUser){
+      if(!this.currentUser.team){
+        console.log("me has no team");
+      } else {
+        this.$router.replace({name: "team"})
+      }
+    } else {
+      window.location.href = "/login"
+    }
+  },
   watch: {}
 };
 </script>
