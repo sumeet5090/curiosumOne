@@ -58,6 +58,9 @@ let TeamSchema = Schema({
     type: String,
     default: ""
   },
+  invite_id: String,
+  invite_link: String,
+  invite_link_expiry: Date,
   old_events: [{
     name: "",
     link: String,

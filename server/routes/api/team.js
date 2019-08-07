@@ -18,6 +18,8 @@ router.get('/confirmation/:token', TeamController.confirmToken, (req, res) => {
     query: res.locals
   }))
 })
+router.get('/:id/generate', helper.isCaptainOrAdmin(), TeamController.generateInviteLink)
+router.get('/verify/:nnid', helper.isAuthenticated, TeamController.verifyInviteLink)
 // POST
 router.post('/create', TeamController.create)
 router.post('/:id/add/members', helper.isCaptainOrAdmin(), TeamController.addMembers)

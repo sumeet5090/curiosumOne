@@ -1,102 +1,262 @@
 <template>
-  <section class="section custom-gradient">
-    <no-ssr>
-      <div class="container">
-        {{getTeam()}}
-        <div class="row justify-content-center">
-          <card class="col-md-4 px-0 curiosum-gradient">
-            <b-form @reset.prevent="onReset" @submit.prevent="onSubmit" class="form-join-team">
-              <b-form-row class="mb-3">
-                <div class="col-12 text-center">
-                  <i class="fas fa-users text-dark" style="font-size: 85px;"></i>
+  <div>
+    <div class="profile-page" v-if="userTeam">
+      <section class="section my-0">
+        <div class="container">
+          <card class="card-profile mt-0" no-body shadow>
+            <div class="px-4 text-dark">
+              <div class="row justify-content-center">
+                <div class="col-lg-3 order-lg-2">
+                  <div class="card-profile-image">
+                    <a class="profile-pic" href>
+                      <img alt="Team Logo" class="rounded-circle" v-if="userTeam.logo" v-lazy="userTeam.logo" />
+                      <img alt="Team Logo" src="@/assets/images/font-awesome/users-solid.svg" v-else />
+                    </a>
+                  </div>
                 </div>
-              </b-form-row>
-              <b-form-row class="mb-3" style="min-height: 64px;">
-                <div class="col-12 text-center">
-                  <span>Create a new team and invite team members.</span>
+                <div class="col-lg-4 order-3 order-lg-1">
+                  <div class="card-profile-stats d-flex justify-content-center">
+                    <div>
+                      <span class="heading" v-if="userTeam.events">{{userTeam.events.length}}</span>
+                      <span class="heading" v-else>0</span>
+                      <span class="description" v-if="!!userTeam.events">Event{{userTeam.events.length == 1? '' : 's'}}</span>
+                      <span class="description" v-else>Events</span>
+                    </div>
+                    <div>
+                      <span class="heading" v-if="userTeam.users">{{userTeam.users.length }}</span>
+                      <span class="heading" v-else>0</span>
+                      <span class="description" v-if="userTeam.users && userTeam.users.length === 1">Member</span>
+                      <span class="description" v-else>Members</span>
+                    </div>
+                  </div>
                 </div>
-              </b-form-row>
-              <b-form-group class="mb-3" id="form-join" label-for="form-join--input">
-                <base-button class="col-12" id="form-join--input" type="curiosum">Create new team</base-button>
-              </b-form-group>
-            </b-form>
-          </card>
-          <card class="col-md-4 px-0 curiosum-gradient">
-            <b-form @reset.prevent="onReset" @submit.prevent="onSubmit" class="form-join-team">
-              <b-form-row class="mb-3">
-                <div class="col-12 text-center">
-                  <i class="fas fa-user-plus text-dark" style="font-size: 85px;"></i>
-                </div>
-              </b-form-row>
-              <b-form-row class="mb-3" style="min-height: 64px;">
-                <div class="col-12 text-center">
-                  <span>Enter an invite link and join a team.</span>
-                </div>
-              </b-form-row>
-              <b-form-group class="mb-3" id="form-join" label-for="form-join--input">
-                <base-button @click="modalShow = true" class="col-12" id="form-join--input" type="curiosum-dark">Join</base-button>
-              </b-form-group>
-            </b-form>
-          </card>
-          <b-modal centered hide-footer title="Join a team" v-model="modalShow">
-            <div class="container">
-              <div class="row mx-0 justify-content-center">
-                <div class="col-md-12">
-                  <b-form-group class="mb-3" description="Paste an invite link here." id="form-invite" label-for="form-invite--input">
-                    <base-input addon-left-icon id="form-invite--input" required type="text" v-model="inviteLink"></base-input>
-                  </b-form-group>
-                  <b-form-group class="mb-3" id="form-join" label-for="form-join--input">
-                    <base-button class="col-12" id="form-join--input" type="curiosum">Join</base-button>
-                  </b-form-group>
+                <div class="col-lg-4 order-lg-3 text-lg-right align-self-lg-center">
+                  <div class="card-profile-actions py-2 mt-lg-1">
+                    <span class="mr-1 text-center">
+                      <a :href="userTeam.website_url" rel="noreferrer" target="_blank" v-if="userTeam.website_url">
+                        <icon color="dark" name="fa fa-link" size="md"></icon>
+                      </a>
+                      <a :href="userTeam.social.facebook" rel="noreferrer" target="_blank" v-if="userTeam.social.facebook">
+                        <icon name="fab fa-facebook-f" size="md" style="color: #3B5999"></icon>
+                      </a>
+                    </span>
+                    <span class="float-right text-center">
+                      <a :href="userTeam.social.twitter" rel="noreferrer" target="_blank" v-if="userTeam.social.twitter">
+                        <icon name="fab fa-twitter" size="md" style="color: #1DA1F2"></icon>
+                      </a>
+                      <a :href="userTeam.social.instagram" rel="noreferrer" target="_blank" v-if="userTeam.social.instagram">
+                        <icon color="danger" name="fab fa-instagram" size="md"></icon>
+                      </a>
+                    </span>
+                  </div>
                 </div>
               </div>
+              <div class="mt-md-2 pt-lg-2 text-center">
+                <div class="pt-0 pt-sm--100 pt-md-2 pt-lg-1">
+                  <span class="display-3">{{userTeam.team_name}}</span>
+                </div>
+              </div>
+              <div class="mt-0 mt-md-2 pt-lg-2">
+                <div class="row mx-0 justify-content-center justify-content-md-between">
+                  <div class="card col-md-4 mt-1">
+                    <div class="text-primary">Institution</div>
+                    <div><strong>{{userTeam.institution.name}}</strong></div>
+                    <small class="text-muted">{{userTeam.institution.address}}</small>
+                    <small>{{userTeam.location}}{{userTeam.country && userTeam.location ? ", ": ""}}{{userTeam.country}}</small>
+                  </div>
+                  <div class="card col-md-7 mt-1" v-if="userTeam.bio">
+                    <div class="text-primary">Bio</div>
+                    <div>
+                      <p class="small">{{userTeam.bio}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="my-1 py-2 border-top px-3" v-if="userTeam.events && userTeam.events.length > 0">
+                <div class="text-primary">Events</div>
+                <b-row class="justify-content-start">
+                  <b-col :key="event.event_short" sm="6" v-for="event in userTeam.events">
+                    <div class="text-center text-primary">
+                      <a :href="event.link" class="btn btn-link" tag="a">{{event.name}}</a>
+                    </div>
+                  </b-col>
+                </b-row>
+              </div>
+              <div class="my-1 py-2 border-top px-3" v-if="!!(userTeam.users && userTeam.users.length > 0)">
+                <div class="text-primary">Members</div>
+                <b-row class>
+                  <b-col :key="user.id" lg="2" md="3" sm="4" v-bind:class="{'team-captain order-first': !!isCaptain(userTeam.captain, user._id), 'order-2': !isCaptain(userTeam.captain, user._id)}" v-for="user in userTeam.users">
+                    <card class="team-user-profiles my-1" no-body tag="article">
+                      <div class="text-center">
+                        <img alt="User profile" class="rounded-circle" style="height: 64px; width: 64px; object-fit: cover;" v-lazy="user.profile.picture" />
+                        <div class="my-2">
+                          <router-link :to="'/profile/'+user.username" class="text-primary font-weight-300">{{user.display_name}}</router-link>
+                          <div v-if="isCaptain(userTeam.captain, user._id)">
+                            <small class="text-muted">Captain</small>
+                          </div>
+                        </div>
+                      </div>
+                    </card>
+                  </b-col>
+                </b-row>
+              </div>
+              <div class="my-1 py-2 border-top px-3" v-if="!!(userTeam.alumnus && userTeam.alumnus.length > 0)">
+                <div class="text-primary">Alumni</div>
+                <b-row class="justify-content-start">
+                  <b-col :key="user.id" lg="2" md="3" sm="4" v-bind:class="{'team-captain order-first': !!isCaptain(userTeam.captain, user._id), 'order-2': !isCaptain(userTeam.captain, user._id)}" v-for="user in userTeam.alumnus">
+                    <card class="team-user-profiles my-1" no-body tag="article">
+                      <div class="text-center">
+                        <img alt="User profile" class="rounded-circle" v-lazy="user.profile.picture" />
+                        <div class="my-2">
+                          <router-link :to="'/profile/'+user.username" class="text-primary font-weight-300">{{user.display_name}}</router-link>
+                        </div>
+                      </div>
+                    </card>
+                  </b-col>
+                </b-row>
+              </div>
             </div>
-          </b-modal>
+          </card>
         </div>
-      </div>
-    </no-ssr>
-  </section>
+      </section>
+    </div>
+    <section class="section custom-gradient" v-else>
+      <no-ssr>
+        <div class="container">
+          <div class="row justify-content-center">
+            <card class="col-md-4 px-0 mx-1 curiosum-gradient">
+              <b-form @reset.prevent="onReset" @submit.prevent="onSubmit" class="form-create-team">
+                <b-form-row class="mb-3">
+                  <div class="col-12 text-center">
+                    <i class="fas fa-users text-dark" style="font-size: 85px;"></i>
+                  </div>
+                </b-form-row>
+                <b-form-row class="mb-3" style="min-height: 64px;">
+                  <div class="col-12 text-center">
+                    <span>Create a new team and invite team members.</span>
+                  </div>
+                </b-form-row>
+                <b-form-group class="mb-3 b-form-group-curiosum" id="form-create" label-for="form-create--input">
+                  <base-button class="col-12" id="form-create--input" type="curiosum">Create new team</base-button>
+                </b-form-group>
+              </b-form>
+            </card>
+            <card class="col-md-4 px-0 mx-1 curiosum-gradient">
+              <b-form @reset.prevent="onReset" @submit.prevent="onSubmit" class="form-join-team">
+                <b-form-row class="mb-3">
+                  <div class="col-12 text-center">
+                    <i class="fas fa-user-plus text-dark" style="font-size: 85px;"></i>
+                  </div>
+                </b-form-row>
+                <b-form-row class="mb-3" style="min-height: 64px;">
+                  <div class="col-12 text-center">
+                    <span>Enter an invite link and join a team.</span>
+                  </div>
+                </b-form-row>
+                <b-form-group class="mb-3 b-form-group-curiosum" id="form-join" label-for="form-join--input">
+                  <base-button @click="modalShow = true" class="col-12" id="form-join--input" type="curiosum-dark">Join</base-button>
+                </b-form-group>
+              </b-form>
+            </card>
+            <b-modal centered hide-footer title="Join a team" v-model="modalShow">
+              <div class="container">
+                <div class="row mx-0 justify-content-center">
+                  <div class="col-md-12">
+                    <b-form-group class="mb-3 b-form-group-curiosum" description="Paste an invite link here." id="form-invite" label-for="form-invite--input">
+                      <base-input addon-left-icon id="form-invite--input" required type="text" v-model="inviteLink"></base-input>
+                    </b-form-group>
+                    <b-form-group class="mb-3 b-form-group-curiosum" id="form-join" label-for="form-join--input">
+                      <base-button class="col-12" id="form-join--input" type="curiosum">Join</base-button>
+                    </b-form-group>
+                  </div>
+                </div>
+              </div>
+            </b-modal>
+          </div>
+        </div>
+      </no-ssr>
+    </section>
+  </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters } from "vuex";
 export default {
   data() {
     return {
       inviteLink: "",
-      modalShow: false
+      modalShow: false,
+      userTeam: null
     };
   },
   computed: {
-    ...mapGetters(['currentUser', 'isAuthenticated']),
+    ...mapGetters(["currentUser", "isAuthenticated"]),
     isJoin() {
       return this.inviteLink !== "";
-    },
-  },
-  methods: { 
-    async getTeam(){
-      let user = this.currentUser
-      console.log(user);
-      let team = await this.$axios.get(`/api/team/${user.team}`)
-      if(team) {
-        console.log(team);
-      }
-      return user.team
     }
-   },
-  mounted(){
-    this.$nextTick(() => {
-      if(!this.isAuthenticated) {
-        window.location.href = "/login"
-      }
-    })
   },
+  methods: {
+    getTeam() {
+      let user = this.currentUser;
+      if (user.team) {
+        let res = this.$axios
+          .get(`/api/team/${user.team}`)
+          .then(res => {
+            if (res.data && res.data.success) {
+              this.userTeam = res.data.team;
+            }
+          })
+          .catch(err => console.log);
+      }
+    },
+    isCaptain: (cap, user) => (cap == user ? true : false),
+    accessControl(perm) {
+      switch (perm) {
+        case "admin":
+          return !!this.isAdmin;
+          break;
+        case "adminOrTeamCaptain":
+          if (this.currentUser) {
+            return !!(
+              this.isAdmin || this.userTeam.captain == this.currentUser._id
+            );
+          }
+          return false;
+          break;
+        case "user":
+          return !!this.currentUser;
+          break;
+        default:
+          return false;
+          break;
+      }
+    },
+    formatDate(date) {
+      return moment(date).format("LL");
+    },
+    getTime(date) {
+      return moment(date).format("hh:mm A");
+    },
+    sortByDate(events) {
+      var a = events;
+      return events;
+    }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      if (!this.isAuthenticated) {
+        window.location.href = "/login";
+      } else {
+        this.getTeam();
+      }
+    });
+  }
 };
 </script>
 
 <style lang="scss">
-.input-group {
-  input {
+.b-form-group-curiosum {
+  input[type="text"] {
     &,
     &:focus {
       &::placeholder {
@@ -107,8 +267,6 @@ export default {
       color: #4b2722;
     }
   }
-}
-.b-form-group {
   .form-group.input-group {
     margin-bottom: 0;
   }
@@ -116,5 +274,8 @@ export default {
     color: #4b2722 !important;
   }
   margin-bottom: 1rem;
+}
+.profile-page .card-profile .card-profile-image img {
+  box-shadow: none;
 }
 </style>

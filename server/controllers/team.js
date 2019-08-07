@@ -9,6 +9,13 @@ const crypto = require('crypto')
 const JSON2CSV = require('json-2-csv')
 const path = require('path')
 const fs = require('fs')
+const generate = require('nanoid/generate')
+const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+
+const generateId = (len = 8) => {
+  return generate(alphabet, len)
+}
+
 const smtpTransport = nodemailer.createTransport({
   service: "gmail",
   host: "smtp.gmail.com",
@@ -67,7 +74,7 @@ const toBoolean = (val) => {
 
 const getAll = async function (req, res) {
   try {
-    let teams = await Team.find().sort({team_name: 1, category: 1}).exec();
+    let teams = await Team.find().sort({ team_name: 1, category: 1 }).exec();
     if (teams.length > 0) {
       return Response.success(res, { teams: teams })
     }
@@ -75,6 +82,19 @@ const getAll = async function (req, res) {
   } catch (error) {
     console.log(error)
     return res.sendStatus(500)
+  }
+}
+
+const getOneByName = async function (req, res) {
+  try {
+    let team = await Team.findOne({ team_name: req.params.name })
+    if (team) {
+      return Response.success(res, { message: "Team found", team })
+    }
+    return Response.failed(res, { message: "Not found" })
+  } catch (error) {
+    console.log(error);
+    return Response.failed(res, { message: "Internal server error" }, 500)
   }
 }
 
@@ -117,6 +137,83 @@ const getOne = async function (req, res) {
   }
 }
 
+const generateInviteLink = async (req, res) => {
+  let id = req.params.id
+  let nnid = generateId()
+  let url = req.protocol + '://' + req.headers.host + '\/join\/' + nnid
+  let nowDate = new Date()
+  let futDate = new Date(nowDate.getTime() + (86400000 * 14)) // 14 days
+  try {
+    let team = await Team.findOneAndUpdate({ _id: id }, { invite_link: url, invite_link_expiry: futDate, invite_id: nnid }, { new: true })
+    if (team) {
+      return Response.success(res, { message: "Link generated", link: team.invite_link, link_expiry: team.invite_link_expiry })
+    } else {
+      return Response.failed(res, { message: "Not found" })
+    }
+  } catch (error) {
+    console.log(error);
+    return Response.failed(res, { message: "Internal server error" })
+  }
+}
+
+const verifyInviteLink = async (req, res) => {
+  let nnid = req.params.nnid
+  try {
+    let reqU = req.user
+    let team = await Team.findOne({ invite_id: nnid })
+    if (team && reqU) {
+      let nDate = new Date()
+      let fDate = new Date(team.invite_link_expiry)
+      if (nDate <= fDate) {
+        let user = await User.findOneAndUpdate({ _id: reqU._id, $or: [{ team: null }, { team: undefined }] }, { team: team._id }, { new: true })
+        if (user) {
+          let upTeam = await Team.findOneAndUpdate({ _id: team._id }, { $push: { users: user._id } })
+          if (upTeam) {
+            return Response.success(res, { message: "Joined team" })
+          }
+        }
+        return Response.failed(res, { message: "Couldn't join team." })
+      }
+      return Response.failed(res, { message: "Linked expired, get a different link from the captain." })
+    }
+    return Response.failed(res, { message: "Not found" })
+  } catch (error) {
+    console.log(error);
+    return Response.failed(res, { message: "Internal server error" })
+  }
+}
+
+const newCreate = async (req, res) => {
+  try {
+    let body = req.body
+    let team = await Team.findOne({ team_name: body.team_name })
+    if (team) {
+      return Response.failed(res, {})
+    } else {
+      let newTeam = await new Team({
+        bio: body.bio,
+        captain: req.user ? req.user._id : null,
+        institution: body.institution,
+        category: body.category,
+        country: body.country,
+        location: body.location,
+        logo: body.logo,
+        social: body.social,
+        team_name: body.team_name,
+        website_url: body.website_url,
+        users: req.user && req.user._id ? toArray(req.user._id) : []
+      }).save()
+      if (newTeam) {
+        return Response.success(res, { message: "New team created.", team: newTeam })
+      }
+      return Response.failed(res, { message: "Failed to create a team." })
+    }
+  } catch (error) {
+    console.log(error)
+    return Response.failed(res, { message: "Internal server error" })
+  }
+}
+
 const create = async function (req, res) {
   let body = req.body
   try {
@@ -155,8 +252,8 @@ const create = async function (req, res) {
               if (token) {
                 let genLink = req.protocol + '://' + req.headers.host + '\/api\/team\/confirmation\/' + token.token + '\n'
                 let teamLink = req.protocol + '://' + req.headers.host + '\/team\/' + team._id;
-                let user = await User.findOne({email: emails[i]})
-                if(user){
+                let user = await User.findOne({ email: emails[i] })
+                if (user) {
                   let mailOptions = {
                     from: 'Curiosum Tech Portal',
                     to: emails[i],
@@ -289,7 +386,7 @@ const updateTeamsFromCSV = async (req, res) => {
         if (data) {
           let dataArr = toArray(data)
           let teams = []
-          for(let x=0; x<dataArr.length; x++){
+          for (let x = 0; x < dataArr.length; x++) {
             let d = dataArr[x]
             let team = {
               alumnus: toArray(d.alumnus),
@@ -323,13 +420,13 @@ const updateTeamsFromCSV = async (req, res) => {
               website_url: d.website_url,
               former_name: d.former_name,
             }
-            if(d.captain !== "" || d.captain != undefined) {
+            if (d.captain !== "" || d.captain != undefined) {
               team.captain = d.captain
             } else {
               team.captain = null
             }
-            if(d._id){
-              let updated = await Team.findOneAndUpdate({_id: d._id}, team, {new: true})
+            if (d._id) {
+              let updated = await Team.findOneAndUpdate({ _id: d._id }, team, { new: true })
             } else {
               let updated = await new Team(team).save()
             }
@@ -540,7 +637,7 @@ const removeMembers = async function (req, res) {
   try {
     team = await Team.findOne({ _id: team_id })
     if (team) {
-      user = await User.findOneAndUpdate({ _id: user_id }, { team: undefined }, {new: true})
+      user = await User.findOneAndUpdate({ _id: user_id }, { team: undefined }, { new: true })
       if (user) {
         // Pull role if alumni
         team.users.pull(user._id)
@@ -563,7 +660,7 @@ const removeAlumnus = async function (req, res) {
   try {
     team = await Team.findOne({ _id: team_id })
     if (team) {
-      user = await User.findOneAndUpdate({ _id: user_id }, {team: undefined}, {new: true})
+      user = await User.findOneAndUpdate({ _id: user_id }, { team: undefined }, { new: true })
       if (user) {
         if (String(team._id) == String(user.team)) {
           user.team = null
@@ -792,8 +889,11 @@ module.exports = {
   getOneMini,
   getTeamExpandUser,
   getOne,
+  getOneByName,
   getTeamsCSV,
   create,
+  generateInviteLink,
+  verifyInviteLink,
   linkTeamAndUser,
   confirmToken,
   addMembers,

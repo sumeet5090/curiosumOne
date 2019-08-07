@@ -1,9 +1,8 @@
 <template>
   <div class="profile-page">
-    <section class="section-profile-cover"></section>
     <section class="section my-0">
       <div class="container">
-        <card class="card-profile mt--300" no-body shadow>
+        <card class="card-profile mt-0" no-body shadow>
           <div class="px-4 text-dark">
             <div class="row justify-content-center">
               <div class="col-lg-3 order-lg-2">

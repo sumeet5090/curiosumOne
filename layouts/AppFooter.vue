@@ -1,7 +1,7 @@
 <template>
 <div class="container">
   <div class="row justify-content-center mt-1">
-    <div class="text-center text-curiosum font-weight-light"><small>Copyright © 2019</small>
+    <div class="text-center text-curiosum font-weight-light"><small>Copyright © 2019 <a class="text-curiosum-light" href="http://curiosumtech.in" target="_blank">Curiosum Tech Pvt. Ltd.</a></small>
     </div>
   </div>
 </div>

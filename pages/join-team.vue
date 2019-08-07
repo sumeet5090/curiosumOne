@@ -41,7 +41,7 @@
             <div class="container">
               <div class="row mx-0 justify-content-center">
                 <div class="col-md-12">
-                  <b-form-group class="mb-3" description="Paste an invite link here." id="form-invite" label-for="form-invite--input">
+                  <b-form-group class="b-form-group-curiosum mb-3" description="Paste an invite link here." id="form-invite" label-for="form-invite--input">
                     <base-input addon-left-icon id="form-invite--input" required type="text" v-model="inviteLink"></base-input>
                   </b-form-group>
                   <b-form-group class="mb-3" id="form-join" label-for="form-join--input">
@@ -75,8 +75,8 @@ export default {
 </script>
 
 <style lang="scss">
-.input-group {
-  input {
+.b-form-group-curiosum {
+  input[type="text"] {
     &,
     &:focus {
       &::placeholder {
@@ -87,8 +87,6 @@ export default {
       color: #4b2722;
     }
   }
-}
-.b-form-group {
   .form-group.input-group {
     margin-bottom: 0;
   }
