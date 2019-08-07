@@ -53,14 +53,30 @@
               </div>
               <div class="mt-md-2 pt-lg-2 text-center">
                 <div class="pt-0 pt-sm--100 pt-md-2 pt-lg-1">
-                  <span class="display-3">{{userTeam.team_name}}</span>
+                  <router-link :to="{name: 'team-id', params: {id: userTeam._id}}">
+                    <span class="display-3">{{userTeam.team_name}}</span>
+                  </router-link>
+                </div>
+              </div>
+              <div class="mt-md-2 pt-lg-2 text-center">
+                <b-form-row class="b-form-group-curiosum">
+                  <base-input :value="userTeam.invite_link" @click.native="click2copyLink" class="col-md-9" id="invite-link"></base-input>
+                  <div class="col-md-3">
+                    <base-button @click="genInviteLink" type="success">Generate New</base-button>
+                  </div>
+                </b-form-row>
+                <div class="text-danger">
+                  <span>Invite link expires on: </span>
+                  <span>{{expiresIn(userTeam.invite_link_expiry)}}</span>
                 </div>
               </div>
               <div class="mt-0 mt-md-2 pt-lg-2">
                 <div class="row mx-0 justify-content-center justify-content-md-between">
                   <div class="card col-md-4 mt-1">
                     <div class="text-primary">Institution</div>
-                    <div><strong>{{userTeam.institution.name}}</strong></div>
+                    <div>
+                      <strong>{{userTeam.institution.name}}</strong>
+                    </div>
                     <small class="text-muted">{{userTeam.institution.address}}</small>
                     <small>{{userTeam.location}}{{userTeam.country && userTeam.location ? ", ": ""}}{{userTeam.country}}</small>
                   </div>
@@ -154,7 +170,7 @@
                   </div>
                 </b-form-row>
                 <b-form-group class="mb-3 b-form-group-curiosum" id="form-join" label-for="form-join--input">
-                  <base-button @click="modalShow = true" class="col-12" id="form-join--input" type="curiosum-dark">Join</base-button>
+                  <base-button @click="modalShow = true" class="col-12" id="form-join--input" type="curiosum-dark">Join a team</base-button>
                 </b-form-group>
               </b-form>
             </card>
@@ -162,11 +178,12 @@
               <div class="container">
                 <div class="row mx-0 justify-content-center">
                   <div class="col-md-12">
+                    <div class="text-center text-danger">{{joinTeamModalError}}</div>
                     <b-form-group class="mb-3 b-form-group-curiosum" description="Paste an invite link here." id="form-invite" label-for="form-invite--input">
                       <base-input addon-left-icon id="form-invite--input" required type="text" v-model="inviteLink"></base-input>
                     </b-form-group>
                     <b-form-group class="mb-3 b-form-group-curiosum" id="form-join" label-for="form-join--input">
-                      <base-button class="col-12" id="form-join--input" type="curiosum">Join</base-button>
+                      <base-button @click="joinTeam" class="col-12" id="form-join--input" type="curiosum">Join</base-button>
                     </b-form-group>
                   </div>
                 </div>
@@ -181,12 +198,16 @@
 
 <script>
 import { mapGetters } from "vuex";
+import moment, { months } from 'moment';
 export default {
   data() {
     return {
       inviteLink: "",
       modalShow: false,
-      userTeam: null
+      userTeam: null,
+      joinTeamModalError: "",
+      alertMsg: "",
+      showAlert: false,
     };
   },
   computed: {
@@ -207,6 +228,61 @@ export default {
             }
           })
           .catch(err => console.log);
+      }
+    },
+    genInviteLink() {
+      if (this.userTeam) {
+        this.$axios
+          .get(`/api/team/${this.userTeam._id}/generate`)
+          .then(res => {
+            if (res.data && res.data.success) {
+              console.log("Success");
+              this.$router.go(this.$route.name);
+            } else {
+              this.$router.go(this.$route.name);
+            }
+          })
+          .catch(err => console.log);
+      }
+    },
+    expiresIn(time){
+      return moment.utc(time).format('HH:mm:ss DD/MM/YYYY')
+    },
+    joinTeam() {
+      this.joinTeamModalError = "";
+      let url = this.inviteLink;
+      let splUrl = url.split("/");
+      let nnid = splUrl[splUrl.length - 1];
+      this.$axios
+        .get(`/api/team/verify/${nnid}`)
+        .then(res => {
+          if (res.data && res.data.success) {
+            console.log("Successfully joined team");
+            this.joinTeamModalError = "";
+            this.$router.go(this.$route.name);
+          } else {
+            this.joinTeamModalError = res.data.message
+              ? res.data.message
+              : "Unable to join the team. Try again with a different link.";
+          }
+        })
+        .catch(err => console.log);
+    },
+    click2copyLink() {
+      let temp = document.querySelector("#invite-link");
+      if (temp) {
+        temp.setAttribute("type", "text");
+        temp.select();
+        try {
+          let copied = document.execCommand("copy");
+          let msg = copied
+            ? "URL copied to clipboard"
+            : "Couldn't copy, try doing it manually.";
+          this.alertMsg = msg;
+          this.showAlert = true;
+        } catch (e) {
+          console.log(e);
+        }
       }
     },
     isCaptain: (cap, user) => (cap == user ? true : false),
@@ -249,6 +325,7 @@ export default {
       } else {
         this.getTeam();
       }
+      console.log;
     });
   }
 };
@@ -256,12 +333,13 @@ export default {
 
 <style lang="scss">
 .b-form-group-curiosum {
-  input[type="text"] {
+  input {
     &,
     &:focus {
       &::placeholder {
         color: #4b2722aa;
       }
+      text-align: center;
       background: none;
       border: 2px solid #4b2722;
       color: #4b2722;

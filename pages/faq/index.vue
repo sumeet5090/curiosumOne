@@ -10,7 +10,7 @@
               </span>
               <span class="ml-2 font-weight-bold">{{faq.question}}</span>
             </b-card-header>
-            <b-collapse :id="'collapse-'+faq.id" :visible="faq.open">
+            <b-collapse :id="'collapse-'+faq.id" accordion="faq-accordion" :visible="faq.open">
               <b-card-body>
                 <no-ssr tag="p">
                   <vue-markdown :linkify="false">{{faq.answer}}</vue-markdown>
@@ -55,20 +55,13 @@ export default {
         {
           id: 3,
           name: "FAQ #3",
-          question: "What are the steps for creating a team?",
+          question: "What are the steps for joining a team?",
           answer:
-            "1. <a href=\"/login\" class='btn-link' target='_blank'>Login</a> with your <i class='fab fa-google'></i> account.\n2. Go to <a href='/team/create' target='_blank'>/team/create</a>\n3. Fill in relavant information, invite members with their registered email. (They must have a registered account.)\n4. Click <a class='btn btn-sm btn-curiosum text-white'>CREATE</a> to finalize.\n\n\nYou will be the default team captain, you can change that in team settings."
+            "1. Navigate to the \"Team\" page at [https://curiosumportal.in/team](https://curiosumportal.in/team)\n2. If you are not logged in, you will be redirected to login page. After logging in, navigate back to the Team page.\n3. If you are already in a team, your team profile is displayed on this page.\n4. You can join an existing team by clicking \"Join a team\" and entering the link given to you by your captain in the text input and click Join. Once completed successful, page will refresh.\n5. You can also Create a new team and invite team members to that team by clicking \"Create New Team\" and entering information about your team.<br>Note: Team name should be unique."
         },
         {
           id: 4,
           name: "FAQ #4",
-          question: "How to join a team?",
-          answer:
-            "You need to ask the team captain to send a team invite. You'll receive an email from the team. Click the join button."
-        },
-        {
-          id: 5,
-          name: "FAQ #5",
           question:
             "I am the team captain, how do I update the team information or add members?",
           answer:

@@ -23,6 +23,9 @@
         </div>
         <ul class="navbar-nav navbar-nav-hover align-items md-center">
           <li class="nav-item">
+            <nuxt-link class="nav-link" tag="a" to="/team">Team</nuxt-link>
+          </li>
+          <li class="nav-item">
             <nuxt-link class="nav-link" tag="a" to="/faq">FAQ</nuxt-link>
           </li>
         </ul>

@@ -172,11 +172,11 @@ const verifyInviteLink = async (req, res) => {
             return Response.success(res, { message: "Joined team" })
           }
         }
-        return Response.failed(res, { message: "Couldn't join team." })
+        return Response.failed(res, { message: "Couldn't join team. Try again with a different link." })
       }
       return Response.failed(res, { message: "Linked expired, get a different link from the captain." })
     }
-    return Response.failed(res, { message: "Not found" })
+    return Response.failed(res, { message: "Invalid link." })
   } catch (error) {
     console.log(error);
     return Response.failed(res, { message: "Internal server error" })
