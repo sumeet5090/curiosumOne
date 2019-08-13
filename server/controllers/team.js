@@ -328,16 +328,13 @@ const getTeamsCSV = async (req, res) => {
   try {
     let teams = await Team.find()
     if (teams) {
-      console.log("Team found");
       let csv = await JSON2CSV.json2csvAsync(JSON.parse(JSON.stringify(teams)), {
         keys: fields,
         emptyFieldValue: null,
         expandArrayObjects: true
       })
       if (csv) {
-        console.log("CSV");
         let fname = `downloads/teams-${crypto.randomBytes(8).toString('hex')}.csv`
-        console.log(fname);
         let filename = path.resolve(fname)
         let file = await writeFilesAsync(fname, csv)
         if (file) {
@@ -653,6 +650,9 @@ const removeMembers = async function (req, res) {
       user = await User.findOneAndUpdate({ _id: user_id }, { team: undefined }, { new: true })
       if (user) {
         // Pull role if alumni
+        if(String(team.captain) == String(user._id)){
+          team.captain = null
+        }
         team.users.pull(user._id)
         updatedTeam = await team.save()
         if (updatedTeam) {

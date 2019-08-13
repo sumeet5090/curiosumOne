@@ -343,28 +343,4 @@ export default {
 </script>
 
 <style lang="scss">
-.b-form-group-curiosum {
-  input {
-    &,
-    &:focus {
-      &::placeholder {
-        color: #4b2722aa;
-      }
-      text-align: center;
-      background: none;
-      border: 2px solid #4b2722;
-      color: #4b2722;
-    }
-  }
-  .form-group.input-group {
-    margin-bottom: 0;
-  }
-  .form-text {
-    color: #4b2722 !important;
-  }
-  margin-bottom: 1rem;
-}
-.profile-page .card-profile .card-profile-image img {
-  box-shadow: none;
-}
 </style>

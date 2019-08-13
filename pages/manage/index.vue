@@ -1,17 +1,17 @@
 <template>
   <div>
     <div v-if="isAdmin">
-      <div class="container">
+      <div class="container-fluid px-5">
         <div class="row">
-          <div class="col-12 bg-danger">
+          <div class="col-12">
             <div class="text-center h3">
-              <div class="text-white text-uppercase">Admin dashboard</div>
+              <div class="text-uppercase font-weight-bold text-dark">Dashboard</div>
             </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-sm-12 col-md-2 px-0">
-            <b-list-group>
+          <div class="col-sm-12 col-md-2">
+            <b-list-group class="h-100 bg-white pt-3 mt-1">
               <b-list-group-item :active="show == 'event' ? true : false" @click="showEvent" class="shadow cursor-pointer">Event</b-list-group-item>
               <b-list-group-item :active="show == 'users' ? true : false" @click="showUsers" class="shadow cursor-pointer">Users</b-list-group-item>
               <!-- <b-list-group-item :active="show == 'team' ? true : false" @click="show = 'team'" class="shadow cursor-pointer">Team</b-list-group-item>
@@ -23,8 +23,11 @@
               <b-list-group-item :active="show == 'staticschedule' ? true : false" @click="show = 'staticschedule'" class="shadow cursor-pointer">Static Schedules</b-list-group-item>-->
             </b-list-group>
           </div>
-          <div class="col-sm-12 col-md-10 px-0">
+          <div class="col-sm-12 col-md-10">
             <div v-if="show == 'event'">
+              <div class="text-center">
+                <div class="font-weight-bold text-uppercase">Events</div>
+              </div>
               <div class="table-responsive">
                 <table class="table align-items-center table-flush">
                   <thead class>
@@ -32,7 +35,6 @@
                       <th scope="col">Event Name</th>
                       <th scope="col">Teams Registered</th>
                       <th scope="col">Rules Forum</th>
-                      <th scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -47,11 +49,7 @@
                       <td>{{eve.cars.length}}</td>
                       <td>
                         <router-link :to="{name: 'event-id-forum', params: { id: eve.event_short}}" class="btn btn-sm btn-curiosum" tag="a">Forum</router-link>
-                      </td>
-                      <td>
-                        <b-dropdown dropright size="sm">
-                          <b-dropdown-item @click="() => { $router.push({name: 'manage-event-id-teams', params: {id: eve.event_short}})}">Teams</b-dropdown-item>
-                        </b-dropdown>
+                        <router-link :to="{name: 'manage-event-id-teams', params: {id: eve.event_short}}" class="btn btn-sm btn-primary">Teams</router-link>
                       </td>
                     </tr>
                   </tbody>
@@ -82,8 +80,8 @@
               <div class="h4 text-center">Coming Soon!</div>
             </div>
             <div v-if="show == 'users'">
-              <div class="text-center mt-3">
-                <div class="font-weight-bold text-uppercase">Admin / Staff Members</div>
+              <div class="text-center">
+                <div class="font-weight-bold text-uppercase text-dark">Admin / Staff Members</div>
               </div>
               <b-table :current-page="adminUsersPage" :fields="userFields" :items="adminUsers" :per-page="5" id="admin-users-table" responsive show-empty>
                 <template slot="display_name" slot-scope="data">
@@ -102,7 +100,7 @@
                 <b-pagination :per-page="5" :total-rows="adminUsersLength" align="center" aria-controls="admin-users-table" v-model="adminUsersPage"></b-pagination>
               </div>
               <div class="text-center mt-3">
-                <div class="font-weight-bold text-uppercase">Volunteers</div>
+                <div class="font-weight-bold text-uppercase text-dark">Volunteers</div>
               </div>
               <b-table :current-page="volunteerUsersPage" :fields="userFields" :items="volunteerUsers" :per-page="5" id="volunteer-users-table" responsive show-empty>
                 <template slot="display_name" slot-scope="data">
@@ -118,7 +116,7 @@
               <div class="text-center">
                 <b-pagination :per-page="5" :total-rows="volunteerUsersLength" align="center" aria-controls="volunteer-users-table" responsive v-model="volunteerUsersPage"></b-pagination>
               </div>
-              <div class="text-center mt-3">
+              <!-- <div class="text-center mt-3">
                 <div class="font-weight-bold text-uppercase">Participants</div>
               </div>
               <b-table :current-page="participantUsersPage" :fields="userFields" :items="participantUsers" :per-page="5" id="participant-users-table" show-empty>
@@ -131,10 +129,10 @@
                     <b-dropdown-item @click="editRolesActive(data.item)">Change roles</b-dropdown-item>
                   </b-dropdown>
                 </template>
-              </b-table>
-              <div class="text-center">
+              </b-table> -->
+              <!-- <div class="text-center">
                 <b-pagination :per-page="5" :total-rows="participantUsersLength" align="center" aria-controls="volunteer-users-table" v-model="participantUsersPage"></b-pagination>
-              </div>
+              </div> -->
               <!-- <div class="table-responsive">
                 <table class="table align-items-center table-flush">
                   <thead class>
@@ -194,16 +192,16 @@
           </div>
         </div>
       </div>
-      <div class>
+      <div class="container-fluid px-5">
         <div class="row">
-          <div class="col-12 bg-danger">
+          <div class="col-md-12">
             <div class="text-center h3">
-              <div class="text-white text-uppercase">Old admin dashboard</div>
+              <div class="text-dark font-weight-bold text-uppercase">More</div>
             </div>
           </div>
         </div>
-        <div class="row">
-          <card class="col-12 mb-2">
+        <div class="row justify-content-between">
+          <card class="col-md-4 mb-2">
             <div class="card-title h4 font-weight-bold text-center">Event</div>
             <div class="my-1 text-center">
               <div class="mb-2">Manage entries related to events.</div>
@@ -215,7 +213,7 @@
               </router-link>
             </div>
           </card>
-          <card class="col-12 mb-2">
+          <card class="col-md-4 mb-2">
             <div class="card-title h4 font-weight-bold text-center">Team</div>
             <div class="my-1 text-center">
               <div class="mb-2">Manage cars linking events and teams.</div>
@@ -227,7 +225,7 @@
               </router-link>
             </div>
           </card>
-          <card class="col-12 mb-2">
+          <card class="col-md-4 mb-2">
             <div class="card-title h4 font-weight-bold text-center">Announcements</div>
             <div class="my-1 text-center">
               <div class="mb-2">Manage announcements.</div>
@@ -236,7 +234,7 @@
               </router-link>
             </div>
           </card>
-          <card class="col-12 mb-2">
+          <card class="col-md-4 mb-2">
             <div class="card-title h4 font-weight-bold text-center">Live Timings</div>
             <div class="my-1 text-center">
               <div class="mb-2">Manage live timings.</div>
@@ -245,7 +243,7 @@
               </router-link>
             </div>
           </card>
-          <card class="col-12 mb-2">
+          <card class="col-md-4 mb-2">
             <div class="card-title h4 font-weight-bold text-center">Schedule</div>
             <div class="my-1 text-center">
               <div class="mb-2">Manage schedules.</div>
@@ -257,7 +255,7 @@
               </router-link>
             </div>
           </card>
-          <card class="col-12 mb-2">
+          <card class="col-md-4 mb-2">
             <div class="card-title h4 font-weight-bold text-center">Tech Updates</div>
             <div class="my-1 text-center">
               <div class="mb-2">Manage tech updates.</div>
@@ -266,7 +264,7 @@
               </router-link>
             </div>
           </card>
-          <card class="col-12 mb-2">
+          <card class="col-md-4 mb-2">
             <div class="card-title h4 font-weight-bold text-center">Static Schedules</div>
             <div class="my-1 text-center">
               <div class="mb-2">Manage static schedules.</div>
@@ -281,7 +279,7 @@
               </router-link>
             </div>
           </card>
-          <card class="col-12 mb-2">
+          <card class="col-md-4 mb-2">
             <div class="card-title h4 font-weight-bold text-center">Roles</div>
             <div class="my-1 text-center">
               <div class="mb-2">Manage user roles.</div>
@@ -297,7 +295,7 @@
       </div>
     </div>
     <section class="section section-xl my-5" v-else>
-      <error-page class="my-3" message="Nice try, you aren't an admin." />
+      <error-page class="my-3" message="Unauthorized" />
     </section>
   </div>
 </template>
@@ -447,7 +445,9 @@ export default {
           console.log(err);
         });
     },
-    editRolesCancel() {},
+    editRolesCancel() {
+      this.editRoles.modal = false
+    },
     showEvent() {
       this.show = "event";
       if (this.events.length === 0) {
