@@ -8,14 +8,14 @@
         </div>
       </b-row>
       <b-row class="justify-content-center my-2" v-if="isAdmin" v-show="isAdmin">
-        <base-alert :dismissible="true" class="col-12" icon="far fa-times-circle" type="danger" v-if="isAdmin && error">
+        <!-- <base-alert :dismissible="true" class="col-12" icon="far fa-times-circle" type="danger" v-if="isAdmin && error">
           <template slot="text">{{error}}</template>
         </base-alert>
         <base-alert :dismissible="true" class="col-12" icon="far fa-check-circle" type="success" v-if="isAdmin && success">
           <template slot="text">{{success}}</template>
         </base-alert>
         <base-button @click.prevent="sendDownloadRequest" outline type="success" v-if="isAdmin">Download</base-button>
-        <base-button @click.prevent="uploadModal.show = true" outline type="primary" v-if="isAdmin">Upload</base-button>
+        <base-button @click.prevent="uploadModal.show = true" outline type="primary" v-if="isAdmin">Upload</base-button>-->
       </b-row>
       <b-row class="justify-content-center">
         <base-input addon-left-icon="fas fa-search text-success" class="col-sm-12 col-md-6 px-0 mx-0" placeholder="Search" type="text" v-model="filter"></base-input>
@@ -25,8 +25,8 @@
           <b-table :fields="fields" :filter="filter" :items="cars" :sort-by.sync="table.sortBy" :sort-compare="sortCompareAdvanced" bordered class="font-md-small" hover outlined responsive>
             <template slot="category" slot-scope="data">
               <div class>
-                <img class="img-thumbnail icon-category" src="@/assets/images/icons/category/combustion.svg" v-if="data.item.category == 'combustion'">
-                <img class="img-thumbnail icon-category" src="@/assets/images/icons/category/electric.svg" v-if="data.item.category == 'electric'">
+                <img class="img-thumbnail icon-category" src="@/assets/images/icons/category/combustion.svg" v-if="data.item.category == 'combustion'" />
+                <img class="img-thumbnail icon-category" src="@/assets/images/icons/category/electric.svg" v-if="data.item.category == 'electric'" />
               </div>
             </template>
             <template slot="car_number" slot-scope="data">{{data.item.car_number}}</template>
@@ -79,7 +79,7 @@
 
 <script>
 import truncate from "vue-truncate-collapsed";
-import moment from "moment"
+import moment from "moment";
 import { mapGetters } from "vuex";
 export default {
   components: {
@@ -95,7 +95,7 @@ export default {
       } else {
         return 1;
       }
-    },
+    }
   },
   methods: {
     handleUpload(v) {
@@ -118,8 +118,8 @@ export default {
         });
       }
     },
-    formatDate(date){
-      return moment(date).format('YYYYMMDD-HHmmss')
+    formatDate(date) {
+      return moment(date).format("YYYYMMDD-HHmmss");
     },
     sendDownloadRequest() {
       this.success = null;
@@ -134,7 +134,9 @@ export default {
           } else {
             const url = window.URL.createObjectURL(new Blob([data])),
               link = document.createElement("a"),
-              fileName = `event-${params.id}-${this.formatDate(Date.now())}.csv`;
+              fileName = `event-${params.id}-${this.formatDate(
+                Date.now()
+              )}.csv`;
             link.href = url;
             link.setAttribute("download", fileName);
             document.body.appendChild(link);
@@ -153,7 +155,7 @@ export default {
       this.error = null;
       let formData = new FormData();
       let params = this.$route.params;
-      if(this.uploadModal.file){
+      if (this.uploadModal.file) {
         console.log(this.uploadModal.file.name);
       }
       formData.append("file", this.uploadModal.file);

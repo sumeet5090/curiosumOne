@@ -9,12 +9,13 @@
         </div>
         <div class="media-body">
           <div>
+            {{post.post_type}}
             <router-link :to="{name: 'event-id-forum-post-postId', params: {id: $route.params.id, postId: post._id}}" class="font-weight-bold" style="font-size: 1.1rem;">
               <truncate :length="100" :text="(post.subject || '').toString()" action-class="truncated-less-sign" clamp="..." less="[hide]"></truncate>
             </router-link>
             <div class="float-right" v-if="isAdmin">
-              <base-button v-if="!post.pinned" size='sm' icon="fas fa-thumbtack" title="Pin" @click="pinPost($route.params.id, post._id)"></base-button>
-              <base-button v-else size='sm' icon="fas fa-thumbtack rotate-180" title="Unpin" @click="unpinPost($route.params.id, post._id)"></base-button>
+              <base-button @click="pinPost($route.params.id, post._id)" icon="fas fa-thumbtack" size="sm" title="Pin" v-if="!post.pinned"></base-button>
+              <base-button @click="unpinPost($route.params.id, post._id)" icon="fas fa-thumbtack rotate-180" size="sm" title="Unpin" v-else></base-button>
             </div>
           </div>
           <div class="container">
@@ -77,64 +78,17 @@ export default {
       if (this.filters) {
         let { section, rule, sub_rule, subject } = this.filters;
         let filtered = this.posts.filter(post => {
-          if (subject !== "") {
-            if (section == null) {
-              return post.subject.toLowerCase().includes(subject.toLowerCase());
+          if (this.isAuthenticated && post.post_type === "private") {
+            if(this.isAdmin){
+              return this.subfilter(post);
             }
-            if (rule == null) {
-              if (section === post.section.notation) {
-                return post.subject
-                  .toLowerCase()
-                  .includes(subject.toLowerCase());
-              }
+            if (this.currentUser && this.currentUser.team === post.team) {
+              return this.subfilter(post);
             }
-            if (sub_rule == null) {
-              if (
-                section === post.section.notation &&
-                rule == post.rule.notation
-              ) {
-                return post.subject
-                  .toLowerCase()
-                  .includes(subject.toLowerCase());
-              }
-            } else {
-              if (
-                section === post.section.notation &&
-                rule == post.rule.notation &&
-                sub_rule === post.sub_rule.notation
-              ) {
-                return post.subject
-                  .toLowerCase()
-                  .includes(subject.toLowerCase());
-              }
-            }
+            return false;
           } else {
-            if (section == null) {
-              return true;
-            }
-            if (rule == null) {
-              if (section === post.section.notation) {
-                return true;
-              }
-            }
-            if (sub_rule == null) {
-              if (
-                section === post.section.notation &&
-                rule == post.rule.notation
-              ) {
-                return true;
-              }
-            } else {
-              if (
-                section === post.section.notation &&
-                rule == post.rule.notation &&
-                sub_rule === post.sub_rule.notation
-              ) {
-                return true;
-              }
-            }
+            return this.subfilter(post)
           }
-          return false;
         });
         return filtered;
       }
@@ -142,29 +96,83 @@ export default {
     }
   },
   methods: {
-    pinPost(event_id, post_id){
-      this.$axios.put(`/api/event/${event_id}/forum/posts/${post_id}/admin`, {
-        post: {
-          pinned: true
+    
+    subfilter(post) {
+      let { section, rule, sub_rule, subject } = this.filters;
+      if (subject !== "") {
+        if (section == null) {
+          return post.subject.toLowerCase().includes(subject.toLowerCase());
         }
-      }).then(res => {
-        if(res.data && res.data.success){
-          console.log("Pinned");
+        if (rule == null) {
+          if (section === post.section.notation) {
+            return post.subject.toLowerCase().includes(subject.toLowerCase());
+          }
         }
-        this.$router.go(this.$route.name)
-      }).catch(e => console.log)
+        if (sub_rule == null) {
+          if (section === post.section.notation && rule == post.rule.notation) {
+            return post.subject.toLowerCase().includes(subject.toLowerCase());
+          }
+        } else {
+          if (
+            section === post.section.notation &&
+            rule == post.rule.notation &&
+            sub_rule === post.sub_rule.notation
+          ) {
+            return post.subject.toLowerCase().includes(subject.toLowerCase());
+          }
+        }
+      } else {
+        if (section == null) {
+          return true;
+        }
+        if (rule == null) {
+          if (section === post.section.notation) {
+            return true;
+          }
+        }
+        if (sub_rule == null) {
+          if (section === post.section.notation && rule == post.rule.notation) {
+            return true;
+          }
+        } else {
+          if (
+            section === post.section.notation &&
+            rule == post.rule.notation &&
+            sub_rule === post.sub_rule.notation
+          ) {
+            return true;
+          }
+        }
+      }
+      return false;
     },
-    unpinPost(event_id, post_id){
-      this.$axios.put(`/api/event/${event_id}/forum/posts/${post_id}/admin`, {
-        post: {
-          pinned: false
-        }
-      }).then(res => {
-        if(res.data && res.data.success){
-          console.log("Pinned");
-        }
-        this.$router.go(this.$route.name)
-      }).catch(e => console.log)
+    pinPost(event_id, post_id) {
+      this.$axios
+        .put(`/api/event/${event_id}/forum/posts/${post_id}/admin`, {
+          post: {
+            pinned: true
+          }
+        })
+        .then(res => {
+          if (res.data && res.data.success) {
+          }
+          this.$router.go(this.$route.name);
+        })
+        .catch(e => console.log);
+    },
+    unpinPost(event_id, post_id) {
+      this.$axios
+        .put(`/api/event/${event_id}/forum/posts/${post_id}/admin`, {
+          post: {
+            pinned: false
+          }
+        })
+        .then(res => {
+          if (res.data && res.data.success) {
+          }
+          this.$router.go(this.$route.name);
+        })
+        .catch(e => console.log);
     },
     formatDate(d) {
       return moment(d).fromNow();
