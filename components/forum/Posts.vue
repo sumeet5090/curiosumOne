@@ -13,7 +13,8 @@
               <truncate :length="100" :text="(post.subject || '').toString()" action-class="truncated-less-sign" clamp="..." less="[hide]"></truncate>
             </router-link>
             <div class="float-right" v-if="isAdmin">
-              <base-button size='sm' icon="fas fa-thumbtack" @click="pinPost($route.params.id, post._id)"></base-button>
+              <base-button v-if="!post.pinned" size='sm' icon="fas fa-thumbtack" title="Pin" @click="pinPost($route.params.id, post._id)"></base-button>
+              <base-button v-else size='sm' icon="fas fa-thumbtack rotate-180" title="Unpin" @click="unpinPost($route.params.id, post._id)"></base-button>
             </div>
           </div>
           <div class="container">
@@ -143,13 +144,27 @@ export default {
   methods: {
     pinPost(event_id, post_id){
       this.$axios.put(`/api/event/${event_id}/forum/posts/${post_id}/admin`, {
-        pinned: true
+        post: {
+          pinned: true
+        }
       }).then(res => {
         if(res.data && res.data.success){
           console.log("Pinned");
         }
         this.$router.go(this.$route.name)
-      })
+      }).catch(e => console.log)
+    },
+    unpinPost(event_id, post_id){
+      this.$axios.put(`/api/event/${event_id}/forum/posts/${post_id}/admin`, {
+        post: {
+          pinned: false
+        }
+      }).then(res => {
+        if(res.data && res.data.success){
+          console.log("Pinned");
+        }
+        this.$router.go(this.$route.name)
+      }).catch(e => console.log)
     },
     formatDate(d) {
       return moment(d).fromNow();
@@ -218,5 +233,8 @@ export default {
     font-size: 22px;
     color: #1e1e1e;
   }
+}
+.rotate-180 {
+  transform: rotate(180deg);
 }
 </style>
