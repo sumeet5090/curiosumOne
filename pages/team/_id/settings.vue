@@ -163,8 +163,8 @@
                 </div>
               </div>
               <b-form @reset="onReset" @submit.prevent>
-                <b-form-group id="form-teamname" label="Team Name:" label-for="form-teamname--input">
-                  <base-input id="form-teamname--input" placeholder="Enter team name" required type="text" v-model="team.team_name"></base-input>
+                <b-form-group id="form-teamname" label="Team Name:" label-for="form-teamname--input" description="<span class='text-danger'>To change the team name, captain should send an email at <strong class='text-primary'>info@curiosumtech.in</strong> containing the previous name and the current name. We'll get back to you as soon as possible.</span>">
+                  <base-input disabled id="form-teamname--input" placeholder="Enter team name" required type="text" :value="team.team_name"></base-input>
                 </b-form-group>
                 <b-form-group id="form-website-url" label="Social:">
                   <div class="row">

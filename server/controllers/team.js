@@ -699,8 +699,10 @@ const removeAlumnus = async function (req, res) {
 const updateTeam = async function (req, res) {
   // Put request
   let id = req.params.id
+  let body = req.body
+  let {team_name, ...team} = body
   try {
-    let team = await Team.findOneAndUpdate({ _id: id }, req.body, { new: true })
+    let team = await Team.findOneAndUpdate({ _id: id }, team, { new: true })
     if (!team) {
       return Response.success(res, { message: "Couldn't update team." }, 204)
     }
