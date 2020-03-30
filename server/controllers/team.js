@@ -140,7 +140,7 @@ const getOneMini = async function (req, res) {
 const getOne = async function (req, res) {
   try {
     let id = req.params.id
-    let team = await Team.findOne({ _id: id }).populate(['users', 'events', 'alumnus', 'static_schedules']).exec()
+    let team = await Team.findOne({ _id: id }).populate(['users', 'events', 'alumnus', 'static_schedules', 'alumnusCandidates']).exec()
     if (!team) {
       return Response.failed(res, { message: "No such team found." })
     }
@@ -642,6 +642,27 @@ const addAlumnus = async function (req, res) {
   return Response.failed(res, { message: "Team not found." })
 }
 
+
+const actionAlumnus = async function (req, res) {
+  let id = req.params.id, team, action = req.body.action, candidate = req.body.candidate;
+  team = await Team.findOne( { _id: id });
+  if (team) {
+    team.alumnusCandidates.pull(candidate._id);
+    const removeMember = await team.save();
+    if (action === 'accept') {
+      team.alumnus.push(candidate._id);
+      const savedTeam = await team.save();
+      if(savedTeam) {
+        return Response.success(res, { message: `Accepted`, added: true })
+      }
+    }
+    if (removeMember) {
+      return Response.success(res, { message: "Removed.", removed: true })
+    }
+  }
+  return Response.failed(res, { message: "Team not found." })
+}
+
 const removeMembers = async function (req, res) {
   let team_id = req.params.id, user_id = req.params.user_id, user, team, updatedTeam, updatedUser
   try {
@@ -923,5 +944,6 @@ module.exports = {
   updateTeam,
   updateTeamsFromCSV,
   changeCaptain,
-  deleteTeam
+  deleteTeam,
+  actionAlumnus
 }

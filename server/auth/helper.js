@@ -131,7 +131,7 @@ const linkSocialToAccount = async (opts) => {
     }
   }
   else {
-    let search = {}
+    let search = {};
     search[`socialLinks.${provider}`] = profile.id
     try {
       let existingUser = await User.findOne(search)

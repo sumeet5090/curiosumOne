@@ -109,9 +109,9 @@ export default {
       try {
         this.success_msg = null;
         this.errors = [];
-        let url = `/api/event/${this.selectedEvent}/create/${
+        let url = `/api/event/${this.selectedEvent}/tech-updates/${
           this.selectedTeam
-        }/techupdate`;
+        }`;
         if (this.validatedInputs()) {
           let res = await this.postReq({
             url: url,
@@ -131,7 +131,7 @@ export default {
             this.onReset();
           } else {
             this.showError(res.message);
-            this.onReset();
+          //  this.onReset();
           }
         } else {
           this.showError("Enter all fields.");

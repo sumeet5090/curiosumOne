@@ -22,13 +22,14 @@ router.get('/verify/:nnid', helper.isAuthenticated, TeamController.verifyInviteL
 router.post('/create', helper.isAuthenticated, TeamController.create)
 router.post('/:id/add/members', helper.isCaptainOrAdmin(), TeamController.addMembers)
 router.post('/:id/add/alumnus', helper.isCaptainOrAdmin(), TeamController.addAlumnus)
+router.post('/:id/add/action-alumnus', helper.isCaptainOrAdmin(), TeamController.actionAlumnus)
 router.post('/:id/remove/member/:user_id', helper.isCaptainOrAdmin(), TeamController.removeMembers)
 router.post('/:id/remove/alumni/:user_id', helper.isCaptainOrAdmin(), TeamController.removeAlumnus)
 router.post('/:id/register/event/:event_id', helper.isCaptainOrAdmin(), TeamController.linkTeamAndEvent)
 router.post('/:id/register/user/:username', helper.isCaptainOrAdmin(), TeamController.linkTeamAndUser)
 router.post('/:id/register/car/:car_id', helper.allowStaff, TeamController.linkTeamAndCar)
 router.post('/:id/unlink/event/:event_id', helper.allowStaff, TeamController.unlinkTeamAndEvent)
-router.post('/update/csv', helper.allowStaff, TeamController.updateTeamsFromCSV)
+router.post('/update/csv', helper.allowStaff, TeamController.updateTeamsFromCSV);
 // PUT
 router.put('/:id', helper.isCaptainOrAdmin(), TeamController.updateTeam)
 router.put('/:id/captain', helper.isCaptainOrAdmin(), TeamController.changeCaptain)

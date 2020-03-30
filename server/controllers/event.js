@@ -40,6 +40,44 @@ const getAllEvents = async (req, res) => {
     return res.sendStatus(500)
   }
 }
+
+const getCurrentEvents = async (req, res) => {
+  try {
+    const date = new Date();
+    let events = await Event.find({ start_date: {$gte: date } }).sort({ start_date: 'descending' }).populate('organizers').exec()
+    if (events.length > 0) {
+      return Response.success(res, {
+        events: events
+      })
+    }
+    return Response.failed(res, {
+      message: "No events found."
+    })
+  } catch (error) {
+    console.log(error)
+    return res.sendStatus(500)
+  }
+}
+
+
+const getSpecialEvent = async (req, res) => {
+  try {
+    const name = 'Formula Bharat 2020';
+    let event = await Event.findOne({ name: name }).exec()
+    if (event) {
+      return Response.success(res, {
+        event: event
+      })
+    }
+    return Response.failed(res, {
+      message: "No event found."
+    })
+  } catch (error) {
+    console.log(error)
+    return res.sendStatus(500)
+  }
+}
+
 const getOneEvent = async (req, res) => {
   try {
     let id = req.params.id,
@@ -61,6 +99,8 @@ const getOneEvent = async (req, res) => {
     return res.sendStatus(500)
   }
 }
+
+
 const getOneEventByName = async (req, res) => {
   try {
     let event = await Event.findOne({ event_short: req.params.event_name })
@@ -978,6 +1018,7 @@ const unlinkTeamAndEvent = async (req, res) => {
 
 module.exports = {
   getAllEvents,
+  getCurrentEvents,
   getOneEvent,
   getOneEventByName,
   getTeamForEvent,
@@ -985,6 +1026,7 @@ module.exports = {
   getAllEventsByCSV,
   getCarsCSV,
   getAllCars,
+  getSpecialEvent,
   // getAnnouncementsForEvent,
   // getOneAnnouncement,
   // getOneTechupdate,

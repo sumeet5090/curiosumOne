@@ -21,7 +21,11 @@ let UserSchema = Schema({
     type: String,
     lowercase: true,
     trim: true,
-    select: false,
+    // select: false,
+  },
+  phone_parts: {
+    code: String,
+    number: String
   },
   first_name: {
     type: String,
@@ -96,7 +100,82 @@ let UserSchema = Schema({
       type: Boolean,
       default: false
     },
-  }]
+  }],
+
+  volunteerFields: {
+    currentPosition: String,
+    currentWorkplace: String,
+    highestLvl: String,
+    postalAddress: String,
+    claimAlmusStatus: {
+      type: Schema.Types.ObjectId,
+      ref: 'Team'
+    },
+    positionInterestedIn: {
+      type: String,
+      enum: ['Ground Volunteer', 'Event Control', 'Registration', 'Junior Tech - Combustion', 'Junior Tech - Electric', 'Junior Tech - Electric', 'Junior Tech - Hot Pits', 'Design Judge', 'Business Judge', 'Cost Judge', 'Dynamics - Track & Timing'],
+    }
+  },
+
+  // new fields
+  infoSubmited: Boolean,
+  userType: {
+    type: String,
+    enum: ['Student', 'Faculty'],
+  },
+  roleOnTeam: {
+    type: String,
+  },
+  yearOfStudy: {
+    type: String,
+  },
+  programOFStudy: {
+    type: String,
+  },
+  eventOfParticipation: {
+    type: Number,
+    ref: 'Event'
+  },
+  eventParticipated: [{
+    type: Number,
+    ref: 'Event'
+  }],
+  formulaBharatDetails: {
+    fullName: String,
+    age: {
+      value: Number,
+      file: String
+    },
+    gender: {
+      type: String,
+      enum: ['Male', 'Female', 'Other'],
+    },
+    dietaryInformation: {
+      type: String,
+      enum: ['Vegetarian', 'Non-Vegetarian'],
+    },
+    emergencyContactDetails: {
+      contactName: String,
+      contactPhoneNumber: String,
+      phone_parts: {
+        code: String,
+        number: String
+      },
+    },
+    medicalInsurance: {
+      name: String,
+      number: String,
+      file: String,
+    },
+    ifDesignatedDriver: {
+      answer: Boolean,
+      file: String
+    },
+    individualAgree: String
+  }
+
+
+
 }, {
     timestamps: true
   })
@@ -104,7 +183,7 @@ let UserSchema = Schema({
 function strip(str) {
   return str.replace(/^\s+|\s+$/g, '');
 }
-async function isUnique(username){ 
+async function isUnique(username){
   try {
     let notUnique = await mongoose.models['User'].findOne({username: username})
     if(notUnique){

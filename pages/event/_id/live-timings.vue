@@ -52,14 +52,14 @@
       <b-row class="justify-content-center">
         <div class="col-12">
           <b-table :fields="fields" :items="event.live_timings" :sort-by.sync="table.sortBy" :sort-compare="sortCompareAdvanced" :sort-desc="table.sortDesc" bordered hover outlined responsive small class="font-md-small">
-            <template slot="team_id.category" slot-scope="data">
+            <template slot="team_id.cars.category" slot-scope="data">
               <div class="icon-container text-center">
-                <img class="img-thumbnail icon-category" src="@/assets/images/icons/category/combustion.svg" title="Combustion" v-b-tooltip.hover.bottom v-if="data.item.team_id.category == 'combustion'">
-                <img class="img-thumbnail icon-category" src="@/assets/images/icons/category/electric.svg" title="Electric" v-b-tooltip.hover.bottom v-if="data.item.team_id.category == 'electric'">
+                <img class="img-thumbnail icon-category" src="@/assets/images/icons/category/combustion.svg" title="Combustion" v-b-tooltip.hover.bottom v-if="data.item.team_id.cars[0].category == 'combustion'">
+                <img class="img-thumbnail icon-category" src="@/assets/images/icons/category/electric.svg" title="Electric" v-b-tooltip.hover.bottom v-if="data.item.team_id.cars[0].category == 'electric'">
               </div>
             </template>
-            <template slot="team_id.car.car_number" slot-scope="data">
-              <div class="text-center px-0">{{data.item.team_id.car.car_number}}</div>
+            <template slot="team_id.cars" slot-scope="data">
+              <div class="text-center px-0">{{data.item.team_id.cars[0].car_number}}</div>
             </template>
             <template slot="team_id.team_name" slot-scope="data">
               <div class="text-center px-1">{{data.item.team_id.team_name}}</div>
@@ -74,8 +74,43 @@
               <div class="text-center px-0">{{data.item.lap_number}}</div>
             </template>
             <template slot="lap_time" slot-scope="data">
+
+ <!--               <div v-if="((data.item.event_name === 'Autocross') && (data.item.lap_time == combmaxnumauto) && (data.item.team_id.cars[0].category === 'combustion')) || ((data.item.event_name === 'Autocross') && (data.item.lap_time == elecmaxnumauto) && (data.item.team_id.cars[0].category === 'electric'))">
+              <div class="text-center px-0"><font>{{data.item.lap_time}}</font></div>
+              </div>  -->
+
+             <div v-if="((data.item.event_name === 'Autocross') && (data.item.lap_time == combminnumauto) && (data.item.team_id.cars[0].category === 'combustion')) || ((data.item.event_name === 'Autocross') && (data.item.lap_time == elecminnumauto) && (data.item.team_id.cars[0].category === 'electric'))">
+               <div class="text-center px-0"><p style="color:limegreen;">{{data.item.lap_time}}</p></div>
+               </div>
+
+        <!--      <div v-else-if="((data.item.event_name === 'Skid Pad') && (data.item.lap_time == combmaxnumskid) && (data.item.team_id.cars[0].category === 'combustion')) || ((data.item.event_name === 'Skid Pad') && (data.item.lap_time == elecmaxnumskid) && (data.item.team_id.cars[0].category === 'electric'))">
+                <div class="text-center px-0"><font>{{data.item.lap_time}}</font></div>
+                </div>   -->
+       
+               <div v-else-if="((data.item.event_name === 'Skid Pad') && (data.item.lap_time == combminnumskid) && (data.item.team_id.cars[0].category === 'combustion')) || ((data.item.event_name === 'Skid Pad') && (data.item.lap_time == elecminnumskid) && (data.item.team_id.cars[0].category === 'electric'))">
+                 <div class="text-center px-0"><p style="color:limegreen;">{{data.item.lap_time}}</p></div>
+                 </div>
+
+            <!--    <div v-else-if="((data.item.event_name === 'Acceleration') && (data.item.lap_time == combmaxnumacc) && (data.item.team_id.cars[0].category === 'combustion')) || ((data.item.event_name === 'Acceleration') && (data.item.lap_time == elecmaxnumacc) && (data.item.team_id.cars[0].category === 'electric'))">
+                  <div class="text-center px-0"><font>{{data.item.lap_time}}</font></div>
+                  </div>  -->
+
+                 <div v-else-if="((data.item.event_name === 'Acceleration') && (data.item.lap_time == combminnumacc) && (data.item.team_id.cars[0].category === 'combustion')) || ((data.item.event_name === 'Acceleration') && (data.item.lap_time == elecminnumacc) && (data.item.team_id.cars[0].category === 'electric'))">
+                  <div class="text-center px-0"><p style="color:limegreen;">{{data.item.lap_time}}</p></div>
+                  </div>
+
+             <!--     <div v-else-if="((data.item.event_name === 'Endurance') && (data.item.lap_time == combmaxnumend) && (data.item.team_id.cars[0].category === 'combustion')) || ((data.item.event_name === 'Endurance') && (data.item.lap_time == elecmaxnumend) && (data.item.team_id.cars[0].category === 'electric'))">
+                   <div class="text-center px-0"><font>{{data.item.lap_time}}</font></div>
+                   </div>  -->
+
+                 <div v-else-if="((data.item.event_name === 'Endurance') && (data.item.lap_time == combminnumend) && (data.item.team_id.cars[0].category === 'combustion')) || ((data.item.event_name === 'Endurance') && (data.item.lap_time == elecminnumend) && (data.item.team_id.cars[0].category === 'electric'))">
+                   <div class="text-center px-0"><p style="color:limegreen;">{{data.item.lap_time}}</p></div>
+                   </div>    
+
+              <div v-else>
               <div class="text-center px-0">{{data.item.lap_time}}</div>
-            </template>
+              </div>
+             </template>
             <template slot="driver_initial" slot-scope="data">
               <div class="text-center px-0">{{data.item.driver_initial}}</div>
             </template>
@@ -98,8 +133,26 @@ import { setInterval } from 'timers';
 export default {
   data() {
     return {
+     combmaxnumauto: null,
+     combminnumauto: null,
+     combmaxnumskid: null,
+     combminnumskid: null,
+     combmaxnumacc: null,
+     combminnumacc: null,
+     combmaxnumend: null,
+     combminnumend: null,
+     elecmaxnumauto: null,
+     elecminnumauto: null,
+     elecmaxnumskid: null,
+     elecminnumskid: null,
+     elecmaxnumacc: null,
+     elecminnumacc: null,
+     elecmaxnumend: null,
+     elecminnumend: null,
+
+
       pagination: {
-        sortBy: "team_id.car.car_number"
+//        sortBy: "team_id.car.car_number"
       },
       editModalActive: false,
       deleteModalActive: false,
@@ -141,13 +194,13 @@ export default {
       fields: [
         {
           label: "⠀",
-          key: "team_id.category",
+          key: "team_id.cars.category",
           sortable: true
         },
         {
           label: " ",
-          key: "team_id.car.car_number",
-          sortable: true
+          key: "team_id.cars",
+         // sortable: true
         },
         {
           label: " ",
@@ -165,7 +218,7 @@ export default {
           sortable: true
         },
         {
-          label: "Lap #",
+          label: "Run #",
           key: "lap_number",
           sortable: true
         },
@@ -190,7 +243,7 @@ export default {
       success_msg: "",
       showDismissibleAlert: false,
       table: {
-        sortBy: "team_id.car.car_number",
+  //      sortBy: "team_id.car.car_number",
         sortDesc: false,
         sortDirection: "asc"
       },
@@ -243,7 +296,7 @@ export default {
           updateItem.lap_time &&
           updateItem.event_name.length >= 0
         ) {
-          let url = `/api/event/${this.event._id}/livetiming/${updateItem._id}`,
+          let url = `/api/event/${this.event._id}/live-timings/${updateItem._id}`,
             body = {
               event_name: updateItem.event_name,
               lap_number: updateItem.lap_number,
@@ -262,6 +315,7 @@ export default {
                   console.log("Found event, updated?");
                   Object.keys(updateItem).forEach(key => {
                     this.event.live_timings[id][key] = updateItem[key];
+                     this.$router.go();
                   });
                 }
               });
@@ -281,10 +335,11 @@ export default {
       this.errors = []
       let deleteItem = this.selectedRowDelete;
       if (deleteItem._id && this.event._id) {
-        let url = `/api/event/${this.event._id}/livetiming/${deleteItem._id}`;
+        let url = `/api/event/${this.event._id}/live-timings/${deleteItem._id}`;
         let res = await this.delReq({ url });
         if (res.success) {
           this.success_msg = res.message || "Deleted Live timing."
+          this.$router.go();
         } else {
           this.showErr(res.message)
         }
@@ -314,11 +369,104 @@ export default {
     async liveTiming() {
       try {
         let res = await this.getReq({
-          url: `/api/event/${this.$route.params.id}/livetimings/`
+          url: `/api/event/${this.$route.params.id}/live-timings`
         });
         if (res.success) {
+           
+           function victry(arr) {
+          arr.sort(function(a, b) {
+          var nums1 = a.split(".");
+          var nums2 = b.split(".");
+          for(var i = 0; i < nums1.length; i++) {
+          if(nums2[i]) {
+          if(nums1[i] !== nums2[i]) {
+          return nums1[i] - nums2[i];
+          }
+          } else {
+          return 1;
+          }
+       }
+     });
+       return arr;
+    }
+
+
           this.event = res.event;
-        } else {
+          let arrskid = [];
+          let arrskidtime = [];
+          let arrskidtime1 = [];
+          let arrauto = [];
+          let arrautotime = [];
+          let arrautotime1 = [];
+          let arracc = [];
+          let arracctime = [];
+          let arracctime1 = [];
+          let arrend = [];
+          let arrendtime = [];
+          let arrendtime1 = [];
+          let elecarrskid = [];
+          let elecarrskidtime = [];
+          let elecarrskidtime1 = [];
+          let elecarrauto = [];
+          let elecarrautotime = [];
+          let elecarrautotime1 = [];
+          let elecarracc = [];
+          let elecarracctime = [];
+          let elecarracctime1 = [];
+          let elecarrend = [];
+          let elecarrendtime = [];
+          let elecarrendtime1 = [];
+          let arr2 = res.event.live_timings;
+          let arrtest = [];
+
+          arrskid = arr2.filter(c => (c.event_name === "Skid Pad" && c.team_id.cars[0].category === "combustion"))
+          arrauto = arr2.filter(a => (a.event_name === "Autocross" && a.team_id.cars[0].category === "combustion"));
+          arracc = arr2.filter(e => (e.event_name === "Acceleration" && e.team_id.cars[0].category === "combustion"));
+          arrend = arr2.filter(f => (f.event_name === "Endurance" && f.team_id.cars[0].category === "combustion"));
+          arrskidtime = arrskid.map(d => d.lap_time)
+          arrskidtime1 = victry(arrskidtime);
+          arrautotime = arrauto.map(b => b.lap_time)
+          arrautotime1 = victry(arrautotime)
+          arracctime = arracc.map(g => g.lap_time)
+          arracctime1 = victry(arracctime);
+          arrendtime = arrend.map(h => h.lap_time)
+          arrendtime1 = victry(arrendtime);
+          this.combmaxnumskid = arrskidtime1[arrskidtime1.length-1];
+          this.combminnumskid = arrskidtime1[0];
+          this.combmaxnumauto = arrautotime1[arrautotime1.length-1];
+          this.combminnumauto = arrautotime1[0];
+          this.combmaxnumacc = arracctime1[arracctime1.length-1];
+          this.combminnumacc = arracctime1[0];
+          this.combmaxnumend = arrendtime1[arrendtime1.length-1];
+          this.combminnumend = arrendtime1[0];
+          console.log(arrendtime1);
+          
+          console.log(this.combminnumend);
+          
+
+          elecarrskid = arr2.filter(k => (k.event_name === "Skid Pad" && k.team_id.cars[0].category === "electric"))
+          elecarrauto = arr2.filter(l => (l.event_name === "Autocross" && l.team_id.cars[0].category === "electric"));
+          elecarracc = arr2.filter(m => (m.event_name === "Acceleration" && m.team_id.cars[0].category === "electric"));
+          elecarrend = arr2.filter(n => (n.event_name === "Endurance" && n.team_id.cars[0].category === "electric"));
+          elecarrskidtime = elecarrskid.map(o => o.lap_time)
+          elecarrskidtime1 = victry(elecarrskidtime)
+          elecarrautotime = elecarrauto.map(p => p.lap_time)
+          elecarrautotime1 = victry(elecarrautotime)
+          elecarracctime = elecarracc.map(q => q.lap_time)
+          elecarracctime1 = victry(elecarracctime)
+          elecarrendtime = elecarrend.map(r => r.lap_time)
+          elecarrendtime1 = victry(elecarrendtime)
+          this.elecmaxnumskid = elecarrskidtime1[elecarrskidtime1.length-1];
+          this.elecminnumskid = elecarrskidtime1[0];
+          this.elecmaxnumauto = elecarrautotime1[elecarrautotime1.length-1];
+          this.elecminnumauto = elecarrautotime1[0];
+          this.elecmaxnumacc = elecarracctime1[elecarracctime1.length-1];
+          this.elecminnumacc = elecarracctime1[0];
+          this.elecmaxnumend = elecarrendtime1[elecarrendtime1.length-1];
+          this.elecminnumend = elecarrendtime1[0];
+          
+        } 
+        else {
           this.event = {};
         }
       } catch (err) {
@@ -398,4 +546,10 @@ th.sorting::after {
 th {
   text-align: center !important;
 }
+
+font {
+color: red;
+}
+
+
 </style>

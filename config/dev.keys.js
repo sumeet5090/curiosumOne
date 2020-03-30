@@ -4,12 +4,12 @@ let keys = {
         port: parseInt(process.env.DB_PORT) || 27017,
         name: process.env.DB_NAME || 'website_mec_test',
         options: {
-            user: process.env.DB_USER || "frozen",
-			pass: process.env.DB_PASSWORD || "root",
+            // user: process.env.DB_USER || "frozen",
+			      // pass: process.env.DB_PASSWORD || "root",
             useNewUrlParser: true,
             useFindAndModify: false,
             useCreateIndex: true,
-            authSource: process.env.DB_AUTH_DATABASE
+            // authSource: process.env.DB_AUTH_DATABASE
         }
     },
     google: {
@@ -28,6 +28,7 @@ let keys = {
         maxAge: 604800000
     }
 }
-keys.db.uri = `mongodb://${keys.db.host}:${keys.db.port}/${keys.db.name}?authSource=${keys.db.options.authSource}`
+// keys.db.uri = `mongodb://${keys.db.host}:${keys.db.port}/${keys.db.name}?authSource=${keys.db.options.authSource}`
+keys.db.uri = `mongodb://${keys.db.host}:${keys.db.port}/${keys.db.name}`
 
 module.exports = keys

@@ -115,10 +115,10 @@ export default {
         event_short: null,
         event_past: false,
         show_block: {
-          official_website: true,
+          official_website: false,
           teams: true,
-          live_announcements: true,
-          rules: false,
+          live_announcements: false,
+          rules: true,
           schedule: false,
           tech_inspection: false,
           live_timings: false,

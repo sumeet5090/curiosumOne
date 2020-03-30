@@ -83,12 +83,12 @@ export default {
 };
 </script>
 
-<style lang="scss" >
-table.b-table.b-table-stacked > tbody > tr > [data-label]::before {
-  text-align: initial !important;
-}
+<style lang="scss">
+  table.b-table.b-table-stacked > tbody > tr > [data-label]::before {
+    text-align: initial !important;
+  }
 
-table.b-table.b-table-stacked > tbody > tr > :first-child {
-    border-top-width: 0.0625rem;
-}
+  table.b-table.b-table-stacked > tbody > tr > :first-child {
+      border-top-width: 0.0625rem;
+  }
 </style>

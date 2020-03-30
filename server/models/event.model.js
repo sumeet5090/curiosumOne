@@ -107,6 +107,35 @@ const EventSchema = Schema({
     schedule: { type: Boolean, default: false },
     tech_inspection: { type: Boolean, default: false },
     live_timings: { type: Boolean, default: false },
+  },
+  details: {
+    fullName: String,
+    age: {
+      value: Number,
+      file: String
+    },
+    gender: {
+      type: String,
+      enum: ['Male', 'Female', 'Other'],
+    },
+    dietaryInformation: {
+      type: String,
+      enum: ['Vegetarian', 'Non-Vegetarian'],
+    },
+    emergencyContactDetails: {
+      contactName: String,
+      contactPhoneNumber: String,
+    },
+    medicalInsurance: {
+      name: String,
+      number: Number,
+      file: String,
+    },
+    ifDesignatedDriver: {
+      answer: Boolean,
+      file: String
+    },
+    individualAgree: String
   }
 }, { timestamps: true })
 

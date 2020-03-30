@@ -93,7 +93,7 @@ export default {
         this.success_msg = null;
         this.showDismissibleAlert = false;
         this.errors = [];
-        let url = `/api/event/1/announcement/${this.params.id}`;
+        let url = `/api/event/6/announcements/${this.params.id}`;
         console.log(url);
         let res = await this.putReq({
           url: url,
@@ -121,7 +121,7 @@ export default {
     async getAnnouncement() {
       try {
         let res = await this.getReq({
-          url: `/api/event/1/announcements/${this.params.id}`
+          url: `/api/event/6/announcements/${this.params.id}`
         });
         if (res) {
           if (res.success) {

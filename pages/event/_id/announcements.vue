@@ -141,7 +141,7 @@ export default {
       this.errors = [];
       let deleteItem = this.selectedRow;
       if (this.event._id && deleteItem._id) {
-        let url = `/api/event/${this.event._id}/announcement/${deleteItem._id}`;
+        let url = `/api/event/${this.event._id}/announcements/${deleteItem._id}`;
         try {
           let res = await this.delReq({
             url

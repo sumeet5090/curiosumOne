@@ -15,6 +15,7 @@ const state = {
   events: [],
   teams: []
 }
+
 const mutations = {
   modalShowNotification(state) {
     state.modals.notifications = !state.modals.notifications;
@@ -48,7 +49,8 @@ const mutations = {
   SET_TEAM: function (state, team) {
     state.team = team
   }
-}
+};
+
 const actions = {
   nuxtServerInit({ commit }, { req }) {
     if (req.isAuthenticated()) {
@@ -145,7 +147,19 @@ const actions = {
   },
   async putReq({ }, params) {
     try {
-      let { data } = await this.$axios.put(params.url, params.body)
+      let { data } = await this.$axios.put(params.url, params.body,{});
+      return data
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  async uploadAndReturnFile({ }, params) {
+    try {
+      let { data } = await this.$axios.post(params.url, params.body,{
+       headers: {
+           'Content-Type': 'multipart/form-data'
+         }
+      });
       return data
     } catch (error) {
       console.log(error)
@@ -159,10 +173,12 @@ const actions = {
       console.log(error)
     }
   }
-}
+};
+
 const getters = {
   currentUser: function (state) {
     if (state.isAuthenticated) {
+      // console.log('user',state.user)
       return state.user
     }
     return null
@@ -171,7 +187,7 @@ const getters = {
     if (state.isAuthenticated) {
       if (state.user.role.indexOf('admin') > -1) {
         return true
-      } 
+      }
       if(state.user.role.indexOf('staff') > -1) {
         return true
       }
@@ -185,7 +201,7 @@ const getters = {
   events: state => state.events,
   teams: state => state.teams,
   getTeam: state => state.team
-}
+};
 
 const createStore = () => {
   return new Vuex.Store({

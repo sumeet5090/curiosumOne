@@ -89,7 +89,7 @@ export default {
         this.success_msg = null;
         this.showDismissibleAlert = false;
         this.errors = [];
-        let url = `/api/event/${this.selectedEvent}/create/announcement`;
+        let url = `/api/event/${this.selectedEvent}/announcements`;
         if(this.selectedEvent) {
           let res = await this.postReq({
             url: url,

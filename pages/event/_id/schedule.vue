@@ -223,7 +223,7 @@ export default {
       let updateEdit = this.selectedRowEdit;
       if (this.event._id && updateEdit._id) {
         if (updateEdit.day_number && updateEdit.day) {
-          let url = `/api/event/${this.event._id}/schedule/${updateEdit._id}`,
+          let url = `/api/event/${this.event._id}/schedules/${updateEdit._id}`,
             body = {
               day_number: updateEdit.day_number,
               day: updateEdit.day,
@@ -274,7 +274,7 @@ export default {
       this.errors = [];
       let updateEdit = this.selectedRowDelete;
       if (this.event._id && updateEdit._id) {
-        let url = `/api/event/${this.event._id}/schedule/${updateEdit._id}`;
+        let url = `/api/event/${this.event._id}/schedules/${updateEdit._id}`;
         try {
           let res = await this.delReq({
             url

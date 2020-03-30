@@ -110,9 +110,9 @@ export default {
       try {
         this.success_msg = null;
         this.errors = [];
-        let url = `/api/event/${this.selectedEvent}/create/${
+        let url = `/api/event/${this.selectedEvent}/live-timings/${
           this.selectedTeam
-        }/livetiming`;
+        }`;
         let res = await this.postReq({
           url: url,
           body: {
@@ -124,6 +124,7 @@ export default {
         });
         if (res.success) {
           this.success_msg = res.message;
+          this.$router.go();
           this.onReset();
         } else {
           this.errors.push(res.message);

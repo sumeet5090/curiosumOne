@@ -2,6 +2,13 @@ const Event = require('../models/event.model')
 const Response = require('../services/response')
 const Team = require('../models/team.model')
 const TechUpdate = require('../models/tech-update.model')
+var ObjectId = require('mongoose').Types.ObjectId;
+const Car = require('./../models/car.model')
+const path = require('path')
+
+
+
+
 
 const getOne = async (req, res) => {
   try {
@@ -33,7 +40,7 @@ const getAll = async (req, res) => {
     if (parseInt(id) == id) {
       $or.push({ _id: id })
     }
-    let event = await Event.findOne({ $or: $or }).populate({ path: 'tech_updates', populate: { path: 'team', populate: { path: 'car', select: 'car_number' } } }).exec()
+    let event = await Event.findOne({ $or: $or }).populate({ path: 'tech_updates', populate: { path: 'team', populate: { path: 'cars', select: ['car_number', 'category'] } } }).exec()
     if (event) {
       return Response.success(res, {
         event: event
@@ -50,12 +57,19 @@ const create = async (req, res) => {
   try {
     let event = await Event.findOne({ _id: req.params.id })
     let team = await Team.findOne({ _id: req.params.team_id }).populate('car').exec()
-    if (event && team) {
-      let techUpdate = await TechUpdate.findOne({ team: team._id, event: event._id })
+    let car = await Car.findOne({team: new ObjectId(req.params.team_id)})
+
+
+    if (event && team && car) {
+        let techUpdate1 = await TechUpdate.findOne({$and: [{event: event._id}, {team: team._id}]})
+         if (techUpdate1) {
+           return Response.failed(res, { message: "Team is already in tech updates" })
+          }
+
+      let techUpdate = await TechUpdate.findOne({ team: team._id, event: event._id, car: car._id })
       if (techUpdate) {
-        console.log(team.category)
-        techUpdate.accumulator = team.category === 'electric' ? req.body.accumulator : false
-        techUpdate.scrutineering_elec = team.category === 'electric' ? req.body.scrutineering_elec : false
+        techUpdate.accumulator = car.category === 'electric' ? req.body.accumulator : false
+        techUpdate.scrutineering_elec = car.category === 'electric' ? req.body.scrutineering_elec : false
         techUpdate.scrutineering_mech = req.body.scrutineering_mech
         techUpdate.driver_egress = req.body.driver_egress
         techUpdate.tilt = req.body.tilt
@@ -70,8 +84,9 @@ const create = async (req, res) => {
       }
       techUpdate = await new TechUpdate({
         team: team._id,
-        accumulator: team.category === 'electric' ? req.body.accumulator : false,
-        scrutineering_elec: team.category === 'electric' ? req.body.scrutineering_elec : false,
+        car: car._id,
+        accumulator: car.category === 'electric' ? req.body.accumulator : false,
+        scrutineering_elec: car.category === 'electric' ? req.body.scrutineering_elec : false,
         scrutineering_mech: req.body.scrutineering_mech,
         driver_egress: req.body.driver_egress,
         tilt: req.body.tilt,
@@ -109,8 +124,8 @@ const update = async (req, res) => {
   try {
     tech_update = await TechUpdate.findOne({ _id: tu_id }).populate('team').exec()
     if (tech_update) {
-      tech_update.accumulator = tech_update.team.category === 'electric' ? req.body.accumulator : false
-      tech_update.scrutineering_elec = tech_update.team.category === 'electric' ? req.body.scrutineering_elec : false
+      tech_update.accumulator = req.body.accumulator
+      tech_update.scrutineering_elec = req.body.scrutineering_elec
       tech_update.scrutineering_mech = req.body.scrutineering_mech
       tech_update.driver_egress = req.body.driver_egress
       tech_update.tilt = req.body.tilt

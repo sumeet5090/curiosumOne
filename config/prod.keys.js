@@ -4,8 +4,8 @@ let keys = {
         port: parseInt(process.env.DB_PORT) || 27017,
         name: process.env.DB_NAME || 'mobility_eng_portal',
         options: {
-			user: process.env.DB_USER || "frozen",
-			pass: process.env.DB_PASSWORD || "root",
+			user: process.env.DB_USER || "mec_client",
+			pass: process.env.DB_PASSWORD || "someSecureStuff",
             useNewUrlParser: true,
             authSource: process.env.DB_AUTH_DATABASE
 		}

@@ -14,6 +14,8 @@ const techUpdatesCont = require('./../../controllers/tech-update')
 
 // GET
 router.get('/', eventCont.getAllEvents)
+router.get('/current', eventCont.getCurrentEvents)
+router.get('/special', eventCont.getSpecialEvent)
 router.get('/csv', eventCont.getAllEventsByCSV)
 router.get('/all/cars', eventCont.getAllCars)
 router.get('/:id', eventCont.getOneEvent)

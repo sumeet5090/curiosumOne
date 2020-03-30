@@ -16,7 +16,6 @@ module.exports = {
       ...config
     }
   }],
-
   deploy : {
     production : {
       key: '~/.ssh/id_rsa',

@@ -156,19 +156,19 @@ export default {
 </script>
 
 <style lang="scss">
-.facebook-icon {
-  color: rgb(59, 89, 153);
-}
-
-.twitter-icon {
-  color: rgb(29, 161, 242);
-}
-
-.form-control {
-  padding-left: 0.5rem !important;
-
-  &:focus {
-    color: black;
+  .facebook-icon {
+    color: rgb(59, 89, 153);
   }
-}
+
+  .twitter-icon {
+    color: rgb(29, 161, 242);
+  }
+
+  .form-control {
+    padding-left: 0.5rem !important;
+
+    &:focus {
+      color: black;
+    }
+  }
 </style>

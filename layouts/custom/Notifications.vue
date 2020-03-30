@@ -90,10 +90,12 @@ export default {
       try {
         let data = await this.getReq({
           url: `/api/event/fb2019/announcements`
-        })
+        });
+
         if (!data) {
           return;
         }
+
         if (process.browser) {
           if(data.announcements) {
             let previousCount = localStorage.getItem("NotifCount")

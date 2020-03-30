@@ -1,17 +1,19 @@
 const { google } = require('googleapis')
 const User = require('./../models/user.model')
+const Event = require('./../models/event.model')
+const Team = require('./../models/team.model')
 const helper = require('./../auth/helper')
 const Response = require('./../services/response')
 
 const client_id = process.env.GOOGLE_GROUP_CLIENT_ID
 const client_secret = process.env.GOOGLE_GROUP_CLIENT_SECRET
 
-const auth = google.auth.OAuth2(client_id, client_secret)
+const auth =new google.auth.OAuth2(client_id, client_secret)
 
 const admin = google.admin({
   version: "directory_v1",
   auth
-})
+});
 
 const getAllAdmins = async function (req, res) {
   try {
@@ -28,7 +30,8 @@ const getAllAdmins = async function (req, res) {
 
 const getAllVolunteers = async (req, res) => {
   try {
-    let users = await User.find({ role: { $all: ['participant', 'volunteer'], $size: 2} })
+    let users = await User.find({ role: { $all: ['participant', 'volunteer'], $size: 2} });
+    console.log(users);
     if (users) {
       return Response.success(res, { users: users })
     }
@@ -70,8 +73,8 @@ const getAll = async function (req, res) {
 
 const getOne = async function (req, res) {
   try {
-    let id = req.params.id
-    let user = await User.findOne({ _id: id })
+    let id = req.params.id;
+    let user = await User.findOne({ _id: id }).populate('volunteerFields.claimAlmusStatus')
     if (!user) {
       return Response.success(res, { message: "No such user found." })
     }
@@ -83,8 +86,8 @@ const getOne = async function (req, res) {
 
 const getByUsername = async function (req, res) {
   try {
-    let username = req.params.username
-    let user = await User.findOne({ username: username }).populate('team').exec()
+    let username = req.params.username;
+    let user = await User.findOne({ username: username }).populate(['team','volunteerFields.claimAlmusStatus','eventParticipated']).exec();
     if (!user) {
       return Response.success(res, { message: "No such user found." })
     }
@@ -228,14 +231,45 @@ const removeRole = async (req, res) => {
 
 const update = async function (req, res) {
   //  Put request
-  let id = req.user._id
+  let id = req.user._id;
   try {
-    let user = await User.findOneAndUpdate({ _id: id }, req.body, { new: true })
+    let user = await User.findOneAndUpdate({ _id: id }, req.body, { new: true });
+
+    if(req.body.volunteerFields && req.body.volunteerFields.claimAlmusStatus) {
+      const teamId = req.body.volunteerFields.claimAlmusStatus;
+      const oldTeam = await Team.updateMany({
+        alumnusCandidates: {
+          $in: [id]
+        }}, {
+        $pull: {
+          alumnusCandidates: id
+        }});
+      const team = await Team.findOneAndUpdate({
+          _id: teamId,
+          alumnusCandidates: {
+            $nin: [id]
+          }, alumnus: {
+            $nin: [id]
+          }}, {
+          $push: {
+            alumnusCandidates: id
+      }});
+    }
     if (!user) {
       return Response.failed(res, { message: "Couldn't update user." })
     }
+   /* const details = req.body.details;
+   if (details) {
+     console.log(details);
+     const userEvent = await  Event.findOneAndUpdate({ _id: user.eventOfParticipation }, {details});
+     if (!userEvent) {
+       return Response.success(res, { message: "Couldn't update event details." })
+     }
+   }*/
+
     return Response.success(res, { message: "Updated profile.", user })
   } catch (error) {
+    console.log(error)
     return Response.failed(res, { message: "Internal Server Error" }, 500)
   }
 }
@@ -289,4 +323,4 @@ module.exports = {
   update,
   updateId,
   remove,
-}
+};

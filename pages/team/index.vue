@@ -114,6 +114,7 @@
                       <div class="text-center">
                         <img alt="User profile" class="rounded-circle" style="height: 64px; width: 64px; object-fit: cover;" v-lazy="user.profile.picture" />
                         <div class="my-2">
+                          <div  v-b-tooltip.hover title="Submitted participation information" class="submit-info" v-if="isCaptain(userTeam.captain, user._id) && user.infoSubmited"><i class="fa fa-check"></i></div>
                           <router-link :to="'/profile/'+user.username" class="text-primary font-weight-300">{{user.display_name}}</router-link>
                           <div v-if="isCaptain(userTeam.captain, user._id)">
                             <small class="text-muted">Captain</small>
@@ -343,4 +344,18 @@ export default {
 </script>
 
 <style lang="scss">
+  .submit-info{
+    height: 20px;
+    width: 20px;
+    background: #35a035;
+    color: white;
+    border-radius: 50%;
+    font-size: 11px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
 </style>

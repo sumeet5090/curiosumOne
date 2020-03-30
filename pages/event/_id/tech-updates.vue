@@ -5,13 +5,13 @@
       <b-form @reset.prevent="onReset" @submit.prevent>
         <b-form-group v-if="selectedRowEdit._id">
           <div class="container">
-            <span class="row align-items-center" v-if="selectedRowEdit.team.category === 'electric'">
+            <span class="row align-items-center" v-if="selectedRowEdit.team.cars[0].category === 'electric'">
               <base-switch class="mb-1" id="form-accumulator" v-model="selectedRowEdit.accumulator"></base-switch>
               <label class="ml-2 h6" for="form-accumulator">Accumulator</label>
             </span>
           </div>
           <div class="container">
-            <span class="row align-items-center" v-if="selectedRowEdit.team.category === 'electric'">
+            <span class="row align-items-center" v-if="selectedRowEdit.team.cars[0].category === 'electric'">
               <base-switch class="mb-1" id="form-scrutineering_elec" v-model="selectedRowEdit.scrutineering_elec"></base-switch>
               <label class="ml-2 h6" for="form-scrutineering_elec">Scrutineering Electric</label>
             </span>
@@ -47,7 +47,7 @@
             </span>
           </div>
           <div class="container">
-            <span class="row align-items-center">
+            <span class="row align-items-center" v-if="selectedRowEdit.team.cars[0].category === 'electric'">
               <base-switch class="mb-1" id="form-rain" v-model="selectedRowEdit.rain"></base-switch>
               <label class="ml-2 h6" for="form-rain">Rain</label>
             </span>
@@ -86,14 +86,14 @@
     <b-row class="justify-content-center">
       <div class="col-md-10">
         <b-table :fields="fields" :items="event.tech_updates" :sort-by.sync="table.sortBy" :sort-compare="sortCompareAdvanced" :sort-desc="table.sortDesc" bordered class="font-md-small" hover outlined responsive small>
-          <template slot="team.category" slot-scope="data">
+          <template slot="team.cars.category" slot-scope="data">
             <div class="icon-container text-center">
-              <img alt="Combustion" class="img-thumbnail icon-category" src="@/assets/images/icons/category/combustion.svg" title="Combustion" v-b-tooltip.hover.bottom v-if="data.item.team.category == 'combustion'">
-              <img alt="Electric" class="img-thumbnail icon-category" src="@/assets/images/icons/category/electric.svg" title="Electric" v-b-tooltip.hover.bottom v-if="data.item.team.category == 'electric'">
+              <img alt="Combustion" class="img-thumbnail icon-category" src="@/assets/images/icons/category/combustion.svg" title="Combustion" v-b-tooltip.hover.bottom v-if="data.item.team.cars[0].category == 'combustion'">
+              <img alt="Electric" class="img-thumbnail icon-category" src="@/assets/images/icons/category/electric.svg" title="Electric" v-b-tooltip.hover.bottom v-if="data.item.team.cars[0].category == 'electric'">
             </div>
           </template>
-          <template slot="team.car.car_number" slot-scope="data">
-            <div class="text-center px-0">{{data.item.team.car.car_number}}</div>
+          <template slot="team.cars" slot-scope="data">
+            <div class="text-center px-0">{{data.item.team.cars[0].car_number}}</div>
           </template>
           <template slot="team.team_name" slot-scope="data">
             <div class="text-center px-0">
@@ -135,7 +135,7 @@
           </template>
           <template slot="brakes" slot-scope="data">
             <div class="icon-container text-center">
-              <img :class="[{'gray-img': !data.item.brakes}]" alt="Breaks" class="icon-category" src="@/assets/images/icons/tech/brakes.png" title="Breaks" v-b-tooltip.hover.bottom>
+              <img :class="[{'gray-img': !data.item.brakes}]" alt="Brakes" class="icon-category" src="@/assets/images/icons/tech/brakes.png" title="Brakes" v-b-tooltip.hover.bottom>
             </div>
           </template>
           <template slot="rain" slot-scope="data">
@@ -180,20 +180,18 @@ export default {
         _id: null
       },
       table: {
-        sortBy: "team.car.car_number",
         sortDesc: false,
         sortDirection: "asc"
       },
       fields: [
         {
           label: "⠀",
-          key: "team.category",
+          key: "team.cars.category",
           sortable: true
         },
         {
           label: "⠀",
-          key: "team.car.car_number",
-          sortable: true
+          key: "team.cars"
         },
         {
           label: "⠀",
@@ -302,7 +300,7 @@ export default {
       this.errors = [];
       let updateEdit = this.selectedRowEdit;
       if (this.event._id && updateEdit._id) {
-        let url = `/api/event/${this.event._id}/techupdate/${updateEdit._id}`,
+        let url = `/api/event/${this.event._id}/tech-updates/${updateEdit._id}`,
           body = {
             accumulator: updateEdit.accumulator,
             scrutineering_elec: updateEdit.scrutineering_elec,
@@ -324,6 +322,7 @@ export default {
               if (sc._id === updateEdit._id) {
                 Object.keys(updateEdit).forEach(key => {
                   this.event.tech_updates[id][key] = updateEdit[key];
+                  this.$router.go();
                 });
               }
             });
@@ -346,7 +345,7 @@ export default {
       this.errors = [];
       let updateEdit = this.selectedRowDelete;
       if (this.event._id && updateEdit._id) {
-        let url = `/api/event/${this.event._id}/techupdate/${updateEdit._id}`;
+        let url = `/api/event/${this.event._id}/tech-updates/${updateEdit._id}`;
         try {
           let res = await this.delReq({
             url
@@ -392,7 +391,7 @@ export default {
     this.$nextTick(async function() {
       try {
         let res = await this.getReq({
-          url: `/api/event/${this.$route.params.id}/techupdates/`
+          url: `/api/event/${this.$route.params.id}/tech-updates`
         });
         if (res.success) {
           this.event = res.event;

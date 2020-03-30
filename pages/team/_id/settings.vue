@@ -257,6 +257,28 @@
                     </card>
                   </div>
                 </b-row>
+
+                <b-row class="justify-content-center border-top mt-3">
+                  <h4 class="text-capitalize text-primary font-weight-bold">Alumni Candidates</h4>
+                </b-row>
+                <b-row class="justify-content-center">
+                  <b-col :key="alumni.id" lg="3" md="4" v-for="alumni in team.alumnusCandidates">
+                    <card class="team-user-profiles mt-3" no-body tag="article">
+                      <div class="text-center">
+                        <img class="rounded-circle" v-lazy="alumni.profile.picture">
+                        <div class="my-2">
+                          <router-link :to="'/profile/'+alumni.username" class="text-primary font-weight-300">{{alumni.display_name}}</router-link>
+                          <div>
+                            <small @click.prevent="candidateAction(alumni, 'accept')" class="btn btn-sm btn-success btn-outline-success">Accept</small>
+                          </div>
+                          <div>
+                            <small @click.prevent="candidateAction(alumni, 'remove')" class="btn btn-sm btn-danger btn-outline-danger mt-1">Remove</small>
+                          </div>
+                        </div>
+                      </div>
+                    </card>
+                  </b-col>
+                </b-row>
               </b-form>
             </card>
           </div>
@@ -349,6 +371,33 @@ export default {
         });
         if (res.success) {
           this.team = res.team;
+          console.log(this.team);
+        } else {
+          this.showError(res.message);
+        }
+      } catch (error) {
+        console.log(error);
+        this.showError("Internal server error.");
+      }
+    },async candidateAction(candidate, action) {
+      try {
+        let res = await this.postReq({
+          url: `/api/team/${this.params.id}/add/action-alumnus`,
+          body: {
+              candidate,
+              action
+          }
+        });
+        if (res.success) {
+            let candidateToAdd = [];
+            let index = this.team.alumnusCandidates.findIndex(item => item._id === candidate._id);
+            if(index > -1) {
+                candidateToAdd = this.team.alumnusCandidates.splice(index, 1);
+            }
+            console.log(res.added, candidateToAdd)
+            if(res.added && candidateToAdd.length) {
+                this.team.alumnus.push(candidateToAdd[0]);
+            }
         } else {
           this.showError(res.message);
         }

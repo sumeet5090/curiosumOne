@@ -4,7 +4,7 @@ module.exports = {
   success: function (res, data, code) {
     let send_data = { success: true }
     if (typeof data === 'object') send_data = Object.assign(send_data, data) // Merge objects
-    let url, user_id, method = 'GET'
+    let url, user_id, method = 'GET';
     if (res.req) {
       if (res.req.originalUrl) {
         url = res.req.originalUrl
@@ -20,13 +20,13 @@ module.exports = {
     consola.success({
       message: `[${moment(Date.now()).format('LL LTS')}] [${method}] [${url}] [${user_id}]`,
       badge: true
-    })
+    });
     return res.send(send_data)
   },
   failed: function (res, err, code) {
     if (typeof err === 'object' && typeof err.message !== 'undefined') err = err.message
     if (typeof code !== 'undefined') res.statusCode = code
-    let url, user_id, method = 'GET'
+    let url, user_id, method = 'GET';
     if (res.req) {
       if (res.req.originalUrl) {
         url = res.req.originalUrl

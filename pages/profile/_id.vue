@@ -48,6 +48,35 @@
                 </div>
               </div>
             </div>
+            <template v-if="user.role.includes('volunteer') && user.volunteerFields">
+              <div class="mt-5 py-2 border-top text-center" v-if="user.volunteerFields.currentPosition">
+                <div class="row justify-content-center">
+                  <div class="col-lg-9">
+                    <i class="fas fa-briefcase"></i>
+                    <h5>Position at Work / Study</h5>
+                    <p>{{user.volunteerFields.currentPosition}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-5 py-2 border-top text-center" v-if="user.volunteerFields.currentWorkplace">
+                <div class="row justify-content-center">
+                  <div class="col-lg-9">
+                    <i class="fas fa-university"></i>
+                    <h5>Workplace / Institution</h5>
+                    <p>{{user.volunteerFields.currentWorkplace}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-5 py-2 border-top text-center" v-if="user.eventParticipated && user.eventParticipated.length">
+                <div class="row justify-content-center">
+                  <div class="col-lg-9">
+                    <i class="fas fa-calendar-week"></i>
+                    <h5>Events Participated</h5>
+                    <p v-for="event of user.eventParticipated">{{event.name}}</p>
+                  </div>
+                </div>
+              </div>
+            </template>
           </div>
         </card>
       </div>
@@ -64,9 +93,9 @@ export default {
       "currentUser",
       "isAuthenticated"
     ]),
-    isSameUser(){
-      if(this.currentUser){
-        return !!(this.currentUser._id == this.user._id)
+    isSameUser() {
+      if(this.currentUser) {
+        return (this.currentUser._id == this.user._id)
       }
     }
   },
@@ -83,7 +112,7 @@ export default {
         team: data.user.team
       };
     } catch (err) {
-        console.log(err)
+      console.log(err)
       error({
         message: "User not found",
         statusCode: 404
@@ -93,5 +122,4 @@ export default {
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

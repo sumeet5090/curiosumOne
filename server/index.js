@@ -1,5 +1,7 @@
-
+const Response = require('./services/response')
 const express = require('express')
+const multer = require('multer');
+var path = require('path');
 const fileUpload = require('express-fileupload')
 const consola = require('consola')
 require('./prototypes')
@@ -14,7 +16,10 @@ const database = require('./database')
 const session = require('./session')
 const app = express()
 const host = process.env.HOST || 'localhost'
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3000;
+
+
+
 app.set('port', port)
 
 async function start() {
@@ -24,6 +29,28 @@ async function start() {
     const builder = await new Builder(nuxt)
     await builder.build()
   }
+
+  const storage = multer.diskStorage(
+    {
+      destination: './static/uploads/',
+      filename: function ( req, file, cb ) {
+        //req.body is empty...
+        //How could I get the new_file_name property sent from client here?
+        cb( null,  Date.now()+ '-' +file.originalname);
+      }
+    }
+  );
+
+  const upload = multer( { storage: storage } );
+  app.use(express.static('./uploads'));
+
+  app.post('/uploadfile', upload.single('file'), (req, res, next) => {
+    const file = req.file;
+    if (!file) {
+      return Response.failed(res, { message: "Couldn't not find file." })
+    }
+    return Response.success(res, { message: "Uploaded file.", file })
+  });
   // Body parser
   app.use(express.urlencoded({ extended: false }))
   app.use(express.json())

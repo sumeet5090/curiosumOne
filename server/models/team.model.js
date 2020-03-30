@@ -4,7 +4,11 @@ const ObjectId = Schema.Types.ObjectId
 let TeamSchema = Schema({
   alumnus: [{
     type: ObjectId,
-    ref: "User"
+    ref: "User",
+  }],
+  alumnusCandidates: [{
+      type: ObjectId,
+      ref: "User",
   }],
   bio: {
     type: String,
@@ -223,4 +227,7 @@ let newTeamSchema = Schema({
     timestamps: true
   }
 );
+
+
+
 module.exports = mongoose.model("Team", TeamSchema)

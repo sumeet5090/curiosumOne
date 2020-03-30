@@ -9,14 +9,12 @@ module.exports = function(app) {
         return done(null, user._id)
     })
 
-    passport.deserializeUser(function(id, done){
-        User.findOne({_id: id}, (err, user) => {
-            if(err)
-                return done(err, false)
-            if(!user || user.status !== 1)
-                return done(null, false)
-            return done(null, user)
-        })        
-    })
+    passport.deserializeUser(async function(id, done){
+        const user = await User.findOne({_id: id}).populate('volunteerFields.claimAlmusStatus');
+        if(!user || user.status !== 1) {
+          return done(null, false)
+        }
+        return done(null, user);
+    });
     require('./strategies/google')(passport)
 }

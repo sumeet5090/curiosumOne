@@ -33,8 +33,8 @@
                     <div class="container">
                       <div class="row header-font">
                         <div class="col-lg-8">
-                          <router-link :to="{name: 'event-id', params: {id: event.event_short}}" class="display-3 text-uppercase text-dark">{{event.name}}</router-link>
-                        </div>
+                          <a :href="url" target="_blank" class="display-3 text-uppercase text-dark">{{event.name}}</a>
+                       </div>
                         <div class="col-lg-4">
                           <div class="py-auto text-dark">{{formatDate(event.start_date, event.end_date)}}</div>
                           <div class="py-auto text-dark">{{event.venue}}</div>
@@ -58,7 +58,32 @@
                     <icon class="mb-3 i-curiosum" name="fas fa-book" rounded type="default"></icon>
                     <h6 class="text-curiosum text-uppercase font-weight-bold">Rules</h6>
                     <p class="description mt-3 text-curiosum">Rule forum for {{event.name}}!</p>
+                   
+                     <div>
+                    <b-alert
+                  :show="dismissCountDown"
+                   dismissible
+                   fade
+                  variant="light"
+                  @dismissed="dismissCountDown=0"
+                  @dismiss-count-down="countDownChanged">
+                 <h6>Please Login to view Forum</h6>
+                 <b-progress
+                  variant="light"
+                 :max="dismissSecs" value="dismissCountDown"
+                  height="1px">
+                 </b-progress>
+              </b-alert>
+               </div>
+
+               <div v-if="currentUser == null">
+                <b-button @click="showAlert" variant="info" class="btn btn-curiosum mt-2"> Forum </b-button>
+                </div>
+                  
+                    <div v-else>
                     <router-link :to="{name: 'event-id-forum', params: {id: event.event_short}}" class="btn btn-curiosum mt-2" tag="a">Forum</router-link>
+                    </div>
+
                   </card>
                 </div>
                 <div class="col-md-6 col-lg-4 mt-1 mt-lg-3" v-if="event.show_block.teams">
@@ -75,7 +100,7 @@
                     <icon class="mb-3 i-curiosum" name="fas fa-calendar" rounded type="success"></icon>
                     <h6 class="text-curiosum text-uppercase font-weight-bold">Schedule</h6>
                     <p class="description mt-3 text-curiosum">Day-to-day schedule for {{event.name}}!</p>
-                    <router-link :to="{name: 'event-id-schedule', params: {id: event.event_short}}" class="btn btn-curiosum mt-2" tag="a">Schedule</router-link>
+                    <a :href="url1"  target="_blank" class="btn btn-curiosum mt-2" tag="a">Schedule</a>
                   </card>
                 </div>
                 <div class="col-md-6 col-lg-4 mt-1 mt-lg-3" v-if="event.show_block.live_announcements">
@@ -119,6 +144,10 @@ export default {
   components: {},
   data() {
     return {
+      url1: 'https://docs.google.com/spreadsheets/d/1It7rnlaKzo0vg8zHG9CpOcrTGPLRaGt7LZ8vVYeu8aU/edit#gid=1894421160',
+      url:'https://www.formulabharat.com',
+      dismissSecs: 1,
+      dismissCountDown: 0,
       showMoreCards: false,
       imageHeader: {
         src: require("@/assets/images/brand/header.png"),
@@ -150,7 +179,15 @@ export default {
     }
   },
   methods: {
-    formatDate(start_date, end_date) {
+    countDownChanged(dismissCountDown) {
+    this.dismissCountDown = dismissCountDown
+     },
+
+    showAlert() {
+    this.dismissCountDown = this.dismissSecs
+     },
+
+     formatDate(start_date, end_date) {
       let d1 = moment(start_date).format(`DD MMM`);
       let d2 = moment(end_date).format(`DD MMM`);
       let y = moment(end_date).format(`YYYY`);
