@@ -4,10 +4,10 @@ let keys = {
         port: parseInt(process.env.DB_PORT) || 27017,
         name: process.env.DB_NAME || 'mobility_eng_portal',
         options: {
-		user: process.env.DB_USER || "sumeetAdmin",
-		pass: process.env.DB_PASSWORD || "5090",
+		user: process.env.DB_USER || "mec_client",
+		pass: process.env.DB_PASSWORD || "someSecureStuff",
             useNewUrlParser: true,
-            authSource: process.env.DB_AUTH_DATABASE || "mobility_eng_protal"
+            authSource: process.env.DB_AUTH_DATABASE
 		}
     },
     google: {
@@ -27,6 +27,5 @@ let keys = {
     }
 }
 
-// mongodb://monguser:mongpass@192.168.2.2:27017/ps?authSource=admin
 keys.db.uri = `mongodb://${keys.db.host}:${keys.db.port}/${keys.db.name}?authSource=${keys.db.options.authSource}`
 module.exports = keys
